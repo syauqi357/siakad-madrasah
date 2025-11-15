@@ -41,11 +41,11 @@
 
 	// onMount(async () => {
 
-  //   ->  make new variable constant called "response" containing await fetch from 'http://your-express-api-url/dashboard-stats' API from backend express js should be localhost:4000 or whatever
+	//   ->  make new variable constant called "response" containing await fetch from 'http://your-express-api-url/dashboard-stats' API from backend express js should be localhost:4000 or whatever
 	//   const response = await fetch('http://your-express-api-url/dashboard-stats');
-  //   ->  cardData make new variable constant called "cardData" containing await response.json() to parse the JSON data from the response
+	//   ->  cardData make new variable constant called "cardData" containing await response.json() to parse the JSON data from the response
 	//   cardData = await response.json();
-  //   -> the data is changed form into json data so it can be used in svelte as data binding
+	//   -> the data is changed form into json data so it can be used in svelte as data binding
 	// });
 </script>
 
@@ -64,7 +64,7 @@
 				<div class="mb-4 flex items-center justify-between">
 					<!-- icon set -->
 					<div class="flex h-12 w-12 items-center justify-center rounded-lg {item.iconBg}">
-						<span class="text-2xl hover:scale-105 duration-150 ease-in hover:rotate-4">
+						<span class="text-2xl duration-150 ease-in hover:scale-105 hover:rotate-4">
 							<!-- reclean up -->
 							{@html item.icon}
 						</span>
@@ -81,15 +81,14 @@
 					{/if}
 				</div>
 				<!-- title and value -->
-         <!-- total students -->
+				<!-- total students -->
 				<h3 class="text-sm text-gray-600">
-          <span class="p-1.5 pl-2 pr-2 mb-3 mt-3 border-slate-400 bg-slate-200 border rounded-md  ">
-
-            {item.title}
-          </span>
+					<span class="mt-3 mb-3 rounded-md border border-slate-400 bg-slate-200 p-1.5 pr-2 pl-2">
+						{item.title}
+					</span>
 				</h3>
 				<!-- value -->
-         <!-- jumlah siswa -->
+				<!-- jumlah siswa -->
 				<p class="mt-2 text-5xl font-bold text-gray-900">{item.value}</p>
 			</div>
 		{/each}
