@@ -15,12 +15,18 @@
   font-style: normal;
 }
 @font-face {
-  font-family: 'StackSansText-Regular';
-  src: url('/src/lib/fonts/StackSansText-Regular.woff2') format('woff2');
-  font-weight: 300;
+  font-family: 'StackSansText-bold';
+  src: url('/src/lib/fonts/StackSansText-Bold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'StackSansText-light';
+  src: url('/src/lib/fonts/StackSansText-Light.woff2') format('woff2');
+  font-weight: 200;
   font-style: normal;
 }
 
 body {
-  font-family: 'StackSansText-Regular', sans-serif;
+  font-family: 'StackSansText-light', sans-serif;
 }
