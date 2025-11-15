@@ -1,3 +1,26 @@
 @import 'tailwindcss';
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
+
+@font-face {
+  font-family: 'StackSansText-Regular';
+  src: url('/src/lib/fonts/StackSansText-Regular.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'StackSansText-semiBold';
+  src: url('/src/lib/fonts/StackSansText-SemiBold.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'StackSansText-Regular';
+  src: url('/src/lib/fonts/StackSansText-Regular.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+}
+
+body {
+  font-family: 'StackSansText-Regular', sans-serif;
+}
