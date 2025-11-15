@@ -26,18 +26,44 @@ it will fall back to using the logo you imported. This makes your component more
 		logoUrl: string;
 	};
 
-	// Initialize with empty values.
 	let schoolData: SchoolData = {
-		name: 'MTs. Persis 2 Bangil',
-		npsn: '398472698',
+		name: 'Loading...',
+		npsn: '...',
 		logoUrl: logo
 	};
 
+	let loading = true;
+	let error = false;
+
 	onMount(async () => {
-		const response = await fetch('/api/school'); // Assumes your SvelteKit app proxies this to your Express backend.
-		const fetchedData = await response.json();
-		// We keep the imported logo if the fetched data doesn't provide one
-		schoolData = { ...fetchedData, logoUrl: fetchedData.logoUrl || logo };
+		try {
+			const response = await fetch('http://localhost:3000/schoolData');
+			
+			if (!response.ok) {
+				throw new Error(`HTTP error! status: ${response.status}`);
+			}
+			
+			const fetchedData = await response.json();
+			
+			schoolData = {
+				name: fetchedData.name || 'Unknown School',
+				npsn: fetchedData.npsn || '000000000',
+				logoUrl: fetchedData.logoUrl ? `http://localhost:3000/${fetchedData.logoUrl}` : logo
+			};
+			
+			loading = false;
+		} catch (err) {
+			console.error('Failed to fetch school data:', err);
+			error = true;
+			loading = false;
+			
+			// Fallback data
+			// schoolData = {
+			// 	name: 'MTs. Persis 2 Bangil',
+			// 	npsn: '231698134',
+			// 	logoUrl: logo
+			// };
+		}
 	});
 </script>
 
