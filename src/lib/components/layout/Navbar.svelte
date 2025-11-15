@@ -22,16 +22,12 @@
 				</button>
 
 				<!-- nama sekolah dan logo -->
-				<a href="/" class="ml-2 flex md:mr-24">
-					<div class="schoolpfp"></div>
+				<a href="/" class="ml-2 flex items-center gap-4 md:mr-24">
+					<div class="schoolpfp shrink-0"></div>
 
 					<div class="flex flex-col justify-center">
-						<span class="self-center text-xl font-semibold whitespace-nowrap text-black sm:text-2xl"
-							>MyApp</span
-						>
-						<span class="self-center text-xl whitespace-nowrap text-black sm:text-sm">
-							npsn : 12345678
-						</span>
+						<span class="text-xl font-semibold text-black sm:text-2xl mb">MyApp</span>
+						<span class="text-sm text-black"> npsn : 12345678 </span>
 					</div>
 				</a>
 			</div>
@@ -55,10 +51,11 @@
 
 <style>
 	.schoolpfp {
-		width: 32px;
-		height: 32px;
-		background-color: #6b7280;
-		border-radius: 0.4em;
-		margin: 0 1em 0 0;
-	}
+	width: 32px;
+	height: 32px;
+	background-color: #6b7280;
+	border-radius: 0.4em;
+	flex-shrink: 0; /* Prevents the icon from shrinking */
+}
+
 </style>
