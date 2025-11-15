@@ -1,5 +1,44 @@
 <script lang="ts">
+	/*
+	
+	Summary of Changes:
+1. Import the Logo: I added import logo from '$lib/assets/favicon.svg'; at the top of the script. 
+   This makes the SVG available as a variable named logo which holds the correct public path to the image.
+2. Update Initial Data: I changed logoUrl: '$lib/assets/favicon.svg' to logoUrl: logo.
+   This ensures that even before your API call finishes, the component will display the imported logo.
+3. Handle Fetched Data: In the onMount function, I've updated the logic slightly. 
+When you get data from your API, it will use the logoUrl from the API if it exists. If the API doesn't return a logoUrl, 
+it will fall back to using the logo you imported. This makes your component more robust.
+	
+	*/
+	import { onMount } from 'svelte';
+
+	// importing logo by default
+	import logo from '$lib/assets/favicon.svg';
+
+	// sidebar function to trigger sidebar
 	export let sidebarOpen: boolean;
+
+	// Define a type for our school data for better type-safety.
+	type SchoolData = {
+		name: string;
+		npsn: string;
+		logoUrl: string;
+	};
+
+	// Initialize with empty values.
+	let schoolData: SchoolData = {
+		name: 'MTs. Persis 2 Bangil',
+		npsn: '398472698',
+		logoUrl: logo
+	};
+
+	onMount(async () => {
+		const response = await fetch('/api/school'); // Assumes your SvelteKit app proxies this to your Express backend.
+		const fetchedData = await response.json();
+		// We keep the imported logo if the fetched data doesn't provide one
+		schoolData = { ...fetchedData, logoUrl: fetchedData.logoUrl || logo };
+	});
 </script>
 
 <nav class="fixed top-0 z-50 w-full border-b border-neutral-400 bg-white">
@@ -23,14 +62,33 @@
 
 				<!-- nama sekolah dan logo -->
 				<a href="/" class="ml-12 flex items-center gap-4 md:mr-24">
-					<div class=" shrink-0 w-12 h-12 bg-lime-600 rounded-sm flex items-center justify-center"></div>
+					<!-- profile school data -->
+					<div class=" flex h-12 w-12 shrink-0 items-center justify-center rounded-sm bg-lime-600">
+						<!-- logic and layout to put the data fetch up -->
+						{#if schoolData.logoUrl}
+							<img src={schoolData.logoUrl} alt="School Logo" class="h-full w-full object-cover" />
+						{:else}
+							<!-- Placeholder if no logo -->
+							<!-- use svg :) -->
+						{/if}
+					</div>
 
+					<!-- nama sekolah and npsn number -->
 					<div class="flex flex-col justify-center">
-						<span class="mb-1 text-lg font-semibold text-black sm:text-2xl">
-							<!-- {item.nameschool} -->
-							SchoolSys Madrasah
+						<!-- school name -->
+						<span class="mb-0.3 text-lg font-semibold text-black sm:text-2xl">
+							{schoolData.name}
 						</span>
-						<span class="text-sm text-black"> npsn : 12345678 </span>
+						<span class="text-sm text-black">
+							<!-- npsn layout positioning -->
+							<div class="flex flex-row items-center gap-2 p-0.5">
+								npsn :
+								<!-- school npsn number -->
+								<div class="rounded-md bg-slate-300 p-0.5 pr-2 pl-2">
+									{schoolData.npsn}
+								</div>
+							</div>
+						</span>
 					</div>
 				</a>
 			</div>
@@ -47,16 +105,16 @@
 				>
 					<!-- icon user profile -->
 					<!-- <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-						></path>
-					</svg> -->
+				<path
+				stroke-linecap="round"
+				stroke-linejoin="round"
+				stroke-width="2"
+				d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+				></path>
+				</svg> -->
 
 					<svg
-					class="h-7 w-7"
+						class="h-7 w-7"
 						xmlns="http://www.w3.org/2000/svg"
 						fill="none"
 						viewBox="0 0 24 24"
@@ -71,8 +129,6 @@
 							stroke-width="0.5"
 						></path>
 					</svg>
-
-					
 				</button>
 			</div>
 		</div>
@@ -88,5 +144,5 @@
 		flex-shrink: 0;
 	} */
 
-	 /* spot */
+	/* spot */
 </style>
