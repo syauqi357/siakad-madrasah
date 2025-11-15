@@ -75,7 +75,7 @@ Sidebar.svelte = Imported component that displays navigation items
 	<Sidebar bind:sidebarOpen {navItems} />
 
 	<div class="p-4 sm:ml-64">
-		<div class="mt-14 p-4">
+		<div class="mt-21 p-4">
 
 			<!-- position of pages -->
 			<slot />
