@@ -80,11 +80,13 @@
 </nav>
 
 <style>
-	.schoolpfp {
+	/* .schoolpfp {
 		width: 32px;
 		height: 32px;
 		background-color: #6b7280;
 		border-radius: 0.4em;
-		flex-shrink: 0; /* Prevents the icon from shrinking */
-	}
+		flex-shrink: 0;
+	} */
+
+	 /* spot */
 </style>
