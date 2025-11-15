@@ -2,13 +2,14 @@
 	export let sidebarOpen: boolean;
 </script>
 
-<nav class="fixed top-0 z-50 w-full border-b border-neutral-800 bg-neutral-900">
+<nav class="fixed top-0 z-50 w-full border-b border-neutral-400 bg-white">
 	<div class="px-3 py-3 lg:px-5 lg:pl-3">
 		<div class="flex items-center justify-between">
 			<div class="flex items-center justify-start">
+				<!-- Toggle sidebar button-->
 				<button
 					on:click={() => (sidebarOpen = !sidebarOpen)}
-					class="inline-flex items-center rounded-lg p-2 text-sm text-neutral-400 hover:bg-neutral-800 focus:ring-2 focus:ring-neutral-700 focus:outline-none"
+					class="inline-flex items-center rounded-lg p-2 text-sm text-neutral-400 hover:bg-neutral-200 focus:ring-2 focus:ring-neutral-300 focus:outline-none"
 				>
 					<span class="sr-only">Toggle sidebar</span>
 					<svg class="h-6 w-6" fill="currentColor" viewBox="0 0 20 20">
@@ -19,15 +20,26 @@
 						></path>
 					</svg>
 				</button>
+
+				<!-- nama sekolah dan logo -->
 				<a href="/" class="ml-2 flex md:mr-24">
-					<span class="self-center text-xl font-semibold whitespace-nowrap text-white sm:text-2xl"
-						>MyApp</span
-					>
+					<div class="schoolpfp"></div>
+
+					<div class="flex flex-col justify-center">
+						<span class="self-center text-xl font-semibold whitespace-nowrap text-black sm:text-2xl"
+							>MyApp</span
+						>
+						<span class="self-center text-xl whitespace-nowrap text-black sm:text-sm">
+							npsn : 12345678
+						</span>
+					</div>
 				</a>
 			</div>
+
+			<!-- user profile -->
 			<div class="flex items-center">
 				<button class="rounded-lg p-2 text-neutral-400 hover:bg-neutral-800">
-					<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path
 							stroke-linecap="round"
 							stroke-linejoin="round"
@@ -40,3 +52,13 @@
 		</div>
 	</div>
 </nav>
+
+<style>
+	.schoolpfp {
+		width: 32px;
+		height: 32px;
+		background-color: #6b7280;
+		border-radius: 0.4em;
+		margin: 0 1em 0 0;
+	}
+</style>
