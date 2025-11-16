@@ -9,6 +9,8 @@
 3. Handle Fetched Data: In the onMount function, I've updated the logic slightly. 
 When you get data from your API, it will use the logoUrl from the API if it exists. If the API doesn't return a logoUrl, 
 it will fall back to using the logo you imported. This makes your component more robust.
+
+// generate by gemini
 	
 	*/
 	import { onMount } from 'svelte';
@@ -28,8 +30,8 @@ it will fall back to using the logo you imported. This makes your component more
 
 	// placeholder loading set json control
 	let schoolData: SchoolData = {
-		name: 'Loading...',
-		npsn: '...',
+		name: '<div class="w-55 h-7 rounded-lg bg-slate-300 animate-pulse"></div>',
+		npsn: '<div class="w-40 h-5 rounded-sm bg-slate-300 animate-pulse"></div>',
 		logoUrl: logo
 	};
 
@@ -113,7 +115,8 @@ it will fall back to using the logo you imported. This makes your component more
 					<div class="flex flex-col justify-center">
 						<!-- school name -->
 						<span class="mb-0.3 text-lg font-semibold text-black sm:text-2xl">
-							{schoolData.name}
+							{@html schoolData.name}
+							 <!-- <div class="w-55 h-7 rounded-lg bg-slate-300 animate-pulse"></div> -->
 						</span>
 						<span class="text-sm text-black">
 							<!-- npsn layout positioning -->
@@ -121,7 +124,8 @@ it will fall back to using the logo you imported. This makes your component more
 								npsn :
 								<!-- school npsn number -->
 								<div class="rounded-md bg-slate-300 p-0.5 pr-2 pl-2">
-									{schoolData.npsn}
+									{@html schoolData.npsn}
+									 
 								</div>
 							</div>
 
