@@ -210,9 +210,13 @@
 	<div class="min-h-screen bg-slate-50 p-4 md:p-8">
 		<div class="mx-auto max-w-4xl">
 			<!-- Back button -->
-			<a href="/siswa" class="mb-6 flex items-center gap-2 text-blue-600 hover:text-blue-800">
+			<a
+				href="/siswa"
+				class="mb-6 flex w-fit items-center gap-2 rounded-full bg-blue-100 p-2 text-blue-600 hover:text-blue-800"
+			>
 				<span>
 					<svg
+						class="fill-blue-600"
 						xmlns="http://www.w3.org/2000/svg"
 						viewBox="0 0 24 24"
 						fill="#000000"
@@ -233,21 +237,23 @@
 				<span> Kembali ke daftar </span>
 			</a>
 
-			<!-- Student card -->
-			<div class="rounded-lg bg-white p-6 shadow-lg md:p-8">
+			<!-- Student card parent -->
+			<div class=" md:rounded-lg bg-white p-2 md:shadow-lg md:p-8">
 				<!-- student header -->
+				<!-- 
+					all information in the head goes here
+				 -->
 				<div class="mb-5 flex items-center justify-between">
 					<div class="flex items-center gap-4">
 						<!-- student image -->
 						<div class="h-22 w-18 bg-slate-500"></div>
-
 						<!-- student name and id -->
 						<div>
-							<h1 class="text-3xl font-bold text-slate-800">{student.nama}</h1>
+							<h1 class="md:text-3xl text-xl font-bold text-slate-800">{student.nama}</h1>
 							<p class="mt-2 text-slate-600">ID: {student.id}</p>
 						</div>
 					</div>
-					<div class="mb-6 flex items-start justify-between">
+					<div class="mb-6 flex items-center p-2">
 						<!-- status siswa -->
 						<span
 							class={`rounded-lg border px-4 py-2 text-sm font-medium ${getStatusStyle(student.status)}`}
@@ -267,34 +273,92 @@
 				-->
 
 				<div class="grid gap-4 md:grid-cols-2">
+
+					<!-- kelas siswa (harus nya terpisah) -->
 					<div class="rounded-lg bg-slate-50 p-4">
 						<p class="text-sm text-slate-600">Kelas</p>
 						<p class="mt-1 text-xl font-semibold text-slate-800">{student.kelas}</p>
 					</div>
 
+					<!-- jenis kelamin siswa -->
 					<div class="rounded-lg bg-slate-50 p-4">
 						<p class="text-sm text-slate-600">Jenis Kelamin</p>
 						<p class="mt-1 text-xl font-semibold text-slate-800">
+							<!-- logic loop dan cek jenis kelamin dengan ternary operator-->
 							{student.jenisKelamin === 'L' ? 'Laki-laki' : 'Perempuan'}
 						</p>
 					</div>
 
+
+					<!-- asal siswa (harus nya terpisah dan gabungan dari beberapa data yang di combine secara bersamaan) -->
 					<div class="rounded-lg bg-slate-50 p-4">
 						<p class="text-sm text-slate-600">Asal</p>
-						<p class="mt-1 text-xl font-semibold text-slate-800">{student.asal}</p>
+						<p class="mt-1 text-xl font-semibold text-slate-800">
+							{student.asal}
+						<!-- disini harus nya ada data tambahan atau gabungan dari data resmi dukcapil -->
+						</p>
 					</div>
 
+					<!-- status (siswa aktif dst) -->
 					<div class="rounded-lg bg-slate-50 p-4">
 						<p class="text-sm text-slate-600">Status Siswa</p>
 						<p class="mt-1 text-xl font-semibold text-slate-800 capitalize">{student.status}</p>
 					</div>
+
+					<!-- ayah siswa -->
 					<div class="rounded-lg bg-slate-50 p-4">
 						<p class="text-sm text-slate-600">Ayah Siswa</p>
-						<p class="mt-1 text-xl font-semibold text-slate-800 capitalize">{student.ayah}</p>
+						<p class="mt-1 flex items-center gap-2 text-xl font-semibold text-slate-800 capitalize">
+							<span>
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									fill="none"
+									viewBox="0 0 24 24"
+									id="Boy-Fill--Streamline-Outlined-Fill-Material"
+									height="24"
+									width="24"
+								>
+									<desc> Boy Fill Streamline Icon: https://streamlinehq.com </desc>
+									<path
+										fill="#000000"
+										d="M11.9975 7c-0.415 0 -0.76835 -0.14665 -1.06 -0.44 -0.29165 -0.29335 -0.4375 -0.6475 -0.4375 -1.0625 0 -0.415 0.14665 -0.768335 0.44 -1.06 0.29335 -0.291665 0.6475 -0.4375 1.0625 -0.4375 0.415 0 0.76835 0.146665 1.06 0.44 0.29165 0.293335 0.4375 0.6475 0.4375 1.0625 0 0.415 -0.14665 0.76835 -0.44 1.06 -0.29335 0.29165 -0.6475 0.4375 -1.0625 0.4375ZM10.5 20V15h-1V10c0 -0.4125 0.1469 -0.76565 0.44075 -1.0595C10.2344 8.64685 10.5875 8.5 11 8.5h2c0.4125 0 0.76565 0.14685 1.0595 0.4405 0.29365 0.29385 0.4405 0.647 0.4405 1.0595v5h-1v5h-3Z"
+										stroke-width="0.5"
+									></path>
+								</svg>
+							</span>
+							{student.ayah}
+						</p>
 					</div>
+
+					<!-- ibu siswa -->
+					<div class="rounded-lg bg-slate-50 p-4">
+						<p class="text-sm text-slate-600">Ibu Siswa</p>
+						<p class="mt-1 flex items-center gap-2 text-xl font-semibold text-slate-800 capitalize">
+							<span>
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									fill="none"
+									viewBox="0 0 24 24"
+									id="Woman-2-Fill--Streamline-Outlined-Fill-Material"
+									height="24"
+									width="24"
+								>
+									<desc> Woman 2 Fill Streamline Icon: https://streamlinehq.com </desc>
+									<path
+										fill="#000000"
+										d="M10.7 22V16.5H7.5l2.55 -8.2c0.13335 -0.41665 0.38335 -0.7375 0.75 -0.9625 0.36665 -0.225 0.76665 -0.3375 1.2 -0.3375 0.43335 0 0.83335 0.1125 1.2 0.3375 0.36665 0.225 0.61665 0.54585 0.75 0.9625L16.5 16.5h-3.2v5.5h-2.6Zm1.302 -16.35c-0.50135 0 -0.93115 -0.1785 -1.2895 -0.5355 -0.35835 -0.357 -0.5375 -0.786165 -0.5375 -1.2875 0 -0.501335 0.1785 -0.931165 0.5355 -1.2895C11.0675 2.179165 11.49665 2 11.998 2c0.50135 0 0.93115 0.1785 1.2895 0.5355 0.35835 0.357 0.5375 0.786165 0.5375 1.2875 0 0.501335 -0.1785 0.931165 -0.5355 1.2895 -0.357 0.35835 -0.78615 0.5375 -1.2875 0.5375Z"
+										stroke-width="0.5"
+									></path>
+								</svg>
+							</span>
+							{student.ibu}
+						</p>
+					</div>
+
+
 				</div>
 
-				<!-- You can add more sections here like: -->
+				<!-- more sections here like: -->
 				<!-- - Nilai/grades -->
 				<!-- - Absensi/attendance -->
 				<!-- - Contact info -->
