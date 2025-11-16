@@ -3,6 +3,7 @@
 	import { onMount } from 'svelte';
 
 	type Student = {
+		id: number;
 		nama: string;
 		kelas: string;
 		jenisKelamin: string;
@@ -12,6 +13,7 @@
 
 	const studentData: Student[] = [
 		{
+			id: 1,
 			nama: 'Ahmad Rizki',
 			kelas: 'XII RPL 1',
 			jenisKelamin: 'L',
@@ -19,6 +21,7 @@
 			status: 'aktif'
 		},
 		{
+			id: 2,
 			nama: 'Siti Nurhaliza',
 			kelas: 'XI TKJ 2',
 			jenisKelamin: 'P',
@@ -26,6 +29,7 @@
 			status: 'aktif'
 		},
 		{
+			id: 3,
 			nama: 'Budi Santoso',
 			kelas: 'X MM 1',
 			jenisKelamin: 'L',
@@ -33,6 +37,7 @@
 			status: 'warning'
 		},
 		{
+			id: 4,
 			nama: 'Dewi Lestari',
 			kelas: 'XII AK 3',
 			jenisKelamin: 'P',
@@ -40,6 +45,7 @@
 			status: 'aktif'
 		},
 		{
+			id: 5,
 			nama: 'Eko Prasetyo',
 			kelas: 'XI RPL 2',
 			jenisKelamin: 'L',
@@ -47,6 +53,7 @@
 			status: 'nonaktif'
 		},
 		{
+			id: 6,
 			nama: 'Fitri Handayani',
 			kelas: 'XII TKJ 1',
 			jenisKelamin: 'P',
@@ -54,21 +61,27 @@
 			status: 'aktif'
 		},
 		{
+			id: 7,
 			nama: 'Gilang Ramadhan',
 			kelas: 'X RPL 3',
 			jenisKelamin: 'L',
 			asal: 'Bogor',
 			status: 'warning'
 		},
-		{ nama: 'Hana Safira', kelas: 'XI AK 1', jenisKelamin: 'P', asal: 'Depok', status: 'aktif' },
+		{ 
+			id: 8,
+			nama: 'Hana Safira', kelas: 'XI AK 1', jenisKelamin: 'P', asal: 'Depok', status: 'aktif' },
 		{
+			id: 9,
 			nama: 'Indra Gunawan',
 			kelas: 'XII MM 2',
 			jenisKelamin: 'L',
 			asal: 'Tangerang',
 			status: 'nonaktif'
 		},
-		{ nama: 'Julia Kartika', kelas: 'X TKJ 1', jenisKelamin: 'P', asal: 'Bekasi', status: 'aktif' }
+		{ 
+			id: 10,
+			nama: 'Julia Kartika', kelas: 'X TKJ 1', jenisKelamin: 'P', asal: 'Bekasi', status: 'aktif' }
 	];
 
 	// Shuffle array on load
@@ -154,7 +167,7 @@
 					class="rounded-lg border border-red-400 bg-red-300 p-0.5 text-xs text-red-700 md:p-1 md:pr-2 md:pl-2"
 					>status siswa nonaktif</span
 				> -->
-				<a href="/">
+				<a href="/student/{student.id}">
 					<button
 						aria-label="More details"
 						title="More details"
