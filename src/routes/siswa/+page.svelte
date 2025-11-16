@@ -13,7 +13,7 @@
 
 	const studentData: Student[] = [
 		{
-			id: 1,
+			id: 25020001,
 			nama: 'Ahmad Rizki',
 			kelas: 'XII RPL 1',
 			jenisKelamin: 'L',
@@ -21,71 +21,97 @@
 			status: 'aktif'
 		},
 		{
-			id: 2,
+			id: 25020002,
 			nama: 'Siti Nurhaliza',
-			kelas: 'XI TKJ 2',
+			kelas: 'XII RPL 1',
 			jenisKelamin: 'P',
 			asal: 'Bandung',
 			status: 'aktif'
 		},
 		{
-			id: 3,
-			nama: 'Budi Santoso',
-			kelas: 'X MM 1',
+			id: 25020003,
+			nama: 'Kevin Pratama',
+			kelas: 'XII RPL 1',
 			jenisKelamin: 'L',
 			asal: 'Surabaya',
-			status: 'warning'
+			status: 'aktif'
 		},
 		{
-			id: 4,
-			nama: 'Dewi Lestari',
-			kelas: 'XII AK 3',
+			id: 25020004,
+			nama: 'Maya Sari',
+			kelas: 'XII RPL 2',
 			jenisKelamin: 'P',
 			asal: 'Yogyakarta',
 			status: 'aktif'
 		},
 		{
-			id: 5,
-			nama: 'Eko Prasetyo',
-			kelas: 'XI RPL 2',
+			id: 25020005,
+			nama: 'Rizky Fadilah',
+			kelas: 'XII RPL 2',
 			jenisKelamin: 'L',
-			asal: 'Semarang',
+			asal: 'Medan',
 			status: 'nonaktif'
 		},
 		{
-			id: 6,
-			nama: 'Fitri Handayani',
-			kelas: 'XII TKJ 1',
+			id: 25020006,
+			nama: 'Dewi Anggraini',
+			kelas: 'XII RPL 2',
 			jenisKelamin: 'P',
-			asal: 'Malang',
+			asal: 'Semarang',
 			status: 'aktif'
 		},
 		{
-			id: 7,
-			nama: 'Gilang Ramadhan',
-			kelas: 'X RPL 3',
+			id: 25020007,
+			nama: 'Fajar Hidayat',
+			kelas: 'XII RPL 3',
 			jenisKelamin: 'L',
-			asal: 'Bogor',
-			status: 'warning'
+			asal: 'Makassar',
+			status: 'aktif'
 		},
-		{ 
-			id: 8,
-			nama: 'Hana Safira', kelas: 'XI AK 1', jenisKelamin: 'P', asal: 'Depok', status: 'aktif' },
 		{
-			id: 9,
-			nama: 'Indra Gunawan',
-			kelas: 'XII MM 2',
+			id: 25020008,
+			nama: 'Nina Permata',
+			kelas: 'XII RPL 3',
+			jenisKelamin: 'P',
+			asal: 'Denpasar',
+			status: 'aktif'
+		},
+		{
+			id: 25020009,
+			nama: 'Budi Setiawan',
+			kelas: 'XII RPL 3',
 			jenisKelamin: 'L',
-			asal: 'Tangerang',
+			asal: 'Malang',
 			status: 'nonaktif'
 		},
-		{ 
-			id: 10,
-			nama: 'Julia Kartika', kelas: 'X TKJ 1', jenisKelamin: 'P', asal: 'Bekasi', status: 'aktif' }
+		{
+			id: 25020010,
+			nama: 'Cindy Putri',
+			kelas: 'XII RPL 4',
+			jenisKelamin: 'P',
+			asal: 'Bogor',
+			status: 'aktif'
+		},
+		{
+			id: 25020011,
+			nama: 'Rendi Saputra',
+			kelas: 'XII RPL 4',
+			jenisKelamin: 'L',
+			asal: 'Palembang',
+			status: 'aktif'
+		},
+		{
+			id: 25020012,
+			nama: 'Lina Marlina',
+			kelas: 'XII RPL 4',
+			jenisKelamin: 'P',
+			asal: 'Bekasi',
+			status: 'aktif'
+		}
 	];
 
 	// Shuffle array on load
-	let students = [...studentData].sort(() => Math.random() - 0.5);
+	let students = [...studentData].sort();
 
 	function getStatusStyle(status: Student['status']): string {
 		switch (status) {
@@ -135,11 +161,11 @@
 					<div class="border-r border-slate-400 p-0 pr-3 text-slate-700 md:p-0 md:pr-6">
 						{student.nama}
 					</div>
-					<div>{student.kelas}</div>
+					<div class="hidden md:flex">{student.kelas}</div>
 					<div class={getGenderStyle(student.jenisKelamin)}>
 						{student.jenisKelamin}
 					</div>
-					<div>{student.asal}</div>
+					<div class="hidden md:flex">{student.asal}</div>
 				</div>
 
 				<span class={getStatusStyle(student.status)}>
@@ -177,14 +203,12 @@
 						<span>
 							<svg
 								class="fill-white-100"
-				
 								fill="none"
 								viewBox="0 0 24 24"
 								id="Call-Made-Fill--Streamline-Rounded-Fill-Material"
 								height="24"
 								width="24"
 							>
-								
 								<path
 									fill="currentColor"
 									d="m17.4998 7.55 -11.925 11.925c-0.15 0.15 -0.325 0.225 -0.525 0.225 -0.199995 0 -0.374995 -0.075 -0.524995 -0.225 -0.15 -0.15 -0.225 -0.325 -0.225 -0.525s0.075 -0.375 0.225 -0.525L16.4498 6.5h-6.6c-0.2125 0 -0.3906 -0.07235 -0.53425 -0.217 -0.14385 -0.1445 -0.21575 -0.32365 -0.21575 -0.5375 0 -0.21365 0.0719 -0.39135 0.21575 -0.533 0.14365 -0.14165 0.32175 -0.2125 0.53425 -0.2125h8.4c0.2125 0 0.39065 0.07185 0.5345 0.2155 0.14365 0.14385 0.2155 0.322 0.2155 0.5345v8.4c0 0.2125 -0.07235 0.3906 -0.217 0.53425 -0.1445 0.14385 -0.32365 0.21575 -0.5375 0.21575 -0.21365 0 -0.39135 -0.0719 -0.533 -0.21575 -0.14165 -0.14365 -0.2125 -0.32175 -0.2125 -0.53425V7.55Z"
