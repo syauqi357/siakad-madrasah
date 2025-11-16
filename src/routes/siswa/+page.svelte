@@ -148,11 +148,18 @@
 	}
 </script>
 
-<div class="flex w-full items-center justify-center md:p-3">
-	<div class=""></div>
+<div class="flex w-full flex-col items-center justify-center md:p-3">
+	<!-- header -->
+	<div class="mb-6 w-full bg-slate-500 p-3 md:w-7xl">
+		<span class="text-md font-bold tracking-wide capitalize md:text-4xl"> siswa </span>
+
+		<!-- function search dll -->
+		<div class="h-6 w-full bg-slate-300">
+			<input type="text" />
+		</div>
+	</div>
 	<div class="h-auto w-full rounded-md bg-slate-100 p-3 md:w-7xl md:p-6">
 		<!-- line student -->
-
 		{#each students as student}
 			<div
 				class="mb-3 flex h-auto w-full items-center justify-between gap-6 rounded-lg bg-slate-200 p-3 transition-all duration-150 ease-in-out hover:bg-slate-300 md:w-full"
@@ -217,7 +224,7 @@
 							</svg>
 						</span>
 						<!-- more -->
-						<span class="hidden md:flex"> selengkapnya </span>
+						<span class="hidden text-xs md:flex md:text-sm"> selengkapnya </span>
 					</button>
 				</a>
 			</div>
