@@ -167,7 +167,7 @@
 					class="rounded-lg border border-red-400 bg-red-300 p-0.5 text-xs text-red-700 md:p-1 md:pr-2 md:pl-2"
 					>status siswa nonaktif</span
 				> -->
-				<a href="/student/{student.id}">
+				<a href="/siswa/{student.id}">
 					<button
 						aria-label="More details"
 						title="More details"
@@ -177,14 +177,14 @@
 						<span>
 							<svg
 								class="fill-white-100"
-								xmlns="http://www.w3.org/2000/svg"
+				
 								fill="none"
 								viewBox="0 0 24 24"
 								id="Call-Made-Fill--Streamline-Rounded-Fill-Material"
 								height="24"
 								width="24"
 							>
-								<desc> Call Made Fill Streamline Icon: https://streamlinehq.com </desc>
+								
 								<path
 									fill="currentColor"
 									d="m17.4998 7.55 -11.925 11.925c-0.15 0.15 -0.325 0.225 -0.525 0.225 -0.199995 0 -0.374995 -0.075 -0.524995 -0.225 -0.15 -0.15 -0.225 -0.325 -0.225 -0.525s0.075 -0.375 0.225 -0.525L16.4498 6.5h-6.6c-0.2125 0 -0.3906 -0.07235 -0.53425 -0.217 -0.14385 -0.1445 -0.21575 -0.32365 -0.21575 -0.5375 0 -0.21365 0.0719 -0.39135 0.21575 -0.533 0.14365 -0.14165 0.32175 -0.2125 0.53425 -0.2125h8.4c0.2125 0 0.39065 0.07185 0.5345 0.2155 0.14365 0.14385 0.2155 0.322 0.2155 0.5345v8.4c0 0.2125 -0.07235 0.3906 -0.217 0.53425 -0.1445 0.14385 -0.32365 0.21575 -0.5375 0.21575 -0.21365 0 -0.39135 -0.0719 -0.533 -0.21575 -0.14165 -0.14365 -0.2125 -0.32175 -0.2125 -0.53425V7.55Z"
