@@ -95,7 +95,7 @@ it will fall back to using the logo you imported. This makes your component more
 				</button>
 
 				<!-- nama sekolah dan logo -->
-				<a href="/" class="ml-12 flex items-center gap-4 md:mr-24">
+				<a href="/" class="ml-2 flex items-center gap-4 md:mr-24">
 					<!-- profile school data -->
 					<div class=" flex h-12 w-12 shrink-0 items-center justify-center rounded-sm bg-lime-600">
 						<!-- logic and layout to put the data fetch up -->
@@ -114,7 +114,7 @@ it will fall back to using the logo you imported. This makes your component more
 					<!-- nama sekolah and npsn number -->
 					<div class="flex flex-col justify-center">
 						<!-- school name -->
-						<span class="mb-0.3 text-lg font-semibold text-black sm:text-2xl">
+						<span class="mb-0.3 text-md font-semibold text-black sm:text-xl">
 							{@html schoolData.name}
 							 <!-- <div class="w-55 h-7 rounded-lg bg-slate-300 animate-pulse"></div> -->
 						</span>
