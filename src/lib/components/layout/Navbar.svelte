@@ -43,14 +43,13 @@ it will fall back to using the logo you imported. This makes your component more
 			// endpoint app.js
 			// docs : pending
 			const response = await fetch('http://localhost:3000/schoolData');
-			
+
 			if (!response.ok) {
 				throw new Error(`HTTP error! status: ${response.status}`);
 			}
-			
+
 			// fetch data dari appjs endpoint server
 			const fetchedData = await response.json();
-			
 
 			// sukses ambil data dari appjs endpoint server
 			schoolData = {
@@ -58,13 +57,13 @@ it will fall back to using the logo you imported. This makes your component more
 				npsn: fetchedData.npsn || '000000000',
 				logoUrl: fetchedData.logoUrl ? `http://localhost:3000/${fetchedData.logoUrl}` : logo
 			};
-			
+
 			loading = false;
 		} catch (err) {
 			console.error('Failed to fetch school data:', err);
 			error = true;
 			loading = false;
-			
+
 			// Fallback data
 			// schoolData = {
 			// 	name: 'MTs. Persis 2 Bangil',
@@ -107,16 +106,12 @@ it will fall back to using the logo you imported. This makes your component more
 						{/if}
 					</div>
 
-
-
-					
-
 					<!-- nama sekolah and npsn number -->
 					<div class="flex flex-col justify-center">
 						<!-- school name -->
 						<span class="mb-0.3 text-md font-semibold text-black sm:text-xl">
 							{@html schoolData.name}
-							 <!-- <div class="w-55 h-7 rounded-lg bg-slate-300 animate-pulse"></div> -->
+							<!-- <div class="w-55 h-7 rounded-lg bg-slate-300 animate-pulse"></div> -->
 						</span>
 						<span class="text-sm text-black">
 							<!-- npsn layout positioning -->
@@ -125,10 +120,8 @@ it will fall back to using the logo you imported. This makes your component more
 								<!-- school npsn number -->
 								<div class="rounded-md bg-slate-300 p-0.5 pr-2 pl-2">
 									{@html schoolData.npsn}
-									 
 								</div>
 							</div>
-
 						</span>
 					</div>
 				</a>

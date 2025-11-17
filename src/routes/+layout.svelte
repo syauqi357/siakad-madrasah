@@ -162,7 +162,7 @@ Sidebar.svelte = Imported component that displays navigation items
 	-->
 	<Sidebar bind:sidebarOpen {navItems} />
 
-	<div class="p-3 ml-0 sm:ml-64">
+	<div class="ml-0 p-3 sm:ml-64">
 		<div class="mt-21 p-4">
 			<!-- position of pages -->
 			<slot />
@@ -171,8 +171,7 @@ Sidebar.svelte = Imported component that displays navigation items
 </div>
 
 {#if sidebarOpen}
-
-<!-- fix some issues : nambah div close tag -->
+	<!-- fix some issues : nambah div close tag -->
 	<div
 		class="bg-opacity-50 fixed inset-0 z-30 bg-black sm:hidden"
 		on:click={() => (sidebarOpen = false)}

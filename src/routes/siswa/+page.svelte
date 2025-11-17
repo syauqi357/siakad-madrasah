@@ -181,17 +181,13 @@
 			</div>
 			<!-- sort -->
 			<!-- classifier funct -->
-			<div class="bg-slate-200 p-2 md:flex flex gap-3">
-
+			<div class="flex gap-3 bg-slate-200 p-2 md:flex">
 				<button
 					aria-label=""
 					title=""
-					class="flex items-center gap-2 rounded-sm bg-slate-700 p-4 md:p-2 md:pr-4 md:pl-4 text-slate-100 w-fit"
+					class="flex w-fit items-center gap-2 rounded-sm bg-slate-700 p-4 text-slate-100 md:p-2 md:pr-4 md:pl-4"
 				>
-				<span class="md:flex hidden">
-	
-					descending
-				</span>
+					<span class="hidden md:flex"> descending </span>
 					<span>
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
@@ -213,12 +209,9 @@
 				<button
 					aria-label=""
 					title=""
-					class="flex items-center gap-2 rounded-sm bg-slate-700 p-4 md:p-2 md:pr-4 md:pl-4 text-slate-100 w-fit"
+					class="flex w-fit items-center gap-2 rounded-sm bg-slate-700 p-4 text-slate-100 md:p-2 md:pr-4 md:pl-4"
 				>
-				<span class="md:flex hidden">
-	
-					ascending
-				</span>
+					<span class="hidden md:flex"> ascending </span>
 					<span>
 						<svg
 							xmlns="http://www.w3.org/2000/svg"

@@ -238,7 +238,7 @@
 			</a>
 
 			<!-- Student card parent -->
-			<div class=" md:rounded-lg bg-white p-2 md:shadow-lg md:p-8">
+			<div class=" bg-white p-2 md:rounded-lg md:p-8 md:shadow-lg">
 				<!-- student header -->
 				<!-- 
 					all information in the head goes here
@@ -249,7 +249,7 @@
 						<div class="h-22 w-18 bg-slate-500"></div>
 						<!-- student name and id -->
 						<div>
-							<h1 class="md:text-3xl text-xl font-bold text-slate-800">{student.nama}</h1>
+							<h1 class="text-xl font-bold text-slate-800 md:text-3xl">{student.nama}</h1>
 							<p class="mt-2 text-slate-600">ID: {student.id}</p>
 						</div>
 					</div>
@@ -273,7 +273,6 @@
 				-->
 
 				<div class="grid gap-4 md:grid-cols-2">
-
 					<!-- kelas siswa (harus nya terpisah) -->
 					<div class="rounded-lg bg-slate-50 p-4">
 						<p class="text-sm text-slate-600">Kelas</p>
@@ -289,13 +288,12 @@
 						</p>
 					</div>
 
-
 					<!-- asal siswa (harus nya terpisah dan gabungan dari beberapa data yang di combine secara bersamaan) -->
 					<div class="rounded-lg bg-slate-50 p-4">
 						<p class="text-sm text-slate-600">Asal</p>
 						<p class="mt-1 text-xl font-semibold text-slate-800">
 							{student.asal}
-						<!-- disini harus nya ada data tambahan atau gabungan dari data resmi dukcapil -->
+							<!-- disini harus nya ada data tambahan atau gabungan dari data resmi dukcapil -->
 						</p>
 					</div>
 
@@ -354,8 +352,6 @@
 							{student.ibu}
 						</p>
 					</div>
-
-
 				</div>
 
 				<!-- more sections here like: -->
