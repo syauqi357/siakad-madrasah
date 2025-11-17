@@ -150,12 +150,94 @@
 
 <div class="flex w-full flex-col items-center justify-center md:p-3">
 	<!-- header -->
-	<div class="mb-6 w-full bg-slate-500 p-3 md:w-7xl">
+	<div class="mb-6 flex w-full flex-col gap-5 rounded-lg bg-slate-200 p-3 md:w-7xl">
 		<span class="text-md font-bold tracking-wide capitalize md:text-4xl"> siswa </span>
 
 		<!-- function search dll -->
-		<div class="h-6 w-full bg-slate-300">
-			<input type="text" />
+		<div class="flex h-fit w-full flex-col gap-2 md:flex md:flex-row md:gap-3">
+			<!-- search input -->
+			<div
+				class="flex w-full items-center gap-2 rounded-sm border-[0.1px] border-slate-500 bg-slate-100 p-1 pr-4 pl-4 md:w-fit"
+			>
+				<span>
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						fill="none"
+						viewBox="0 0 24 24"
+						height="24"
+						width="24"
+					>
+						<g id="Search-Fill">
+							<path
+								id="Union"
+								fill="#000000"
+								d="M11 2c4.9706 0 9 4.02944 9 9 0 2.125 -0.7381 4.0766 -1.9697 5.6162l4.1767 4.1768 -1.414 1.414 -4.1768 -4.1767C15.0766 19.2619 13.125 20 11 20c-4.97056 0 -9 -4.0294 -9 -9 0 -4.97056 4.02944 -9 9 -9m0 2c-3.86599 0 -7 3.13401 -7 7 0 3.866 3.13401 7 7 7 3.866 0 7 -3.134 7 -7 0 -3.86599 -3.134 -7 -7 -7"
+								stroke-width="1"
+							>
+							</path>
+						</g>
+					</svg>
+				</span> <input class="w-full p-2 outline-none md:w-lg" type="text" />
+			</div>
+			<!-- sort -->
+			<!-- classifier funct -->
+			<div class="bg-slate-200 p-2 md:flex flex gap-3">
+
+				<button
+					aria-label=""
+					title=""
+					class="flex items-center gap-2 rounded-sm bg-slate-700 p-4 md:p-2 md:pr-4 md:pl-4 text-slate-100 w-fit"
+				>
+				<span class="md:flex hidden">
+	
+					descending
+				</span>
+					<span>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							viewBox="0 0 16 16"
+							fill="currentColor"
+							id="Arrow-Circle-Up-Fill--Streamline-Phosphor-Fill"
+							height="16"
+							width="16"
+						>
+							<desc> Arrow Circle Up Fill Streamline Icon: https://streamlinehq.com </desc>
+							<path
+								d="M8 0.16c-6.0352375 0 -9.80725625 6.53333125 -6.7896375 11.76 3.0176125 5.22666875 10.56165625 5.22666875 13.579275 0C15.47774375 10.72816875 15.84 9.37620625 15.84 8 15.83543125 3.67198125 12.32801875 0.164575 8 0.16Zm2.83898125 7.6636c-0.23556875 0.23583125 -0.61778125 0.23583125 -0.85335 0l-1.38255625 -1.38330625v4.57509375c0 0.46424375 -0.5025625 0.7544 -0.9046125 0.522275 -0.18659375 -0.107725 -0.3015375 -0.30681875 -0.3015375 -0.522275v-4.57509375l-1.38255625 1.38330625c-0.32845625 0.32845625 -0.88930625 0.178175 -1.009525 -0.2705 -0.0558 -0.2082375 0.0037375 -0.43041875 0.15616875 -0.58285625l2.4123125 -2.41230625c0.23556875 -0.23583125 0.61778125 -0.23583125 0.85335 0l2.41230625 2.41230625c0.2358375 0.235575 0.2358375 0.6177875 0 0.85335625Z"
+								stroke-width="0.0625"
+							>
+							</path>
+						</svg>
+					</span>
+				</button>
+				<button
+					aria-label=""
+					title=""
+					class="flex items-center gap-2 rounded-sm bg-slate-700 p-4 md:p-2 md:pr-4 md:pl-4 text-slate-100 w-fit"
+				>
+				<span class="md:flex hidden">
+	
+					ascending
+				</span>
+					<span>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							viewBox="0 0 16 16"
+							fill="currentColor"
+							id="Arrow-Circle-Down-Fill--Streamline-Phosphor-Fill"
+							height="16"
+							width="16"
+						>
+							<desc> Arrow Circle Down Fill Streamline Icon: https://streamlinehq.com </desc>
+							<path
+								d="M8 0.16c-6.0352375 0 -9.80725625 6.53333125 -6.7896375 11.76 3.0176125 5.22666875 10.56165625 5.22666875 13.579275 0C15.47774375 10.72816875 15.84 9.37620625 15.84 8 15.83543125 3.67198125 12.32801875 0.164575 8 0.16Zm2.83898125 8.86975625 -2.41230625 2.41230625c-0.23556875 0.23583125 -0.61778125 0.23583125 -0.85335 0l-2.4123125 -2.41230625c-0.32845 -0.32845625 -0.178175 -0.88930625 0.27050625 -1.00953125 0.20823125 -0.05579375 0.4304125 0.0037375 0.58285 0.156175l1.38255625 1.38330625V4.9846125c0 -0.46424375 0.5025625 -0.7544 0.9046125 -0.522275 0.18659375 0.107725 0.3015375 0.30681875 0.3015375 0.522275v4.57509375l1.38255625 -1.38330625c0.32845625 -0.32845625 0.88930625 -0.178175 1.009525 0.2705 0.0558 0.2082375 -0.0037375 0.43041875 -0.156175 0.58285625Z"
+								stroke-width="0.0625"
+							>
+							</path>
+						</svg>
+					</span>
+				</button>
+			</div>
 		</div>
 	</div>
 	<div class="h-auto w-full rounded-md bg-slate-100 p-3 md:w-7xl md:p-6">
