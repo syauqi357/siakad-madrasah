@@ -24,8 +24,8 @@ const schoolData = {
 	npsn: '2316989832',
     // 231698134 <- number before
     // 2316989832 <- number after 
-    // prerequisites : harus di reload dulu server nya biar ngambil data ii nanti di ganti sama query backend
-	logoUrl: 'upload/logo.svg' // Frontend will use default logo if empty
+    // prerequisites : harus di reload dulu server nya biar ngambil data, ini nanti di ganti sama query backend
+	logoUrl: 'upload/' // Frontend will use default logo if empty
 };
 
 // API endpoint for school data
