@@ -154,30 +154,27 @@
 		<span class="text-md font-bold tracking-wide capitalize md:text-4xl"> siswa </span>
 
 		<!-- function search dll -->
-		<div class="flex h-fit w-full flex-col gap-2 md:flex md:flex-row md:gap-3">
+		<div class="">
 			<!-- search input -->
-			<div
-				class="flex w-full items-center gap-2 rounded-sm border-[0.1px] border-slate-500 bg-slate-100 p-1 pr-4 pl-4 md:w-fit"
-			>
-				<span>
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						fill="none"
-						viewBox="0 0 24 24"
-						height="24"
-						width="24"
+
+			<!-- di ambil dari 
+			https://www.material-tailwind.com/docs/html/input 
+			-->
+			<div class="w-full max-w-sm min-w-[200px]">
+				<div class="relative">
+					<input
+						id="search"
+						class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-2 text-sm text-slate-700 shadow-sm transition duration-300 placeholder:text-slate-400 hover:border-slate-300 focus:border-slate-400 focus:shadow focus:outline-none"
+					/>
+					<label
+						for="search"
+						class="absolute top-2.5 left-2.5 origin-left transform cursor-text capitalize bg-slate-200 px-1 text-sm text-slate-400 transition-all peer-focus:-top-2 peer-focus:left-2.5 peer-focus:scale-90 peer-focus:text-xs peer-focus:text-slate-400"
 					>
-						<g id="Search-Fill">
-							<path
-								id="Union"
-								fill="#000000"
-								d="M11 2c4.9706 0 9 4.02944 9 9 0 2.125 -0.7381 4.0766 -1.9697 5.6162l4.1767 4.1768 -1.414 1.414 -4.1768 -4.1767C15.0766 19.2619 13.125 20 11 20c-4.97056 0 -9 -4.0294 -9 -9 0 -4.97056 4.02944 -9 9 -9m0 2c-3.86599 0 -7 3.13401 -7 7 0 3.866 3.13401 7 7 7 3.866 0 7 -3.134 7 -7 0 -3.86599 -3.134 -7 -7 -7"
-								stroke-width="1"
-							>
-							</path>
-						</g>
-					</svg>
-				</span> <input class="w-full p-2 outline-none md:w-lg" type="text" />
+
+					<!-- original text : Type Here... -->
+						cari siswa...
+					</label>
+				</div>
 			</div>
 			<!-- sort -->
 			<!-- classifier funct -->
