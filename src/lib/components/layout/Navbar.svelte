@@ -53,8 +53,8 @@ it will fall back to using the logo you imported. This makes your component more
 
 			// sukses ambil data dari appjs endpoint server
 			schoolData = {
-				name: fetchedData.name || 'Unknown School',
-				npsn: fetchedData.npsn || '000000000',
+				name: fetchedData.name,
+				npsn: fetchedData.npsn,
 				logoUrl: fetchedData.logoUrl ? `http://localhost:3000/${fetchedData.logoUrl}` : logo
 			};
 
@@ -96,7 +96,7 @@ it will fall back to using the logo you imported. This makes your component more
 				<!-- nama sekolah dan logo -->
 				<a href="/" class="ml-2 flex items-center gap-4 md:mr-24">
 					<!-- profile school data -->
-					<div class=" flex h-12 w-12 shrink-0 items-center justify-center rounded-sm bg-lime-600">
+					<div class=" flex h-12 w-12 shrink-0 items-center justify-center rounded-sm">
 						<!-- logic and layout to put the data fetch up -->
 						{#if schoolData.logoUrl}
 							<img src={schoolData.logoUrl} alt="School Logo" class="h-full w-full object-cover" />
