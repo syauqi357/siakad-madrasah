@@ -207,8 +207,8 @@
 
 <!-- student data main -->
 {#if student}
-	<div class="min-h-screen bg-slate-50 p-4 md:p-8">
-		<div class="mx-auto max-w-4xl">
+	<div class="min-h-screen p-4 md:p-8 w-full">
+		<div class="mx-auto max-w-4xl ">
 			<!-- Back button -->
 			<a
 				href="/siswa"
