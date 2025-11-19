@@ -148,9 +148,9 @@
 	}
 </script>
 
-<div class="flex w-full flex-col items-center justify-center md:p-3">
+<div class="flex w-full md:w-7xl flex-col items-center justify-center md:p-3">
 	<!-- header -->
-	<div class="mb-6 flex w-full flex-col gap-5 rounded-lg bg-slate-200 p-3 md:w-7xl">
+	<div class="mb-6 flex w-full flex-col gap-5 rounded-lg bg-slate-200 p-3 md:w-full">
 		<span class="text-md font-bold tracking-wide capitalize md:text-4xl"> siswa </span>
 
 		<!-- function search dll -->
@@ -160,7 +160,7 @@
 			<!-- di ambil dari 
 			https://www.material-tailwind.com/docs/html/input 
 			-->
-			<div class="w-full max-w-sm min-w-[200px]">
+			<div class="w-full max-w-sm min-w-[100px]">
 				<div class="relative">
 					<input
 						id="search"
@@ -230,7 +230,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="h-auto w-full rounded-md bg-slate-100 p-3 md:w-7xl md:p-6">
+	<div class="h-auto w-full rounded-md bg-slate-100 p-3 md:w-full md:p-6">
 		<!-- line student -->
 		{#each students as student}
 			<div
