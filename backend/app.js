@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import schoolData from './routes/api/schooldataNav.js';
 import path from 'path'; // Import path module
 
 const app = express();
@@ -18,20 +19,19 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 app.use(express.static(path.join(__dirname, 'public')));
 
-// School data
-const schoolData = {
-	name: 'MTs. Persis 2 Bangil',
-	npsn: '2316989832',
-    // 231698134 <- number before
-    // 2316989832 <- number after 
-    // prerequisites : harus di reload dulu server nya biar ngambil data, ini nanti di ganti sama query backend
-	logoUrl: 'upload/' // Frontend will use default logo if empty
-};
+// 1. Uncomment the schoolData object
+//const schoolData = {
+//	name: 'MTs. Persis 2 Bangil',
+//	npsn: '2316989832',
+	// prerequisites : harus di reload dulu server nya biar ngambil data, ini nanti di ganti sama query backend
+//	logoUrl: 'upload/' // Frontend will use default logo if empty
+//};
 
-// API endpoint for school data
-app.get('/schoolData', (req, res) => {
+// 2. Use a more standard API route
+app.get('/api/schoolData', (req, res) => {
 	res.json(schoolData);
 });
+
 
 // Root endpoint
 app.get('/', (req, res) => {
