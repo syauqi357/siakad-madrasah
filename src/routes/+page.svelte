@@ -5,18 +5,22 @@
 
 	// Initialize schoolData with a default structure.
 	// This tells TypeScript that schoolData will have a 'name' property.
-	let schoolData: { name?: string } = { name: 'our' };
+	let schoolData: {
+		name?: string;
+	} = {
+		name: 'our'
+	};
 
 	let loading = true;
 
-	onMount(async() => {
-		try{
-// copy data from navbar
-// endpoint app.js
+	onMount(async () => {
+		try {
+			// copy data from navbar
+			// endpoint app.js
 			// docs : pending
-			
-			const response = await fetch('http://localhost:3000/api/schoolData'); 
-			//get API from backend using express from localhost:3000/api/schoolData and this is taking a variable const on the file 
+
+			const response = await fetch('http://localhost:3000/api/schoolData');
+			//get API from backend using express from localhost:3000/api/schoolData and this is taking a variable const on the file
 
 			if (!response.ok) {
 				throw new Error(`HTTP error! status: ${response.status}`);
@@ -27,14 +31,12 @@
 
 			// sukses ambil data dari appjs endpoint server
 			schoolData = {
-				name: fetchedData.name,
+				name: fetchedData.name
 				//npsn: fetchedData.npsn,
 				//logoUrl: fetchedData.logoUrl ? `http://localhost:3000/api/${fetchedData.logoUrl}` : logo
 			};
 
 			loading = false;
-
-
 		} catch (err) {
 			console.log('error : unable to fetch data', err);
 		}
