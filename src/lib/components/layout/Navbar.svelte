@@ -1,14 +1,14 @@
 <script lang="ts">
 	/*
 	
-	Summary of Changes:
-1. Import the Logo: I added import logo from '$lib/assets/favicon.svg'; at the top of the script. 
-   This makes the SVG available as a variable named logo which holds the correct public path to the image.
-2. Update Initial Data: I changed logoUrl: '$lib/assets/favicon.svg' to logoUrl: logo.
-   This ensures that even before your API call finishes, the component will display the imported logo.
-3. Handle Fetched Data: In the onMount function, I've updated the logic slightly. 
-When you get data from your API, it will use the logoUrl from the API if it exists. If the API doesn't return a logoUrl, 
-it will fall back to using the logo you imported. This makes your component more robust.
+Summary of Changes:
+	1. Import the Logo: I added import logo from '$lib/assets/favicon.svg'; at the top of the script. 
+        This makes the SVG available as a variable named logo which holds the correct public path to the image.
+	2. Update Initial Data: I changed logoUrl: '$lib/assets/favicon.svg' to logoUrl: logo.
+   	   This ensures that even before your API call finishes, the component will display the imported logo.
+	3. Handle Fetched Data: In the onMount function, I've updated the logic slightly. 
+	   When you get data from your API, it will use the logoUrl from the API if it exists. If the API doesn't return a logoUrl, 
+        it will fall back to using the logo you imported. This makes your component more robust.
 
 // generate by gemini
 	
@@ -42,7 +42,9 @@ it will fall back to using the logo you imported. This makes your component more
 		try {
 			// endpoint app.js
 			// docs : pending
-			const response = await fetch('http://localhost:3000/schoolData');
+			
+			const response = await fetch('http://localhost:3000/api/schoolData'); 
+			//get API from backend using express from localhost:3000/api/schoolData and this is taking a variable const on the file 
 
 			if (!response.ok) {
 				throw new Error(`HTTP error! status: ${response.status}`);
@@ -55,7 +57,7 @@ it will fall back to using the logo you imported. This makes your component more
 			schoolData = {
 				name: fetchedData.name,
 				npsn: fetchedData.npsn,
-				logoUrl: fetchedData.logoUrl ? `http://localhost:3000/${fetchedData.logoUrl}` : logo
+				logoUrl: fetchedData.logoUrl ? `http://localhost:3000/api/${fetchedData.logoUrl}` : logo
 			};
 
 			loading = false;
