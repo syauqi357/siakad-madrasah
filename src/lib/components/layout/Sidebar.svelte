@@ -12,23 +12,23 @@
 </script>
 
 <aside
-	class="fixed top-0 left-0 z-40 h-screen w-64 border-r border-neutral-500 bg-neutral-200 pt-22 transition-transform {sidebarOpen
+	class="fixed top-0 left-0 z-40 h-screen w-64 border-r border-slate-600 bg-slate-100 pt-22 transition-transform {sidebarOpen
 		? 'translate-x-0'
 		: '-translate-x-full'} sm:translate-x-0"
 >
-	<div class="h-full overflow-y-auto bg-neutral-200 px-3 pb-5">
+	<div class="h-full overflow-y-auto bg-slate-100 px-3 pb-5">
 		<ul class="space-y-2 font-medium">
 			{#each navItems as item}
 				<li>
 					<a
 						href={item.href}
-						class="group flex items-center justify-between rounded-lg p-2 text-neutral-900 transition-colors hover:bg-neutral-300"
+						class="group flex items-center justify-between rounded-lg p-2 text-slate-800 transition-colors hover:bg-slate-300"
 					>
 						<div class="flex items-center">
 							<span class="h-6 w-6">
 								{@html item.icon}
 							</span>
-							<span class="ml-3">{item.name}</span>
+							<span class="ml-3 text-slate-800">{item.name}</span>
 						</div>
 						<span>
 							<svg
