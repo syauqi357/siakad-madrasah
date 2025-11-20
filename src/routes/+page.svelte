@@ -4,12 +4,19 @@
 	import logo from '$lib/assets/favicon.svg';
 
 	// Initialize schoolData with a default structure.
+
+	// initialize thing
+	type SchoolData = {
+		name: string;
+	};
+
 	// This tells TypeScript that schoolData will have a 'name' property.
 	let schoolData: {
 		name?: string;
 	} = {
 		name: 'our'
 	};
+
 
 	let loading = true;
 
