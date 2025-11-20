@@ -180,7 +180,7 @@
 			<!-- classifier funct -->
 			<div class="flex gap-3 bg-slate-200 p-2 md:flex">
 				<button
-					aria-label=""
+					aria-label="Sort by descending order"
 					title=""
 					class="flex w-fit items-center gap-2 rounded-sm bg-slate-700 p-4 text-slate-100 md:p-2 md:pr-4 md:pl-4"
 				>
@@ -204,7 +204,7 @@
 					</span>
 				</button>
 				<button
-					aria-label=""
+					aria-label="Sort by ascending order"
 					title=""
 					class="flex w-fit items-center gap-2 rounded-sm bg-slate-700 p-4 text-slate-100 md:p-2 md:pr-4 md:pl-4"
 				>
