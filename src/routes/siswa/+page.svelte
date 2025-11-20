@@ -148,7 +148,7 @@
 	}
 </script>
 
-<div class="flex w-full md:w-5xl flex-col items-center justify-center md:p-3">
+<div class="flex w-full flex-col items-center justify-center md:p-3">
 	<!-- header -->
 	<div class="mb-6 flex w-full flex-col gap-5 rounded-lg bg-slate-200 p-3 md:w-full">
 		<span class="text-md font-bold tracking-wide capitalize md:text-4xl"> siswa </span>
