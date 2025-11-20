@@ -73,7 +73,7 @@ it will fall back to using the logo you imported. This makes your component more
 	});
 </script>
 
-<nav class="fixed top-0 z-50 w-full border-b border-neutral-400 bg-white">
+<nav class="fixed top-0 z-50 w-full border-b border-neutral-400 bg-slate-100">
 	<div class="px-3 py-3 lg:px-5 lg:pl-3">
 		<div class="flex items-center justify-between">
 			<div class="flex items-center justify-start">
