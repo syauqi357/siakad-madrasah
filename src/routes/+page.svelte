@@ -40,8 +40,6 @@
 		}
 	});
 
-
-
 	$activeMenu = 'dashboard';
 
 	// Example data structure. In a real app, you would fetch this from your Express.js backend.
