@@ -6,7 +6,7 @@ import path from 'path'; // Import path module
 const app = express();
 const port = 3000;
 
-// Enable CORS for all routes
+// Enable CORS for all routes use middleware system
 app.use(cors());
 
 // Parse JSON bodies
@@ -17,6 +17,8 @@ app.use(express.json());
 import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+// middleware statis
 app.use(express.static(path.join(__dirname, 'public')));
 
 // 1. Uncomment the schoolData object
@@ -27,7 +29,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 //	logoUrl: 'upload/' // Frontend will use default logo if empty
 //};
 
-// 2. Use a more standard API route
+// 2. Use a more standard API route 
+// - changing route using data from API for school data navbar set
 app.get('/api/schoolData', (req, res) => {
 	res.json(schoolData);
 });
