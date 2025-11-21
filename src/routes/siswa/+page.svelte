@@ -148,7 +148,7 @@
 	}
 </script>
 
-<div class="flex w-full md:w-7xl flex-col items-center justify-center md:p-3">
+<div class="flex w-full flex-col items-center justify-center md:w-7xl md:p-3">
 	<!-- header -->
 	<div class="mb-6 flex w-full flex-col gap-5 rounded-lg bg-slate-200 p-3 md:w-full">
 		<span class="text-md font-bold tracking-wide capitalize md:text-4xl"> siswa </span>
@@ -168,65 +168,30 @@
 					/>
 					<label
 						for="search"
-						class="absolute top-2.5 left-2.5 origin-left transform cursor-text capitalize bg-slate-200 px-1 text-sm text-slate-400 transition-all peer-focus:-top-2 peer-focus:left-2.5 peer-focus:scale-90 peer-focus:text-xs peer-focus:text-slate-400"
+						class="absolute top-2.5 left-2.5 origin-left transform cursor-text bg-slate-200 px-1 text-sm text-slate-400 capitalize transition-all peer-focus:-top-2 peer-focus:left-2.5 peer-focus:scale-90 peer-focus:text-xs peer-focus:text-slate-400"
 					>
-
-					<!-- original text : Type Here... -->
+						<!-- original text : Type Here... -->
 						cari siswa...
 					</label>
 				</div>
 			</div>
 			<!-- sort -->
 			<!-- classifier funct -->
-			<div class="flex gap-3 bg-slate-200 p-2 md:flex">
-				<button
-					aria-label=""
-					title=""
-					class="flex w-fit items-center gap-2 rounded-sm bg-slate-700 p-4 text-slate-100 md:p-2 md:pr-4 md:pl-4"
+			<div class="mt-4 flex gap-3 p-2">
+				<label
+					for="ascending"
+					class="cursor-pointer rounded-md border border-slate-300 bg-white p-2 px-4 text-sm text-slate-700 transition-colors has-checked:bg-blue-500  has-checked:text-white "
 				>
-					<span class="hidden md:flex"> descending </span>
-					<span>
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							viewBox="0 0 16 16"
-							fill="currentColor"
-							id="Arrow-Circle-Up-Fill--Streamline-Phosphor-Fill"
-							height="16"
-							width="16"
-						>
-							<desc> Arrow Circle Up Fill Streamline Icon: https://streamlinehq.com </desc>
-							<path
-								d="M8 0.16c-6.0352375 0 -9.80725625 6.53333125 -6.7896375 11.76 3.0176125 5.22666875 10.56165625 5.22666875 13.579275 0C15.47774375 10.72816875 15.84 9.37620625 15.84 8 15.83543125 3.67198125 12.32801875 0.164575 8 0.16Zm2.83898125 7.6636c-0.23556875 0.23583125 -0.61778125 0.23583125 -0.85335 0l-1.38255625 -1.38330625v4.57509375c0 0.46424375 -0.5025625 0.7544 -0.9046125 0.522275 -0.18659375 -0.107725 -0.3015375 -0.30681875 -0.3015375 -0.522275v-4.57509375l-1.38255625 1.38330625c-0.32845625 0.32845625 -0.88930625 0.178175 -1.009525 -0.2705 -0.0558 -0.2082375 0.0037375 -0.43041875 0.15616875 -0.58285625l2.4123125 -2.41230625c0.23556875 -0.23583125 0.61778125 -0.23583125 0.85335 0l2.41230625 2.41230625c0.2358375 0.235575 0.2358375 0.6177875 0 0.85335625Z"
-								stroke-width="0.0625"
-							>
-							</path>
-						</svg>
-					</span>
-				</button>
-				<button
-					aria-label=""
-					title=""
-					class="flex w-fit items-center gap-2 rounded-sm bg-slate-700 p-4 text-slate-100 md:p-2 md:pr-4 md:pl-4"
+					<input type="radio" name="ascend-descend" id="ascending" class="hidden" />
+					Ascending
+				</label>
+				<label
+					for="descending"
+					class="cursor-pointer rounded-md border border-slate-300 bg-white p-2 px-4 text-sm text-slate-700 transition-colors has-checked:bg-blue-500 has-checked:text-white "
 				>
-					<span class="hidden md:flex"> ascending </span>
-					<span>
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							viewBox="0 0 16 16"
-							fill="currentColor"
-							id="Arrow-Circle-Down-Fill--Streamline-Phosphor-Fill"
-							height="16"
-							width="16"
-						>
-							<desc> Arrow Circle Down Fill Streamline Icon: https://streamlinehq.com </desc>
-							<path
-								d="M8 0.16c-6.0352375 0 -9.80725625 6.53333125 -6.7896375 11.76 3.0176125 5.22666875 10.56165625 5.22666875 13.579275 0C15.47774375 10.72816875 15.84 9.37620625 15.84 8 15.83543125 3.67198125 12.32801875 0.164575 8 0.16Zm2.83898125 8.86975625 -2.41230625 2.41230625c-0.23556875 0.23583125 -0.61778125 0.23583125 -0.85335 0l-2.4123125 -2.41230625c-0.32845 -0.32845625 -0.178175 -0.88930625 0.27050625 -1.00953125 0.20823125 -0.05579375 0.4304125 0.0037375 0.58285 0.156175l1.38255625 1.38330625V4.9846125c0 -0.46424375 0.5025625 -0.7544 0.9046125 -0.522275 0.18659375 0.107725 0.3015375 0.30681875 0.3015375 0.522275v4.57509375l1.38255625 -1.38330625c0.32845625 -0.32845625 0.88930625 -0.178175 1.009525 0.2705 0.0558 0.2082375 -0.0037375 0.43041875 -0.156175 0.58285625Z"
-								stroke-width="0.0625"
-							>
-							</path>
-						</svg>
-					</span>
-				</button>
+					<input type="radio" name="ascend-descend" id="descending" class="hidden" />
+					Descending
+				</label>
 			</div>
 		</div>
 	</div>
