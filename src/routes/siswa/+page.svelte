@@ -178,19 +178,102 @@
 			<!-- sort -->
 			<!-- classifier funct -->
 			<div class="mt-4 flex gap-3 p-2">
+				<!-- for di ascending berdiri bersamaan dengan id dan ID mengambil dari for -->
 				<label
 					for="ascending"
-					class="cursor-pointer rounded-md border border-slate-300 bg-white p-2 px-4 text-sm text-slate-700 transition-colors has-checked:bg-blue-500  has-checked:text-white "
+					class="flex cursor-pointer items-center gap-2 rounded-md border border-slate-300 bg-white p-2 px-4 text-xs text-slate-700 transition-colors has-checked:bg-blue-500 has-checked:text-white"
 				>
+				<!-- input radio button with hidden -->
 					<input type="radio" name="ascend-descend" id="ascending" class="hidden" />
-					Ascending
+					<!-- text -->
+					<span class="hidden capitalize sm:flex md:flex lg:flex xl:flex"> ascending </span>
+					<span>
+						<!-- icon up ascending sort -->
+						<svg
+							viewBox="-0.565 -0.565 18 18"
+							fill="none"
+							xmlns="http://www.w3.org/2000/svg"
+							id="Sort-From-Bottom-To-Top--Streamline-Solar-Ar"
+							height="18"
+							width="18"
+						>
+							<desc> Sort From Bottom To Top Streamline Icon: https://streamlinehq.com </desc>
+							<path
+								d="M2.8116666666666665 5.623333333333333h6.32625"
+								stroke="currentColor"
+								stroke-linecap="round"
+								stroke-width="1.13"
+							></path>
+							<path
+								d="M4.217499999999999 9.137916666666666h4.920416666666666"
+								stroke="currentColor"
+								stroke-linecap="round"
+								stroke-width="1.13"
+							></path>
+							<path
+								d="M5.623333333333333 12.6525h3.5145833333333334"
+								stroke="currentColor"
+								stroke-linecap="round"
+								stroke-width="1.13"
+							></path>
+							<path
+								d="M11.949583333333333 14.058333333333334V2.8116666666666665l2.1087499999999997 2.8116666666666665"
+								stroke="currentColor"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="1.13"
+							></path>
+						</svg>
+					</span>
 				</label>
+
+				<!-- for di descending berdiri bersamaan dengan id dan ID mengambil dari for -->
 				<label
 					for="descending"
-					class="cursor-pointer rounded-md border border-slate-300 bg-white p-2 px-4 text-sm text-slate-700 transition-colors has-checked:bg-blue-500 has-checked:text-white "
+					class="flex cursor-pointer items-center gap-2 rounded-md border border-slate-300 bg-white p-2 px-4 text-xs text-slate-700 transition-colors has-checked:bg-blue-500 has-checked:text-white"
 				>
+				<!-- input radio button with hidden -->
 					<input type="radio" name="ascend-descend" id="descending" class="hidden" />
-					Descending
+					<!-- text -->
+					<span class="hidden capitalize sm:flex md:flex lg:flex xl:flex"> descending </span>
+					<span>
+						<!-- icon down descending sort -->
+						<svg
+							viewBox="-0.565 -0.565 18 18"
+							fill="none"
+							xmlns="http://www.w3.org/2000/svg"
+							id="Sort-From-Top-To-Bottom--Streamline-Solar-Ar"
+							height="18"
+							width="18"
+						>
+							<desc> Sort From Top To Bottom Streamline Icon: https://streamlinehq.com </desc>
+							<path
+								d="m2.8116666666666665 11.246666666666666 6.32625 0"
+								stroke="currentColor"
+								stroke-linecap="round"
+								stroke-width="1.13"
+							></path>
+							<path
+								d="M4.217499999999999 7.732083333333333h4.920416666666666"
+								stroke="currentColor"
+								stroke-linecap="round"
+								stroke-width="1.13"
+							></path>
+							<path
+								d="m5.623333333333333 4.217499999999999 3.5145833333333334 0"
+								stroke="currentColor"
+								stroke-linecap="round"
+								stroke-width="1.13"
+							></path>
+							<path
+								d="m11.949583333333333 2.8116666666666665 0 11.246666666666666 2.1087499999999997 -2.8116666666666665"
+								stroke="currentColor"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="1.13"
+							></path>
+						</svg>
+					</span>
 				</label>
 			</div>
 		</div>
