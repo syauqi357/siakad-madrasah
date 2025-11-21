@@ -1,0 +1,305 @@
+<script lang="ts">
+	// import { get } from 'http';
+	import { onMount } from 'svelte';
+
+	type Student = {
+		id: number;
+		nama: string;
+		kelas: string;
+		jenisKelamin: string;
+		asal: string;
+		status: 'aktif' | 'warning' | 'nonaktif';
+	};
+
+	const studentData: Student[] = [
+		{
+			id: 25020001,
+			nama: 'Ahmad Rizki',
+			kelas: 'XII RPL 1',
+			jenisKelamin: 'L',
+			asal: 'Jakarta',
+			status: 'aktif'
+		},
+		{
+			id: 25020002,
+			nama: 'Siti Nurhaliza',
+			kelas: 'XII RPL 1',
+			jenisKelamin: 'P',
+			asal: 'Bandung',
+			status: 'aktif'
+		},
+		{
+			id: 25020003,
+			nama: 'Kevin Pratama',
+			kelas: 'XII RPL 1',
+			jenisKelamin: 'L',
+			asal: 'Surabaya',
+			status: 'aktif'
+		},
+		{
+			id: 25020004,
+			nama: 'Maya Sari',
+			kelas: 'XII RPL 2',
+			jenisKelamin: 'P',
+			asal: 'Yogyakarta',
+			status: 'aktif'
+		},
+		{
+			id: 25020005,
+			nama: 'Rizky Fadilah',
+			kelas: 'XII RPL 2',
+			jenisKelamin: 'L',
+			asal: 'Medan',
+			status: 'nonaktif'
+		},
+		{
+			id: 25020006,
+			nama: 'Dewi Anggraini',
+			kelas: 'XII RPL 2',
+			jenisKelamin: 'P',
+			asal: 'Semarang',
+			status: 'aktif'
+		},
+		{
+			id: 25020007,
+			nama: 'Fajar Hidayat',
+			kelas: 'XII RPL 3',
+			jenisKelamin: 'L',
+			asal: 'Makassar',
+			status: 'aktif'
+		},
+		{
+			id: 25020008,
+			nama: 'Nina Permata',
+			kelas: 'XII RPL 3',
+			jenisKelamin: 'P',
+			asal: 'Denpasar',
+			status: 'aktif'
+		},
+		{
+			id: 25020009,
+			nama: 'Budi Setiawan',
+			kelas: 'XII RPL 3',
+			jenisKelamin: 'L',
+			asal: 'Malang',
+			status: 'nonaktif'
+		},
+		{
+			id: 25020010,
+			nama: 'Cindy Putri',
+			kelas: 'XII RPL 4',
+			jenisKelamin: 'P',
+			asal: 'Bogor',
+			status: 'aktif'
+		},
+		{
+			id: 25020011,
+			nama: 'Rendi Saputra',
+			kelas: 'XII RPL 4',
+			jenisKelamin: 'L',
+			asal: 'Palembang',
+			status: 'aktif'
+		},
+		{
+			id: 25020012,
+			nama: 'Lina Marlina',
+			kelas: 'XII RPL 4',
+			jenisKelamin: 'P',
+			asal: 'Bekasi',
+			status: 'aktif'
+		}
+	];
+
+	// Shuffle array on load
+	let students = [...studentData].sort();
+
+	function getStatusStyle(status: Student['status']): string {
+		switch (status) {
+			case 'aktif':
+				return 'flex items-center gap-3 rounded-lg border border-green-400 bg-green-300 p-0.5 text-xs text-emerald-700 md:p-1 md:pr-2 md:pl-2 capitalize font-bold';
+			case 'warning':
+				return 'rounded-lg border border-amber-400 bg-amber-300 p-0.5 text-xs text-amber-700 md:p-1 md:pr-2 md:pl-2 capitalize';
+			case 'nonaktif':
+				return 'rounded-lg border border-red-400 bg-red-300 p-0.5 text-xs text-red-700 md:p-1 md:pr-2 md:pl-2 capitalize';
+			default:
+				return '';
+		}
+	}
+
+	function getStatusText(status: Student['status']): string {
+		switch (status) {
+			case 'aktif':
+				return 'aktif';
+			case 'warning':
+				return 'peringatan';
+			case 'nonaktif':
+				return 'nonaktif';
+			default:
+				return '';
+		}
+	}
+
+	// function gender color
+	function getGenderStyle(jenisKelamin: string): string {
+		return jenisKelamin === 'P'
+			? // using ternary operator
+				'flex h-5 w-5 items-center justify-center rounded-sm border border-pink-500 bg-pink-300 p-3 text-pink-700 text-sm'
+			: 'flex h-5 w-5 items-center justify-center rounded-sm border border-blue-500 bg-blue-300 p-3 text-blue-700 text-sm';
+	}
+</script>
+
+<div class="flex w-full md:w-7xl flex-col items-center justify-center md:p-3">
+	<!-- header -->
+	<div class="mb-6 flex w-full flex-col gap-5 rounded-lg bg-slate-200 p-3 md:w-full">
+		<span class="text-md font-bold tracking-wide capitalize md:text-4xl"> siswa </span>
+
+		<!-- function search dll -->
+		<div class="">
+			<!-- search input -->
+
+			<!-- di ambil dari 
+			https://www.material-tailwind.com/docs/html/input 
+			-->
+			<div class="w-full max-w-sm min-w-[100px]">
+				<div class="relative">
+					<input
+						id="search"
+						class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-2 text-sm text-slate-700 shadow-sm transition duration-300 placeholder:text-slate-400 hover:border-slate-300 focus:border-slate-400 focus:shadow focus:outline-none"
+					/>
+					<label
+						for="search"
+						class="absolute top-2.5 left-2.5 origin-left transform cursor-text capitalize bg-slate-200 px-1 text-sm text-slate-400 transition-all peer-focus:-top-2 peer-focus:left-2.5 peer-focus:scale-90 peer-focus:text-xs peer-focus:text-slate-400"
+					>
+
+					<!-- original text : Type Here... -->
+						cari siswa...
+					</label>
+				</div>
+			</div>
+			<!-- sort -->
+			<!-- classifier funct -->
+			<div class="flex gap-3 bg-slate-200 p-2 md:flex">
+				<button
+					aria-label=""
+					title=""
+					class="flex w-fit items-center gap-2 rounded-sm bg-slate-700 p-4 text-slate-100 md:p-2 md:pr-4 md:pl-4"
+				>
+					<span class="hidden md:flex"> descending </span>
+					<span>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							viewBox="0 0 16 16"
+							fill="currentColor"
+							id="Arrow-Circle-Up-Fill--Streamline-Phosphor-Fill"
+							height="16"
+							width="16"
+						>
+							<desc> Arrow Circle Up Fill Streamline Icon: https://streamlinehq.com </desc>
+							<path
+								d="M8 0.16c-6.0352375 0 -9.80725625 6.53333125 -6.7896375 11.76 3.0176125 5.22666875 10.56165625 5.22666875 13.579275 0C15.47774375 10.72816875 15.84 9.37620625 15.84 8 15.83543125 3.67198125 12.32801875 0.164575 8 0.16Zm2.83898125 7.6636c-0.23556875 0.23583125 -0.61778125 0.23583125 -0.85335 0l-1.38255625 -1.38330625v4.57509375c0 0.46424375 -0.5025625 0.7544 -0.9046125 0.522275 -0.18659375 -0.107725 -0.3015375 -0.30681875 -0.3015375 -0.522275v-4.57509375l-1.38255625 1.38330625c-0.32845625 0.32845625 -0.88930625 0.178175 -1.009525 -0.2705 -0.0558 -0.2082375 0.0037375 -0.43041875 0.15616875 -0.58285625l2.4123125 -2.41230625c0.23556875 -0.23583125 0.61778125 -0.23583125 0.85335 0l2.41230625 2.41230625c0.2358375 0.235575 0.2358375 0.6177875 0 0.85335625Z"
+								stroke-width="0.0625"
+							>
+							</path>
+						</svg>
+					</span>
+				</button>
+				<button
+					aria-label=""
+					title=""
+					class="flex w-fit items-center gap-2 rounded-sm bg-slate-700 p-4 text-slate-100 md:p-2 md:pr-4 md:pl-4"
+				>
+					<span class="hidden md:flex"> ascending </span>
+					<span>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							viewBox="0 0 16 16"
+							fill="currentColor"
+							id="Arrow-Circle-Down-Fill--Streamline-Phosphor-Fill"
+							height="16"
+							width="16"
+						>
+							<desc> Arrow Circle Down Fill Streamline Icon: https://streamlinehq.com </desc>
+							<path
+								d="M8 0.16c-6.0352375 0 -9.80725625 6.53333125 -6.7896375 11.76 3.0176125 5.22666875 10.56165625 5.22666875 13.579275 0C15.47774375 10.72816875 15.84 9.37620625 15.84 8 15.83543125 3.67198125 12.32801875 0.164575 8 0.16Zm2.83898125 8.86975625 -2.41230625 2.41230625c-0.23556875 0.23583125 -0.61778125 0.23583125 -0.85335 0l-2.4123125 -2.41230625c-0.32845 -0.32845625 -0.178175 -0.88930625 0.27050625 -1.00953125 0.20823125 -0.05579375 0.4304125 0.0037375 0.58285 0.156175l1.38255625 1.38330625V4.9846125c0 -0.46424375 0.5025625 -0.7544 0.9046125 -0.522275 0.18659375 0.107725 0.3015375 0.30681875 0.3015375 0.522275v4.57509375l1.38255625 -1.38330625c0.32845625 -0.32845625 0.88930625 -0.178175 1.009525 0.2705 0.0558 0.2082375 -0.0037375 0.43041875 -0.156175 0.58285625Z"
+								stroke-width="0.0625"
+							>
+							</path>
+						</svg>
+					</span>
+				</button>
+			</div>
+		</div>
+	</div>
+	<div class="h-auto w-full rounded-md bg-slate-100 p-3 md:w-full md:p-6">
+		<!-- line student -->
+		{#each students as student}
+			<div
+				class="mb-3 flex h-auto w-full items-center justify-between gap-6 rounded-lg bg-slate-200 p-3 transition-all duration-150 ease-in-out hover:bg-slate-300 md:w-full"
+			>
+				<div class="flex items-center gap-8 p-2 text-xs md:text-base">
+					<div class="border-r border-slate-400 p-0 pr-3 text-slate-700 md:p-0 md:pr-6">
+						{student.nama}
+					</div>
+					<div class="hidden md:flex">{student.kelas}</div>
+					<div class={getGenderStyle(student.jenisKelamin)}>
+						{student.jenisKelamin}
+					</div>
+					<div class="hidden md:flex">{student.asal}</div>
+				</div>
+
+				<span class={getStatusStyle(student.status)}>
+					{getStatusText(student.status)}
+					{#if student.status === 'aktif'}
+						<div class="h-2 w-2 rounded-full bg-green-500"></div>
+					{/if}
+				</span>
+
+				<!-- default style status -->
+				<!-- <span
+					class="flex items-center gap-3 rounded-lg border border-green-400 bg-green-300 p-0.5 text-xs text-emerald-700 md:p-1 md:pr-2 md:pl-2"
+				>
+					status siswa aktif
+
+					<div class="h-2 w-2 rounded-full bg-green-500">
+						<div class="h-2 w-2 animate-ping rounded-full bg-green-700"></div>
+					</div>
+				</span>
+				<span
+					class="rounded-lg border border-amber-400 bg-amber-300 p-0.5 text-xs text-amber-700 md:p-1 md:pr-2 md:pl-2"
+					>status siswa warning</span
+				>
+				<span
+					class="rounded-lg border border-red-400 bg-red-300 p-0.5 text-xs text-red-700 md:p-1 md:pr-2 md:pl-2"
+					>status siswa nonaktif</span
+				> -->
+				<a href="/siswa/{student.id}">
+					<button
+						aria-label="More details"
+						title="More details"
+						class=" flex flex-row-reverse items-center justify-center gap-3 rounded-md bg-blue-500 p-2 text-white hover:bg-blue-600 md:pr-5 md:pl-5"
+					>
+						<!-- icon more details -->
+						<span>
+							<svg
+								class="fill-white-100"
+								fill="none"
+								viewBox="0 0 24 24"
+								id="Call-Made-Fill--Streamline-Rounded-Fill-Material"
+								height="24"
+								width="24"
+							>
+								<path
+									fill="currentColor"
+									d="m17.4998 7.55 -11.925 11.925c-0.15 0.15 -0.325 0.225 -0.525 0.225 -0.199995 0 -0.374995 -0.075 -0.524995 -0.225 -0.15 -0.15 -0.225 -0.325 -0.225 -0.525s0.075 -0.375 0.225 -0.525L16.4498 6.5h-6.6c-0.2125 0 -0.3906 -0.07235 -0.53425 -0.217 -0.14385 -0.1445 -0.21575 -0.32365 -0.21575 -0.5375 0 -0.21365 0.0719 -0.39135 0.21575 -0.533 0.14365 -0.14165 0.32175 -0.2125 0.53425 -0.2125h8.4c0.2125 0 0.39065 0.07185 0.5345 0.2155 0.14365 0.14385 0.2155 0.322 0.2155 0.5345v8.4c0 0.2125 -0.07235 0.3906 -0.217 0.53425 -0.1445 0.14385 -0.32365 0.21575 -0.5375 0.21575 -0.21365 0 -0.39135 -0.0719 -0.533 -0.21575 -0.14165 -0.14365 -0.2125 -0.32175 -0.2125 -0.53425V7.55Z"
+									stroke-width="0.5"
+								></path>
+							</svg>
+						</span>
+						<!-- more -->
+						<span class="hidden text-xs md:flex md:text-sm"> selengkapnya </span>
+					</button>
+				</a>
+			</div>
+		{/each}
+	</div>
+</div>

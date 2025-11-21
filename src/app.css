@@ -1,5 +1,7 @@
 @import 'tailwindcss';
-@plugin '@tailwindcss/forms';
+
+/* shutdown the forms plugin */
+/* @plugin '@tailwindcss/forms'; */
 @plugin '@tailwindcss/typography';
 
 @font-face {

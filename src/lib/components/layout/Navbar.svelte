@@ -9,6 +9,8 @@
 3. Handle Fetched Data: In the onMount function, I've updated the logic slightly. 
 When you get data from your API, it will use the logoUrl from the API if it exists. If the API doesn't return a logoUrl, 
 it will fall back to using the logo you imported. This makes your component more robust.
+
+// generate by gemini
 	
 	*/
 	import { onMount } from 'svelte';
@@ -28,8 +30,8 @@ it will fall back to using the logo you imported. This makes your component more
 
 	// placeholder loading set json control
 	let schoolData: SchoolData = {
-		name: 'Loading...',
-		npsn: '...',
+		name: '<div class="w-55 h-7 rounded-lg bg-slate-300 animate-pulse"></div>',
+		npsn: '<div class="w-40 h-5 rounded-sm bg-slate-300 animate-pulse"></div>',
 		logoUrl: logo
 	};
 
@@ -41,28 +43,27 @@ it will fall back to using the logo you imported. This makes your component more
 			// endpoint app.js
 			// docs : pending
 			const response = await fetch('http://localhost:3000/schoolData');
-			
+
 			if (!response.ok) {
 				throw new Error(`HTTP error! status: ${response.status}`);
 			}
-			
+
 			// fetch data dari appjs endpoint server
 			const fetchedData = await response.json();
-			
 
 			// sukses ambil data dari appjs endpoint server
 			schoolData = {
-				name: fetchedData.name || 'Unknown School',
-				npsn: fetchedData.npsn || '000000000',
+				name: fetchedData.name,
+				npsn: fetchedData.npsn,
 				logoUrl: fetchedData.logoUrl ? `http://localhost:3000/${fetchedData.logoUrl}` : logo
 			};
-			
+
 			loading = false;
 		} catch (err) {
 			console.error('Failed to fetch school data:', err);
 			error = true;
 			loading = false;
-			
+
 			// Fallback data
 			// schoolData = {
 			// 	name: 'MTs. Persis 2 Bangil',
@@ -93,9 +94,9 @@ it will fall back to using the logo you imported. This makes your component more
 				</button>
 
 				<!-- nama sekolah dan logo -->
-				<a href="/" class="ml-12 flex items-center gap-4 md:mr-24">
+				<a href="/" class="ml-2 flex items-center gap-4 md:mr-24">
 					<!-- profile school data -->
-					<div class=" flex h-12 w-12 shrink-0 items-center justify-center rounded-sm bg-lime-600">
+					<div class=" flex h-12 w-12 shrink-0 items-center justify-center rounded-sm">
 						<!-- logic and layout to put the data fetch up -->
 						{#if schoolData.logoUrl}
 							<img src={schoolData.logoUrl} alt="School Logo" class="h-full w-full object-cover" />
@@ -105,15 +106,12 @@ it will fall back to using the logo you imported. This makes your component more
 						{/if}
 					</div>
 
-
-
-					
-
 					<!-- nama sekolah and npsn number -->
 					<div class="flex flex-col justify-center">
 						<!-- school name -->
-						<span class="mb-0.3 text-lg font-semibold text-black sm:text-2xl">
-							{schoolData.name}
+						<span class="mb-0.3 text-md font-semibold text-black sm:text-xl">
+							{@html schoolData.name}
+							<!-- <div class="w-55 h-7 rounded-lg bg-slate-300 animate-pulse"></div> -->
 						</span>
 						<span class="text-sm text-black">
 							<!-- npsn layout positioning -->
@@ -121,10 +119,9 @@ it will fall back to using the logo you imported. This makes your component more
 								npsn :
 								<!-- school npsn number -->
 								<div class="rounded-md bg-slate-300 p-0.5 pr-2 pl-2">
-									{schoolData.npsn}
+									{@html schoolData.npsn}
 								</div>
 							</div>
-
 						</span>
 					</div>
 				</a>
