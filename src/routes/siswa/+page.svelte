@@ -154,7 +154,7 @@
 		<span class="text-md font-bold tracking-wide capitalize md:text-4xl"> siswa </span>
 
 		<!-- function search dll -->
-		<div class="">
+		<div class="flex flex-row items-center">
 			<!-- search input -->
 
 			<!-- di ambil dari 
@@ -177,13 +177,13 @@
 			</div>
 			<!-- sort -->
 			<!-- classifier funct -->
-			<div class="mt-4 flex gap-3 p-2">
+			<div class="flex gap-3 p-2">
 				<!-- for di ascending berdiri bersamaan dengan id dan ID mengambil dari for -->
 				<label
 					for="ascending"
 					class="flex cursor-pointer items-center gap-2 rounded-md border border-slate-300 bg-white p-2 px-4 text-xs text-slate-700 transition-colors has-checked:bg-blue-500 has-checked:text-white"
 				>
-				<!-- input radio button with hidden -->
+					<!-- input radio button with hidden -->
 					<input type="radio" name="ascend-descend" id="ascending" class="hidden" />
 					<!-- text -->
 					<span class="hidden capitalize sm:flex md:flex lg:flex xl:flex"> ascending </span>
@@ -232,7 +232,7 @@
 					for="descending"
 					class="flex cursor-pointer items-center gap-2 rounded-md border border-slate-300 bg-white p-2 px-4 text-xs text-slate-700 transition-colors has-checked:bg-blue-500 has-checked:text-white"
 				>
-				<!-- input radio button with hidden -->
+					<!-- input radio button with hidden -->
 					<input type="radio" name="ascend-descend" id="descending" class="hidden" />
 					<!-- text -->
 					<span class="hidden capitalize sm:flex md:flex lg:flex xl:flex"> descending </span>
@@ -279,6 +279,38 @@
 		</div>
 	</div>
 	<div class="h-auto w-full rounded-md bg-slate-100 p-3 md:w-full md:p-6">
+		<!-- additional systemic -->
+		<div class="mt-2 mb-4 flex flex-row items-center">
+			<button
+				class="flex items-center gap-2 rounded-md bg-blue-500 hover:bg-blue-700 ease-in-out transition-all p-2 text-slate-50 md:p-4 md:pt-3 md:pb-3"
+				aria-label="tambah siswa"
+			>
+				<span class="hidden text-xs capitalize md:flex md:text-xs"> tambah siswa</span>
+				<span>
+					<svg
+						viewBox="0 0 24 24"
+						fill="none"
+						xmlns="http://www.w3.org/2000/svg"
+						id="Add-Square--Streamline-Solar-Ar"
+						height="24"
+						width="24"
+					>
+						<!-- <desc> Add Square Streamline Icon: https://streamlinehq.com </desc> -->
+						<path
+							d="M2 12c0 -4.71405 0 -7.07107 1.46447 -8.53553C4.92893 2 7.28595 2 12 2c4.714 0 7.0711 0 8.5355 1.46447C22 4.92893 22 7.28595 22 12c0 4.714 0 7.0711 -1.4645 8.5355C19.0711 22 16.714 22 12 22c-4.71405 0 -7.07107 0 -8.53553 -1.4645C2 19.0711 2 16.714 2 12Z"
+							stroke="currentColor"
+							stroke-width="1.5"
+						></path>
+						<path
+							d="m15 12 -3 0m0 0 -3 0m3 0 0 -3m0 3 0 3"
+							stroke="currentColor"
+							stroke-linecap="round"
+							stroke-width="1.5"
+						></path>
+					</svg>
+				</span>
+			</button>
+		</div>
 		<!-- line student -->
 		{#each students as student}
 			<div
