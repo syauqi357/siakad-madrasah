@@ -168,10 +168,9 @@
 					/>
 					<label
 						for="search"
-						class="absolute top-2.5 left-2.5 origin-left transform cursor-text capitalize bg-slate-200 px-1 text-sm text-slate-400 transition-all peer-focus:-top-2 peer-focus:left-2.5 peer-focus:scale-90 peer-focus:text-xs peer-focus:text-slate-400"
+						class="absolute top-2.5 left-2.5 origin-left transform cursor-text bg-slate-200 px-1 text-sm text-slate-400 capitalize transition-all peer-focus:-top-2 peer-focus:left-2.5 peer-focus:scale-90 peer-focus:text-xs peer-focus:text-slate-400"
 					>
-
-					<!-- original text : Type Here... -->
+						<!-- original text : Type Here... -->
 						cari siswa...
 					</label>
 				</div>
@@ -230,7 +229,9 @@
 			</div>
 		</div>
 	</div>
-	<div class="h-auto w-full rounded-md bg-slate-100 p-3 md:w-full md:p-6">
+	<div
+		class="flex h-auto w-full flex-col items-center justify-center rounded-md bg-slate-100 p-3 md:w-full md:p-6"
+	>
 		<!-- line student -->
 		{#each students as student}
 			<div
@@ -301,5 +302,69 @@
 				</a>
 			</div>
 		{/each}
+
+		<!-- pagination -->
+		<div class="flex h-12 w-full flex-row items-center justify-center gap-2 md:w-4xl">
+			<!-- previous -->
+			<button
+				aria-label="button pagination"
+				class="flex flex-row-reverse items-center justify-center gap-2 rounded-md bg-cyan-800 p-4 pt-2 pb-2 text-slate-100"
+			>
+				previous
+				<span>
+					<svg
+						viewBox="0 0 24 24"
+						fill="none"
+						xmlns="http://www.w3.org/2000/svg"
+						id="Arrow-Left--Streamline-Solar-Ar"
+						height="24"
+						width="24"
+					>
+						<desc> Arrow Left Streamline Icon: https://streamlinehq.com </desc>
+						<path
+							d="M20 12H4m0 0 6 -6m-6 6 6 6"
+							stroke="currentColor"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="1.5"
+						></path>
+					</svg>
+				</span>
+			</button>
+
+			<!-- number pagination -->
+			<button
+				aria-label="button pagination"
+				class="flex items-center justify-center rounded-md bg-cyan-800 p-4 pt-2 pb-2 text-slate-100"
+			>
+				1
+			</button>
+			<!-- next -->
+			<button
+				aria-label="button pagination"
+				class="flex items-center justify-center gap-2 rounded-md bg-cyan-800 p-4 pt-2 pb-2 text-slate-100"
+			>
+				Next
+				<span>
+					<svg
+						viewBox="0 0 24 24"
+						fill="none"
+						xmlns="http://www.w3.org/2000/svg"
+						id="Arrow-Right--Streamline-Solar-Ar"
+						height="24"
+						width="24"
+					>
+						<desc> Arrow Right Streamline Icon: https://streamlinehq.com </desc>
+						<path
+							d="M4 12h16m0 0 -6 -6m6 6 -6 6"
+							stroke="currentColor"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="1.5"
+						></path>
+					</svg></span
+				>
+			</button>
+		</div>
 	</div>
 </div>
