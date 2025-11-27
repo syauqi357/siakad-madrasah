@@ -171,14 +171,3 @@ Summary of Changes:
 	</div>
 </nav>
 
-<style>
-	/* .schoolpfp {
-		width: 32px;
-		height: 32px;
-		background-color: #6b7280;
-		border-radius: 0.4em;
-		flex-shrink: 0;
-	} */
-
-	/* spot */
-</style>
