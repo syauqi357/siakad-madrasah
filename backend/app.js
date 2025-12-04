@@ -10,7 +10,7 @@ const port = 3000;
 app.use(cors());
 
 // middleware as reset token
-app.use()
+// app.use()
 
 // Parse JSON bodies
 app.use(express.json());
