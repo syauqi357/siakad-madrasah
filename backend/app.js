@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import schoolData from './routes/api/schooldataNav.js';
+import schoolDataRouter from './routes/api/schooldataNav.js';
 import path from 'path'; // Import path module
 
 const app = express();
@@ -8,6 +8,9 @@ const port = 3000;
 
 // Enable CORS for all routes use middleware system
 app.use(cors());
+
+// middleware as reset token
+app.use()
 
 // Parse JSON bodies
 app.use(express.json());
@@ -31,9 +34,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // 2. Use a more standard API route 
 // - changing route using data from API for school data navbar set
-app.get('/api/schoolData', (req, res) => {
-	res.json(schoolData);
-});
+app.use('/routes/api', schoolDataRouter)
 
 
 // Root endpoint

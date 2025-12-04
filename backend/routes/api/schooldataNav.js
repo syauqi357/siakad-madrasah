@@ -1,6 +1,9 @@
+import express from 'express';
+const router = express.Router();
+
 // School data
 const schoolData = {
-	name: 'MTs. Al-Hasyimiy',
+	name: 'MTs. PERSIS 1 BANGIL',
 	npsn: '63747632892636',
     nsm: '73210987219',
     akreditasi: 'B',
@@ -13,4 +16,8 @@ const schoolData = {
 	logoUrl: 'upload/' // Frontend will use default logo if empty
 };
 
-export default schoolData;
+router.get('/schoolData', (req, res) => {
+	res.json(schoolData);
+});
+
+export default router;

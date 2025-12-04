@@ -26,7 +26,7 @@
 			// endpoint app.js
 			// docs : pending
 
-			const response = await fetch('http://localhost:3000/api/schoolData');
+			const response = await fetch('http://localhost:3000/routes/api/schoolData');
 			//get API from backend using express from localhost:3000/api/schoolData and this is taking a variable const on the file
 
 			if (!response.ok) {
