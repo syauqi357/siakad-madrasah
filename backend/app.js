@@ -24,6 +24,8 @@ const __dirname = path.dirname(__filename);
 // middleware statis
 app.use(express.static(path.join(__dirname, 'public')));
 
+// app.use('/upload', express.static(path.join(__dirname, 'upload')));
+
 // 1. Uncomment the schoolData object
 //const schoolData = {
 //	name: 'MTs. Persis 2 Bangil',

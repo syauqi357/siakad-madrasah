@@ -24,17 +24,17 @@
 				{
 					name: 'aset tetap',
 					icon: '',
-					href: 'sarpras/asettetap'
+					href: '/sarpras/assettetap'
 				},
 				{
 					name: 'aset lancar',
 					icon: '',
-					href: 'sarpras/asetlancar'
+					href: '/sarpras/asetlancar'
 				},
 				{
 					name: 'perpustakaan',
 					icon: '',
-					href: 'sarpras/perpustakaan'
+					href: '/sarpras/perpustakaan'
 				}
 			]
 		},
@@ -50,8 +50,8 @@
 					href: '/siswa'
 				},
 				{ name: 'Alumni', href: '/siswa/alumni' },
-				{ name: 'Mutasi Out', href: '/siswa/mutasi-out' },
-				{ name: 'Mutasi In', href: '/siswa/mutasi-in' },
+				{ name: 'Mutasi Out', href: '/siswa/mutasi-keluar' },
+				{ name: 'Mutasi In', href: '/siswa/mutasi-masuk' },
 				{ name: 'Kenaikan Kelas', href: '/siswa/kenaikan-kelas' },
 				{ name: 'Siswa Ganda', href: '/siswa/siswa-ganda' },
 				{ name: 'PIP/KIP-K/Beasiswa', href: '/siswa/beasiswa' }
@@ -70,19 +70,19 @@
 			children: [
 				{
 					name: 'daftar GTK',
-					href: ''
+					href: '/gurutendik/daftar-gtk'
 				},
 				{
 					name: 'pengajuan GTK',
-					href: ''
+					href: '/gurutendik/ajuan-gtk'
 				},
 				{
 					name: 'mutasi',
-					href: ''
+					href: '/gurutendik/mutasi'
 				},
 				{
 					name: 'akun',
-					href: ''
+					href: '/gurutendik/akun'
 				}
 			]
 		},
@@ -94,19 +94,19 @@
 			children: [
 				{
 					name: 'ujian',
-					href: ''
+					href: '/score/exam'
 				},
 				{
 					name: 'tugas',
-					href: ''
+					href: '/score/task'
 				},
 				{
 					name: 'mata pelajaran',
-					href: ''
+					href: '/score/subject'
 				},
 				{
 					name: 'kenaikan kelas',
-					href: ''
+					href: '/score/upgrade'
 				}
 			]
 		},
@@ -118,39 +118,35 @@
 			children: [
 				{
 					name: 'kelembagaan',
-					href: 'confirm/lembaga'
+					href: '/confirm/lembaga'
 				},
 				{
 					name: 'sarana prasarana',
-					href: ''
+					href: '/confirm/sarpras'
 				},
 				{
 					name: 'siswa',
-					href: ''
+					href: '/confirm/studentdata'
 				},
 				{
 					name: 'guru tendik',
-					href: ''
+					href: '/confirm/teacher'
 				}
-				// {
-				// 	name:'',
-				// 	href:''
-				// },
 			]
 		},
 
 		{
 			name: 'info lainnya',
-			href: '',
+			href: '/info',
 			hasDropdown: true,
 			children: [
 				{
 					name: 'daftar kurikulum',
-					href: ''
+					href: '/info/cirriculum'
 				},
 				{
 					name: 'hari sekolah',
-					href: ''
+					href: '/info/daysch'
 				}
 			]
 		},

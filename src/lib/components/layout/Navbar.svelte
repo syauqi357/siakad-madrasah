@@ -57,7 +57,7 @@ Summary of Changes:
 			schoolData = {
 				name: fetchedData.name,
 				npsn: fetchedData.npsn,
-				logoUrl: fetchedData.logoUrl ? `http://localhost:3000/api/${fetchedData.logoUrl}` : logo
+				logoUrl: fetchedData.logoUrl ? `http://localhost:3000/${fetchedData.logoUrl}` : logo
 			};
 
 			loading = false;
