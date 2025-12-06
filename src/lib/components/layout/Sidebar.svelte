@@ -52,7 +52,7 @@
 								>
 									{@html item.icon || ''}
 								</span>
-								<span class="ml-3">{item.name}</span>
+								<span class="capitalize ml-3">{item.name}</span>
 							</div>
 							<span
 								class="transform transition-transform duration-300 ease-in-out {openDropdowns[
@@ -85,7 +85,7 @@
 									<li class="transform transition-all duration-200 hover:translate-x-1">
 										<a
 											href={child.href}
-											class="block rounded-lg p-2 text-sm text-neutral-700 transition-all duration-200 hover:bg-neutral-200 hover:font-medium hover:text-neutral-900"
+											class="capitalize block rounded-lg p-2 text-sm text-neutral-700 transition-all duration-200 hover:bg-neutral-200 hover:font-medium hover:text-neutral-900"
 										>
 											{child.name}
 										</a>
@@ -100,7 +100,7 @@
 							class="group flex items-center justify-between rounded-lg p-2 text-neutral-900 transition-all duration-200 hover:translate-x-1 hover:bg-neutral-300"
 						>
 							<div class="flex items-center justify-center">
-								<span class="h-6 w-6 transition-transform duration-200 group-hover:scale-110">
+								<span class="capitalize h-6 w-6 transition-transform duration-200 group-hover:scale-110">
 									{@html item.icon || ''}
 								</span>
 								<span class="ml-3">{item.name}</span>
