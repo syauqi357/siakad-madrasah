@@ -10,7 +10,7 @@ Summary of Changes:
 	   When you get data from your API, it will use the logoUrl from the API if it exists. If the API doesn't return a logoUrl, 
         it will fall back to using the logo you imported. This makes your component more robust.
 
-// generate by gemini
+		// generate by gemini
 	
 	*/
 	import { onMount } from 'svelte';
