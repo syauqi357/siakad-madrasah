@@ -5,14 +5,14 @@
 
 	type Student = {
 		id: number;
-		nama: string;
-		kelas: string;
-		jenisKelamin: string;
-		asal: string;
-		ayah: string;
-		ibu: string;
-		alamat: string;
-		status: 'aktif' | 'warning' | 'nonaktif';
+		name: string;
+		class: string;
+		gender: string;
+		cityOfOrigin: string;
+		father: string;
+		mother: string;
+		address: string;
+		status: 'active' | 'warning' | 'inactive';
 	};
 
 	// TODO: Move this to a separate file like src/lib/data/students.ts
@@ -47,11 +47,11 @@
 
 	function getStatusStyle(status: Student['status']): string {
 		switch (status) {
-			case 'aktif':
+			case 'active':
 				return 'border-green-400 bg-green-300 text-emerald-700';
 			case 'warning':
 				return 'border-amber-400 bg-amber-300 text-amber-700';
-			case 'nonaktif':
+			case 'inactive':
 				return 'border-red-400 bg-red-300 text-red-700';
 			default:
 				return '';
@@ -240,7 +240,7 @@ i would happy you help me with it
 						<div class="h-22 w-18 bg-slate-500"></div>
 						<!-- student name and id -->
 						<div>
-							<h1 class="text-xl font-bold text-slate-800 md:text-3xl">{student.nama}</h1>
+							<h1 class="text-xl font-bold text-slate-800 md:text-3xl">{student.name}</h1>
 							<p class="mt-2 text-slate-600">ID: {student.id}</p>
 						</div>
 					</div>
@@ -267,7 +267,7 @@ i would happy you help me with it
 					<!-- kelas siswa (harus nya terpisah) -->
 					<div class="rounded-lg bg-slate-50 p-4">
 						<p class="text-sm text-slate-600">Kelas</p>
-						<p class="mt-1 text-xl font-semibold text-slate-800">{student.kelas}</p>
+						<p class="mt-1 text-xl font-semibold text-slate-800">{student.class}</p>
 					</div>
 
 					<!-- jenis kelamin siswa -->
@@ -275,7 +275,7 @@ i would happy you help me with it
 						<p class="text-sm text-slate-600">Jenis Kelamin</p>
 						<p class="mt-1 text-xl font-semibold text-slate-800">
 							<!-- logic loop dan cek jenis kelamin dengan ternary operator-->
-							{student.jenisKelamin === 'L' ? 'Laki-laki' : 'Perempuan'}
+							{student.gender === 'Laki-laki' ? 'Laki-laki' : 'Perempuan'}
 						</p>
 					</div>
 
@@ -283,7 +283,7 @@ i would happy you help me with it
 					<div class="rounded-lg bg-slate-50 p-4">
 						<p class="text-sm text-slate-600">Asal</p>
 						<p class="mt-1 text-xl font-semibold text-slate-800">
-							{student.asal}
+							{student.cityOfOrigin}
 							<!-- disini harus nya ada data tambahan atau gabungan dari data resmi dukcapil -->
 						</p>
 					</div>
@@ -315,7 +315,7 @@ i would happy you help me with it
 									></path>
 								</svg>
 							</span>
-							{student.ayah}
+							{student.father}
 						</p>
 					</div>
 
@@ -340,7 +340,7 @@ i would happy you help me with it
 									></path>
 								</svg>
 							</span>
-							{student.ibu}
+							{student.mother}
 						</p>
 					</div>
 				</div>
