@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import schoolDataRouter from './routes/api/schooldataNav.js';
 import studentDataRouter from './routes/api/student.js';
+
 import path from 'path'; // Import path module
 
 const app = express();

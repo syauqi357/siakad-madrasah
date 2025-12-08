@@ -20,3 +20,19 @@ export const getAllStudents = (req, res) => {
     res.status(500).json({ message: 'Error fetching student data', error });
   }
 };
+
+// controller to get student by id
+export const getStudentById = (req, res) => {
+	try {
+		const studentId = parseInt(req.params.id);
+		const student = studentData.find(s => s.id === studentId);
+
+		if (!student) {
+			return res.status(404).json({message: 'No student found with id '});
+		}
+
+		res.status(200).json(student);
+	}catch (error) {
+		res.status(500).json({ message: 'Error fetching student data', error });
+	}
+}

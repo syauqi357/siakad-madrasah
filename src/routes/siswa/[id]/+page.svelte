@@ -1,5 +1,6 @@
 <script lang="ts">
 	// This file goes in: src/routes/student/[id]/+page.svelte
+	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 
 	type Student = {
@@ -16,142 +17,6 @@
 
 	// TODO: Move this to a separate file like src/lib/data/students.ts
 	// so you can import it in both list and detail pages
-	// const studentData: Student[] = [
-	// 	{
-	// 		id: 25020001,
-	// 		nama: 'Ahmad Rizki',
-	// 		kelas: 'XII RPL 1',
-	// 		jenisKelamin: 'L',
-	// 		asal: 'Jakarta',
-	// 		status: 'aktif',
-	// 		ayah: 'Farid',
-	// 		ibu: 'Faridah',
-	// 		alamat: 'Jalan Merdeka No. 123'
-	// 	},
-	// 	{
-	// 		id: 25020002,
-	// 		nama: 'Siti Nurhaliza',
-	// 		kelas: 'XII RPL 1',
-	// 		jenisKelamin: 'P',
-	// 		asal: 'Bandung',
-	// 		status: 'aktif',
-	// 		ayah: 'Budi Santoso',
-	// 		ibu: 'Dewi Lestari',
-	// 		alamat: 'Jalan Asia Afrika No. 45'
-	// 	},
-	// 	{
-	// 		id: 25020003,
-	// 		nama: 'Kevin Pratama',
-	// 		kelas: 'XII RPL 1',
-	// 		jenisKelamin: 'L',
-	// 		asal: 'Surabaya',
-	// 		status: 'aktif',
-	// 		ayah: 'Joko Widodo',
-	// 		ibu: 'Sari Indah',
-	// 		alamat: 'Jalan Tunjungan No. 78'
-	// 	},
-	// 	{
-	// 		id: 25020004,
-	// 		nama: 'Maya Sari',
-	// 		kelas: 'XII RPL 2',
-	// 		jenisKelamin: 'P',
-	// 		asal: 'Yogyakarta',
-	// 		status: 'aktif',
-	// 		ayah: 'Rudi Hermawan',
-	// 		ibu: 'Linda Wati',
-	// 		alamat: 'Jalan Malioboro No. 56'
-	// 	},
-	// 	{
-	// 		id: 25020005,
-	// 		nama: 'Rizky Fadilah',
-	// 		kelas: 'XII RPL 2',
-	// 		jenisKelamin: 'L',
-	// 		asal: 'Medan',
-	// 		status: 'nonaktif',
-	// 		ayah: 'Ahmad Yani',
-	// 		ibu: 'Siti Aminah',
-	// 		alamat: 'Jalan Sudirman No. 89'
-	// 	},
-	// 	{
-	// 		id: 25020006,
-	// 		nama: 'Dewi Anggraini',
-	// 		kelas: 'XII RPL 2',
-	// 		jenisKelamin: 'P',
-	// 		asal: 'Semarang',
-	// 		status: 'aktif',
-	// 		ayah: 'Hendra Gunawan',
-	// 		ibu: 'Ratna Sari',
-	// 		alamat: 'Jalan Pemuda No. 34'
-	// 	},
-	// 	{
-	// 		id: 25020007,
-	// 		nama: 'Fajar Hidayat',
-	// 		kelas: 'XII RPL 3',
-	// 		jenisKelamin: 'L',
-	// 		asal: 'Makassar',
-	// 		status: 'aktif',
-	// 		ayah: 'Syamsul Arifin',
-	// 		ibu: 'Murni Wati',
-	// 		alamat: 'Jalan Pattimura No. 67'
-	// 	},
-	// 	{
-	// 		id: 25020008,
-	// 		nama: 'Nina Permata',
-	// 		kelas: 'XII RPL 3',
-	// 		jenisKelamin: 'P',
-	// 		asal: 'Denpasar',
-	// 		status: 'aktif',
-	// 		ayah: 'Wayan Sutarna',
-	// 		ibu: 'Ketut Sari',
-	// 		alamat: 'Jalan Raya Kuta No. 12'
-	// 	},
-	// 	{
-	// 		id: 25020009,
-	// 		nama: 'Budi Setiawan',
-	// 		kelas: 'XII RPL 3',
-	// 		jenisKelamin: 'L',
-	// 		asal: 'Malang',
-	// 		status: 'nonaktif',
-	// 		ayah: 'Slamet Riyadi',
-	// 		ibu: 'Susi Susanti',
-	// 		alamat: 'Jalan Ijen No. 23'
-	// 	},
-	// 	{
-	// 		id: 25020010,
-	// 		nama: 'Cindy Putri',
-	// 		kelas: 'XII RPL 4',
-	// 		jenisKelamin: 'P',
-	// 		asal: 'Bogor',
-	// 		status: 'aktif',
-	// 		ayah: 'Eko Prasetyo',
-	// 		ibu: 'Maria Ulfa',
-	// 		alamat: 'Jalan Pajajaran No. 90'
-	// 	},
-	// 	{
-	// 		id: 25020011,
-	// 		nama: 'Rendi Saputra',
-	// 		kelas: 'XII RPL 4',
-	// 		jenisKelamin: 'L',
-	// 		asal: 'Palembang',
-	// 		status: 'aktif',
-	// 		ayah: 'Ari Wibowo',
-	// 		ibu: 'Rina Marlina',
-	// 		alamat: 'Jalan Jenderal Sudirman No. 45'
-	// 	},
-	// 	{
-	// 		id: 25020012,
-	// 		nama: 'Lina Marlina',
-	// 		kelas: 'XII RPL 4',
-	// 		jenisKelamin: 'P',
-	// 		asal: 'Bekasi',
-	// 		status: 'aktif',
-	// 		ayah: 'Tono Sugianto',
-	// 		ibu: 'Sari Dewi',
-	// 		alamat: 'Jalan Kemang No. 78'
-	// 	}
-	// ];
-
-	import { onMount } from 'svelte';
 
 	let student: Student | null = null;
 	let loading = true;
@@ -175,7 +40,7 @@
 	});
 
 	// Get the id from URL params - $page.params.id comes from the [id] folder name
-	const studentId = Number($page.params.id);
+	// const studentId = Number($page.params.id);
 
 	// Find student by id
 	//const student = studentData.find((s) => s.id === studentId);
@@ -204,6 +69,131 @@
 	// });
 	*/
 	// Instead of static data, you'll fetch from your Express server like this:
+
+/*
+
+hey claude! i was make [id]/+page.svelte should be get the data with specified data on ```backend/data/student.json``` but ended with nothing to get the data first this is my [id]/+page.svelte script code
+```
+	let student: Student | null = null;
+	let loading = true;
+	let error = '';
+
+	onMount(async () => {
+		try {
+			// Make request to your Express API endpoint
+			const response = await fetch(`http://localhost:3000/routes/api/studentData/${$page.params.id}`);
+
+			if (!response.ok) {
+				throw new Error('Student not found');
+			}
+
+			student = await response.json();
+		} catch (err) {
+			error = err.message;
+		} finally {
+			loading = false;
+		}
+	});
+
+	// Get the id from URL params - $page.params.id comes from the [id] folder name
+	// const studentId = Number($page.params.id);
+
+	// Find student by id
+	//const student = studentData.find((s) => s.id === studentId);
+
+	function getStatusStyle(status: Student['status']): string {
+		switch (status) {
+			case 'aktif':
+				return 'border-green-400 bg-green-300 text-emerald-700';
+			case 'warning':
+				return 'border-amber-400 bg-amber-300 text-amber-700';
+			case 'nonaktif':
+				return 'border-red-400 bg-red-300 text-red-700';
+			default:
+				return '';
+		}
+	}
+
+	// WHEN YOU SWITCH TO EXPRESS BACKEND API:
+
+	// Then your Express backend would have a route like:
+	// app.get('/api/students/:id', (req, res) => {
+	//   const student = students.find(s => s.id === parseInt(req.params.id));
+	//   if (!student) return res.status(404).json({ error: 'Not found' });
+	//   res.json(student);
+	// });
+```
+
+but then its nothing to do with it, and this is the siswa/+page.svelte code :
+```
+import { onMount } from 'svelte';
+
+	type Student = {
+		id: number;
+		nama: string;
+		kelas: string;
+		jenisKelamin: string;
+		asal: string;
+		status: 'aktif' | 'warning' | 'nonaktif';
+	};
+
+	// This will be populated from the API
+	let students: Student[] = [];
+
+	onMount(async () => {
+		try {
+			const response = await fetch('http://localhost:3000/routes/api/studentData');
+			const dataFromApi = await response.json();
+
+			// Transform the data from the API to match the component's expected structure
+			students = dataFromApi.map((item: any) => ({
+				id: item.id,
+				nama: item.name,
+				kelas: item.class,
+				jenisKelamin: item.gender === 'Laki-laki' ? 'L' : 'P',
+				asal: item.cityOfOrigin,
+				// Ensure status matches the component's type, defaulting if needed
+				status: item.status === 'active' ? 'aktif' : 'nonaktif'
+			}));
+		} catch (error) {
+			console.error('Failed to fetch student data:', error);
+			// Optionally, handle the error in the UI
+		}
+	});
+
+
+	and the button is like this :
+	<a href="/siswa/{student.id}">
+					<button
+						aria-label="More details"
+						title="More details"
+						class=" flex flex-row-reverse items-center justify-center gap-3 rounded-md bg-blue-500 p-2 text-white hover:bg-blue-600 md:pr-5 md:pl-5"
+					>
+						<!-- icon more details -->
+						<span>
+							<svg
+								class="fill-white-100"
+								fill="none"
+								viewBox="0 0 24 24"
+								id="Call-Made-Fill--Streamline-Rounded-Fill-Material"
+								height="24"
+								width="24"
+							>
+								<path
+									fill="currentColor"
+									d="m17.4998 7.55 -11.925 11.925c-0.15 0.15 -0.325 0.225 -0.525 0.225 -0.199995 0 -0.374995 -0.075 -0.524995 -0.225 -0.15 -0.15 -0.225 -0.325 -0.225 -0.525s0.075 -0.375 0.225 -0.525L16.4498 6.5h-6.6c-0.2125 0 -0.3906 -0.07235 -0.53425 -0.217 -0.14385 -0.1445 -0.21575 -0.32365 -0.21575 -0.5375 0 -0.21365 0.0719 -0.39135 0.21575 -0.533 0.14365 -0.14165 0.32175 -0.2125 0.53425 -0.2125h8.4c0.2125 0 0.39065 0.07185 0.5345 0.2155 0.14365 0.14385 0.2155 0.322 0.2155 0.5345v8.4c0 0.2125 -0.07235 0.3906 -0.217 0.53425 -0.1445 0.14385 -0.32365 0.21575 -0.5375 0.21575 -0.21365 0 -0.39135 -0.0719 -0.533 -0.21575 -0.14165 -0.14365 -0.2125 -0.32175 -0.2125 -0.53425V7.55Z"
+									stroke-width="0.5"
+								></path>
+							</svg>
+						</span>
+						<!-- more -->
+						<span class="hidden text-xs md:flex md:text-sm"> selengkapnya </span>
+					</button>
+				</a>
+```
+i would happy you help me with it
+
+*/
 </script>
 
 <!-- student data main -->

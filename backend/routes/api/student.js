@@ -1,5 +1,5 @@
 import express from 'express';
-import { getAllStudents } from '../../controllers/studentDataController.js';
+import { getAllStudents, getStudentById } from '../../controllers/studentDatacontroller.js';
 
 const router = express.Router();
 
@@ -7,5 +7,7 @@ const router = express.Router();
 // @desc    Get all students
 // @access  Public
 router.get('/studentData', getAllStudents);
+router.get('/studentData/:id', getStudentById);
+
 
 export default router;
