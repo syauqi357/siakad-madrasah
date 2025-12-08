@@ -218,8 +218,9 @@ Sidebar.svelte = Imported component that displays navigation items
 
 {#if sidebarOpen}
 	<!-- fix some issues : nambah div close tag -->
+<!-- add blur backdrop small with bg black opacity	-->
 	<div
-		class="bg-opacity-50 fixed inset-0 z-30 bg-black sm:hidden"
+		class="fixed inset-0 z-30 bg-black/70 backdrop-blur-sm sm:hidden transition-all ease-in-out"
 		on:click={() => (sidebarOpen = false)}
 		on:keydown={(e) => e.key === 'Escape' && (sidebarOpen = false)}
 		role="button"

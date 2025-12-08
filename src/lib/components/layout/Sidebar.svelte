@@ -9,6 +9,7 @@
 		hasDropdown?: boolean;
 		children?: Array<{
 			name: string;
+			icon?: string;
 			href: string;
 		}>;
 	}
@@ -87,6 +88,9 @@
 											href={child.href}
 											class="capitalize block rounded-lg p-2 text-sm text-neutral-700 transition-all duration-200 hover:bg-neutral-200 hover:font-medium hover:text-neutral-900"
 										>
+											<span>
+												{child.icon || ''}
+											</span>
 											{child.name}
 										</a>
 									</li>
@@ -110,26 +114,6 @@
 				</li>
 			{/each}
 		</ul>
-
-		<!-- deactivate -->
-		<!-- <ul class="space-y-2 font-medium">
-			{#each navItems as item}
-				<li>
-					<a
-						href={item.href}
-						class="group flex items-center justify-between rounded-lg p-2 text-neutral-900 transition-colors hover:bg-neutral-300"
-					>
-						<div class="flex items-center">
-							<span class="h-6 w-6">
-								{@html item.icon}
-							</span>
-							<span class="ml-3">{item.name}</span>
-						</div>
-						<span> </span>
-					</a>
-				</li>
-			{/each}
-		</ul> -->
 
 		<!-- Additional Sidebar Section -->
 		<div class="mt-4 space-y-2 border-t border-neutral-500 pt-4">
