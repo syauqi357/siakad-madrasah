@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import schoolDataRouter from './routes/api/schooldataNav.js';
+import studentDataRouter from './routes/api/student.js';
 import path from 'path'; // Import path module
 
 const app = express();
@@ -18,6 +19,7 @@ app.use(express.json());
 // Serve static files from the 'public' directory
 // In ES modules, __dirname is not directly available. We construct it.
 import { fileURLToPath } from 'url';
+import { getAllStudents } from './controllers/studentDatacontroller.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -37,6 +39,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // 2. Use a more standard API route 
 // - changing route using data from API for school data navbar set
 app.use('/routes/api', schoolDataRouter)
+app.use('/routes/api', studentDataRouter)
 
 
 // Root endpoint

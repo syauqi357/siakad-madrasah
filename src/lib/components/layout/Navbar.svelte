@@ -132,7 +132,7 @@ Summary of Changes:
 			<!-- user profile -->
 			<div class="flex items-center">
 				<!-- aria label menurut svelte harus ada : line 41 -->
-				<!-- title haus ada menurut svelte : line 42 -->
+				<!-- title harus ada menurut svelte : line 42 -->
 				<!-- transition hover  duration-50 ease-in docs : https://tailwindcss.com/docs/transition-duration -->
 				<button
 					class="rounded-lg p-2 text-neutral-400 duration-50 ease-in hover:bg-neutral-500"

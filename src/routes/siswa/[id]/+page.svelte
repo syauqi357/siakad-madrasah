@@ -16,146 +16,169 @@
 
 	// TODO: Move this to a separate file like src/lib/data/students.ts
 	// so you can import it in both list and detail pages
-	const studentData: Student[] = [
-		{
-			id: 25020001,
-			nama: 'Ahmad Rizki',
-			kelas: 'XII RPL 1',
-			jenisKelamin: 'L',
-			asal: 'Jakarta',
-			status: 'aktif',
-			ayah: 'Farid',
-			ibu: 'Faridah',
-			alamat: 'Jalan Merdeka No. 123'
-		},
-		{
-			id: 25020002,
-			nama: 'Siti Nurhaliza',
-			kelas: 'XII RPL 1',
-			jenisKelamin: 'P',
-			asal: 'Bandung',
-			status: 'aktif',
-			ayah: 'Budi Santoso',
-			ibu: 'Dewi Lestari',
-			alamat: 'Jalan Asia Afrika No. 45'
-		},
-		{
-			id: 25020003,
-			nama: 'Kevin Pratama',
-			kelas: 'XII RPL 1',
-			jenisKelamin: 'L',
-			asal: 'Surabaya',
-			status: 'aktif',
-			ayah: 'Joko Widodo',
-			ibu: 'Sari Indah',
-			alamat: 'Jalan Tunjungan No. 78'
-		},
-		{
-			id: 25020004,
-			nama: 'Maya Sari',
-			kelas: 'XII RPL 2',
-			jenisKelamin: 'P',
-			asal: 'Yogyakarta',
-			status: 'aktif',
-			ayah: 'Rudi Hermawan',
-			ibu: 'Linda Wati',
-			alamat: 'Jalan Malioboro No. 56'
-		},
-		{
-			id: 25020005,
-			nama: 'Rizky Fadilah',
-			kelas: 'XII RPL 2',
-			jenisKelamin: 'L',
-			asal: 'Medan',
-			status: 'nonaktif',
-			ayah: 'Ahmad Yani',
-			ibu: 'Siti Aminah',
-			alamat: 'Jalan Sudirman No. 89'
-		},
-		{
-			id: 25020006,
-			nama: 'Dewi Anggraini',
-			kelas: 'XII RPL 2',
-			jenisKelamin: 'P',
-			asal: 'Semarang',
-			status: 'aktif',
-			ayah: 'Hendra Gunawan',
-			ibu: 'Ratna Sari',
-			alamat: 'Jalan Pemuda No. 34'
-		},
-		{
-			id: 25020007,
-			nama: 'Fajar Hidayat',
-			kelas: 'XII RPL 3',
-			jenisKelamin: 'L',
-			asal: 'Makassar',
-			status: 'aktif',
-			ayah: 'Syamsul Arifin',
-			ibu: 'Murni Wati',
-			alamat: 'Jalan Pattimura No. 67'
-		},
-		{
-			id: 25020008,
-			nama: 'Nina Permata',
-			kelas: 'XII RPL 3',
-			jenisKelamin: 'P',
-			asal: 'Denpasar',
-			status: 'aktif',
-			ayah: 'Wayan Sutarna',
-			ibu: 'Ketut Sari',
-			alamat: 'Jalan Raya Kuta No. 12'
-		},
-		{
-			id: 25020009,
-			nama: 'Budi Setiawan',
-			kelas: 'XII RPL 3',
-			jenisKelamin: 'L',
-			asal: 'Malang',
-			status: 'nonaktif',
-			ayah: 'Slamet Riyadi',
-			ibu: 'Susi Susanti',
-			alamat: 'Jalan Ijen No. 23'
-		},
-		{
-			id: 25020010,
-			nama: 'Cindy Putri',
-			kelas: 'XII RPL 4',
-			jenisKelamin: 'P',
-			asal: 'Bogor',
-			status: 'aktif',
-			ayah: 'Eko Prasetyo',
-			ibu: 'Maria Ulfa',
-			alamat: 'Jalan Pajajaran No. 90'
-		},
-		{
-			id: 25020011,
-			nama: 'Rendi Saputra',
-			kelas: 'XII RPL 4',
-			jenisKelamin: 'L',
-			asal: 'Palembang',
-			status: 'aktif',
-			ayah: 'Ari Wibowo',
-			ibu: 'Rina Marlina',
-			alamat: 'Jalan Jenderal Sudirman No. 45'
-		},
-		{
-			id: 25020012,
-			nama: 'Lina Marlina',
-			kelas: 'XII RPL 4',
-			jenisKelamin: 'P',
-			asal: 'Bekasi',
-			status: 'aktif',
-			ayah: 'Tono Sugianto',
-			ibu: 'Sari Dewi',
-			alamat: 'Jalan Kemang No. 78'
+	// const studentData: Student[] = [
+	// 	{
+	// 		id: 25020001,
+	// 		nama: 'Ahmad Rizki',
+	// 		kelas: 'XII RPL 1',
+	// 		jenisKelamin: 'L',
+	// 		asal: 'Jakarta',
+	// 		status: 'aktif',
+	// 		ayah: 'Farid',
+	// 		ibu: 'Faridah',
+	// 		alamat: 'Jalan Merdeka No. 123'
+	// 	},
+	// 	{
+	// 		id: 25020002,
+	// 		nama: 'Siti Nurhaliza',
+	// 		kelas: 'XII RPL 1',
+	// 		jenisKelamin: 'P',
+	// 		asal: 'Bandung',
+	// 		status: 'aktif',
+	// 		ayah: 'Budi Santoso',
+	// 		ibu: 'Dewi Lestari',
+	// 		alamat: 'Jalan Asia Afrika No. 45'
+	// 	},
+	// 	{
+	// 		id: 25020003,
+	// 		nama: 'Kevin Pratama',
+	// 		kelas: 'XII RPL 1',
+	// 		jenisKelamin: 'L',
+	// 		asal: 'Surabaya',
+	// 		status: 'aktif',
+	// 		ayah: 'Joko Widodo',
+	// 		ibu: 'Sari Indah',
+	// 		alamat: 'Jalan Tunjungan No. 78'
+	// 	},
+	// 	{
+	// 		id: 25020004,
+	// 		nama: 'Maya Sari',
+	// 		kelas: 'XII RPL 2',
+	// 		jenisKelamin: 'P',
+	// 		asal: 'Yogyakarta',
+	// 		status: 'aktif',
+	// 		ayah: 'Rudi Hermawan',
+	// 		ibu: 'Linda Wati',
+	// 		alamat: 'Jalan Malioboro No. 56'
+	// 	},
+	// 	{
+	// 		id: 25020005,
+	// 		nama: 'Rizky Fadilah',
+	// 		kelas: 'XII RPL 2',
+	// 		jenisKelamin: 'L',
+	// 		asal: 'Medan',
+	// 		status: 'nonaktif',
+	// 		ayah: 'Ahmad Yani',
+	// 		ibu: 'Siti Aminah',
+	// 		alamat: 'Jalan Sudirman No. 89'
+	// 	},
+	// 	{
+	// 		id: 25020006,
+	// 		nama: 'Dewi Anggraini',
+	// 		kelas: 'XII RPL 2',
+	// 		jenisKelamin: 'P',
+	// 		asal: 'Semarang',
+	// 		status: 'aktif',
+	// 		ayah: 'Hendra Gunawan',
+	// 		ibu: 'Ratna Sari',
+	// 		alamat: 'Jalan Pemuda No. 34'
+	// 	},
+	// 	{
+	// 		id: 25020007,
+	// 		nama: 'Fajar Hidayat',
+	// 		kelas: 'XII RPL 3',
+	// 		jenisKelamin: 'L',
+	// 		asal: 'Makassar',
+	// 		status: 'aktif',
+	// 		ayah: 'Syamsul Arifin',
+	// 		ibu: 'Murni Wati',
+	// 		alamat: 'Jalan Pattimura No. 67'
+	// 	},
+	// 	{
+	// 		id: 25020008,
+	// 		nama: 'Nina Permata',
+	// 		kelas: 'XII RPL 3',
+	// 		jenisKelamin: 'P',
+	// 		asal: 'Denpasar',
+	// 		status: 'aktif',
+	// 		ayah: 'Wayan Sutarna',
+	// 		ibu: 'Ketut Sari',
+	// 		alamat: 'Jalan Raya Kuta No. 12'
+	// 	},
+	// 	{
+	// 		id: 25020009,
+	// 		nama: 'Budi Setiawan',
+	// 		kelas: 'XII RPL 3',
+	// 		jenisKelamin: 'L',
+	// 		asal: 'Malang',
+	// 		status: 'nonaktif',
+	// 		ayah: 'Slamet Riyadi',
+	// 		ibu: 'Susi Susanti',
+	// 		alamat: 'Jalan Ijen No. 23'
+	// 	},
+	// 	{
+	// 		id: 25020010,
+	// 		nama: 'Cindy Putri',
+	// 		kelas: 'XII RPL 4',
+	// 		jenisKelamin: 'P',
+	// 		asal: 'Bogor',
+	// 		status: 'aktif',
+	// 		ayah: 'Eko Prasetyo',
+	// 		ibu: 'Maria Ulfa',
+	// 		alamat: 'Jalan Pajajaran No. 90'
+	// 	},
+	// 	{
+	// 		id: 25020011,
+	// 		nama: 'Rendi Saputra',
+	// 		kelas: 'XII RPL 4',
+	// 		jenisKelamin: 'L',
+	// 		asal: 'Palembang',
+	// 		status: 'aktif',
+	// 		ayah: 'Ari Wibowo',
+	// 		ibu: 'Rina Marlina',
+	// 		alamat: 'Jalan Jenderal Sudirman No. 45'
+	// 	},
+	// 	{
+	// 		id: 25020012,
+	// 		nama: 'Lina Marlina',
+	// 		kelas: 'XII RPL 4',
+	// 		jenisKelamin: 'P',
+	// 		asal: 'Bekasi',
+	// 		status: 'aktif',
+	// 		ayah: 'Tono Sugianto',
+	// 		ibu: 'Sari Dewi',
+	// 		alamat: 'Jalan Kemang No. 78'
+	// 	}
+	// ];
+
+	import { onMount } from 'svelte';
+
+	let student: Student | null = null;
+	let loading = true;
+	let error = '';
+
+	onMount(async () => {
+		try {
+			// Make request to your Express API endpoint
+			const response = await fetch(`http://localhost:3000/routes/api/studentData/${$page.params.id}`);
+
+			if (!response.ok) {
+				throw new Error('Student not found');
+			}
+
+			student = await response.json();
+		} catch (err) {
+			error = err.message;
+		} finally {
+			loading = false;
 		}
-	];
+	});
 
 	// Get the id from URL params - $page.params.id comes from the [id] folder name
 	const studentId = Number($page.params.id);
 
 	// Find student by id
-	const student = studentData.find((s) => s.id === studentId);
+	//const student = studentData.find((s) => s.id === studentId);
 
 	function getStatusStyle(status: Student['status']): string {
 		switch (status) {
@@ -171,30 +194,7 @@
 	}
 
 	// WHEN YOU SWITCH TO EXPRESS BACKEND API:
-	// Instead of static data, you'll fetch from your Express server like this:
 	/*
-	import { onMount } from 'svelte';
-	
-	let student: Student | null = null;
-	let loading = true;
-	let error = '';
-
-	onMount(async () => {
-		try {
-			// Make request to your Express API endpoint
-			const response = await fetch(`http://localhost:3000/api/students/${$page.params.id}`);
-			
-			if (!response.ok) {
-				throw new Error('Student not found');
-			}
-			
-			student = await response.json();
-		} catch (err) {
-			error = err.message;
-		} finally {
-			loading = false;
-		}
-	});
 
 	// Then your Express backend would have a route like:
 	// app.get('/api/students/:id', (req, res) => {
@@ -203,6 +203,7 @@
 	//   res.json(student);
 	// });
 	*/
+	// Instead of static data, you'll fetch from your Express server like this:
 </script>
 
 <!-- student data main -->

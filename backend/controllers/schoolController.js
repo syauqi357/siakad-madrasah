@@ -12,12 +12,12 @@ const schoolDataBase = require('../data/lembaga.json');
 
 // Helper function
 function findLogoFile() {
-	const uploadPath = path.join(__dirname, '../public/upload');
+	const uploadPath = path.join(__dirname, '../public/upload/profilesch');
 
 	try {
 		const files = fs.readdirSync(uploadPath);
 		const logoFile = files.find((file) => /\.(svg|png|jpg|jpeg|gif|webp)$/i.test(file));
-		return logoFile ? `/upload/${logoFile}` : '';
+		return logoFile ? `/upload/profilesch/${logoFile}` : '';
 	} catch (error) {
 		console.error('Error reading upload directory:', error);
 		return '';

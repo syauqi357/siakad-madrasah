@@ -1,0 +1,158 @@
+[
+  {
+    "id": 25020001,
+    "name": "Ahmad Rizki",
+    "class": "XII RPL 1",
+    "gender": "Laki-laki",
+    "cityOfOrigin": "Jakarta",
+    "status": "active",
+    "parents": {
+      "father": "Farid",
+      "mother": "Faridah"
+    },
+    "address": "Jalan Merdeka No. 123"
+  },
+  {
+    "id": 25020002,
+    "name": "Siti Nurhaliza",
+    "class": "XII RPL 1",
+    "gender": "Perempuan",
+    "cityOfOrigin": "Bandung",
+    "status": "active",
+    "parents": {
+      "father": "Budi Santoso",
+      "mother": "Dewi Lestari"
+    },
+    "address": "Jalan Asia Afrika No. 45"
+  },
+  {
+    "id": 25020003,
+    "name": "Kevin Pratama",
+    "class": "XII RPL 1",
+    "gender": "Laki-laki",
+    "cityOfOrigin": "Surabaya",
+    "status": "active",
+    "parents": {
+      "father": "Joko Widodo",
+      "mother": "Sari Indah"
+    },
+    "address": "Jalan Tunjungan No. 78"
+  },
+  {
+    "id": 25020004,
+    "name": "Maya Sari",
+    "class": "XII RPL 2",
+    "gender": "Perempuan",
+    "cityOfOrigin": "Yogyakarta",
+    "status": "active",
+    "parents": {
+      "father": "Rudi Hermawan",
+      "mother": "Linda Wati"
+    },
+    "address": "Jalan Malioboro No. 56"
+  },
+  {
+    "id": 25020005,
+    "name": "Rizky Fadilah",
+    "class": "XII RPL 2",
+    "gender": "Laki-laki",
+    "cityOfOrigin": "Medan",
+    "status": "inactive",
+    "parents": {
+      "father": "Ahmad Yani",
+      "mother": "Siti Aminah"
+    },
+    "address": "Jalan Sudirman No. 89"
+  },
+  {
+    "id": 25020006,
+    "name": "Dewi Anggraini",
+    "class": "XII RPL 2",
+    "gender": "Perempuan",
+    "cityOfOrigin": "Semarang",
+    "status": "active",
+    "parents": {
+      "father": "Hendra Gunawan",
+      "mother": "Ratna Sari"
+    },
+    "address": "Jalan Pemuda No. 34"
+  },
+  {
+    "id": 25020007,
+    "name": "Fajar Hidayat",
+    "class": "XII RPL 3",
+    "gender": "Laki-laki",
+    "cityOfOrigin": "Makassar",
+    "status": "active",
+    "parents": {
+      "father": "Syamsul Arifin",
+      "mother": "Murni Wati"
+    },
+    "address": "Jalan Pattimura No. 67"
+  },
+  {
+    "id": 25020008,
+    "name": "Nina Permata",
+    "class": "XII RPL 3",
+    "gender": "Perempuan",
+    "cityOfOrigin": "Denpasar",
+    "status": "active",
+    "parents": {
+      "father": "Wayan Sutarna",
+      "mother": "Ketut Sari"
+    },
+    "address": "Jalan Raya Kuta No. 12"
+  },
+  {
+    "id": 25020009,
+    "name": "Budi Setiawan",
+    "class": "XII RPL 3",
+    "gender": "Laki-laki",
+    "cityOfOrigin": "Malang",
+    "status": "inactive",
+    "parents": {
+      "father": "Slamet Riyadi",
+      "mother": "Susi Susanti"
+    },
+    "address": "Jalan Ijen No. 23"
+  },
+  {
+    "id": 25020010,
+    "name": "Cindy Putri",
+    "class": "XII RPL 4",
+    "gender": "Perempuan",
+    "cityOfOrigin": "Bogor",
+    "status": "active",
+    "parents": {
+      "father": "Eko Prasetyo",
+      "mother": "Maria Ulfa"
+    },
+    "address": "Jalan Pajajaran No. 90"
+  },
+  {
+    "id": 25020011,
+    "name": "Rendi Saputra",
+    "class": "XII RPL 4",
+    "gender": "Laki-laki",
+    "cityOfOrigin": "Palembang",
+    "status": "active",
+    "parents": {
+      "father": "Ari Wibowo",
+      "mother": "Rina Marlina"
+    },
+    "address": "Jalan Jenderal Sudirman No. 45"
+  },
+  {
+    "id": 25020012,
+    "name": "Lina Marlina",
+    "class": "XII RPL 4",
+    "gender": "Perempuan",
+    "cityOfOrigin": "Bekasi",
+    "status": "active",
+    "parents": {
+      "father": "Tono Sugianto",
+      "mother": "Sari Dewi"
+    },
+    "address": "Jalan Kemang No. 78"
+  }
+]

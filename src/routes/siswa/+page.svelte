@@ -1,5 +1,4 @@
 <script lang="ts">
-	// import { get } from 'http';
 	import { onMount } from 'svelte';
 
 	type Student = {
@@ -11,107 +10,29 @@
 		status: 'aktif' | 'warning' | 'nonaktif';
 	};
 
-	const studentData: Student[] = [
-		{
-			id: 25020001,
-			nama: 'Ahmad Rizki',
-			kelas: 'XII RPL 1',
-			jenisKelamin: 'L',
-			asal: 'Jakarta',
-			status: 'aktif'
-		},
-		{
-			id: 25020002,
-			nama: 'Siti Nurhaliza',
-			kelas: 'XII RPL 1',
-			jenisKelamin: 'P',
-			asal: 'Bandung',
-			status: 'aktif'
-		},
-		{
-			id: 25020003,
-			nama: 'Kevin Pratama',
-			kelas: 'XII RPL 1',
-			jenisKelamin: 'L',
-			asal: 'Surabaya',
-			status: 'aktif'
-		},
-		{
-			id: 25020004,
-			nama: 'Maya Sari',
-			kelas: 'XII RPL 2',
-			jenisKelamin: 'P',
-			asal: 'Yogyakarta',
-			status: 'aktif'
-		},
-		{
-			id: 25020005,
-			nama: 'Rizky Fadilah',
-			kelas: 'XII RPL 2',
-			jenisKelamin: 'L',
-			asal: 'Medan',
-			status: 'nonaktif'
-		},
-		{
-			id: 25020006,
-			nama: 'Dewi Anggraini',
-			kelas: 'XII RPL 2',
-			jenisKelamin: 'P',
-			asal: 'Semarang',
-			status: 'aktif'
-		},
-		{
-			id: 25020007,
-			nama: 'Fajar Hidayat',
-			kelas: 'XII RPL 3',
-			jenisKelamin: 'L',
-			asal: 'Makassar',
-			status: 'aktif'
-		},
-		{
-			id: 25020008,
-			nama: 'Nina Permata',
-			kelas: 'XII RPL 3',
-			jenisKelamin: 'P',
-			asal: 'Denpasar',
-			status: 'aktif'
-		},
-		{
-			id: 25020009,
-			nama: 'Budi Setiawan',
-			kelas: 'XII RPL 3',
-			jenisKelamin: 'L',
-			asal: 'Malang',
-			status: 'nonaktif'
-		},
-		{
-			id: 25020010,
-			nama: 'Cindy Putri',
-			kelas: 'XII RPL 4',
-			jenisKelamin: 'P',
-			asal: 'Bogor',
-			status: 'aktif'
-		},
-		{
-			id: 25020011,
-			nama: 'Rendi Saputra',
-			kelas: 'XII RPL 4',
-			jenisKelamin: 'L',
-			asal: 'Palembang',
-			status: 'aktif'
-		},
-		{
-			id: 25020012,
-			nama: 'Lina Marlina',
-			kelas: 'XII RPL 4',
-			jenisKelamin: 'P',
-			asal: 'Bekasi',
-			status: 'aktif'
-		}
-	];
+	// This will be populated from the API
+	let students: Student[] = [];
 
-	// Shuffle array on load
-	let students = [...studentData].sort();
+	onMount(async () => {
+		try {
+			const response = await fetch('http://localhost:3000/routes/api/studentData');
+			const dataFromApi = await response.json();
+
+			// Transform the data from the API to match the component's expected structure
+			students = dataFromApi.map((item: any) => ({
+				id: item.id,
+				nama: item.name,
+				kelas: item.class,
+				jenisKelamin: item.gender === 'Laki-laki' ? 'L' : 'P',
+				asal: item.cityOfOrigin,
+				// Ensure status matches the component's type, defaulting if needed
+				status: item.status === 'active' ? 'aktif' : 'nonaktif'
+			}));
+		} catch (error) {
+			console.error('Failed to fetch student data:', error);
+			// Optionally, handle the error in the UI
+		}
+	});
 
 	function getStatusStyle(status: Student['status']): string {
 		switch (status) {
@@ -157,8 +78,8 @@
 		<div class="">
 			<!-- search input -->
 
-			<!-- di ambil dari 
-			https://www.material-tailwind.com/docs/html/input 
+			<!-- di ambil dari
+			https://www.material-tailwind.com/docs/html/input
 			-->
 			<div class="w-full max-w-sm min-w-[100px]">
 				<div class="relative">
