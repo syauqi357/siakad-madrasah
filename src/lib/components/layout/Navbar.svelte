@@ -3,7 +3,7 @@
 	
 Summary of Changes:
 	1. Import the Logo: I added import logo from '$lib/assets/favicon.svg'; at the top of the script. 
-        This makes the SVG available as a variable named logo which holds the correct public path to the image.
+        This makes the SVG available as a variable named logo which holds the correct (public) path to the image.
 	2. Update Initial Data: I changed logoUrl: '$lib/assets/favicon.svg' to logoUrl: logo.
    	   This ensures that even before your API call finishes, the component will display the imported logo.
 	3. Handle Fetched Data: In the onMount function, I've updated the logic slightly. 

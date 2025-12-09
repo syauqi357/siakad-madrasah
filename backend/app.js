@@ -17,7 +17,7 @@ app.use(cors());
 // Parse JSON bodies
 app.use(express.json());
 
-// Serve static files from the 'public' directory
+// Serve static files from the '(public)' directory
 // In ES modules, __dirname is not directly available. We construct it.
 import { fileURLToPath } from 'url';
 import { getAllStudents } from './controllers/studentDatacontroller.js';
