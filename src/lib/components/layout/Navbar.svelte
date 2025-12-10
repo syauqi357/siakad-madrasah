@@ -182,8 +182,11 @@ Summary of Changes:
 
 				<!-- User Menu Dropdown -->
 				{#if showUserMenu}
-					<div
+					<div aria-label="pop up user menu"
 						on:click={closeUserMenu}
+						on:keydown={(e) => e.key === 'Escape' && closeUserMenu()}
+						role="button"
+						tabindex="0"
 						class="fixed inset-0 z-30 sm:hidden"
 					></div>
 

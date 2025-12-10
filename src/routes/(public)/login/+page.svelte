@@ -75,7 +75,7 @@
 	}
 </script>
 
-<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-600 to-blue-600">
+<div class="min-h-screen flex items-center justify-center bg-linear-60 from-purple-600 to-blue-600">
 	<div class="bg-white p-8 rounded-lg shadow-xl max-w-md w-full">
 		<h1 class="text-2xl font-bold text-center mb-6">Login to School System</h1>
 

@@ -181,7 +181,7 @@ export const login = async (req, res) => {
 	try {
 		const { username, password } = req.body;
 
-		console.log('Login attempt:', { username, password });
+		console.log('Login attempt:', { username, password }); //debug code
 
 		// Validate input
 		if (!username || !password) {
@@ -193,6 +193,8 @@ export const login = async (req, res) => {
 
 		// Get accounts from guru.json
 		const accounts = getAccounts();
+
+		// debug code : dont remove until using real database
 		console.log('Available accounts:', accounts.length);
 		console.log('Guru.json path:', guruPath);
 		console.log('Accounts data:', accounts.map(a => ({ username: a.username, password: a.password })));
@@ -202,6 +204,7 @@ export const login = async (req, res) => {
 			account => account.username === username && account.password === password
 		);
 
+		// debug code to detect the user already exist and total user founded
 		console.log('User found:', !!user);
 
 		if (!user) {
