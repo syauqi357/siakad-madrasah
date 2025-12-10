@@ -1,5 +1,6 @@
 <script lang="ts">
 	// This file goes in: src/routes/student/[id]/+page.svelte
+	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 
 	type Student = {
@@ -17,11 +18,32 @@
 	// TODO: Move this to a separate file like src/lib/data/students.ts
 	// so you can import it in both list and detail pages
 
+	let student: Student | null = null;
+	let loading = true;
+	let error = '';
+
+	onMount(async () => {
+		try {
+			// Make request to your Express API endpoint
+			const response = await fetch(`http://localhost:3000/routes/api/studentData/${$page.params.id}`);
+
+			if (!response.ok) {
+				throw new Error('Student not found');
+			}
+
+			student = await response.json();
+		} catch (err) {
+			error = err.message;
+		} finally {
+			loading = false;
+		}
+	});
+
 	// Get the id from URL params - $page.params.id comes from the [id] folder name
-	const studentId = Number($page.params.id);
+	// const studentId = Number($page.params.id);
 
 	// Find student by id
-	const student = studentData.find((s) => s.id === studentId);
+	//const student = studentData.find((s) => s.id === studentId);
 
 	function getStatusStyle(status: Student['status']): string {
 		switch (status) {
@@ -35,46 +57,12 @@
 				return '';
 		}
 	}
-
-	// WHEN YOU SWITCH TO EXPRESS BACKEND API:
-	// Instead of static data, you'll fetch from your Express server like this:
-	/*
-	import { onMount } from 'svelte';
-	
-	let student: Student | null = null;
-	let loading = true;
-	let error = '';
-
-	onMount(async () => {
-		try {
-			// Make request to your Express API endpoint
-			const response = await fetch(`http://localhost:3000/api/students/${$page.params.id}`);
-			
-			if (!response.ok) {
-				throw new Error('Student not found');
-			}
-			
-			student = await response.json();
-		} catch (err) {
-			error = err.message;
-		} finally {
-			loading = false;
-		}
-	});
-
-	// Then your Express backend would have a route like:
-	// app.get('/api/students/:id', (req, res) => {
-	//   const student = students.find(s => s.id === parseInt(req.params.id));
-	//   if (!student) return res.status(404).json({ error: 'Not found' });
-	//   res.json(student);
-	// });
-	*/
 </script>
 
 <!-- student data main -->
 {#if student}
-	<div class="min-h-screen p-4 md:p-8 w-full">
-		<div class="mx-auto max-w-4xl ">
+	<div class="min-h-screen bg-slate-50 p-4 md:p-8">
+		<div class="mx-auto max-w-4xl">
 			<!-- Back button -->
 			<a
 				href="/siswa"
@@ -130,9 +118,12 @@
 				</div>
 
 				<!-- data student -->
-				<!--
+
+				<!-- 
+				
 				- content will be :
 				pokok di sini lah
+
 				-->
 
 				<div class="grid gap-4 md:grid-cols-2">

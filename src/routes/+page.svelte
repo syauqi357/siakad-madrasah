@@ -1,6 +1,53 @@
-<script>
+<script lang="ts">
 	import { activeMenu } from '$lib/stores.js';
 	import { onMount } from 'svelte';
+	import logo from '$lib/assets/favicon.svg';
+
+	// Initialize schoolData with a default structure.
+
+	// initialize thing
+	type SchoolData = {
+		name: string;
+	};
+
+	// This tells TypeScript that schoolData will have a 'name' property.
+	let schoolData: {
+		name?: string;
+	} = {
+		name: 'our'
+	};
+
+
+	let loading = true;
+
+	onMount(async () => {
+		try {
+			// copy data from navbar
+			// endpoint app.js
+			// docs : pending
+
+			const response = await fetch('http://localhost:3000/routes/api/schoolData');
+			//get API from backend using express from localhost:3000/api/schoolData and this is taking a variable const on the file
+
+			if (!response.ok) {
+				throw new Error(`HTTP error! status: ${response.status}`);
+			}
+
+			// fetch data dari appjs endpoint server
+			const fetchedData = await response.json();
+
+			// sukses ambil data dari appjs endpoint server
+			schoolData = {
+				name: fetchedData.name
+				//npsn: fetchedData.npsn,
+				//logoUrl: fetchedData.logoUrl ? `http://localhost:3000/api/${fetchedData.logoUrl}` : logo
+			};
+
+			loading = false;
+		} catch (err) {
+			console.log('error : unable to fetch data', err);
+		}
+	});
 
 	$activeMenu = 'dashboard';
 
@@ -54,7 +101,7 @@
 <div class="bg mx-auto mt-10 max-w-7xl">
 	<div class="mb-6">
 		<h1 class="text-3xl font-bold text-gray-900">Dashboard</h1>
-		<p class="mt-2 text-gray-600">Welcome to SchoolSys Education Platform</p>
+		<p class="mt-2 text-gray-600">Welcome to {schoolData.name} Education Platform</p>
 	</div>
 	<!-- statistics -->
 	<!-- statistics cards -->

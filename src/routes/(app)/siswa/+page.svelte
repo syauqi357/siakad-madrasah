@@ -1,5 +1,4 @@
 <script lang="ts">
-	// import { get } from 'http';
 	import { onMount } from 'svelte';
 
 	type Student = {
@@ -11,107 +10,29 @@
 		status: 'aktif' | 'warning' | 'nonaktif';
 	};
 
-	const studentData: Student[] = [
-		{
-			id: 25020001,
-			nama: 'Ahmad Rizki',
-			kelas: 'XII RPL 1',
-			jenisKelamin: 'L',
-			asal: 'Jakarta',
-			status: 'aktif'
-		},
-		{
-			id: 25020002,
-			nama: 'Siti Nurhaliza',
-			kelas: 'XII RPL 1',
-			jenisKelamin: 'P',
-			asal: 'Bandung',
-			status: 'aktif'
-		},
-		{
-			id: 25020003,
-			nama: 'Kevin Pratama',
-			kelas: 'XII RPL 1',
-			jenisKelamin: 'L',
-			asal: 'Surabaya',
-			status: 'aktif'
-		},
-		{
-			id: 25020004,
-			nama: 'Maya Sari',
-			kelas: 'XII RPL 2',
-			jenisKelamin: 'P',
-			asal: 'Yogyakarta',
-			status: 'aktif'
-		},
-		{
-			id: 25020005,
-			nama: 'Rizky Fadilah',
-			kelas: 'XII RPL 2',
-			jenisKelamin: 'L',
-			asal: 'Medan',
-			status: 'nonaktif'
-		},
-		{
-			id: 25020006,
-			nama: 'Dewi Anggraini',
-			kelas: 'XII RPL 2',
-			jenisKelamin: 'P',
-			asal: 'Semarang',
-			status: 'aktif'
-		},
-		{
-			id: 25020007,
-			nama: 'Fajar Hidayat',
-			kelas: 'XII RPL 3',
-			jenisKelamin: 'L',
-			asal: 'Makassar',
-			status: 'aktif'
-		},
-		{
-			id: 25020008,
-			nama: 'Nina Permata',
-			kelas: 'XII RPL 3',
-			jenisKelamin: 'P',
-			asal: 'Denpasar',
-			status: 'aktif'
-		},
-		{
-			id: 25020009,
-			nama: 'Budi Setiawan',
-			kelas: 'XII RPL 3',
-			jenisKelamin: 'L',
-			asal: 'Malang',
-			status: 'nonaktif'
-		},
-		{
-			id: 25020010,
-			nama: 'Cindy Putri',
-			kelas: 'XII RPL 4',
-			jenisKelamin: 'P',
-			asal: 'Bogor',
-			status: 'aktif'
-		},
-		{
-			id: 25020011,
-			nama: 'Rendi Saputra',
-			kelas: 'XII RPL 4',
-			jenisKelamin: 'L',
-			asal: 'Palembang',
-			status: 'aktif'
-		},
-		{
-			id: 25020012,
-			nama: 'Lina Marlina',
-			kelas: 'XII RPL 4',
-			jenisKelamin: 'P',
-			asal: 'Bekasi',
-			status: 'aktif'
-		}
-	];
+	// This will be populated from the API
+	let students: Student[] = [];
 
-	// Shuffle array on load
-	let students = [...studentData].sort();
+	onMount(async () => {
+		try {
+			const response = await fetch('http://localhost:3000/routes/api/studentData');
+			const dataFromApi = await response.json();
+
+			// Transform the data from the API to match the component's expected structure
+			students = dataFromApi.map((item: any) => ({
+				id: item.id,
+				nama: item.name,
+				kelas: item.class,
+				jenisKelamin: item.gender === 'Laki-laki' ? 'L' : 'P',
+				asal: item.cityOfOrigin,
+				// Ensure status matches the component's type, defaulting if needed
+				status: item.status === 'active' ? 'aktif' : 'nonaktif'
+			}));
+		} catch (error) {
+			console.error('Failed to fetch student data:', error);
+			// Optionally, handle the error in the UI
+		}
+	});
 
 	function getStatusStyle(status: Student['status']): string {
 		switch (status) {
@@ -148,7 +69,7 @@
 	}
 </script>
 
-<div class="flex w-full md:w-7xl flex-col items-center justify-center md:p-3">
+<div class="flex w-full flex-col items-center justify-center md:p-3">
 	<!-- header -->
 	<div class="mb-6 flex w-full flex-col gap-5 rounded-lg bg-slate-200 p-3 md:w-full">
 		<span class="text-md font-bold tracking-wide capitalize md:text-4xl"> siswa </span>
@@ -157,8 +78,8 @@
 		<div class="">
 			<!-- search input -->
 
-			<!-- di ambil dari 
-			https://www.material-tailwind.com/docs/html/input 
+			<!-- di ambil dari
+			https://www.material-tailwind.com/docs/html/input
 			-->
 			<div class="w-full max-w-sm min-w-[100px]">
 				<div class="relative">
@@ -168,10 +89,9 @@
 					/>
 					<label
 						for="search"
-						class="absolute top-2.5 left-2.5 origin-left transform cursor-text capitalize bg-slate-200 px-1 text-sm text-slate-400 transition-all peer-focus:-top-2 peer-focus:left-2.5 peer-focus:scale-90 peer-focus:text-xs peer-focus:text-slate-400"
+						class="absolute top-2.5 left-2.5 origin-left transform cursor-text bg-slate-200 px-1 text-sm text-slate-400 capitalize transition-all peer-focus:-top-2 peer-focus:left-2.5 peer-focus:scale-90 peer-focus:text-xs peer-focus:text-slate-400"
 					>
-
-					<!-- original text : Type Here... -->
+						<!-- original text : Type Here... -->
 						cari siswa...
 					</label>
 				</div>
@@ -180,7 +100,7 @@
 			<!-- classifier funct -->
 			<div class="flex gap-3 bg-slate-200 p-2 md:flex">
 				<button
-					aria-label=""
+					aria-label="Sort by descending order"
 					title=""
 					class="flex w-fit items-center gap-2 rounded-sm bg-slate-700 p-4 text-slate-100 md:p-2 md:pr-4 md:pl-4"
 				>
@@ -204,7 +124,7 @@
 					</span>
 				</button>
 				<button
-					aria-label=""
+					aria-label="Sort by ascending order"
 					title=""
 					class="flex w-fit items-center gap-2 rounded-sm bg-slate-700 p-4 text-slate-100 md:p-2 md:pr-4 md:pl-4"
 				>
@@ -230,7 +150,9 @@
 			</div>
 		</div>
 	</div>
-	<div class="h-auto w-full rounded-md bg-slate-100 p-3 md:w-full md:p-6">
+	<div
+		class="flex h-auto w-full flex-col items-center justify-center rounded-md bg-slate-100 p-3 md:w-full md:p-6"
+	>
 		<!-- line student -->
 		{#each students as student}
 			<div
@@ -301,5 +223,69 @@
 				</a>
 			</div>
 		{/each}
+
+		<!-- pagination -->
+		<div class="flex h-12 w-full flex-row items-center justify-center gap-2 md:w-4xl">
+			<!-- previous -->
+			<button
+				aria-label="button pagination"
+				class="flex flex-row-reverse items-center justify-center gap-2 rounded-md bg-cyan-800 p-4 pt-2 pb-2 text-slate-100"
+			>
+				previous
+				<span>
+					<svg
+						viewBox="0 0 24 24"
+						fill="none"
+						xmlns="http://www.w3.org/2000/svg"
+						id="Arrow-Left--Streamline-Solar-Ar"
+						height="24"
+						width="24"
+					>
+						<desc> Arrow Left Streamline Icon: https://streamlinehq.com </desc>
+						<path
+							d="M20 12H4m0 0 6 -6m-6 6 6 6"
+							stroke="currentColor"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="1.5"
+						></path>
+					</svg>
+				</span>
+			</button>
+
+			<!-- number pagination -->
+			<button
+				aria-label="button pagination"
+				class="flex items-center justify-center rounded-md bg-cyan-800 p-4 pt-2 pb-2 text-slate-100"
+			>
+				1
+			</button>
+			<!-- next -->
+			<button
+				aria-label="button pagination"
+				class="flex items-center justify-center gap-2 rounded-md bg-cyan-800 p-4 pt-2 pb-2 text-slate-100"
+			>
+				Next
+				<span>
+					<svg
+						viewBox="0 0 24 24"
+						fill="none"
+						xmlns="http://www.w3.org/2000/svg"
+						id="Arrow-Right--Streamline-Solar-Ar"
+						height="24"
+						width="24"
+					>
+						<desc> Arrow Right Streamline Icon: https://streamlinehq.com </desc>
+						<path
+							d="M4 12h16m0 0 -6 -6m6 6 -6 6"
+							stroke="currentColor"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="1.5"
+						></path>
+					</svg></span
+				>
+			</button>
+		</div>
 	</div>
 </div>

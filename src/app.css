@@ -2,7 +2,7 @@
 
 /* shutdown the forms plugin */
 /* @plugin '@tailwindcss/forms'; */
-@plugin '@tailwindcss/typography';
+/* @plugin '@tailwindcss/typography'; */
 
 @font-face {
   font-family: 'StackSansText-Regular';

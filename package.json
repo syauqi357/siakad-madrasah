@@ -4,6 +4,7 @@
 	"version": "0.0.1",
 	"type": "module",
 	"scripts": {
+		"start": "concurrently -n \"SVELTE,EXPRESS\" -c \"blue,green\" \"npm run dev\" \"cd backend && npm run dev\"",
 		"dev": "vite dev",
 		"build": "vite build",
 		"preview": "vite preview",
@@ -29,6 +30,7 @@
 		"@tailwindcss/vite": "^4.1.14",
 		"@types/better-sqlite3": "^7.6.13",
 		"@types/node": "^22",
+		"concurrently": "^9.2.1",
 		"drizzle-kit": "^0.31.5",
 		"drizzle-orm": "^0.44.6",
 		"eslint": "^9.38.0",

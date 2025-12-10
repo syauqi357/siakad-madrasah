@@ -1,16 +1,16 @@
 <script lang="ts">
 	/*
 	
-	Summary of Changes:
-1. Import the Logo: I added import logo from '$lib/assets/favicon.svg'; at the top of the script. 
-   This makes the SVG available as a variable named logo which holds the correct public path to the image.
-2. Update Initial Data: I changed logoUrl: '$lib/assets/favicon.svg' to logoUrl: logo.
-   This ensures that even before your API call finishes, the component will display the imported logo.
-3. Handle Fetched Data: In the onMount function, I've updated the logic slightly. 
-When you get data from your API, it will use the logoUrl from the API if it exists. If the API doesn't return a logoUrl, 
-it will fall back to using the logo you imported. This makes your component more robust.
+Summary of Changes:
+	1. Import the Logo: I added import logo from '$lib/assets/favicon.svg'; at the top of the script. 
+        This makes the SVG available as a variable named logo which holds the correct (public) path to the image.
+	2. Update Initial Data: I changed logoUrl: '$lib/assets/favicon.svg' to logoUrl: logo.
+   	   This ensures that even before your API call finishes, the component will display the imported logo.
+	3. Handle Fetched Data: In the onMount function, I've updated the logic slightly. 
+	   When you get data from your API, it will use the logoUrl from the API if it exists. If the API doesn't return a logoUrl, 
+        it will fall back to using the logo you imported. This makes your component more robust.
 
-// generate by gemini
+		// generate by gemini
 	
 	*/
 	import { onMount } from 'svelte';
@@ -42,7 +42,9 @@ it will fall back to using the logo you imported. This makes your component more
 		try {
 			// endpoint app.js
 			// docs : pending
-			const response = await fetch('http://localhost:3000/schoolData');
+			
+			const response = await fetch('http://localhost:3000/routes/api/schoolData'); 
+			//get API from backend using express from localhost:3000/api/schoolData and this is taking a variable const on the file 
 
 			if (!response.ok) {
 				throw new Error(`HTTP error! status: ${response.status}`);
@@ -130,7 +132,7 @@ it will fall back to using the logo you imported. This makes your component more
 			<!-- user profile -->
 			<div class="flex items-center">
 				<!-- aria label menurut svelte harus ada : line 41 -->
-				<!-- title haus ada menurut svelte : line 42 -->
+				<!-- title harus ada menurut svelte : line 42 -->
 				<!-- transition hover  duration-50 ease-in docs : https://tailwindcss.com/docs/transition-duration -->
 				<button
 					class="rounded-lg p-2 text-neutral-400 duration-50 ease-in hover:bg-neutral-500"
@@ -169,14 +171,3 @@ it will fall back to using the logo you imported. This makes your component more
 	</div>
 </nav>
 
-<style>
-	/* .schoolpfp {
-		width: 32px;
-		height: 32px;
-		background-color: #6b7280;
-		border-radius: 0.4em;
-		flex-shrink: 0;
-	} */
-
-	/* spot */
-</style>
