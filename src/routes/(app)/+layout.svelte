@@ -41,12 +41,12 @@
 
 {#if user}
 	<div class="flex min-h-screen">
-		<Sidebar bind:open={sidebarOpen} {navItems} bind:openDropdowns />
+		<Sidebar bind:sidebarOpen={sidebarOpen} {navItems} bind:openDropdowns />
 
 		<div class="flex-1">
 			<Navbar bind:sidebarOpen {user} {logout} />
 
-			<main class="p-6 ml-64 mt-20 bg-white">
+			<main class="p-6 sm:ml-64 sm:mt-20 bg-white">
 				<slot />
 			</main>
 		</div>

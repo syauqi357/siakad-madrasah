@@ -26,6 +26,14 @@
 	}
 </script>
 
+<!-- Backdrop for mobile -->
+{#if sidebarOpen}
+	<div aria-roledescription="background navigation"
+		class="fixed inset-0 z-30 bg-black/75 backdrop-blur-sm sm:hidden"
+		on:click={() => (sidebarOpen = false)}
+	></div>
+{/if}
+
 <aside
 	class="fixed top-0 left-0 z-40 h-screen w-64 border-r border-neutral-500 bg-neutral-200 pt-22 transition-transform {sidebarOpen
 		? 'translate-x-0'
