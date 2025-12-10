@@ -194,7 +194,7 @@
 					class="rounded-lg border border-red-400 bg-red-300 p-0.5 text-xs text-red-700 md:p-1 md:pr-2 md:pl-2"
 					>status siswa nonaktif</span
 				> -->
-				<a href="/(app)/siswa/{student.id}">
+				<a href="/siswa/{student.id}">
 					<button
 						aria-label="More details"
 						title="More details"

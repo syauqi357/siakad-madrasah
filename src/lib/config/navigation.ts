@@ -1,4 +1,4 @@
-import type { NavItem, UserRole } from '$lib/types/navigation';
+import type { NavItem, UserRole } from '$lib/config/navigation';
 
 export interface NavItem {
 	name: string;
@@ -14,7 +14,7 @@ export interface NavChild {
 	icon?: string;
 }
 
-export type UserRole = 'admin' | 'teacher' | 'student';
+export type UserRole = 'admin' | 'teacher';
 export interface User {
 	id: number;
 	username: string;
@@ -26,7 +26,7 @@ export const navigationConfig: Record<UserRole, NavItem[]> = {
 	admin: [
 		{
 			name: 'Dashboard',
-			href: '/'
+			href: '/dashboard'
 		},
 		{
 			name: 'sarana prasarana',

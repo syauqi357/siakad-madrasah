@@ -12,7 +12,7 @@ const schoolDataBase = require('../data/lembaga.json');
 
 // Helper function
 function findLogoFile() {
-	const uploadPath = path.join(__dirname, '../(public)/upload/profilesch');
+	const uploadPath = path.join(__dirname, '../public/upload/profilesch');
 
 	try {
 		const files = fs.readdirSync(uploadPath);
