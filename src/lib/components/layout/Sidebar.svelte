@@ -17,9 +17,7 @@
 	// Props received from parent component
 	export let sidebarOpen: boolean;
 	export let navItems: NavItem[];
-
-	// Local state to track which dropdowns are open
-	let openDropdowns: Record<string, boolean> = {};
+	export let openDropdowns: Record<string, boolean> = {};
 
 	function toggleDropdown(itemName: string) {
 		openDropdowns[itemName] = !openDropdowns[itemName];
@@ -28,9 +26,10 @@
 
 <!-- Backdrop for mobile -->
 {#if sidebarOpen}
-	<div aria-roledescription="background navigation"
+	<div role="button" tabindex="0" aria-label="Close sidebar"
 		class="fixed inset-0 z-30 bg-black/75 backdrop-blur-sm sm:hidden"
 		on:click={() => (sidebarOpen = false)}
+		on:keydown={(e) => e.key === 'Escape' && (sidebarOpen = false)}
 	></div>
 {/if}
 

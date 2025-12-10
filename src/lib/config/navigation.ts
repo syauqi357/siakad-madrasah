@@ -1,5 +1,3 @@
-import type { NavItem, UserRole } from '$lib/config/navigation';
-
 export interface NavItem {
 	name: string;
 	href: string;
@@ -26,7 +24,7 @@ export const navigationConfig: Record<UserRole, NavItem[]> = {
 	admin: [
 		{
 			name: 'Dashboard',
-			href: '/dashboard'
+			href: '/dashboard/[admin]'
 		},
 		{
 			name: 'sarana prasarana',
@@ -107,7 +105,7 @@ export const navigationConfig: Record<UserRole, NavItem[]> = {
 	teacher: [
 		{
 			name: 'Dashboard',
-			href: '/'
+			href: '/dashboard'
 		},
 		{
 			name: 'sarana prasarana',
@@ -150,21 +148,6 @@ export const navigationConfig: Record<UserRole, NavItem[]> = {
 				{ name: 'daftar kurikulum', href: '/info/cirriculum' },
 				{ name: 'hari sekolah', href: '/info/daysch' }
 			]
-		}
-	],
-
-	student: [
-		{
-			name: 'Dashboard',
-			href: '/'
-		},
-		{
-			name: 'Nilai Saya',
-			href: '/my-score'
-		},
-		{
-			name: 'Profil',
-			href: '/profile'
 		}
 	]
 };

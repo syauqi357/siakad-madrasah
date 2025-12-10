@@ -21,6 +21,10 @@ Summary of Changes:
 	// sidebar function to trigger sidebar
 	export let sidebarOpen: boolean;
 
+	// User and logout function
+	export let user: any;
+	export let logout: () => void;
+
 	// Define a type for our school data for better type-safety.
 	type SchoolData = {
 		name: string;
