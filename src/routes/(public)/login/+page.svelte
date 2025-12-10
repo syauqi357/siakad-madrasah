@@ -3,14 +3,10 @@
 	import { onMount } from 'svelte';
 	import type { User } from '$lib/types/navigation';
 
-	let email = '';
+	let username = '';
 	let password = '';
 	let error = '';
 	let loading = false;
-
-	interface MockUser extends User {
-		password: string;
-	}
 
 	onMount(() => {
 		const token = localStorage.getItem('token');
@@ -19,58 +15,63 @@
 		}
 	});
 
-	const mockUsers: MockUser[] = [
-		{
-			id: 1,
-			email: 'admin@school.com',
-			password: 'admin123',
-			username: 'Admin User',
-			role: 'admin'
-		},
-		{
-			id: 2,
-			email: 'teacher@school.com',
-			password: 'teacher123',
-			username: 'Teacher John',
-			role: 'teacher'
-		}
-	];
-
-	function handleLogin(): void {
-		console.log('Login attempt:', email, password); // DEBUG
+	async function handleLogin(): Promise<void> {
+		console.log('Login attempt:', username, password); // DEBUG
 		loading = true;
 		error = '';
 
-		const foundUser = mockUsers.find(
-			(u) => u.email === email && u.password === password
-		);
+		try {
+			// Call backend API
+			const response = await fetch('http://localhost:3000/api/auth/login', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					username,
+					password
+				})
+			});
 
-		console.log('Found user:', foundUser); // DEBUG
+			console.log('Response status:', response.status); // DEBUG
 
-		if (!foundUser) {
-			error = 'Invalid email or password';
+			if (!response.ok) {
+				const errorData = await response.json();
+				error = errorData.message || 'Login failed';
+				loading = false;
+				return;
+			}
+
+			const data = await response.json();
+			console.log('Login response:', data); // DEBUG
+
+			if (!data.success || !data.token || !data.user) {
+				error = data.message || 'Invalid response from server';
+				loading = false;
+				return;
+			}
+
+			const user: User = {
+				id: data.user.id,
+				username: data.user.username,
+				email: data.user.email,
+				role: data.user.role
+			};
+
+			console.log('Saving to localStorage:', { token: data.token, user }); // DEBUG
+
+			localStorage.setItem('token', data.token);
+			localStorage.setItem('user', JSON.stringify(user));
+
 			loading = false;
-			return;
+
+			console.log('Redirecting to dashboard...'); // DEBUG
+			goto('/dashboard');
+		} catch (err) {
+			console.error('Login error:', err); // DEBUG
+			error = err instanceof Error ? err.message : 'An error occurred during login';
+			loading = false;
 		}
-
-		const token = `fake-jwt-token-${foundUser.id}`;
-
-		const user: User = {
-			id: foundUser.id,
-			username: foundUser.username,
-			email: foundUser.email,
-			role: foundUser.role
-		};
-
-		console.log('Saving to localStorage:', { token, user }); // DEBUG
-
-		localStorage.setItem('token', token);
-		localStorage.setItem('user', JSON.stringify(user));
-
-		loading = false;
-
-		console.log('Redirecting to dashboard...'); // DEBUG
-		goto('/dashboard');
 	}
 </script>
 
@@ -86,12 +87,12 @@
 
 		<form on:submit|preventDefault={handleLogin}>
 			<div class="mb-4">
-				<label for="email" class="block text-gray-700 font-semibold mb-2">Email</label>
+				<label for="username" class="block text-gray-700 font-semibold mb-2">Username</label>
 				<input
-					id="email"
-					bind:value={email}
-					type="email"
-					placeholder="admin@school.com"
+					id="username"
+					bind:value={username}
+					type="text"
+					placeholder="admin"
 					required
 					disabled={loading}
 					class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-purple-500"
@@ -122,8 +123,8 @@
 
 		<div class="mt-6 p-4 bg-gray-100 rounded">
 			<h3 class="font-semibold text-sm text-gray-600 mb-2">Demo Accounts:</h3>
-			<p class="text-sm"><strong>Admin:</strong> admin@school.com / admin123</p>
-			<p class="text-sm"><strong>Teacher:</strong> teacher@school.com / teacher123</p>
+			<p class="text-sm"><strong>Admin:</strong> admin / admin123</p>
+			<p class="text-sm"><strong>Teacher:</strong> guru1 / guru123</p>
 		</div>
 	</div>
 </div>

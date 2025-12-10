@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import schoolDataRouter from './routes/api/schooldataNav.js';
 import studentDataRouter from './routes/api/student.js';
+import authRouter from './routes/api/auth.js';
 
 import path from 'path'; // Import path module
 
@@ -41,6 +42,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // - changing route using data from API for school data navbar set
 app.use('/routes/api', schoolDataRouter)
 app.use('/routes/api', studentDataRouter)
+app.use('/api/auth', authRouter)
 
 
 // Root endpoint

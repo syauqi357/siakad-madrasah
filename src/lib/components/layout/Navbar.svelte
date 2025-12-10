@@ -32,6 +32,9 @@ Summary of Changes:
 		logoUrl: string;
 	};
 
+	// Local state for user menu dropdown
+	let showUserMenu = false;
+
 	// placeholder loading set json control
 	let schoolData: SchoolData = {
 		name: '<div class="w-55 h-7 rounded-lg bg-slate-300 animate-pulse"></div>',
@@ -78,6 +81,21 @@ Summary of Changes:
 			// };
 		}
 	});
+
+	// Toggle user menu visibility
+	function toggleUserMenu() {
+		showUserMenu = !showUserMenu;
+	}
+
+	// Handle logout
+	function handleLogout() {
+		logout();
+	}
+
+	// Close menu when clicking outside
+	function closeUserMenu() {
+		showUserMenu = false;
+	}
 </script>
 
 <nav class="fixed top-0 z-50 w-full border-b border-neutral-400 bg-slate-100">
@@ -134,25 +152,16 @@ Summary of Changes:
 			</div>
 
 			<!-- user profile -->
-			<div class="flex items-center">
+			<div class="relative flex items-center">
 				<!-- aria label menurut svelte harus ada : line 41 -->
 				<!-- title harus ada menurut svelte : line 42 -->
 				<!-- transition hover  duration-50 ease-in docs : https://tailwindcss.com/docs/transition-duration -->
 				<button
-					class="rounded-lg p-2 text-neutral-400 duration-50 ease-in hover:bg-neutral-500"
+					on:click={toggleUserMenu}
+					class="rounded-lg p-2 text-neutral-600 duration-50 ease-in hover:bg-neutral-200 transition-colors"
 					aria-label="Open user menu"
 					title="Open user menu"
 				>
-					<!-- icon user profile -->
-					<!-- <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-				<path
-				stroke-linecap="round"
-				stroke-linejoin="round"
-				stroke-width="2"
-				d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-				></path>
-				</svg> -->
-
 					<svg
 						class="h-7 w-7"
 						xmlns="http://www.w3.org/2000/svg"
@@ -170,6 +179,75 @@ Summary of Changes:
 						></path>
 					</svg>
 				</button>
+
+				<!-- User Menu Dropdown -->
+				{#if showUserMenu}
+					<div
+						on:click={closeUserMenu}
+						class="fixed inset-0 z-30 sm:hidden"
+					></div>
+
+					<div class="absolute right-0 mt-30 w-48 bg-white border border-neutral-300 rounded-lg shadow-lg z-50">
+						<!-- Close Button Header -->
+						<div class="flex items-center justify-between px-4 py-2 border-b border-neutral-200">
+							<p class="text-sm font-semibold text-neutral-900">Menu</p>
+							<button
+								on:click={closeUserMenu}
+								class="text-neutral-500 hover:text-neutral-700 transition-colors"
+								aria-label="Close menu"
+								title="Close menu"
+							>
+								<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										stroke-width="2"
+										d="M6 18L18 6M6 6l12 12"
+									/>
+								</svg>
+							</button>
+						</div>
+
+						<!-- User Info Header -->
+						{#if user}
+							<div class="px-4 py-3 border-b border-neutral-200">
+								<p class="text-sm font-semibold text-neutral-900">
+									{user.username || 'User'}
+								</p>
+								<p class="text-xs text-neutral-600 mt-1">
+									{user.email || 'N/A'}
+								</p>
+								<p class="text-xs text-neutral-500 mt-1 capitalize">
+									Role: <span class="font-medium text-neutral-700">{user.role}</span>
+								</p>
+							</div>
+						{/if}
+
+						<!-- Menu Items -->
+						<div class="py-2">
+							<button
+								on:click={handleLogout}
+								class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors flex items-center gap-2"
+							>
+								<svg
+									class="h-4 w-4"
+									xmlns="http://www.w3.org/2000/svg"
+									fill="none"
+									viewBox="0 0 24 24"
+									stroke="currentColor"
+								>
+									<path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										stroke-width="2"
+										d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+									/>
+								</svg>
+								Logout
+							</button>
+						</div>
+					</div>
+				{/if}
 			</div>
 		</div>
 	</div>

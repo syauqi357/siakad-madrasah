@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "username": "admin",
+    "email": "admin@siakad.com",
+    "password": "admin123",
+    "role": "admin",
+    "nama_lengkap": "Admin Sekolah",
+    "nip": "198005011234567",
+    "jabatan": "Kepala Sekolah"
+  },
+  {
+    "id": 2,
+    "username": "guru1",
+    "email": "guru1@siakad.com",
+    "password": "guru123",
+    "role": "teacher",
+    "nama_lengkap": "Budi Santoso",
+    "nip": "198505021234568",
+    "jabatan": "Guru Mata Pelajaran"
+  },
+  {
+    "id": 3,
+    "username": "guru2",
+    "email": "guru2@siakad.com",
+    "password": "guru123",
+    "role": "teacher",
+    "nama_lengkap": "Siti Nurhaliza",
+    "nip": "198605031234569",
+    "jabatan": "Guru Mata Pelajaran"
+  }
+]
