@@ -15,7 +15,8 @@
 
 	onMount(async () => {
 		try {
-			const response = await fetch('http://localhost:3000/routes/api/studentData');
+			const apiUrl = import.meta.env.VITE_API_URL;
+			const response = await fetch(`${apiUrl}/routes/api/studentData`);
 			const dataFromApi = await response.json();
 
 			// Transform the data from the API to match the component's expected structure

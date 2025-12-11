@@ -1,6 +1,6 @@
 <script></script>
 
-<div class="bg-slate-100 h-full">
+<div class="bg-slate-100 min-h-screen">
    <a href="/login">
    <button>
       login
