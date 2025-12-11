@@ -13,7 +13,7 @@ node_modules
 Thumbs.db
 
 # Env
-.env
+#.env
 .env.*
 !.env.example
 !.env.test
@@ -37,11 +37,6 @@ yarn.lock
 build/
 .vercel/
 .netlify/
-
-# Environment variables
-.env
-.env.*
-!.env.example
 
 # Database (don't commit the actual database!)
 database.db
