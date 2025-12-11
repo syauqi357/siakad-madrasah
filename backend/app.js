@@ -3,6 +3,10 @@ import cors from 'cors';
 import schoolDataRouter from './routes/api/schooldataNav.js';
 import studentDataRouter from './routes/api/student.js';
 import authRouter from './routes/api/auth.js';
+import dotenv from 'dotenv';
+
+// config .env files
+dotenv.config()
 
 import path from 'path'; // Import path module
 
