@@ -1,15 +1,14 @@
 <script lang="ts">
 	// logic for turn out
-
 </script>
 
 <div class="min-h-screen">
-	<div class="flex h-screen items-center justify-center flex-col gap-24">
+	<div class="flex h-screen flex-col items-center justify-center gap-24">
 		<a href="/login">
-			<button class="hover:bg-blue-700 gap-2 bg-blue-500 ease-in-out transition-all duration-200 flex items-center justify-center p-3 pr-5 pl-5 text-white rounded-md">
-				<span class="bg-amber-300 w-6 h-6">
-
-				</span>
+			<button
+				class="flex items-center justify-center gap-2 rounded-md bg-blue-500 p-3 pr-5 pl-5 text-lg text-white capitalize transition-all duration-200 ease-in-out hover:bg-blue-700"
+			>
+				<span class="h-6 w-6 bg-blue-300"> </span>
 				login
 			</button>
 		</a>

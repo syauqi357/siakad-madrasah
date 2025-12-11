@@ -34,13 +34,13 @@
 {/if}
 
 <aside
-	class="fixed top-0 left-0 z-40 h-screen w-64 border-r border-neutral-500 bg-neutral-200 pt-22 transition-transform {sidebarOpen
+	class="fixed top-0 left-0 z-40 h-screen w-64 border-r border-neutral-500 bg-slate-100 pt-22 transition-transform {sidebarOpen
 		? 'translate-x-0'
 		: '-translate-x-full'} sm:translate-x-0"
 >
-	<div class="h-full overflow-y-auto bg-neutral-200 px-3 pb-5">
+	<div class="h-full overflow-y-auto bg-slate-100 px-3 pb-5">
 		<ul class="space-y-2 font-medium">
-			{#each navItems as item}
+			{#each navItems as item (item.name)}
 				<li>
 					{#if item.hasDropdown && item.children}
 						<!-- Parent item with dropdown -->
@@ -89,7 +89,7 @@
 								: 'max-h-0 opacity-0'}"
 						>
 							<ul class="mt-2 ml-3 space-y-1 border-l-2 border-neutral-300 pl-3">
-								{#each item.children as child}
+								{#each item.children as child (child.name)}
 									<li class="transform transition-all duration-200 hover:translate-x-1">
 										<a
 											href={child.href}
