@@ -105,7 +105,7 @@ Summary of Changes:
 				<!-- Toggle sidebar button-->
 				<button
 					on:click={() => (sidebarOpen = !sidebarOpen)}
-					class="inline-flex items-center rounded-lg p-2 text-sm text-neutral-400 hover:bg-neutral-200 focus:ring-2 focus:ring-neutral-300 focus:outline-none"
+					class="sm:hidden inline-flex items-center rounded-lg p-2 text-sm text-neutral-400 hover:bg-neutral-200 focus:ring-2 focus:ring-neutral-300 focus:outline-none"
 				>
 					<span class="sr-only">Toggle sidebar</span>
 					<svg class="h-6 w-6" fill="currentColor" viewBox="0 0 20 20">

@@ -2,11 +2,14 @@
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import type { User } from '$lib/types/navigation';
+    import { quintOut } from 'svelte/easing';
+    import { slide } from 'svelte/transition';
 
 	let username = '';
 	let password = '';
 	let error = '';
 	let loading = false;
+    let showError = false;
 
 	onMount(() => {
 		const token = localStorage.getItem('token');
@@ -15,39 +18,38 @@
 		}
 	});
 
+    function triggerError(message: string) {
+        error = message;
+        showError = true;
+        setTimeout(() => {
+            showError = false;
+        }, 5000); // Auto-dismiss after 5 seconds
+    }
+
 	async function handleLogin(): Promise<void> {
-		console.log('Login attempt:', username, password); // DEBUG
 		loading = true;
 		error = '';
+        showError = false;
 
 		try {
-			// Call backend API using environment variable
-			const apiUrl = import.meta.env.VITE_API_URL;
-			const response = await fetch(`${apiUrl}/api/auth/login`, {
+			const authUrl = import.meta.env.VITE_API_URL;
+			const response = await fetch(`${authUrl}/api/auth/login`, {
 				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({
-					username,
-					password
-				})
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ username, password })
 			});
-
-			console.log('Response status:', response.status); // DEBUG
 
 			if (!response.ok) {
 				const errorData = await response.json();
-				error = errorData.message || 'Login failed';
+                triggerError(errorData.message || 'Login failed');
 				loading = false;
 				return;
 			}
 
 			const data = await response.json();
-			console.log('Login response:', data); // DEBUG
 
 			if (!data.success || !data.token || !data.user) {
-				error = data.message || 'Invalid response from server';
+                triggerError(data.message || 'Invalid response from server');
 				loading = false;
 				return;
 			}
@@ -59,32 +61,33 @@
 				role: data.user.role
 			};
 
-			console.log('Saving to localStorage:', { token: data.token, user }); // DEBUG
-
 			localStorage.setItem('token', data.token);
 			localStorage.setItem('user', JSON.stringify(user));
 
 			loading = false;
-
-			console.log('Redirecting to dashboard...'); // DEBUG
 			goto('/dashboard');
 		} catch (err) {
-			console.error('Login error:', err); // DEBUG
-			error = err instanceof Error ? err.message : 'An error occurred during login';
+            const message = err instanceof Error ? err.message : 'An error occurred during login';
+            triggerError(message);
 			loading = false;
 		}
 	}
 </script>
 
+<!-- Error Toast Notification -->
+{#if showError}
+    <div
+        transition:slide={{ duration: 300, easing: quintOut, axis: 'x' }}
+        class="fixed top-5 right-5 z-50 flex items-center justify-between max-w-sm p-4 bg-red-500 text-white rounded-lg shadow-lg"
+    >
+        <span class="font-medium">{error}</span>
+        <button on:click={() => showError = false} class="ml-4 text-xl font-bold leading-none">&times;</button>
+    </div>
+{/if}
+
 <div class="min-h-screen flex items-center justify-center bg-linear-60 from-purple-600 to-blue-600">
 	<div class="bg-white p-8 rounded-lg shadow-xl max-w-md w-full">
 		<h1 class="text-2xl font-bold text-center mb-6">Login to School System</h1>
-
-		{#if error}
-			<div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-				{error}
-			</div>
-		{/if}
 
 		<form on:submit|preventDefault={handleLogin}>
 			<div class="mb-4">

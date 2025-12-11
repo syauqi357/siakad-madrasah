@@ -1,16 +1,16 @@
 import express from 'express';
 import cors from 'cors';
+import authRouter from './routes/api/auth.js';
 import schoolDataRouter from './routes/api/schooldataNav.js';
 import studentDataRouter from './routes/api/student.js';
-import authRouter from './routes/api/auth.js';
 import dotenv from 'dotenv';
 
 // This line loads the environment variables from a .env file into process.env
 dotenv.config()
+const app = express();
 
 import path from 'path'; // Import path module
-
-const app = express();
+app.use(cors());
 
 // --- Explanation of Environment Variables ---
 //
@@ -33,10 +33,9 @@ const app = express();
 //    - You define this variable in your `.env` file (e.g., PORT=5000).
 //    - `process.env.PORT` reads that value, which is then assigned to the `port` constant.
 //
-const port = process.env.PORT;
 
+const port = process.env.PORT;
 // Enable CORS for all routes use middleware system
-app.use(cors());
 
 // middleware as reset token
 // app.use()
@@ -46,7 +45,7 @@ app.use(express.json());
 // Serve static files from the '(public)' directory
 // In ES modules, __dirname is not directly available. We construct it.
 import { fileURLToPath } from 'url';
-import { getAllStudents } from './controllers/studentDatacontroller.js';
+// import { getAllStudents } from './controllers/studentDatacontroller.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
