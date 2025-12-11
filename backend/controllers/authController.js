@@ -181,7 +181,7 @@ export const login = async (req, res) => {
 	try {
 		const { username, password } = req.body;
 
-		console.log('Login attempt:', { username, password }); //debug code
+		// console.log('Login attempt:', { username, password }); //debug code
 
 		// Validate input
 		if (!username || !password) {
@@ -195,9 +195,9 @@ export const login = async (req, res) => {
 		const accounts = getAccounts();
 
 		// debug code : dont remove until using real database
-		console.log('Available accounts:', accounts.length);
-		console.log('Guru.json path:', guruPath);
-		console.log('Accounts data:', accounts.map(a => ({ username: a.username, password: a.password })));
+		// console.log('Available accounts:', accounts.length);
+		// console.log('Guru.json path:', guruPath);
+		// console.log('Accounts data:', accounts.map(a => ({ username: a.username, password: a.password })));
 
 		// Find user by username and password
 		const user = accounts.find(
@@ -205,7 +205,7 @@ export const login = async (req, res) => {
 		);
 
 		// debug code to detect the user already exist and total user founded
-		console.log('User found:', !!user);
+		// console.log('User found:', !!user);
 
 		if (!user) {
 			return res.status(401).json({

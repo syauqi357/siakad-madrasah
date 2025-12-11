@@ -5,20 +5,41 @@ import studentDataRouter from './routes/api/student.js';
 import authRouter from './routes/api/auth.js';
 import dotenv from 'dotenv';
 
-// config .env files
+// This line loads the environment variables from a .env file into process.env
 dotenv.config()
 
 import path from 'path'; // Import path module
 
 const app = express();
-const port = 3000;
+
+// --- Explanation of Environment Variables ---
+//
+// `process.env` vs `import.meta.env`:
+//
+// 1. `process.env`:
+//    - This is the standard, built-in object in Node.js for accessing environment variables.
+//    - It's used for BACKEND code, like in this Express server.
+//    - The `dotenv.config()` call above reads your `.env` file and loads its contents
+//      (e.g., PORT=5000) into this `process.env` object.
+//
+// 2. `import.meta.env`:
+//    - This is a feature provided by the Vite build tool, which SvelteKit uses.
+//    - It is used to expose environment variables to FRONTEND (client-side) code.
+//    - It will NOT work in a standard Node.js backend file like this one, which is why
+//      using it here caused the "Cannot read properties of undefined" error.
+//
+// `.PORT`:
+//    - This is the specific variable we are accessing from the environment.
+//    - You define this variable in your `.env` file (e.g., PORT=5000).
+//    - `process.env.PORT` reads that value, which is then assigned to the `port` constant.
+//
+const port = process.env.PORT;
 
 // Enable CORS for all routes use middleware system
 app.use(cors());
 
 // middleware as reset token
 // app.use()
-
 // Parse JSON bodies
 app.use(express.json());
 
