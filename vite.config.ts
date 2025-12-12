@@ -8,7 +8,7 @@ export default defineConfig({
 
 	// source modify : https://dev.to/digitaldrreamer/change-your-sveltekit-or-any-vite-powered-dev-server-localhost-port-2e2h
 	server: {
-		port: 1243
+		port: 1245
 	},
 	preview: {
 		port: 1243
