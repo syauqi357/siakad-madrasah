@@ -24,10 +24,12 @@ export const navigationConfig: Record<UserRole, NavItem[]> = {
 	admin: [
 		{
 			name: 'Dashboard',
+			icon: '',
 			href: '/dashboard/[admin]'
 		},
 		{
 			name: 'sarana prasarana',
+			icon: '',
 			href: '/sarpras',
 			hasDropdown: true,
 			children: [
@@ -38,6 +40,7 @@ export const navigationConfig: Record<UserRole, NavItem[]> = {
 		},
 		{
 			name: 'Student',
+			icon: '',
 			href: '/siswa',
 			hasDropdown: true,
 			children: [
@@ -52,10 +55,12 @@ export const navigationConfig: Record<UserRole, NavItem[]> = {
 		},
 		{
 			name: 'Rombel',
+			icon: '',
 			href: '/rombel'
 		},
 		{
 			name: 'guru & tendik',
+			icon: '',
 			href: '/gurutendik',
 			hasDropdown: true,
 			children: [
@@ -67,37 +72,41 @@ export const navigationConfig: Record<UserRole, NavItem[]> = {
 		},
 		{
 			name: 'nilai siswa',
+			icon: '',
 			href: '/score',
 			hasDropdown: true,
 			children: [
-				{ name: 'ujian', href: '/score/exam' },
-				{ name: 'tugas', href: '/score/task' },
-				{ name: 'mata pelajaran', href: '/score/subject' },
-				{ name: 'kenaikan kelas', href: '/score/upgrade' }
+				{ name: 'ujian',icon: '', href: '/score/exam' },
+				{ name: 'tugas',icon: '', href: '/score/task' },
+				{ name: 'mata pelajaran',icon: '', href: '/score/subject' },
+				{ name: 'kenaikan kelas',icon: '', href: '/score/upgrade' }
 			]
 		},
 		{
 			name: 'konfirmasi',
+			icon: '',
 			href: '/confirm',
 			hasDropdown: true,
 			children: [
-				{ name: 'kelembagaan', href: '/confirm/lembaga' },
-				{ name: 'sarana prasarana', href: '/confirm/sarpras' },
-				{ name: 'siswa', href: '/confirm/studentdata' },
-				{ name: 'guru tendik', href: '/confirm/teacher' }
+				{ name: 'kelembagaan', icon: '', href: '/confirm/lembaga' },
+				{ name: 'sarana prasarana', icon: '', href: '/confirm/sarpras' },
+				{ name: 'siswa', icon: '', href: '/confirm/studentdata' },
+				{ name: 'guru tendik', icon: '', href: '/confirm/teacher' }
 			]
 		},
 		{
 			name: 'info lainnya',
+			icon: '',
 			href: '/info',
 			hasDropdown: true,
 			children: [
-				{ name: 'daftar kurikulum', href: '/info/curriculum' },
-				{ name: 'hari sekolah', href: '/info/daysch' }
+				{ name: 'daftar kurikulum', icon: '', href: '/info/curriculum' },
+				{ name: 'hari sekolah', icon: '', href: '/info/daysch' }
 			]
 		},
 		{
 			name: 'Audit Logs',
+			icon: '',
 			href: '/admin/audit_logs'
 		}
 	],
@@ -105,48 +114,54 @@ export const navigationConfig: Record<UserRole, NavItem[]> = {
 	teacher: [
 		{
 			name: 'Dashboard',
+			icon: '',
 			href: '/dashboard'
 		},
 		{
 			name: 'sarana prasarana',
+			icon: '',
 			href: '/sarpras',
 			hasDropdown: true,
 			children: [
-				{ name: 'aset tetap', href: '/sarpras/assettetap' },
-				{ name: 'aset lancar', href: '/sarpras/asetlancar' },
-				{ name: 'perpustakaan', href: '/sarpras/perpustakaan' }
+				{ name: 'aset tetap', icon: '', href: '/sarpras/assettetap' },
+				{ name: 'aset lancar', icon: '', href: '/sarpras/asetlancar' },
+				{ name: 'perpustakaan', icon: '', href: '/sarpras/perpustakaan' }
 			]
 		},
 		{
 			name: 'Student',
+			icon: '',
 			href: '/siswa',
 			hasDropdown: true,
 			children: [
-				{ name: 'Student List', href: '/siswa' },
-				{ name: 'Alumni', href: '/siswa/alumni' }
+				{ name: 'Student List',icon: '', href: '/siswa' },
+				{ name: 'Alumni', icon: '', href: '/siswa/alumni' }
 			]
 		},
 		{
 			name: 'Rombel',
+			icon: '',
 			href: '/rombel'
 		},
 		{
 			name: 'nilai siswa',
+			icon: '',
 			href: '/score',
 			hasDropdown: true,
 			children: [
-				{ name: 'ujian', href: '/score/exam' },
-				{ name: 'tugas', href: '/score/task' },
-				{ name: 'mata pelajaran', href: '/score/subject' }
+				{ name: 'ujian',icon: '', href: '/score/exam' },
+				{ name: 'tugas',icon: '', href: '/score/task' },
+				{ name: 'mata pelajaran', icon: '', href: '/score/subject' }
 			]
 		},
 		{
 			name: 'info lainnya',
+			icon: '',
 			href: '/info',
 			hasDropdown: true,
 			children: [
-				{ name: 'daftar kurikulum', href: '/info/curriculum' },
-				{ name: 'hari sekolah', href: '/info/daysch' }
+				{ name: 'daftar kurikulum', icon: '', href: '/info/curriculum' },
+				{ name: 'hari sekolah', icon: '', href: '/info/daysch' }
 			]
 		}
 	]
