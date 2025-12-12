@@ -24,6 +24,7 @@ Summary of Changes:
 	// User and logout function
 	export let user: any;
 	export let logout: () => void;
+	const apiUrl = import.meta.env.VITE_API_URL;
 
 	// Define a type for our school data for better type-safety.
 	type SchoolData = {
@@ -50,7 +51,7 @@ Summary of Changes:
 			// endpoint app.js
 			// docs : pending
 			
-			const response = await fetch('http://localhost:3000/routes/api/schoolData'); 
+			const response = await fetch(`${apiUrl}/routes/api/schoolData`); 
 			//get API from backend using express from localhost:3000/api/schoolData and this is taking a variable const on the file 
 
 			if (!response.ok) {
@@ -64,7 +65,7 @@ Summary of Changes:
 			schoolData = {
 				name: fetchedData.name,
 				npsn: fetchedData.npsn,
-				logoUrl: fetchedData.logoUrl ? `http://localhost:3000/${fetchedData.logoUrl}` : logo
+				logoUrl: fetchedData.logoUrl ? `${apiUrl}/${fetchedData.logoUrl}` : logo
 			};
 
 			loading = false;
@@ -98,7 +99,7 @@ Summary of Changes:
 	}
 </script>
 
-<nav class="pl-12 pr-12 fixed top-0 z-50 w-full border-b border-neutral-400 bg-slate-100">
+<nav class="sm:pl-12 sm:pr-12 fixed top-0 z-50 w-full border-b border-neutral-400 bg-slate-100">
 	<div class="px-3 py-3 lg:px-5 lg:pl-3">
 		<div class="flex items-center justify-between">
 			<div class="flex items-center justify-start">
@@ -139,10 +140,10 @@ Summary of Changes:
 						</span>
 						<span class="text-sm text-black">
 							<!-- npsn layout positioning -->
-							<div class="flex flex-row items-center gap-2 p-0.5">
+							<div class="flex flex-row items-center gap-2 p-0.5 uppercase text-xs sm:text-sm">
 								npsn :
 								<!-- school npsn number -->
-								<div class="rounded-md bg-slate-300 p-0.5 pr-2 pl-2">
+								<div class="rounded-md bg-slate-300 p-0.5 pr-2 pl-2 border border-slate-400">
 									{@html schoolData.npsn}
 								</div>
 							</div>
@@ -227,7 +228,7 @@ Summary of Changes:
 						{/if}
 
 						<!-- Menu Items -->
-						<div class="py-2">
+						<div class="py-2 flex items-center justify-center">
 							<button
 								on:click={handleLogout}
 								class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors flex items-center gap-2"
@@ -248,6 +249,11 @@ Summary of Changes:
 								</svg>
 								Logout
 							</button>
+							<a href="">
+								<button class="flex capitalize hover:bg-blue-200 text-blue-500 w-full px-4 py-2 transition-all ease-in-out">
+									akun
+								</button>
+							</a>
 						</div>
 					</div>
 				{/if}

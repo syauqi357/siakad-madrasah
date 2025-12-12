@@ -25,15 +25,16 @@
 	onMount(async () => {
 		try {
 			// Make request to your Express API endpoint
-			const response = await fetch(`http://localhost:3000/routes/api/studentData/${$page.params.id}`);
+			const apiUrl = import.meta.env.VITE_API_URL;
+			const response = await fetch(`${apiUrl}/routes/api/studentData/${$page.params.id}`);
 
 			if (!response.ok) {
 				throw new Error('Student not found');
 			}
 
 			student = await response.json();
-		} catch (err) {
-			error = err.message;
+		} catch (err: unknown) {
+			error = err instanceof Error ? err.message : String(err);
 		} finally {
 			loading = false;
 		}
