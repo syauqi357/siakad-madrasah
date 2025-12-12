@@ -4,7 +4,8 @@
 	"version": "0.0.1",
 	"type": "module",
 	"scripts": {
-		"start": "concurrently -n \"SVELTE,EXPRESS\" -c \"blue,green\" \"npm run dev\" \"cd backend && npm run dev\"",
+		"start": "concurrently -n \"SVELTE,EXPRESS\" -c \"blue,green\" \"npm run dev\" \"cd backend && npm run dev\" \"npm run open\"",
+		"open": "start http://localhost:1243",
 		"dev": "vite dev",
 		"build": "vite build",
 		"preview": "vite preview",

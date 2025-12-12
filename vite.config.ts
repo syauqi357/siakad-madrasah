@@ -3,5 +3,11 @@ import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-	plugins: [tailwindcss(), sveltekit()]
+	plugins: [tailwindcss(), sveltekit()],
+	// Added Config Part
+
+	// source modify : https://dev.to/digitaldrreamer/change-your-sveltekit-or-any-vite-powered-dev-server-localhost-port-2e2h
+	server: {
+		port: 1243
+	}
 });
