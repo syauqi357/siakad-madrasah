@@ -111,7 +111,7 @@
 	<div
 		class="w-full max-w-sm rounded-xl p-8 sm:h-fit sm:max-h-screen sm:border sm:border-slate-300 sm:bg-slate-50"
 	>
-		<h1 class=" flex flex-col items-center mb-6 text-center text-2xl font-bold capitalize text-2xl/9">Login ke platform <div class="transition-all ease-in-out bg-blue-600 rotate-3 hover:rotate-none text-slate-100 pl-2 pr-2 rounded-sm border border-blue-700 flex items-center w-fit">akademik</div> </h1>
+		<h1 class=" flex flex-col items-center mb-6 text-center font-bold capitalize text-2xl/9">Login ke platform <div class="transition-all ease-in-out bg-blue-600 rotate-3 hover:rotate-none text-slate-100 pl-2 pr-2 rounded-sm border border-blue-700 flex items-center w-fit">akademik</div> </h1>
 
 		<form on:submit|preventDefault={handleLogin}>
 			<div class="mb-4">
