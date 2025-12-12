@@ -17,7 +17,6 @@
 		name: 'our'
 	};
 
-
 	let loading = true;
 
 	onMount(async () => {
@@ -25,8 +24,8 @@
 			// copy data from navbar
 			// endpoint app.js
 			// docs : pending
-
-			const response = await fetch('http://localhost:3000/routes/api/schoolData');
+			const apiUrl = import.meta.env.VITE_API_URL;
+			const response = await fetch(`${apiUrl}/routes/api/schoolData`);
 			//get API from backend using express from localhost:3000/api/schoolData and this is taking a variable const on the file
 
 			if (!response.ok) {
@@ -39,6 +38,8 @@
 			// sukses ambil data dari appjs endpoint server
 			schoolData = {
 				name: fetchedData.name
+
+				// shutdown data just name of the school <-- this code will be deleted
 				//npsn: fetchedData.npsn,
 				//logoUrl: fetchedData.logoUrl ? `http://localhost:3000/api/${fetchedData.logoUrl}` : logo
 			};
