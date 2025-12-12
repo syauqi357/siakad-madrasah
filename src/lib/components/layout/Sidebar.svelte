@@ -46,10 +46,10 @@
 						<!-- Parent item with dropdown -->
 						<button
 							on:click={() => toggleDropdown(item.name)}
-							class="group flex w-full items-center justify-between rounded-lg p-2 text-neutral-900 transition-all duration-200 hover:bg-neutral-300 {openDropdowns[
+							class="group flex w-full items-center justify-between rounded-lg p-2 text-slate-900 transition-all duration-200 hover:bg-slate-200 {openDropdowns[
 								item.name
 							]
-								? 'bg-neutral-200'
+								? 'bg-slate-200'
 								: ''}"
 						>
 							<div class="flex items-center justify-center">
@@ -88,12 +88,12 @@
 								? 'max-h-96 opacity-100'
 								: 'max-h-0 opacity-0'}"
 						>
-							<ul class="mt-2 ml-3 space-y-1 border-l-2 border-neutral-300 pl-3">
+							<ul class="mt-2 ml-3 space-y-1 border-l-2 border-slate-300 pl-3">
 								{#each item.children as child (child.name)}
 									<li class="transform transition-all duration-200 hover:translate-x-1">
 										<a
 											href={child.href}
-											class="capitalize block rounded-lg p-2 text-sm text-neutral-700 transition-all duration-200 hover:bg-neutral-200 hover:font-medium hover:text-neutral-900"
+											class="capitalize block rounded-lg p-2 text-sm text-slate-700 transition-all duration-200 hover:bg-slate-200 hover:font-medium hover:text-slate-900"
 										>
 											<span>
 												{child.icon || ''}
@@ -108,7 +108,7 @@
 						<!-- Regular menu item without dropdown -->
 						<a
 							href={item.href}
-							class="group flex items-center justify-between rounded-lg p-2 text-neutral-900 transition-all duration-200 hover:translate-x-1 hover:bg-neutral-300"
+							class="group flex items-center justify-between rounded-lg p-2 text-slate-900 transition-all duration-200 hover:translate-x-1 hover:bg-slate-200"
 						>
 							<div class="flex items-center justify-center">
 								<span class="capitalize h-6 w-6 transition-transform duration-200 group-hover:scale-110">
