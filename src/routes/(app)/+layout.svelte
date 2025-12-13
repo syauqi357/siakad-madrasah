@@ -41,12 +41,16 @@
 
 {#if user}
 	<div class="flex min-h-screen">
-		<Sidebar bind:sidebarOpen={sidebarOpen} {navItems} bind:openDropdowns />
+		<div class="print:hidden">
+			<Sidebar bind:sidebarOpen={sidebarOpen} {navItems} bind:openDropdowns />
+		</div>
 
 		<div class="flex-1">
-			<Navbar bind:sidebarOpen {user} {logout} />
+			<div class="print:hidden">
+				<Navbar bind:sidebarOpen {user} {logout} />
+			</div>
 
-			<main class="p-6 sm:ml-64 sm:mt-20 mt-20 bg-white">
+			<main class="p-6 sm:ml-64 sm:mt-20 mt-20 bg-white print:m-0 print:p-0 print:ml-0 print:mt-0">
 				<slot />
 			</main>
 		</div>
@@ -56,3 +60,11 @@
 		<p>Loading...</p>
 	</div>
 {/if}
+
+<style>
+	@media print {
+		:global(body) {
+			background: white;
+		}
+	}
+</style>
