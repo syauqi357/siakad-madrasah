@@ -3,5 +3,4 @@ title BUILD AKADEMIK
 echo memulai... jangan menutup terminal hingga selesai...
 echo.
 
-start npm i
-start npm run build
+start npm i run build

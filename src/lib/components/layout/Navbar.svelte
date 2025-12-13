@@ -24,6 +24,8 @@ Summary of Changes:
 	// User and logout function
 	export let user: any;
 	export let logout: () => void;
+
+	// api variable
 	const apiUrl = import.meta.env.VITE_API_URL;
 
 	// Define a type for our school data for better type-safety.
