@@ -35,7 +35,8 @@ export const navigationConfig: Record<UserRole, NavItem[]> = {
 			children: [
 				{ name: 'aset tetap', icon: '', href: '/sarpras/assettetap' },
 				{ name: 'aset lancar', icon: '', href: '/sarpras/asetlancar' },
-				{ name: 'perpustakaan', icon: '', href: '/sarpras/perpustakaan' }
+				{ name: 'perpustakaan', icon: '', href: '/sarpras/perpustakaan' },
+				{ name: 'rekapitulasi', icon: '', href: '/lembaga' }
 			]
 		},
 		{
