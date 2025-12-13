@@ -177,7 +177,7 @@ export const verifyToken = (req, res, next) => {
 		req.user = result.decoded;
 		next();
 	} catch (error) {
-		console.error('Token verification controller error:', error);
+		console.error('Token verification controller error:', error); // debug code
 		return res.status(401).json({
 			success: false,
 			message: 'Invalid or expired token'
