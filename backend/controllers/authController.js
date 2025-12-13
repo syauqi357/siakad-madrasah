@@ -1,26 +1,8 @@
-import fs from 'fs';
-import path from 'path';
-import jwt from 'jsonwebtoken';
-import { fileURLToPath } from 'url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+import { authenticateUser, verifyTokenService } from '../services/authService.js';
 
 // ============================================================================
-// CURRENT IMPLEMENTATION: Reading from JSON file (guru.json)
+// CONTROLLER LAYER - Request/Response Handling Only
 // ============================================================================
-
-// Read accounts from guru.json
-const guruPath = path.join(__dirname, '../data/guru.json');
-const getAccounts = () => {
-	try {
-		const data = fs.readFileSync(guruPath, 'utf-8');
-		return JSON.parse(data);
-	} catch (error) {
-		console.error('Error reading guru.json:', error);
-		return [];
-	}
-};
 
 // ============================================================================
 // MIGRATION TO SQLITE WITH DRIZZLE ORM - Step by Step Guide
@@ -91,159 +73,67 @@ seed();
 
 Then run: node backend/seed.js
 
-STEP 6: Update This Controller (authController.js)
-===================================================
-Replace the getAccounts() function and login controller with:
+STEP 6: Update authService.js
+===========================
+Replace the authenticateUser function with:
 
- Import Drizzle
- import { db } from '../db/index.js';
- import { users } from '../db/schema.js';
- import { eq, and } from 'drizzle-orm';
- //New getAccounts using SQLite
- export const getAccounts = async () => {
-   try {
-     return await db.select().from(users);
-   } catch (error) {
-     console.error('Error reading from database:', error);
-     return [];
-   }
- };
- //New login controller using SQLite
- export const login = async (req, res) => {
-   try {
-     const { username, password } = req.body;
-     console.log('Login attempt:', { username, password });
+```javascript
+import { db } from '../db/index.js';
+import { users } from '../db/schema.js';
+import { eq, and } from 'drizzle-orm';
 
-     if (!username || !password) {
-       return res.status(400).json({
-         success: false,
-         message: 'Username and password are required'
-       });
-     }
+export const authenticateUser = async (username, password) => {
+  try {
+    const user = await db.select().from(users)
+      .where(and(
+        eq(users.username, username),
+        eq(users.password, password)
+      ))
+      .limit(1);
 
-     // Query database instead of reading JSON
-     const user = await db.select().from(users)
-       .where(and(
-         eq(users.username, username),
-         eq(users.password, password)
-       ))
-       .limit(1);
+    if (!user || user.length === 0) {
+      return {
+        success: false,
+        message: 'Invalid username or password'
+      };
+    }
 
-     if (!user || user.length === 0) {
-       return res.status(401).json({
-         success: false,
-         message: 'Invalid username or password'
-       });
-     }
+    const foundUser = user[0];
+    const token = jwt.sign({...}, JWT_SECRET, { expiresIn: '24h' });
 
-     const foundUser = user[0];
-     const token = jwt.sign(
-       {
-         id: foundUser.id,
-         username: foundUser.username,
-         email: foundUser.email,
-         role: foundUser.role
-       },
-       JWT_SECRET,
-       { expiresIn: '24h' }
-     );
-
-     const userResponse = {
-       id: foundUser.id,
-       username: foundUser.username,
-       email: foundUser.email,
-       role: foundUser.role,
-       nama_lengkap: foundUser.nama_lengkap,
-       jabatan: foundUser.jabatan
-     };
-
-     return res.status(200).json({
-       success: true,
-       message: 'Login successful',
-       token,
-       user: userResponse
-     });
-   } catch (error) {
-     console.error('Login error:', error);
-     return res.status(500).json({
-       success: false,
-       message: 'Internal server error'
-     });
-   }
- };
+    return {
+      success: true,
+      message: 'Login successful',
+      token,
+      user: userResponse
+    };
+  } catch (error) {
+    console.error('Authentication error:', error);
+    return { success: false, message: 'Internal server error' };
+  }
+};
+```
 
 */
-
-const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_key_change_this';
 
 // Login controller
 export const login = async (req, res) => {
 	try {
 		const { username, password } = req.body;
 
-		// console.log('Login attempt:', { username, password }); //debug code
+		// Call service layer to authenticate
+		const result = authenticateUser(username, password);
 
-		// Validate input
-		if (!username || !password) {
-			return res.status(400).json({
+		if (!result.success) {
+			return res.status(result.message === 'Username and password are required' ? 400 : 401).json({
 				success: false,
-				message: 'Username and password are required'
+				message: result.message
 			});
 		}
 
-		// Get accounts from guru.json
-		const accounts = getAccounts();
-
-		// debug code : dont remove until using real database
-		// console.log('Available accounts:', accounts.length);
-		// console.log('Guru.json path:', guruPath);
-		// console.log('Accounts data:', accounts.map(a => ({ username: a.username, password: a.password })));
-
-		// Find user by username and password
-		const user = accounts.find(
-			account => account.username === username && account.password === password
-		);
-
-		// debug code to detect the user already exist and total user founded
-		// console.log('User found:', !!user);
-
-		if (!user) {
-			return res.status(401).json({
-				success: false,
-				message: 'Invalid username or password'
-			});
-		}
-
-		// Create JWT token
-		const token = jwt.sign(
-			{
-				id: user.id,
-				username: user.username,
-				email: user.email,
-				role: user.role
-			},
-			JWT_SECRET,
-			{ expiresIn: '24h' }
-		);
-
-		// Return user data without password
-		const userResponse = {
-			id: user.id,
-			username: user.username,
-			email: user.email,
-			role: user.role,
-			nama_lengkap: user.nama_lengkap,
-			jabatan: user.jabatan
-		};
-
-		return res.status(200).json({
-			success: true,
-			message: 'Login successful',
-			token,
-			user: userResponse
-		});
+		return res.status(200).json(result);
 	} catch (error) {
-		console.error('Login error:', error);
+		console.error('Login controller error:', error);
 		return res.status(500).json({
 			success: false,
 			message: 'Internal server error'
@@ -260,7 +150,7 @@ export const logout = async (req, res) => {
 			message: 'Logout successful'
 		});
 	} catch (error) {
-		console.error('Logout error:', error);
+		console.error('Logout controller error:', error);
 		return res.status(500).json({
 			success: false,
 			message: 'Internal server error'
@@ -273,17 +163,21 @@ export const verifyToken = (req, res, next) => {
 	try {
 		const token = req.headers.authorization?.split(' ')[1];
 
-		if (!token) {
+		// Call service layer to verify token
+		const result = verifyTokenService(token);
+
+		if (!result.success) {
 			return res.status(401).json({
 				success: false,
-				message: 'No token provided'
+				message: result.message
 			});
 		}
 
-		const decoded = jwt.verify(token, JWT_SECRET);
-		req.user = decoded;
+		// Attach decoded user info to request
+		req.user = result.decoded;
 		next();
 	} catch (error) {
+		console.error('Token verification controller error:', error);
 		return res.status(401).json({
 			success: false,
 			message: 'Invalid or expired token'
