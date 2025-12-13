@@ -12,22 +12,22 @@
 	let navItems: NavItem[] = [];
 
 	onMount(() => {
-		console.log('App layout mounted'); // DEBUG
+		// console.log('App layout mounted'); // DEBUG
 
 		const token = localStorage.getItem('token');
 		const userData = localStorage.getItem('user');
 
-		console.log('Token:', token); // DEBUG
-		console.log('UserData:', userData); // DEBUG
+		// console.log('Token:', token); // DEBUG
+		// console.log('UserData:', userData); // DEBUG
 
 		if (token && userData) {
 			user = JSON.parse(userData) as User;
 			navItems = navigationConfig[user.role] || [];
 
-			console.log('User:', user); // DEBUG
-			console.log('NavItems:', navItems); // DEBUG
+			// console.log('User:', user); // DEBUG
+			// console.log('NavItems:', navItems); // DEBUG
 		} else {
-			console.log('No auth, redirecting to login'); // DEBUG
+			// console.log('No auth, redirecting to login'); // DEBUG
 			goto('/login');
 		}
 	});

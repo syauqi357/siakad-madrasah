@@ -5,7 +5,7 @@
 
 	// Initialize schoolData with a default structure.
 
-	// initialize thing
+	// initialize school name
 	type SchoolData = {
 		name: string;
 	};
@@ -46,7 +46,8 @@
 
 			loading = false;
 		} catch (err) {
-			console.log('error : unable to fetch data', err);
+			// handle error
+			console.error('error : unable to fetch data', err);
 		}
 	});
 
