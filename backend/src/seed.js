@@ -2,7 +2,7 @@
 import 'dotenv/config';
 import { drizzle } from 'drizzle-orm/better-sqlite3';
 import Database from 'better-sqlite3';
-import { studentTable } from './db/schema/schema.js';
+import { studentTable } from './db/schema/studentsdataTable.js';
 
 const sqlite = new Database(process.env.DATABASE_URL);
 const db = drizzle(sqlite);

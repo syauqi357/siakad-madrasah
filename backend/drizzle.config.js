@@ -4,8 +4,7 @@ import { defineConfig } from 'drizzle-kit';
 export default defineConfig({
   out: './drizzle',
 
-  // switched to schema.js by folder schema at 
-  schema: './src/db/schema/schema.js',
+  schema: './src/db/schema/*.js',
   dialect: 'sqlite',
   dbCredentials: {
     url: process.env.DATABASE_URL,
