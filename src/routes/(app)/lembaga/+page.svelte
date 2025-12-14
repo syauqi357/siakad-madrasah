@@ -48,7 +48,7 @@
 	{#if facilities.canteen.length > 0}
 		<div class="image-grid">
 			{#each facilities.canteen as image, index}
-				<img src="{apiUrl}{image}" alt="Canteen {index + 1}" class="w-md h-md" />
+				<img src="{apiUrl}{image}" alt="Canteen {index + 1}" class="h-md w-md" />
 			{/each}
 		</div>
 	{:else}
@@ -61,7 +61,7 @@
 	{/if} -->
 	<!-- Or access specific indices safely -->
 	{#if facilities.lab.lab_komputer[0]}
-		<img src="{apiUrl}{facilities.lab.lab_komputer[0]}" alt="Lab Komputer" class="w-md h-md" />
+		<img src="{apiUrl}{facilities.lab.lab_komputer[0]}" alt="Lab Komputer" class="h-md w-md" />
 	{/if}
 {:catch error}
 	<p style="color: red">Error loading facilities: {error.message}</p>
