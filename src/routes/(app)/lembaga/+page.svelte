@@ -44,25 +44,38 @@
 {#await facilitiesPromise}
 	<p>Loading facilities...</p>
 {:then facilities}
-	<!-- Example: Display canteen images -->
-	{#if facilities.canteen.length > 0}
-		<div class="image-grid">
-			{#each facilities.canteen as image, index}
-				<img src="{apiUrl}{image}" alt="Canteen {index + 1}" class="w-md h-md" />
-			{/each}
-		</div>
-	{:else}
-		<p>No canteen images available</p>
-	{/if}
+	<!-- Display all facility images -->
 
-	<!-- Or access specific indices safely -->
-	<!-- {#if facilities.lab.lab_komputer[0]}
+	<div class="space-x-6 flex">
+		<!-- Example: Display canteen images -->
+		{#if facilities.canteen.length > 0}
+			<div class="image-grid">
+				<label for="canteen-image">foto kantin:</label>
+				{#each facilities.canteen as image, index}
+					<img
+						src="{apiUrl}{image}"
+						alt="Canteen {index + 1}"
+						class="h-34 w-64 rounded-lg object-cover"
+					id="canteen-image" />
+				{/each}
+			</div>
+		{:else}
+			<p>No canteen images available</p>
+		{/if}
+
+		<!-- Or access specific indices safely -->
+		<!-- {#if facilities.lab.lab_komputer[0]}
 		<img src="{apiUrl}{facilities.lab.lab_komputer[0]}" alt="Lab Komputer" />
 	{/if} -->
-	<!-- Or access specific indices safely -->
-	{#if facilities.lab.lab_komputer[0]}
-		<img src="{apiUrl}{facilities.lab.lab_komputer[0]}" alt="Lab Komputer" class="w-md h-md" />
-	{/if}
+		<!-- Or access specific indices safely -->
+		{#if facilities.lab.lab_komputer[0]}
+			<img
+				src="{apiUrl}{facilities.lab.lab_komputer[0]}"
+				alt="Lab Komputer"
+				class="h-34 w-64 rounded-lg object-cover"
+			/>
+		{/if}
+	</div>
 {:catch error}
 	<p style="color: red">Error loading facilities: {error.message}</p>
 {/await}
