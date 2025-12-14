@@ -1,11 +1,14 @@
 // controllers/studentDatacontroller.js
-import { db, usersTable } from '../src/index.js';  // ← Fixed path + .js extension
-import { eq } from 'drizzle-orm';  // ← Added eq import
+import { db } from '../src/index.js';
+import { studentTable } from '../src/db/schema/schema.js';
+import { eq } from 'drizzle-orm';
 
 // Controller to get all student data
 export const getAllStudents = async (req, res) => {
   try {
-    const students = await db.select().from(usersTable);
+
+    // async to ORM using select function from studentTable (changed)
+    const students = await db.select().from(studentTable);
     res.status(200).json(students);
   } catch (error) {
     console.error('Database error:', error);
@@ -20,8 +23,8 @@ export const getStudentById = async (req, res) => {
     
     const student = await db
       .select()
-      .from(usersTable)
-      .where(eq(usersTable.id, studentId))
+      .from(studentTable)
+      .where(eq(studentTable.id, studentId))
       .limit(1);
 
     if (!student || student.length === 0) {
@@ -38,7 +41,7 @@ export const getStudentById = async (req, res) => {
 export const createStudent = async (req, res) => {
   try {
     const newStudent = await db
-      .insert(usersTable)
+      .insert(studentTable)
       .values(req.body)
       .returning();
     
@@ -54,9 +57,9 @@ export const updateStudent = async (req, res) => {
     const studentId = parseInt(req.params.id);
     
     const updated = await db
-      .update(usersTable)
+      .update(studentTable)
       .set(req.body)
-      .where(eq(usersTable.id, studentId))
+      .where(eq(studentTable.id, studentId))
       .returning();
     
     if (!updated || updated.length === 0) {
@@ -75,8 +78,8 @@ export const deleteStudent = async (req, res) => {
     const studentId = parseInt(req.params.id);
     
     const deleted = await db
-      .delete(usersTable)
-      .where(eq(usersTable.id, studentId))
+      .delete(studentTable)
+      .where(eq(studentTable.id, studentId))
       .returning();
     
     if (!deleted || deleted.length === 0) {
