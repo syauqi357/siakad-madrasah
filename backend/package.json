@@ -11,14 +11,18 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@libsql/client": "^0.15.15",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
+    "drizzle-orm": "^0.45.1",
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.3"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.5",
-    "@types/node": "^24.10.1"
+    "@types/node": "^24.10.1",
+    "drizzle-kit": "^0.31.8",
+    "tsx": "^4.21.0"
   }
 }
