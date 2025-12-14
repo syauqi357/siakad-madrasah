@@ -1,6 +1,6 @@
 // controllers/studentDatacontroller.js
 import { db } from '../src/index.js';
-import { studentTable } from '../src/db/schema/schema.js';
+import { studentTable } from '../src/db/schema/studentsdataTable.js';
 import { eq } from 'drizzle-orm';
 
 // Controller to get all student data

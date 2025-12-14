@@ -40,7 +40,7 @@ Create: backend/db/index.js
 ```javascript
 import Database from 'better-sqlite3';
 import { drizzle } from 'drizzle-orm/better-sqlite3';
-import * as schema from './schema.js';
+import * as schema from './studentsdataTable.js';
 
 const sqlite = new Database('./backend/data/school.db');
 export const db = drizzle(sqlite, { schema });
@@ -56,7 +56,7 @@ Create: backend/seed.js
 
 ```javascript
 import { db } from './db/index.js';
-import { users } from './db/schema.js';
+import { users } from './db/studentsdataTable.js';
 import fs from 'fs';
 
 const guruData = JSON.parse(fs.readFileSync('./data/guru.json', 'utf-8'));
@@ -79,7 +79,7 @@ Replace the authenticateUser function with:
 
 ```javascript
 import { db } from '../db/index.js';
-import { users } from '../db/schema.js';
+import { users } from '../db/studentsdataTable.js';
 import { eq, and } from 'drizzle-orm';
 
 export const authenticateUser = async (username, password) => {

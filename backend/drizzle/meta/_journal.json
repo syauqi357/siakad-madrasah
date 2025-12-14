@@ -15,6 +15,13 @@
       "when": 1765712281627,
       "tag": "0001_mute_slayback",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1765725871728,
+      "tag": "0002_giant_queen_noir",
+      "breakpoints": true
     }
   ]
 }
