@@ -10,8 +10,10 @@
 		gender: string;
 		cityOfOrigin: string;
 		father: string;
-		mother: string;
-		address: string;
+		parents: {
+			father: string;
+			mother: string;
+		};
 		status: 'active' | 'warning' | 'inactive';
 	};
 
@@ -179,7 +181,7 @@
 									></path>
 								</svg>
 							</span>
-							{student.father}
+							{student.parents.father}
 						</p>
 					</div>
 
@@ -204,7 +206,7 @@
 									></path>
 								</svg>
 							</span>
-							{student.mother}
+							{student.parents.mother}
 						</p>
 					</div>
 				</div>
