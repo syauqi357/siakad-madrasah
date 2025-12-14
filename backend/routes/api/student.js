@@ -1,5 +1,11 @@
 import express from 'express';
-import { getAllStudents, getStudentById } from '../../controllers/studentDatacontroller.js';
+import {
+	getAllStudents,
+	getStudentById,
+	createStudent,
+	updateStudent,
+	deleteStudent
+} from '../../controllers/studentDatacontroller.js';
 
 const router = express.Router();
 
@@ -8,6 +14,8 @@ const router = express.Router();
 // @access  Public
 router.get('/studentData', getAllStudents);
 router.get('/studentData/:id', getStudentById);
-
+router.post('/students', createStudent);
+router.put('/students/:id', updateStudent);
+router.delete('/students/:id', deleteStudent);
 
 export default router;
