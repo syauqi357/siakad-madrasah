@@ -139,7 +139,7 @@
 						<p class="text-sm text-slate-600">Jenis Kelamin</p>
 						<p class="mt-1 text-xl font-semibold text-slate-800">
 							<!-- logic loop dan cek jenis kelamin dengan ternary operator-->
-							{student.gender === 'Laki-laki' ? 'Laki-laki' : 'Perempuan'}
+							{student.gender === 'male' ? 'male' : 'female'}
 						</p>
 					</div>
 

@@ -9,8 +9,6 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
     "db:generate": "drizzle-kit generate",
-    "db:seed": "tsx src/seed.ts",
-    "db:migrate": "tsx src/migrate.ts",
     "db:reset": "rm -f sqlite.db && npm run db:migrate && npm run db:seed"
   },
   "author": "",

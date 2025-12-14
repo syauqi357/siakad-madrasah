@@ -24,7 +24,7 @@
 				id: item.id,
 				nama: item.name,
 				kelas: item.class,
-				jenisKelamin: item.gender === 'Laki-laki' ? 'L' : 'P',
+				jenisKelamin: item.gender === 'male' ? 'M' : 'F',
 				asal: item.cityOfOrigin,
 				// Ensure status matches the component's type, defaulting if needed
 				status: item.status === 'active' ? 'aktif' : 'nonaktif'
@@ -63,7 +63,7 @@
 
 	// function gender color
 	function getGenderStyle(jenisKelamin: string): string {
-		return jenisKelamin === 'P'
+		return jenisKelamin === 'F'
 			? // using ternary operator
 				'flex h-5 w-5 items-center justify-center rounded-sm border border-pink-500 bg-pink-300 p-3 text-pink-700 text-sm'
 			: 'flex h-5 w-5 items-center justify-center rounded-sm border border-blue-500 bg-blue-300 p-3 text-blue-700 text-sm';

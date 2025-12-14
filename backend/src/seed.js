@@ -2,7 +2,7 @@
 import 'dotenv/config';
 import { drizzle } from 'drizzle-orm/better-sqlite3';
 import Database from 'better-sqlite3';
-import { usersTable } from './db/schema.js';
+import { studentTable } from './db/schema/schema.js';
 
 const sqlite = new Database(process.env.DATABASE_URL);
 const db = drizzle(sqlite);
@@ -10,11 +10,13 @@ const db = drizzle(sqlite);
 async function seed() {
   console.log('🌱 Seeding database...');
 
-  await db.insert(usersTable).values([
+  await db.insert(studentTable).values([
     {
       name: 'Budi Santoso',
+      nisn: 1234567890,
+      nis: 1234567890,
       class: '10A',
-      gender: 'male',
+      gender: 'laki-laki',
       cityOfOrigin: 'Surabaya',
       status: 'active',
       age: 16,
@@ -22,6 +24,8 @@ async function seed() {
     },
     {
       name: 'Siti Nurhaliza',
+      nisn: 1234567890,
+      nis: 1234567890,
       class: '10B',
       gender: 'female',
       cityOfOrigin: 'Jakarta',
@@ -31,6 +35,8 @@ async function seed() {
     },
     {
       name: 'Ahmad Rizki',
+      nisn: 1234567890,
+      nis: 1234567890,
       class: '11A',
       gender: 'male',
       cityOfOrigin: 'Bandung',
@@ -40,6 +46,8 @@ async function seed() {
     },
     {
       name: 'Dewi Lestari',
+      nisn: 1234567890,
+      nis: 1234567890,
       class: '11B',
       gender: 'female',
       cityOfOrigin: 'Yogyakarta',
@@ -49,6 +57,8 @@ async function seed() {
     },
     {
       name: 'Rudi Hermawan',
+      nisn: 1234567890,
+      nis: 1234567890,
       class: '12A',
       gender: 'male',
       cityOfOrigin: 'Semarang',

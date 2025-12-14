@@ -1,10 +1,12 @@
 import { sqliteTable, int, text } from 'drizzle-orm/sqlite-core';
 
-export const usersTable = sqliteTable('student', {
+export const studentTable = sqliteTable('student', {
   id: int().primaryKey({ autoIncrement: true }),
+  nisn: int().notNull(),
+  nis: int().notNull(),
   name: text().notNull(),
   class: text().notNull(),
-  gender: text('gender', { enum: ['male', 'female'] }).notNull(),
+  gender: text('gender', { enum: ['Laki-laki', 'Perempuan'] }).notNull(),
   cityOfOrigin: text().notNull(),
   status: text('status', { 
     enum: ['active', 'nonactive', 'warning', 'alumni'] 
