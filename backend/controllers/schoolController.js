@@ -11,7 +11,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Load static data (later replace with model)
-const schoolDataBase = require('../data/lembaga.json');
+// const schoolDataBase = require('../data/lembaga.json');
 
 // Helper function
 function findLogoFile() {
@@ -27,7 +27,6 @@ function findLogoFile() {
 	}
 }
 
-// function to get facility
 // Helper function with safe array access
 function findFacilityImages(facilityType, subFolder = null) {
 	const basePath = path.join(__dirname, '../public/upload/imageSch');
@@ -36,7 +35,6 @@ function findFacilityImages(facilityType, subFolder = null) {
 		: path.join(basePath, facilityType);
 
 	try {
-		// Check if directory exists first
 		if (!fs.existsSync(uploadPath)) {
 			console.log(`Directory doesn't exist: ${uploadPath}`);
 			return [];
@@ -47,23 +45,21 @@ function findFacilityImages(facilityType, subFolder = null) {
 			.filter((file) => /\.(svg|png|jpg|jpeg|gif|webp)$/i.test(file))
 			.map((file) => {
 				const basePathUrl = '/upload/imageSch';
-				const imagePath = subFolder
-					? path.posix.join(basePathUrl, facilityType, subFolder, file)
-					: path.posix.join(basePathUrl, facilityType, file);
+				const imagePath = subFolder ? path.posix.join(basePathUrl, facilityType, subFolder, file) : path.posix.join(basePathUrl, facilityType, file);
 				return imagePath;
 			})
-			.slice(0, 4); // Limit to max 4 images
+			.slice(0, 4);
 
 		return imageFiles;
 	} catch (error) {
 		console.error(`Error reading ${facilityType} directory:`, error);
-		return []; // Return empty array on error
+		return [];
 	}
 }
 
+// Helper to get facility data structure
 function getFacilitiesData() {
 	return {
-		// Merge facility images into the main data response
 		aset: findFacilityImages('aset'),
 		asrama: findFacilityImages('asrama'),
 		canteen: findFacilityImages('canteen'),
@@ -83,7 +79,7 @@ function getFacilitiesData() {
 	};
 }
 
-// Controller with safe handling
+// Controller for facility images only
 export const getFacilityImages = (req, res) => {
 	try {
 		const facilities = getFacilitiesData();
@@ -92,44 +88,48 @@ export const getFacilityImages = (req, res) => {
 		console.error('Error in getFacilityImages:', error);
 		res.status(500).json({
 			error: 'Failed to fetch facility images',
-			facilities: {} // Return empty object as fallback
+			facilities: {}
 		});
 	}
 };
 
-// Controller function
+// Controller to get school data from DATABASE
 export const getSchoolData = async (req, res) => {
 	try {
+		// Get the single school record from database
 		const [schoolData] = await db.select().from(schoolTable).limit(1);
+
 		if (!schoolData) {
-			return res.status(404).json({ error: 'School data not found' });
+			return res.status(404).json({ error: 'School data not found in database' });
 		}
 
+		// Merge database data with dynamic file-based data
 		const response = {
 			...schoolData,
-			logoUrl: findLogoFile(),
-			...getFacilitiesData()
+			logoUrl: findLogoFile(), // Override with actual logo file
+			...getFacilitiesData() // Add facility images
 		};
-		res.json(response);
 
+		res.json(response);
 	} catch (error) {
-		console.error('Error in fetch schooldata:', error);
+		console.error('Error fetching school data:', error);
 		res.status(500).json({ error: 'Failed to fetch school data' });
 	}
 };
 
-// Future: Add more controllers
+// Update school data (only one record)
 export const updateSchoolData = async (req, res) => {
-	// TODO: Implement when database is ready
 	try {
+		const { name, npsn, nsm, akreditasi, alamat, kota, negara } = req.body;
 
-		const {name, npsn, nsm, akreditasi, alamat, kota, negara} = req.body;
-
+		// Check if school exists
 		const [existing] = await db.select().from(schoolTable).limit(1);
+
 		if (!existing) {
 			return res.status(404).json({ error: 'School data not found. Please create it first.' });
 		}
 
+		// Update the single school record
 		const [updated] = await db
 			.update(schoolTable)
 			.set({
@@ -140,51 +140,56 @@ export const updateSchoolData = async (req, res) => {
 				alamat,
 				kota,
 				negara,
-			 	logoUrl: findlogoFile()
-		})
+				logoUrl: findLogoFile() // Auto-update logo
+			})
 			.where(eq(schoolTable.id, existing.id))
 			.returning();
 
 		res.json({
 			message: 'School data updated successfully',
-			data: updated,
+			data: updated
 		});
-
-	} catch (e) {
-		console.error('Error in update schooldata:', e);
+	} catch (error) {
+		console.error('Error updating school data:', error);
 		res.status(500).json({ error: 'Failed to update school data' });
 	}
 };
 
-//create schoold data
+// Create school data (only if doesn't exist)
 export const createSchoolData = async (req, res) => {
-
 	try {
-		const { name, npsn, nsm, akreditasi, alamat, kota, negara  } = req.body;
-		const [existing] await db.select().from(schoolTable).limit(1);
+		const { name, npsn, nsm, akreditasi, alamat, kota, negara } = req.body;
 
-		if (!existing) {
-			return res.status(404).json({ error: 'School data not found' });
+		// Check if school already exists
+		const [existing] = await db.select().from(schoolTable).limit(1);
+
+		if (existing) {
+			return res.status(400).json({
+				error: 'School data already exists. Use PUT /api/school to update.'
+			});
 		}
 
-		const [school] = await db.insert(schoolTable).values({
-			name,
-			npsn,
-			nsm,
-			akreditasi,
-			alamat,
-			kota,
-			negara,
-			logoUrl: findlogoFile()
-		}).returning();
+		// Create the school record
+		const [school] = await db
+			.insert(schoolTable)
+			.values({
+				name,
+				npsn,
+				nsm,
+				akreditasi,
+				alamat,
+				kota,
+				negara,
+				logoUrl: findLogoFile()
+			})
+			.returning();
 
-		res.json({
+		res.status(201).json({
 			message: 'School data created successfully',
 			data: school
 		});
-	} catch (e) {
-		console.error('e', e);
+	} catch (error) {
+		console.error('Error creating school data:', error);
 		res.status(500).json({ error: 'Failed to create school data' });
 	}
-
 };
