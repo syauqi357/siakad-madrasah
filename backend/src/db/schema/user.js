@@ -1,0 +1,12 @@
+import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
+
+export const users = sqliteTable('users', {
+	id: integer('id').primaryKey(),
+	username: text('username').notNull().unique(),
+	password: text('password').notNull(),
+	email: text('email').notNull().unique(),
+	role: text('role').notNull(), // 'admin' or 'teacher'
+	nama_lengkap: text('nama_lengkap'),
+	nip: text('nip'),
+	jabatan: text('jabatan')
+});
