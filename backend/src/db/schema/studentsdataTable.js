@@ -8,8 +8,8 @@ export const studentTable = sqliteTable('student', {
   class: text().notNull(),
   gender: text('gender', { enum: ['Laki-laki', 'Perempuan'] }).notNull(),
   cityOfOrigin: text().notNull(),
-  status: text('status', { 
-    enum: ['active', 'nonactive', 'warning', 'alumni'] 
+  status: text('status', {
+    enum: ['active', 'nonactive', 'warning', 'alumni']
   }).notNull().default('active'),
   age: int().notNull(),
   address: text().notNull()

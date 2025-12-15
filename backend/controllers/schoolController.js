@@ -2,6 +2,9 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { createRequire } from 'module';
+import { eq } from 'drizzle-orm';
+import { db } from '../src/index.js';
+import { schoolTable } from '../src/db/schema/schooldataTable.js';
 
 const require = createRequire(import.meta.url);
 const __filename = fileURLToPath(import.meta.url);
@@ -24,11 +27,11 @@ function findLogoFile() {
 	}
 }
 
-// function to get facility 
+// function to get facility
 // Helper function with safe array access
 function findFacilityImages(facilityType, subFolder = null) {
 	const basePath = path.join(__dirname, '../public/upload/imageSch');
-	const uploadPath = subFolder 
+	const uploadPath = subFolder
 		? path.join(basePath, facilityType, subFolder)
 		: path.join(basePath, facilityType);
 
@@ -44,11 +47,13 @@ function findFacilityImages(facilityType, subFolder = null) {
 			.filter((file) => /\.(svg|png|jpg|jpeg|gif|webp)$/i.test(file))
 			.map((file) => {
 				const basePathUrl = '/upload/imageSch';
-				const imagePath = subFolder ? path.posix.join(basePathUrl, facilityType, subFolder, file) : path.posix.join(basePathUrl, facilityType, file);
+				const imagePath = subFolder
+					? path.posix.join(basePathUrl, facilityType, subFolder, file)
+					: path.posix.join(basePathUrl, facilityType, file);
 				return imagePath;
 			})
 			.slice(0, 4); // Limit to max 4 images
-		
+
 		return imageFiles;
 	} catch (error) {
 		console.error(`Error reading ${facilityType} directory:`, error);
@@ -56,32 +61,36 @@ function findFacilityImages(facilityType, subFolder = null) {
 	}
 }
 
+function getFacilitiesData() {
+	return {
+		// Merge facility images into the main data response
+		aset: findFacilityImages('aset'),
+		asrama: findFacilityImages('asrama'),
+		canteen: findFacilityImages('canteen'),
+		certification: findFacilityImages('certification'),
+		gedung: findFacilityImages('gedung'),
+		kamar_mandi: findFacilityImages('kamar_mandi'),
+		kantor: findFacilityImages('kantor'),
+		kelas: findFacilityImages('kelas'),
+		lab: {
+			lab_Ipa: findFacilityImages('lab', 'lab_Ipa'),
+			lab_komputer: findFacilityImages('lab', 'lab_komputer'),
+			lab_multimedia: findFacilityImages('lab', 'lab_multimedia')
+		},
+		lapangan: findFacilityImages('lapangan'),
+		masjid: findFacilityImages('masjid'),
+		parking_lot: findFacilityImages('parking_lot')
+	};
+}
+
 // Controller with safe handling
 export const getFacilityImages = (req, res) => {
 	try {
-		const facilities = {
-			aset: findFacilityImages('aset'),
-			asrama: findFacilityImages('asrama'),
-			canteen: findFacilityImages('canteen'),
-			certification: findFacilityImages('certification'),
-			gedung: findFacilityImages('gedung'),
-			kamar_mandi: findFacilityImages('kamar_mandi'),
-			kantor: findFacilityImages('kantor'),
-			kelas: findFacilityImages('kelas'),
-			lab: {
-				lab_Ipa: findFacilityImages('lab', 'lab_Ipa'),
-				lab_komputer: findFacilityImages('lab', 'lab_komputer'),
-				lab_multimedia: findFacilityImages('lab', 'lab_multimedia')
-			},
-			lapangan: findFacilityImages('lapangan'),
-			masjid: findFacilityImages('masjid'),
-			parking_lot: findFacilityImages('parking_lot')
-		};
-
+		const facilities = getFacilitiesData();
 		res.json(facilities);
 	} catch (error) {
 		console.error('Error in getFacilityImages:', error);
-		res.status(500).json({ 
+		res.status(500).json({
 			error: 'Failed to fetch facility images',
 			facilities: {} // Return empty object as fallback
 		});
@@ -89,38 +98,93 @@ export const getFacilityImages = (req, res) => {
 };
 
 // Controller function
-export const getSchoolData = (req, res) => {
+export const getSchoolData = async (req, res) => {
 	try {
-		const schoolData = {
-			...schoolDataBase,
+		const [schoolData] = await db.select().from(schoolTable).limit(1);
+		if (!schoolData) {
+			return res.status(404).json({ error: 'School data not found' });
+		}
+
+		const response = {
+			...schoolData,
 			logoUrl: findLogoFile(),
-			// Merge facility images into the main data response
-			aset: findFacilityImages('aset'),
-			asrama: findFacilityImages('asrama'),
-			canteen: findFacilityImages('canteen'),
-			certification: findFacilityImages('certification'),
-			gedung: findFacilityImages('gedung'),
-			kamar_mandi: findFacilityImages('kamar_mandi'),
-			kantor: findFacilityImages('kantor'),
-			kelas: findFacilityImages('kelas'),
-			lab: {
-				lab_Ipa: findFacilityImages('lab', 'lab_Ipa'),
-				lab_komputer: findFacilityImages('lab', 'lab_komputer'),
-				lab_multimedia: findFacilityImages('lab', 'lab_multimedia')
-			},
-			lapangan: findFacilityImages('lapangan'),
-			masjid: findFacilityImages('masjid'),
-			parking_lot: findFacilityImages('parking_lot')
+			...getFacilitiesData()
 		};
-		
-		res.json(schoolData);
+		res.json(response);
+
 	} catch (error) {
+		console.error('Error in fetch schooldata:', error);
 		res.status(500).json({ error: 'Failed to fetch school data' });
 	}
 };
 
 // Future: Add more controllers
-export const updateSchoolData = (req, res) => {
+export const updateSchoolData = async (req, res) => {
 	// TODO: Implement when database is ready
-	res.status(501).json({ message: 'Not implemented yet' });
+	try {
+
+		const {name, npsn, nsm, akreditasi, alamat, kota, negara} = req.body;
+
+		const [existing] = await db.select().from(schoolTable).limit(1);
+		if (!existing) {
+			return res.status(404).json({ error: 'School data not found. Please create it first.' });
+		}
+
+		const [updated] = await db
+			.update(schoolTable)
+			.set({
+				name,
+				npsn,
+				nsm,
+				akreditasi,
+				alamat,
+				kota,
+				negara,
+			 	logoUrl: findlogoFile()
+		})
+			.where(eq(schoolTable.id, existing.id))
+			.returning();
+
+		res.json({
+			message: 'School data updated successfully',
+			data: updated,
+		});
+
+	} catch (e) {
+		console.error('Error in update schooldata:', e);
+		res.status(500).json({ error: 'Failed to update school data' });
+	}
+};
+
+//create schoold data
+export const createSchoolData = async (req, res) => {
+
+	try {
+		const { name, npsn, nsm, akreditasi, alamat, kota, negara  } = req.body;
+		const [existing] await db.select().from(schoolTable).limit(1);
+
+		if (!existing) {
+			return res.status(404).json({ error: 'School data not found' });
+		}
+
+		const [school] = await db.insert(schoolTable).values({
+			name,
+			npsn,
+			nsm,
+			akreditasi,
+			alamat,
+			kota,
+			negara,
+			logoUrl: findlogoFile()
+		}).returning();
+
+		res.json({
+			message: 'School data created successfully',
+			data: school
+		});
+	} catch (e) {
+		console.error('e', e);
+		res.status(500).json({ error: 'Failed to create school data' });
+	}
+
 };
