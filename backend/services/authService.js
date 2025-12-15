@@ -1,6 +1,9 @@
 import fs from 'fs';
 import path from 'path';
 import jwt from 'jsonwebtoken';
+import { eq, and } from 'drizzle-orm';
+import { users } from '../src/db/schema/user.js';
+import { db } from '../src/index.js';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -33,51 +36,40 @@ export const getAccounts = () => {
  * @param {string} password - User's password
  * @returns {Object} User object with token, or null if authentication fails
  */
-export const authenticateUser = (username, password) => {
+export const authenticateUser = async (username, password) => {
 	try {
-		// Validate input
-		if (!username || !password) {
-			return {
-				success: false,
-				message: 'Username and password are required'
-			};
-		}
+		const user = await db
+			.select()
+			.from(users)
+			.where(and(eq(users.username, username), eq(users.password, password)))
+			.limit(1);
 
-		// Get accounts from guru.json
-		const accounts = getAccounts();
-
-		// Find user by username and password
-		const user = accounts.find(
-			account => account.username === username && account.password === password
-		);
-
-		if (!user) {
+		if (!user || user.length === 0) {
 			return {
 				success: false,
 				message: 'Invalid username or password'
 			};
 		}
 
-		// Create JWT token
+		const foundUser = user[0];
+
+		// Create JWT token with user data
 		const token = jwt.sign(
 			{
-				id: user.id,
-				username: user.username,
-				email: user.email,
-				role: user.role
+				id: foundUser.id,
+				username: foundUser.username,
+				role: foundUser.role
 			},
 			JWT_SECRET,
 			{ expiresIn: '24h' }
 		);
 
-		// Return user data without password
+		// Remove password from response
 		const userResponse = {
-			id: user.id,
-			username: user.username,
-			email: user.email,
-			role: user.role,
-			nama_lengkap: user.nama_lengkap,
-			jabatan: user.jabatan
+			id: foundUser.id,
+			username: foundUser.username,
+			role: foundUser.role,
+			email: foundUser.email // if you have email field
 		};
 
 		return {
@@ -88,10 +80,7 @@ export const authenticateUser = (username, password) => {
 		};
 	} catch (error) {
 		console.error('Authentication error:', error);
-		return {
-			success: false,
-			message: 'Internal server error'
-		};
+		return { success: false, message: 'Internal server error' };
 	}
 };
 
