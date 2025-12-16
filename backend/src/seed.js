@@ -3,6 +3,7 @@ import 'dotenv/config';
 import { drizzle } from 'drizzle-orm/better-sqlite3';
 import Database from 'better-sqlite3';
 import fs from 'fs';
+import bcrypt from 'bcrypt';
 import { users } from './db/schema/user.js';
 
 const sqlite = new Database(process.env.DATABASE_URL);
@@ -17,7 +18,15 @@ async function seed() {
 	// table name in database : schoolData
 	// table name in drizzle is : schoolTable
 	for (const user of guruData){
-		await db.insert(users).values(user)
+
+		const hashedPassword = await bcrypt.hash(user.password, 10);
+		
+		await db.insert(users).values({
+			...user,
+			password:hashedPassword
+		})
+
+		console.log(`user ${user.username}inserted with hashed`);
 	}
 
 	console.log('✅ Seed data inserted successfully!');

@@ -68,3 +68,52 @@ export const verifyToken = (req, res, next) => {
 		});
 	}
 };
+
+import { changePasswordService } from '../services/authService.js';
+
+/**
+ * Change password controller
+ */
+export const changePassword = async (req, res) => {
+	try {
+		const { currentPassword, newPassword } = req.body;
+		const userId = req.user.id; // From verifyToken middleware
+
+		// Validation
+		if (!currentPassword || !newPassword) {
+			return res.status(400).json({
+				success: false,
+				message: 'Current password and new password are required'
+			});
+		}
+
+		if (newPassword.length < 6) {
+			return res.status(400).json({
+				success: false,
+				message: 'New password must be at least 6 characters'
+			});
+		}
+
+		if (currentPassword === newPassword) {
+			return res.status(400).json({
+				success: false,
+				message: 'New password must be different from current password'
+			});
+		}
+
+		// Call service
+		const result = await changePasswordService(userId, currentPassword, newPassword);
+
+		if (!result.success) {
+			return res.status(result.message === 'Current password is incorrect' ? 401 : 500).json(result);
+		}
+
+		return res.status(200).json(result);
+	} catch (error) {
+		console.error('Change password controller error:', error);
+		return res.status(500).json({
+			success: false,
+			message: 'Internal server error'
+		});
+	}
+};
