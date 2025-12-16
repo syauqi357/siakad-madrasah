@@ -1,7 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 import jwt from 'jsonwebtoken';
-import { eq, and } from 'drizzle-orm';
+import bcrypt from 'bcrypt'; // ← ADD THIS
+import { eq } from 'drizzle-orm'; // ← Remove 'and' since we only check username
 import { users } from '../src/db/schema/user.js';
 import { db } from '../src/index.js';
 import { fileURLToPath } from 'url';
@@ -38,10 +39,11 @@ export const getAccounts = () => {
  */
 export const authenticateUser = async (username, password) => {
 	try {
+		// 1. Find user by username only
 		const user = await db
 			.select()
 			.from(users)
-			.where(and(eq(users.username, username), eq(users.password, password)))
+			.where(eq(users.username, username)) // ← Only check username
 			.limit(1);
 
 		if (!user || user.length === 0) {
@@ -53,7 +55,17 @@ export const authenticateUser = async (username, password) => {
 
 		const foundUser = user[0];
 
-		// Create JWT token with user data
+		// 2. Compare password with bcrypt
+		const isPasswordValid = await bcrypt.compare(password, foundUser.password);
+
+		if (!isPasswordValid) {
+			return {
+				success: false,
+				message: 'Invalid username or password'
+			};
+		}
+
+		// 3. Create JWT token with user data
 		const token = jwt.sign(
 			{
 				id: foundUser.id,
@@ -64,7 +76,7 @@ export const authenticateUser = async (username, password) => {
 			{ expiresIn: '24h' }
 		);
 
-		// Remove password from response
+		// 4. Remove password from response
 		const userResponse = {
 			id: foundUser.id,
 			username: foundUser.username,
@@ -81,6 +93,63 @@ export const authenticateUser = async (username, password) => {
 	} catch (error) {
 		console.error('Authentication error:', error);
 		return { success: false, message: 'Internal server error' };
+	}
+};
+
+/**
+ * Change user password
+ * @param {number} userId - User's ID
+ * @param {string} currentPassword - Current password (plain text)
+ * @param {string} newPassword - New password (plain text)
+ * @returns {Object} Result object
+ */
+export const changePasswordService = async (userId, currentPassword, newPassword) => {
+	try {
+		// 1. Get user from database
+		const user = await db
+			.select()
+			.from(users)
+			.where(eq(users.id, userId))
+			.limit(1);
+
+		if (!user || user.length === 0) {
+			return {
+				success: false,
+				message: 'User not found'
+			};
+		}
+
+		const foundUser = user[0];
+
+		// 2. Verify current password
+		const isPasswordValid = await bcrypt.compare(currentPassword, foundUser.password);
+
+		if (!isPasswordValid) {
+			return {
+				success: false,
+				message: 'Current password is incorrect'
+			};
+		}
+
+		// 3. Hash new password
+		const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+
+		// 4. Update password in database
+		await db
+			.update(users)
+			.set({ password: hashedNewPassword })
+			.where(eq(users.id, userId));
+
+		return {
+			success: true,
+			message: 'Password changed successfully'
+		};
+	} catch (error) {
+		console.error('Change password service error:', error);
+		return {
+			success: false,
+			message: 'Internal server error'
+		};
 	}
 };
 
