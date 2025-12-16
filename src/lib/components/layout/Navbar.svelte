@@ -251,7 +251,7 @@ Summary of Changes:
 								</svg>
 								Logout
 							</button>
-							<a href="/profile">
+							<a href="/admin/profile">
 								<button class="flex capitalize hover:bg-blue-200 text-blue-500 w-full px-4 py-2 transition-all ease-in-out">
 									akun
 								</button>
