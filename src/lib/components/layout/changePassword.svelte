@@ -16,11 +16,11 @@
 
 	// handle change password
 	// Password strength checks (reactive)
-	$: hasMinLength = newPassword.length >= 6;
-	$: hasUpperCase = /[A-Z]/.test(newPassword);
-	$: hasLowerCase = /[a-z]/.test(newPassword);
-	$: hasNumber = /[0-9]/.test(newPassword);
-	$: hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(newPassword);
+	// $: hasMinLength = newPassword.length >= 6;
+	// $: hasUpperCase = /[A-Z]/.test(newPassword);
+	// $: hasLowerCase = /[a-z]/.test(newPassword);
+	// $: hasNumber = /[0-9]/.test(newPassword);
+	// $: hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(newPassword);
 
 	async function handleChangePassword() {
 		// Reset messages
@@ -189,13 +189,19 @@ class="flex px-2 text-sm items-center w-9 h-9 m-1"
 				-->
 			</div>
 
-			{#if errorMessage}
-				<div class="error flex items-center justify-center bg-amber-600 p-2">{errorMessage}</div>
-			{/if}
+			<!-- Error and success messages -->
 
-			{#if successMessage}
-				<div class="success">{successMessage}</div>
-			{/if}
+			<div class="flex  items-center justify-center">
+
+				{#if errorMessage}
+					<div class="error flex items-center justify-center bg-blue-200 border border-blue-400 w-fit rounded-lg p-2 pl-4 pr-4">{errorMessage}</div>
+				{/if}
+	
+				{#if successMessage}
+					<div class="success">{successMessage}</div>
+				{/if}
+			</div>
+			
 			<!-- button submit change password -->
 			<button type="submit" disabled={loading} class="mt-3 rounded-md bg-blue-600 p-2 w-full text-white">
 				{loading ? 'Changing...' : 'Change Password'}

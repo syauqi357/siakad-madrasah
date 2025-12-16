@@ -52,9 +52,9 @@ Summary of Changes:
 		try {
 			// endpoint app.js
 			// docs : pending
-			
-			const response = await fetch(`${apiUrl}/routes/api/schoolData`); 
-			//get API from backend using express from localhost:3000/api/schoolData and this is taking a variable const on the file 
+
+			const response = await fetch(`${apiUrl}/routes/api/schoolData`);
+			//get API from backend using express from localhost:3000/api/schoolData and this is taking a variable const on the file
 
 			if (!response.ok) {
 				throw new Error(`HTTP error! status: ${response.status}`);
@@ -101,14 +101,14 @@ Summary of Changes:
 	}
 </script>
 
-<nav class="sm:pl-12 sm:pr-12 fixed top-0 z-50 w-full border-b border-neutral-400 bg-slate-100">
+<nav class="fixed top-0 z-50 w-full border-b border-neutral-400 bg-slate-100 sm:pr-12 sm:pl-12">
 	<div class="px-3 py-3 lg:px-5 lg:pl-3">
 		<div class="flex items-center justify-between">
 			<div class="flex items-center justify-start">
 				<!-- Toggle sidebar button-->
 				<button
 					on:click={() => (sidebarOpen = !sidebarOpen)}
-					class="sm:hidden inline-flex items-center rounded-lg p-2 text-sm text-neutral-400 hover:bg-neutral-200 focus:ring-2 focus:ring-neutral-300 focus:outline-none"
+					class="inline-flex items-center rounded-lg p-2 text-sm text-neutral-400 hover:bg-neutral-200 focus:ring-2 focus:ring-neutral-300 focus:outline-none sm:hidden"
 				>
 					<span class="sr-only">Toggle sidebar</span>
 					<svg class="h-6 w-6" fill="currentColor" viewBox="0 0 20 20">
@@ -142,10 +142,10 @@ Summary of Changes:
 						</span>
 						<span class="text-sm text-black">
 							<!-- npsn layout positioning -->
-							<div class="flex flex-row items-center gap-2 p-0.5 uppercase text-xs sm:text-sm">
+							<div class="flex flex-row items-center gap-2 p-0.5 text-xs uppercase sm:text-sm">
 								npsn :
 								<!-- school npsn number -->
-								<div class="rounded-md bg-slate-300 p-0.5 pr-2 pl-2 border border-slate-400">
+								<div class="rounded-md border border-slate-400 bg-slate-300 p-0.5 pr-2 pl-2">
 									{@html schoolData.npsn}
 								</div>
 							</div>
@@ -161,7 +161,7 @@ Summary of Changes:
 				<!-- transition hover  duration-50 ease-in docs : https://tailwindcss.com/docs/transition-duration -->
 				<button
 					on:click={toggleUserMenu}
-					class="rounded-lg p-2 text-neutral-600 duration-50 ease-in hover:bg-neutral-200 transition-colors"
+					class="rounded-lg flex items-center gap-3 p-2 text-neutral-600 transition-colors duration-50 ease-in hover:bg-neutral-200"
 					aria-label="Open user menu"
 					title="Open user menu"
 				>
@@ -181,11 +181,18 @@ Summary of Changes:
 							stroke-width="0.5"
 						></path>
 					</svg>
+					{#if user}
+						<div class="hidden flex-col text-left text-sm leading-tight sm:flex">
+							<span class="font-medium text-black">{user.username || 'User'}</span>
+							<span class="text-xs text-neutral-600">{user.role || 'Role'}</span>
+						</div>
+					{/if}
 				</button>
 
 				<!-- User Menu Dropdown -->
 				{#if showUserMenu}
-					<div aria-label="pop up user menu"
+					<div
+						aria-label="pop up user menu"
 						on:click={closeUserMenu}
 						on:keydown={(e) => e.key === 'Escape' && closeUserMenu()}
 						role="button"
@@ -193,13 +200,15 @@ Summary of Changes:
 						class="fixed inset-0 z-30 sm:hidden"
 					></div>
 
-					<div class="absolute right-0 mt-30 w-48 bg-white border border-neutral-300 rounded-lg shadow-lg z-50">
+					<div
+						class="absolute right-0 z-50 mt-30 w-48 rounded-lg border border-neutral-300 bg-white shadow-lg"
+					>
 						<!-- Close Button Header -->
-						<div class="flex items-center justify-between px-4 py-2 border-b border-neutral-200">
+						<div class="flex items-center justify-between border-b border-neutral-200 px-4 py-2">
 							<p class="text-sm font-semibold text-neutral-900">Menu</p>
 							<button
 								on:click={closeUserMenu}
-								class="text-neutral-500 hover:text-neutral-700 transition-colors"
+								class="text-neutral-500 transition-colors hover:text-neutral-700"
 								aria-label="Close menu"
 								title="Close menu"
 							>
@@ -216,24 +225,24 @@ Summary of Changes:
 
 						<!-- User Info Header -->
 						{#if user}
-							<div class="px-4 py-3 border-b border-neutral-200">
+							<div class="border-b border-neutral-200 px-4 py-3">
 								<p class="text-sm font-semibold text-neutral-900">
 									{user.username || 'User'}
 								</p>
-								<p class="text-xs text-neutral-600 mt-1">
+								<p class="mt-1 text-xs text-neutral-600">
 									{user.email || 'N/A'}
 								</p>
-								<p class="text-xs text-neutral-500 mt-1 capitalize">
+								<p class="mt-1 text-xs text-neutral-500 capitalize">
 									Role: <span class="font-medium text-neutral-700">{user.role}</span>
 								</p>
 							</div>
 						{/if}
 
 						<!-- Menu Items -->
-						<div class="py-2 flex items-center justify-center">
+						<div class="flex items-center justify-center py-2">
 							<button
 								on:click={handleLogout}
-								class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors flex items-center gap-2"
+								class="flex w-full items-center gap-2 px-4 py-2 text-left text-sm text-red-600 transition-colors hover:bg-red-50"
 							>
 								<svg
 									class="h-4 w-4"
@@ -252,7 +261,9 @@ Summary of Changes:
 								Logout
 							</button>
 							<a href="/admin/profile">
-								<button class="flex capitalize hover:bg-blue-200 text-blue-500 w-full px-4 py-2 transition-all ease-in-out">
+								<button
+									class="flex w-full px-4 py-2 text-blue-500 capitalize transition-all ease-in-out hover:bg-blue-200"
+								>
 									akun
 								</button>
 							</a>
@@ -263,4 +274,3 @@ Summary of Changes:
 		</div>
 	</div>
 </nav>
-

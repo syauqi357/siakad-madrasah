@@ -3,5 +3,6 @@ import { onMount } from 'svelte';
 import ChangePassword from '$lib/components/layout/changePassword.svelte';
 
 </script>
-
-<ChangePassword />
+<div class="flex min-h-screen items-center justify-center">
+     <ChangePassword />
+</div>
