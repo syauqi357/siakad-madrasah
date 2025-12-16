@@ -1,4 +1,6 @@
-<script>
+<script lang="ts">
+	import EyeIcon from '$lib/components/icons/EyeIcon.svelte';
+	import PassIndicatorStrength from '$lib/components/layout/passIndicatorStrength.svelte';
 
 	let currentPassword = '';
 	let newPassword = '';
@@ -6,6 +8,19 @@
 	let loading = false;
 	let errorMessage = '';
 	let successMessage = '';
+
+	// let show password toggles
+	let showCurrentPassword = false;
+	let showNewPassword = false;
+	let showConfirmPassword = false;
+
+	// handle change password
+	// Password strength checks (reactive)
+	$: hasMinLength = newPassword.length >= 6;
+	$: hasUpperCase = /[A-Z]/.test(newPassword);
+	$: hasLowerCase = /[a-z]/.test(newPassword);
+	$: hasNumber = /[0-9]/.test(newPassword);
+	$: hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(newPassword);
 
 	async function handleChangePassword() {
 		// Reset messages
@@ -39,12 +54,12 @@
 			// Get token from localStorage (or wherever you store it)
 			const token = localStorage.getItem('token');
 
-               const apiUrl = import.meta.env.VITE_API_URL;
+			const apiUrl = import.meta.env.VITE_API_URL;
 			const response = await fetch(`${apiUrl}/api/auth/change-password`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
-					'Authorization': `Bearer ${token}`
+					Authorization: `Bearer ${token}`
 				},
 				body: JSON.stringify({
 					currentPassword,
@@ -72,50 +87,122 @@
 	}
 </script>
 
-<div>
-	<h2>Change Password</h2>
-
+<div class="flex gap-3">
+	
+	<!-- form -->
 	<form on:submit|preventDefault={handleChangePassword}>
-		<div>
-			<label for="currentPassword">Current Password</label>
-			<input
-				type="password"
-				id="currentPassword"
+		<h2 class="text-md flex items-center  font-bold sm:text-2xl">Change Password</h2>
+		<section class=" w-full  p-3 sm:w-xl">
+			<div class="">
+				<div class="flex flex-col gap-2  p-2">
+					<label for="currentPassword">Current Password</label>
+					<div class="flex rounded-md border border-gray-400">
+						<input
+							class="flex w-full flex-row p-2 outline-none"
+							type={showCurrentPassword ? 'text' : 'password'}
+							id="currentPassword"
+							bind:value={currentPassword}
+							disabled={loading}
+						/>
+						<button
+							type="button"
+							on:click={() => (showCurrentPassword = !showCurrentPassword)}
+							class="flex px-2 text-sm items-center w-9 h-9 m-1"
+						>
+							<EyeIcon open={showCurrentPassword} />
+							<!-- {showCurrentPassword ? '👁️' : '👁️‍🗨️'} -->
+						</button>
+					</div>
+				</div>
+
+				<!-- 
+				
+				id and label : currentPassword label content : Current Password
+				type : password
 				bind:value={currentPassword}
 				disabled={loading}
-			/>
-		</div>
+	
+				-->
+			</div>
 
-		<div>
-			<label for="newPassword">New Password</label>
-			<input
-				type="password"
-				id="newPassword"
+			<div>
+				<div class="flex flex-col gap-2 p-2">
+					<label for="newPassword">New Password</label>
+					<div class="flex rounded-md border border-gray-400">
+						<input
+							type={showNewPassword ? 'text' : 'password'}
+							class="flex w-full flex-row p-2 outline-none"
+							id="newPassword"
+							bind:value={newPassword}
+							disabled={loading}
+						/>
+						<button
+							type="button"
+							on:click={() => (showNewPassword = !showNewPassword)}
+							class="flex px-2 text-sm items-center w-9 h-9 m-1"
+						>
+							<EyeIcon open={showNewPassword} />
+						</button>
+					</div>
+
+					<!-- Password requirements -->
+					 <PassIndicatorStrength password={newPassword} ></PassIndicatorStrength>
+				</div>
+
+				<!-- 
+	
+				id and label : newPassword label content : New Password
+				type : password
 				bind:value={newPassword}
 				disabled={loading}
-			/>
-		</div>
+	
+				-->
+			</div>
 
-		<div>
-			<label for="confirmPassword">Confirm New Password</label>
-			<input
-				type="password"
-				id="confirmPassword"
+			<div>
+				<div class="flex flex-col gap-2 p-2">
+					<label for="confirmPassword">Confirm New Password</label>
+					<div class="flex rounded-md border border-gray-400">
+						<input
+							type={showConfirmPassword ? 'text' : 'password'}
+							id="confirmPassword"
+							class="flex w-full flex-row p-2 outline-none"
+							bind:value={confirmPassword}
+							disabled={loading}
+						/>
+						<button
+							type="button"
+							on:click={() => (showConfirmPassword = !showConfirmPassword)}
+class="flex px-2 text-sm items-center w-9 h-9 m-1"
+						>
+							<EyeIcon open={showConfirmPassword} />
+						</button>
+					</div>
+				</div>
+				<!-- 
+	
+				id and label : confirmPassword label content : Confirm New Password
+				type : password
 				bind:value={confirmPassword}
 				disabled={loading}
-			/>
-		</div>
+	
+				-->
+			</div>
 
-		{#if errorMessage}
-			<p class="error">{errorMessage}</p>
-		{/if}
+			{#if errorMessage}
+				<div class="error flex items-center justify-center bg-amber-600 p-2">{errorMessage}</div>
+			{/if}
 
-		{#if successMessage}
-			<p class="success">{successMessage}</p>
-		{/if}
-
-		<button type="submit" disabled={loading}>
-			{loading ? 'Changing...' : 'Change Password'}
-		</button>
+			{#if successMessage}
+				<div class="success">{successMessage}</div>
+			{/if}
+			<!-- button submit change password -->
+			<button type="submit" disabled={loading} class="mt-3 rounded-md bg-blue-600 p-2 w-full text-white">
+				{loading ? 'Changing...' : 'Change Password'}
+			</button>
+		</section>
 	</form>
+	<div>
+
+	</div>
 </div>
