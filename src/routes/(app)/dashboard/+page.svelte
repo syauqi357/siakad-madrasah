@@ -1,4 +1,6 @@
 <script lang="ts">
+	import SchoolProperties from '$lib/components/layout/schoolProperties.svelte';
+	import DashboardLandsort from '$lib/components/layout/DashboardLandsort.svelte';
 	import { onMount } from 'svelte';
 	import type { User } from '$lib/types/navigation';
 
@@ -13,12 +15,20 @@
 </script>
 
 <div>
-	<h1 class="text-3xl font-bold mb-6">Dashboard</h1>
-
+	<!-- dashboard landing -->
+	<DashboardLandsort />
 	{#if user}
-		<div class="bg-slate-100 p-6 rounded-lg border border-slate-300">
-			<p class="text-lg capitalize">selamat datang, <strong class="capitalize text-blue-700">{user.username}</strong>!</p>
-			<p class="text-gray-600">sebagai: <strong class="capitalize text-slate-600">{user.role}</strong></p>
+		<div class="rounded-lg border border-slate-300 bg-slate-100 p-6">
+			<p class="text-lg capitalize">
+				selamat datang, <strong class="text-blue-700 capitalize">{user.username}</strong>!
+			</p>
+			<p class="text-gray-600">
+				sebagai: <strong class="text-slate-600 capitalize">{user.role}</strong>
+			</p>
 		</div>
 	{/if}
+</div>
+<div class="p-3 m-2">
+
+	<SchoolProperties />
 </div>
