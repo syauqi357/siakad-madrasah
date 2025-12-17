@@ -41,36 +41,42 @@
 	const facilitiesPromise = fetchFacilities();
 </script>
 
-{#await facilitiesPromise}
-	<p>Loading facilities...</p>
-{:then facilities}
-	<!-- Example: Display canteen images -->
-	{#if facilities.canteen.length > 0}
-		<div class="flex flex-col gap-3 ">
-			<h2 class="flex  w-fit text-lg font-semibold ">Canteen Images :</h2>
-			<hr>
-			<div class="flex flex-wrap gap-2">
-				{#each facilities.canteen as image, index}
-					<img
-						src="{apiUrl}{image}"
-						alt="Canteen {index + 1}"
-						class="h-54 w-85 rounded-lg object-cover hover:scale-97 transition-all ease-in-out transform-gpu "
-					/>
-				{/each}
-			</div>
-		</div>
-	{:else}
-		<p>No canteen images available</p>
-	{/if}
+<section class="bg-slate-400">
 
-	<!-- Or access specific indices safely -->
-	<!-- {#if facilities.lab.lab_komputer[0]}
-		<img src="{apiUrl}{facilities.lab.lab_komputer[0]}" alt="Lab Komputer" />
-	{/if} -->
-	<!-- Or access specific indices safely -->
-	{#if facilities.lab.lab_komputer[0]}
-		<img src="{apiUrl}{facilities.lab.lab_komputer[0]}" alt="Lab Komputer" class="h-md w-md" />
-	{/if}
-{:catch error}
-	<p style="color: red">Error loading facilities: {error.message}</p>
-{/await}
+	{#await facilitiesPromise}
+		<p>Loading facilities...</p>
+	{:then facilities}
+		<!-- Example: Display canteen images -->
+		<div class="flex flex-col gap-3">
+			{#if facilities.canteen.length > 0}
+				<h2 class="flex w-fit text-lg font-semibold">Canteen Images :</h2>
+				<hr />
+				<div class="flex flex-wrap gap-2">
+					{#each facilities.canteen as image, index}
+						<img
+							src="{apiUrl}{image}"
+							alt="Canteen {index + 1}"
+							class="h-54 w-85 transform-gpu rounded-lg object-cover transition-all ease-in-out hover:scale-97"
+						/>
+					{/each}
+				</div>
+			{:else}
+				<p>No canteen images available</p>
+			{/if}
+		</div>
+	
+		<!-- Or access specific indices safely -->
+		<!-- {#if facilities.lab.lab_komputer[0]}
+			<img src="{apiUrl}{facilities.lab.lab_komputer[0]}" alt="Lab Komputer" />
+		{/if} -->
+		<!-- Or access specific indices safely -->
+	
+		<div class="bg-slate-300">
+			{#if facilities.lab.lab_komputer[0]}
+				<img src="{apiUrl}{facilities.lab.lab_komputer[0]}" alt="Lab Komputer" class="h-md w-md" />
+			{/if}
+		</div>
+	{:catch error}
+		<p style="color: red">Error loading facilities: {error.message}</p>
+	{/await}
+</section>
