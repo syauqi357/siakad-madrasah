@@ -15,6 +15,13 @@
       "when": 1765779945590,
       "tag": "0001_dark_puff_adder",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1765933395691,
+      "tag": "0002_wooden_galactus",
+      "breakpoints": true
     }
   ]
 }

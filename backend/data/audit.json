@@ -1,0 +1,74 @@
+[
+	{
+		"id": 1,
+		"audit_type": "grades",
+		"user_id": "admin",
+		"action": "Mengubah nilai Matematika",
+		"target": "Ahmad Rizki (10-A)",
+		"status": "changed",
+		"timestamp": "2024-12-06T14:23:00.000Z"
+	},
+	{
+		"id": 2,
+		"audit_type": "auth",
+		"user_id": "admin",
+		"action": "Login gagal",
+		"target": "Sistem Admin",
+		"status": "failed",
+		"timestamp": "2024-12-06T13:45:00.000Z"
+	},
+	{
+		"id": 3,
+		"audit_type": "student",
+		"user_id": "admin",
+		"action": "Tambah siswa baru",
+		"target": "Siti Nurhaliza",
+		"status": "success",
+		"timestamp": "2024-12-06T10:15:00.000Z"
+	},
+	{
+		"id": 4,
+		"audit_type": "attendance",
+		"user_id": "admin",
+		"action": "Ubah kehadiran",
+		"target": "Fahmi Hidayat (11-C)",
+		"status": "changed",
+		"timestamp": "2024-12-06T09:30:00.000Z"
+	},
+	{
+		"id": 5,
+		"audit_type": "permissions",
+		"user_id": "admin",
+		"action": "Ubah role",
+		"target": "Pak Joko Widodo",
+		"status": "changed",
+		"timestamp": "2024-12-05T16:20:00.000Z"
+	},
+	{
+		"id": 6,
+		"audit_type": "export",
+		"user_id": "admin",
+		"action": "Ekspor data siswa",
+		"target": "Kelas 12 (120 siswa)",
+		"status": "success",
+		"timestamp": "2024-12-05T15:10:00.000Z"
+	},
+	{
+		"id": 7,
+		"audit_type": "grades",
+		"user_id": "admin",
+		"action": "Input nilai UTS",
+		"target": "Kelas 12-A Fisika",
+		"status": "success",
+		"timestamp": "2024-12-05T14:05:00.000Z"
+	},
+	{
+		"id": 8,
+		"audit_type": "auth",
+		"user_id": "admin",
+		"action": "Login berhasil",
+		"target": "Portal Siswa",
+		"status": "success",
+		"timestamp": "2024-12-05T08:15:00.000Z"
+	}
+]
