@@ -1,4 +1,6 @@
-import { authenticateUser, verifyTokenService } from '../services/authService.js';
+import { authenticateUser } from '../services/authService.js';
+import { changePasswordService } from '../services/authService.js';
+
 
 // Login controller
 export const login = async (req, res) => {
@@ -42,35 +44,6 @@ export const logout = async (req, res) => {
 	}
 };
 
-// Verify token middleware
-export const verifyToken = (req, res, next) => {
-	try {
-		const token = req.headers.authorization?.split(' ')[1];
-
-		// Call service layer to verify token
-		const result = verifyTokenService(token);
-
-		if (!result.success) {
-			return res.status(401).json({
-				success: false,
-				message: result.message
-			});
-		}
-
-		// Attach decoded user info to request
-		req.user = result.decoded;
-		next();
-	} catch (error) {
-		console.error('Token verification controller error:', error); // debug code
-		return res.status(401).json({
-			success: false,
-			message: 'Invalid or expired token'
-		});
-	}
-};
-
-import { changePasswordService } from '../services/authService.js';
-
 /**
  * Change password controller
  */
@@ -105,7 +78,9 @@ export const changePassword = async (req, res) => {
 		const result = await changePasswordService(userId, currentPassword, newPassword);
 
 		if (!result.success) {
-			return res.status(result.message === 'Current password is incorrect' ? 401 : 500).json(result);
+			return res
+				.status(result.message === 'Current password is incorrect' ? 401 : 500)
+				.json(result);
 		}
 
 		return res.status(200).json(result);

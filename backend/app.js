@@ -3,14 +3,26 @@ import cors from 'cors';
 import authRouter from './routes/api/auth.js';
 import schoolDataRouter from './routes/api/schooldataNav.js';
 import studentDataRouter from './routes/api/student.js';
+import auditLogsRouter from './routes/auditLog/APILogs/audit_logs.js';
 import dotenv from 'dotenv';
+import path from 'path'; // Import path module
 
 // This line loads the environment variables from a .env file into process.env
-dotenv.config()
+dotenv.config();
 const app = express();
+const FE_port = process.env.FRONTEND_URL_DEV;
+// const FE_port_prod = process.env.FRONTEND_URL_;
+const port = process.env.PORT;
 
-import path from 'path'; // Import path module
-app.use(cors());
+const corsOptions = {
+	origin: FE_port,
+	credentials: true,
+	optionsSuccessStatus: 200
+};
+// header line
+app.use(cors(corsOptions));
+// restAPI
+app.use(express.json());
 
 // --- Explanation of Environment Variables ---
 //
@@ -34,40 +46,21 @@ app.use(cors());
 //    - `process.env.PORT` reads that value, which is then assigned to the `port` constant.
 //
 
-const port = process.env.PORT;
-// Enable CORS for all routes use middleware system
-
-// middleware as reset token
-// app.use()
-// Parse JSON bodies
-app.use(express.json());
-
 // Serve static files from the '(public)' directory
-// In ES modules, __dirname is not directly available. We construct it.
 import { fileURLToPath } from 'url';
-// import { getAllStudents } from './controllers/studentDatacontroller.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // middleware statis
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/upload', express.static(path.join(__dirname, 'upload')));
 
-// app.use('/upload', express.static(path.join(__dirname, 'upload')));
-
-// 1. Uncomment the schoolData object
-//const schoolData = {
-//	name: 'MTs. Persis 2 Bangil',
-//	npsn: '2316989832',
-	// prerequisites : harus di reload dulu server nya biar ngambil data, ini nanti di ganti sama query backend
-//	logoUrl: 'upload/' // Frontend will use default logo if empty
-//};
-
-// 2. Use a more standard API route 
+// 2. Use a more standard API route
 // - changing route using data from API for school data navbar set
-app.use('/routes/api', schoolDataRouter)
-app.use('/routes/api', studentDataRouter)
-app.use('/api/auth', authRouter)
-
+app.use('/routes/api', schoolDataRouter);
+app.use('/routes/api', studentDataRouter);
+app.use('/api/auth', authRouter);
+app.use('/api/audit-logs', auditLogsRouter);
 
 // Root endpoint
 app.get('/', (req, res) => {
