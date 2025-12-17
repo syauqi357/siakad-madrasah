@@ -3,6 +3,7 @@ import cors from 'cors';
 import authRouter from './routes/api/auth.js';
 import schoolDataRouter from './routes/api/schooldataNav.js';
 import studentDataRouter from './routes/api/student.js';
+import auditLogsRouter from './routes/auditLog/APILogs/audit_logs.js';
 import dotenv from 'dotenv';
 
 // This line loads the environment variables from a .env file into process.env
@@ -67,6 +68,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/routes/api', schoolDataRouter)
 app.use('/routes/api', studentDataRouter)
 app.use('/api/auth', authRouter)
+app.use('/api/audit-logs', auditLogsRouter)
 
 
 // Root endpoint

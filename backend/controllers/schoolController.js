@@ -1,12 +1,10 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { createRequire } from 'module';
 import { eq } from 'drizzle-orm';
 import { db } from '../src/index.js';
 import { schoolTable } from '../src/db/schema/schooldataTable.js';
 
-const require = createRequire(import.meta.url);
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
