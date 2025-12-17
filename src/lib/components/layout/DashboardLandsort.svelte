@@ -2,7 +2,7 @@
 	import { activeMenu } from '$lib/stores.js';
 	import { onMount } from 'svelte';
 	import logo from '$lib/assets/favicon.svg';
-
+	const apiUrl = import.meta.env.VITE_API_URL;
 	// Initialize schoolData with a default structure.
 
 	// initialize school name
@@ -24,7 +24,7 @@
 			// copy data from navbar
 			// endpoint app.js
 			// docs : pending
-			const apiUrl = import.meta.env.VITE_API_URL;
+
 			const response = await fetch(`${apiUrl}/routes/api/schoolData`);
 			//get API from backend using express from localhost:3000/api/schoolData and this is taking a variable const on the file
 
@@ -100,7 +100,7 @@
 
 <!-- header page -->
 
-<div class="bg mx-auto mt-10 max-w-7xl">
+<div class="bg w-full">
 	<div class="mb-6">
 		<h1 class="text-3xl font-bold text-gray-900">Dashboard</h1>
 		<p class="mt-2 text-gray-600">Welcome to {schoolData.name} Education Platform</p>

@@ -1,8 +1,11 @@
 // backend/middleware/middlewareAudit.js
 import { drizzle } from 'drizzle-orm/better-sqlite3';
+// importing database
 import Database from 'better-sqlite3';
-import { auditTable } from '../src/db/schema/auditlog.js'; // adjust path as needed
+// importing from : backend\src\db\schema\auditlog.js
+import { auditTable } from '../src/db/schema/auditlog.js'; 
 
+// env database positions
 const sqlite = new Database(process.env.DATABASE_URL);
 const db = drizzle(sqlite);
 
@@ -10,6 +13,8 @@ const db = drizzle(sqlite);
  * Audit log middleware
  * Automatically logs API actions to database
  */
+
+// auditlog export usage : 
 export const auditLog = async (req, res, next) => {
   // Store original json method
   const originalJson = res.json.bind(res);
@@ -42,7 +47,7 @@ async function saveAuditLog(req, res) {
     const auditType = determineAuditType(req.path);
     
     // Determine status from HTTP method
-    const status = determineStatus(req.method);
+    const status = determineStatus(req.method, req.path);
     
     // Get target if available (from params or body)
     const target = determineTarget(req);
@@ -96,20 +101,20 @@ function generateActionDescription(req) {
   // Add verb based on HTTP method
   switch (method) {
     case 'POST':
-      action = action ? `Created ${action}` : 'Created a resource';
+      action = `Created ${action}` || 'Created resource';
       break;
     case 'PUT':
     case 'PATCH':
-      action = action ? `Updated ${action}` : 'Updated a resource';
+      action = `Updated ${action}` || 'Updated resource';
       break;
     case 'DELETE':
-      action = action ? `Deleted ${action}` : 'Deleted a resource';
+      action = `Deleted ${action}` || 'Deleted resource';
       break;
     case 'GET':
-      action = action ? `Viewed ${action}` : 'Viewed a resource';
+      action = `Viewed ${action}` || 'Viewed resource';
       break;
     default:
-      action = action ? `${method} ${action}` : `${method} a resource`;
+      action = `${method} ${action}`;
   }
 
   // Capitalize first letter
@@ -130,9 +135,15 @@ function determineAuditType(path) {
 }
 
 /**
- * Determine status from HTTP method
+ * Determine status from HTTP method and route
  */
-function determineStatus(method) {
+function determineStatus(method, path) {
+  // Special cases based on route
+  if (path.includes('change-password') || path.includes('update')) return 'changed';
+  if (path.includes('login')) return 'success';
+  if (path.includes('logout')) return 'success';
+  
+  // Default based on HTTP method
   switch (method) {
     case 'POST': return 'created';
     case 'PUT':

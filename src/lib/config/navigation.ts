@@ -25,7 +25,7 @@ export const navigationConfig: Record<UserRole, NavItem[]> = {
 		{
 			name: 'Dashboard',
 			icon: '',
-			href: '/dashboard/[admin]'
+			href: '/dashboard'
 		},
 		{
 			name: 'sarana prasarana',

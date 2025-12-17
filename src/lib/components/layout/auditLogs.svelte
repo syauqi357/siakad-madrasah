@@ -90,12 +90,8 @@
 	});
 
 	// Refetch when filters change
-	$: {
-		if (!isLoading) {
-			selectedFilter;
-			selectedTimeRange;
-			fetchLogs();
-		}
+	function handleFilterChange() {
+		fetchLogs();
 	}
 </script>
 
@@ -113,7 +109,10 @@
 		<div class="flex flex-wrap gap-2">
 			{#each filters as filter}
 				<button
-					on:click={() => (selectedFilter = filter.id)}
+					on:click={() => {
+						selectedFilter = filter.id;
+						handleFilterChange();
+					}}
 					class="px-3 py-1.5 text-sm border rounded transition-colors {selectedFilter === filter.id
 						? 'border-black bg-black text-white'
 						: 'border-gray-300 bg-white hover:border-gray-400'}"
@@ -138,6 +137,7 @@
 			<!-- Time Range -->
 			<select
 				bind:value={selectedTimeRange}
+				on:change={handleFilterChange}
 				class="px-3 py-2 text-sm border border-gray-300 rounded bg-white focus:outline-none focus:border-gray-500"
 			>
 				{#each timeRanges as range}
