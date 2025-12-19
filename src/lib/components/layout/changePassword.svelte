@@ -88,13 +88,12 @@
 </script>
 
 <div class="flex gap-3">
-	
 	<!-- form -->
 	<form on:submit|preventDefault={handleChangePassword}>
-		<h2 class="text-md flex items-center  font-bold sm:text-2xl">Change Password</h2>
-		<section class=" w-full  p-3 sm:w-xl">
+		<h2 class="text-md flex items-center font-bold sm:text-2xl">Change Password</h2>
+		<section class=" w-full p-3 sm:w-xl">
 			<div class="">
-				<div class="flex flex-col gap-2  p-2">
+				<div class="flex flex-col gap-2 p-2">
 					<label for="currentPassword">Current Password</label>
 					<div class="flex rounded-md border border-gray-400">
 						<input
@@ -107,7 +106,7 @@
 						<button
 							type="button"
 							on:click={() => (showCurrentPassword = !showCurrentPassword)}
-							class="flex px-2 text-sm items-center w-9 h-9 m-1"
+							class="m-1 flex h-9 w-9 items-center px-2 text-sm"
 						>
 							<EyeIcon open={showCurrentPassword} />
 							<!-- {showCurrentPassword ? '👁️' : '👁️‍🗨️'} -->
@@ -139,14 +138,14 @@
 						<button
 							type="button"
 							on:click={() => (showNewPassword = !showNewPassword)}
-							class="flex px-2 text-sm items-center w-9 h-9 m-1"
+							class="m-1 flex h-9 w-9 items-center px-2 text-sm"
 						>
 							<EyeIcon open={showNewPassword} />
 						</button>
 					</div>
 
 					<!-- Password requirements -->
-					 <PassIndicatorStrength password={newPassword} ></PassIndicatorStrength>
+					<PassIndicatorStrength password={newPassword}></PassIndicatorStrength>
 				</div>
 
 				<!-- 
@@ -173,7 +172,7 @@
 						<button
 							type="button"
 							on:click={() => (showConfirmPassword = !showConfirmPassword)}
-class="flex px-2 text-sm items-center w-9 h-9 m-1"
+							class="m-1 flex h-9 w-9 items-center px-2 text-sm"
 						>
 							<EyeIcon open={showConfirmPassword} />
 						</button>
@@ -191,24 +190,38 @@ class="flex px-2 text-sm items-center w-9 h-9 m-1"
 
 			<!-- Error and success messages -->
 
-			<div class="flex  items-center justify-center">
-
+			<div class="flex items-center justify-center">
 				{#if errorMessage}
-					<div class="error flex items-center justify-center bg-blue-200 border border-blue-400 w-fit rounded-lg p-2 pl-4 pr-4">{errorMessage}</div>
+					<div
+						class="error flex w-fit items-center justify-center rounded-lg border border-blue-400 bg-blue-200 p-2 pr-4 pl-4"
+					>
+						{errorMessage}
+					</div>
 				{/if}
-	
+
 				{#if successMessage}
 					<div class="success">{successMessage}</div>
 				{/if}
 			</div>
-			
+
 			<!-- button submit change password -->
-			<button type="submit" disabled={loading} class="mt-3 rounded-md bg-blue-600 p-2 w-full text-white">
-				{loading ? 'Changing...' : 'Change Password'}
+			<button
+				type="submit"
+				disabled={loading}
+				class="mt-3 w-full rounded-md bg-blue-600 p-2 text-white"
+			>
+				{#if loading}
+					<span class="flex flex-row-reverse items-center justify-center gap-3"
+						>mengubah...<!-- From Uiverse.io by Fresnel11 -->
+						<div
+							class="h-6 w-6 animate-spin rounded-full border-4 border-gray-300 border-t-blue-500"
+						></div>
+					</span>
+				{:else}
+					Change Password
+				{/if}
 			</button>
 		</section>
 	</form>
-	<div>
-
-	</div>
+	<div></div>
 </div>

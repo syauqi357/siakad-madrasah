@@ -62,11 +62,11 @@
 			if (selectedTimeRange !== 'all') params.append('timeRange', selectedTimeRange);
 
 			const response = await fetch(`${apiBaseUrl}/api/audit-logs?${params.toString()}`);
-			
+
 			if (!response.ok) {
 				throw new Error(`Gagal memuat data: ${response.statusText}`);
 			}
-			
+
 			auditLogs = await response.json();
 		} catch (e: any) {
 			error = e.message || 'Tidak dapat memuat log audit.';
@@ -96,10 +96,10 @@
 </script>
 
 <!-- Container -->
-<div class="w-full max-w-full mx-auto p-4">
+<div class="mx-auto w-full max-w-full p-4">
 	<!-- Header -->
 	<div class="mb-6">
-		<h1 class="text-2xl font-bold mb-2">Audit Log</h1>
+		<h1 class="mb-2 text-2xl font-bold">Audit Log</h1>
 		<p class="text-sm">Riwayat aktivitas sistem</p>
 	</div>
 
@@ -113,7 +113,7 @@
 						selectedFilter = filter.id;
 						handleFilterChange();
 					}}
-					class="px-3 py-1.5 text-sm border rounded transition-colors {selectedFilter === filter.id
+					class="rounded border px-3 py-1.5 text-sm transition-colors {selectedFilter === filter.id
 						? 'border-black bg-black text-white'
 						: 'border-gray-300 bg-white hover:border-gray-400'}"
 				>
@@ -123,14 +123,14 @@
 		</div>
 
 		<!-- Search and Time Range -->
-		<div class="flex flex-col sm:flex-row gap-3">
+		<div class="flex flex-col gap-3 sm:flex-row">
 			<!-- Search -->
 			<div class="flex-1">
 				<input
 					bind:value={searchQuery}
 					type="text"
 					placeholder="Cari log aktivitas..."
-					class="w-full px-3 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:border-gray-500"
+					class="w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-gray-500 focus:outline-none"
 				/>
 			</div>
 
@@ -138,7 +138,7 @@
 			<select
 				bind:value={selectedTimeRange}
 				on:change={handleFilterChange}
-				class="px-3 py-2 text-sm border border-gray-300 rounded bg-white focus:outline-none focus:border-gray-500"
+				class="rounded border border-gray-300 bg-white px-3 py-2 text-sm focus:border-gray-500 focus:outline-none"
 			>
 				{#each timeRanges as range}
 					<option value={range.id}>{range.label}</option>
@@ -154,15 +154,15 @@
 	</div>
 
 	<!-- Table -->
-	<div class="overflow-x-auto border border-gray-300 rounded">
-		<table class="w-full text-sm text-left">
+	<div class="overflow-x-auto rounded border border-gray-300">
+		<table class="w-full text-left text-sm">
 			<thead class="border-b border-gray-300 bg-gray-50">
 				<tr>
-					<th class="px-4 py-3 font-semibold w-[15%]">User</th>
-					<th class="px-4 py-3 font-semibold w-[30%]">Action</th>
-					<th class="px-4 py-3 font-semibold w-[20%]">Target</th>
-					<th class="px-4 py-3 font-semibold w-[10%]">Status</th>
-					<th class="px-4 py-3 font-semibold w-[25%]">Timestamp</th>
+					<th class="w-[15%] px-4 py-3 font-semibold">User</th>
+					<th class="w-[30%] px-4 py-3 font-semibold">Action</th>
+					<th class="w-[20%] px-4 py-3 font-semibold">Target</th>
+					<th class="w-[10%] px-4 py-3 font-semibold">Status</th>
+					<th class="w-[25%] px-4 py-3 font-semibold">Timestamp</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -182,16 +182,16 @@
 					</tr>
 				{:else}
 					{#each filteredLogs as log (log.id)}
-						<tr class="border-b border-gray-200 hover:bg-gray-50 transition-colors">
-							<td class="px-4 py-3 font-medium truncate">{log.user_id}</td>
-							<td class="px-4 py-3 truncate">{log.action}</td>
-							<td class="px-4 py-3 truncate">{log.target || '-'}</td>
+						<tr class="border-b border-gray-200 transition-colors hover:bg-gray-50">
+							<td class="truncate px-4 py-3 font-medium">{log.user_id}</td>
+							<td class="truncate px-4 py-3">{log.action}</td>
+							<td class="truncate px-4 py-3">{log.target || '-'}</td>
 							<td class="px-4 py-3">
-								<span class="inline-block px-2 py-1 text-xs border border-gray-300 rounded">
+								<span class="inline-block rounded border border-gray-300 px-2 py-1 text-xs">
 									{log.status}
 								</span>
 							</td>
-							<td class="px-4 py-3 truncate">
+							<td class="truncate px-4 py-3">
 								{new Date(log.timestamp).toLocaleString('id-ID', {
 									dateStyle: 'medium',
 									timeStyle: 'short'
