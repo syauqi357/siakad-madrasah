@@ -1,14 +1,14 @@
-import fs from 'fs';
-import path from 'path';
+// import fs from 'fs';
+// import path from 'path';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt'; // ← ADD THIS
 import { eq } from 'drizzle-orm'; // ← Remove 'and' since we only check username
 import { users } from '../src/db/schema/user.js';
 import { db } from '../src/index.js';
-import { fileURLToPath } from 'url';
+// import { fileURLToPath } from 'url';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = path.dirname(__filename);
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_key_change_this';
 
@@ -19,17 +19,18 @@ const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_key_change_this';
 /**
  * Read accounts from guru.json file
  * @returns {Array} List of accounts
- */
-export const getAccounts = () => {
-	try {
-		const guruPath = path.join(__dirname, '../data/guru.json');
-		const data = fs.readFileSync(guruPath, 'utf-8');
-		return JSON.parse(data);
-	} catch (error) {
-		console.error('Error reading guru.json:', error);
-		return [];
-	}
-};
+disabled code 
+*/
+// export const getAccounts = () => {
+// 	try {
+// 		const guruPath = path.join(__dirname, '../data/guru.json');
+// 		const data = fs.readFileSync(guruPath, 'utf-8');
+// 		return JSON.parse(data);
+// 	} catch (error) {
+// 		console.error('Error reading guru.json:', error);
+// 		return [];
+// 	}
+// };
 
 /**
  * Authenticate user with username and password

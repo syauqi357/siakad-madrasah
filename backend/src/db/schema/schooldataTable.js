@@ -14,6 +14,8 @@ export const schoolTable = sqliteTable('school_data', {
 	negara: text().notNull(),
 	logoUrl: text().notNull()
 
+	// indexing table here for school, but it wont affect cause only one school data name
+
 });
 
 

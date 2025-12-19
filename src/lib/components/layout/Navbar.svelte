@@ -161,7 +161,7 @@ Summary of Changes:
 				<!-- transition hover  duration-50 ease-in docs : https://tailwindcss.com/docs/transition-duration -->
 				<button
 					on:click={toggleUserMenu}
-					class="rounded-lg flex items-center gap-3 p-2 text-neutral-600 transition-colors duration-50 ease-in hover:bg-neutral-200"
+					class="flex items-center gap-3 rounded-lg p-2 text-neutral-600 transition-colors duration-50 ease-in hover:bg-slate-200"
 					aria-label="Open user menu"
 					title="Open user menu"
 				>
@@ -174,7 +174,6 @@ Summary of Changes:
 						height="24"
 						width="24"
 					>
-						<desc> Person Fill Streamline Icon: https://streamlinehq.com </desc>
 						<path
 							fill="#000000"
 							d="M12 11.9751c-1.1 0 -2 -0.35 -2.7 -1.05 -0.7 -0.7 -1.05 -1.6 -1.05 -2.7s0.35 -2 1.05 -2.7c0.7 -0.7 1.6 -1.05 2.7 -1.05s2 0.35 2.7 1.05c0.7 0.7 1.05 1.6 1.05 2.7s-0.35 2 -1.05 2.7c-0.7 0.7 -1.6 1.05 -2.7 1.05Zm-8 6.525v-0.85c0 -0.63335 0.158335 -1.175 0.475 -1.625 0.316665 -0.45 0.725 -0.79165 1.225 -1.025 1.11665 -0.5 2.1875 -0.875 3.2125 -1.125s2.05415 -0.375 3.0875 -0.375 2.05835 0.12915 3.075 0.3875c1.01665 0.25835 2.08335 0.62915 3.2 1.1125 0.51665 0.23335 0.93335 0.575 1.25 1.025 0.31665 0.45 0.475 0.99165 0.475 1.625v0.85c0 0.41665 -0.14585 0.77085 -0.4375 1.0625 -0.29165 0.29165 -0.64585 0.4375 -1.0625 0.4375H5.5c-0.41665 0 -0.770835 -0.14585 -1.0625 -0.4375 -0.291665 -0.29165 -0.4375 -0.64585 -0.4375 -1.0625Z"
@@ -233,7 +232,7 @@ Summary of Changes:
 									{user.email || 'N/A'}
 								</p>
 								<p class="mt-1 text-xs text-neutral-500 capitalize">
-									Role: <span class="font-medium text-neutral-700">{user.role}</span>
+									sebagai: <span class="font-medium text-neutral-700">{user.role}</span>
 								</p>
 							</div>
 						{/if}

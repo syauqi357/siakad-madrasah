@@ -13,6 +13,10 @@ export const studentTable = sqliteTable('student', {
   }).notNull().default('active'),
   age: int().notNull(),
   address: text().notNull()
+
+  // indexing in id and nisn and name.
+  //id nisn and name is used frequently and often be called, for suggestion on the db need to use this column to indexed as well
+  
 });
 
 /*

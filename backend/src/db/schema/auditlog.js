@@ -13,4 +13,6 @@ export const auditTable = sqliteTable('audit_logs', {
   ip_address: text(), // User's IP address
   user_agent: text(), // Browser/client info
   timestamp: int().notNull().default(sql`(unixepoch())`) // Unix timestamp
+// indexing db here
+
 });
