@@ -1,6 +1,6 @@
 <script lang="ts">
-	import SchoolProperties from '$lib/components/layout/schoolProperties.svelte';
-	import DashboardLandsort from '$lib/components/layout/DashboardLandsort.svelte';
+	import SchoolProperties from '$lib/components/layout/dashboard/schoolProperties.svelte';
+	import DashboardLandsort from '$lib/components/layout/dashboard/DashboardLandsort.svelte';
 	import { onMount } from 'svelte';
 	import type { User } from '$lib/types/navigation';
 
