@@ -145,7 +145,7 @@
 			<div
 				class="aspect-square flex items-center justify-center text-sm rounded transition-colors
 					{isCurrentMonth ? 'text-gray-900' : 'text-gray-400'}
-					{isToday ? 'bg-black text-white font-bold' : 'hover:bg-gray-100'}
+					{isToday ? 'bg-slate-700 text-white font-bold' : 'hover:bg-gray-100'}
 					cursor-pointer"
 			>
 				{day}

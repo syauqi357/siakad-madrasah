@@ -15,22 +15,24 @@
 	});
 </script>
 
-<div>
+<div class="flex mb-4">
 	<!-- dashboard landing -->
 	<DashboardLandsort />
-	{#if user}
-		<div class="rounded-lg border border-slate-300 bg-slate-100 p-6">
-			<p class="text-lg capitalize">
-				selamat datang, <strong class="text-blue-700 capitalize">{user.username}</strong>!
-			</p>
-			<p class="text-gray-600">
-				sebagai: <strong class="text-slate-600 capitalize">{user.role}</strong>
-			</p>
-		</div>
-	{/if}
-</div>
-<div class="p-3 m-2">
+	<div class="flex w-1/3">
 
+		<CalendarLayout />
+	</div>
+</div>
+{#if user}
+	<div class="rounded-lg border border-slate-300 bg-slate-100 p-6">
+		<p class="text-lg capitalize">
+			selamat datang, <strong class="text-blue-700 capitalize">{user.username}</strong>!
+		</p>
+		<p class="text-gray-600">
+			sebagai: <strong class="text-slate-600 capitalize">{user.role}</strong>
+		</p>
+	</div>
+{/if}
+<div class="m-2 p-3">
 	<SchoolProperties />
 </div>
-<CalendarLayout/>
