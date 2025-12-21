@@ -1,6 +1,7 @@
 <script lang="ts">
 	import SchoolProperties from '$lib/components/layout/dashboard/schoolProperties.svelte';
 	import DashboardLandsort from '$lib/components/layout/dashboard/DashboardLandsort.svelte';
+	import CalendarLayout from '$lib/components/layout/calendar/calendarLayout.svelte';
 	import { onMount } from 'svelte';
 	import type { User } from '$lib/types/navigation';
 
@@ -32,3 +33,4 @@
 
 	<SchoolProperties />
 </div>
+<CalendarLayout/>
