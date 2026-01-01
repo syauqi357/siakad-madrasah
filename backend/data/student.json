@@ -10,47 +10,25 @@
 		},
 		"kelas": [
 			{
-				"7 IPA": {
-					"wali-kelas": "string",
-					"tahun-ajaran": "string"
-				},
-				"8 IPA": {
-					"wali-kelas": "string",
-					"tahun-ajaran": "string"
-				},
-				"9 IPA": {
-					"wali-kelas": "string",
-					"tahun-ajaran": "string"
-				},
-				"10 IPA": {
-					"wali-kelas": "string",
-					"tahun-ajaran": "string"
-				},
-				"11 IPA": {
-					"wali-kelas": "string",
-					"tahun-ajaran": "string"
-				},
-				"12 IPA": {
-					"wali-kelas": "string",
-					"tahun-ajaran": "string"
-				}
 				"nama-kelas": "7 IPA",
-				"wali-kelas": "string",
+				"wali-kelas": {
+					"id": "WK-001",
+					"nama": "Bapak Budi"
+				},
 				"tahun-ajaran": "string",
 				"mapel": [
 					{
 						"nama": "Matematika",
-						"guru": "string"
-					},
-					{
-						"nama": "Bahasa Indonesia",
 						"guru": "string"
 					}
 				]
 			},
 			{
 				"nama-kelas": "8 IPA",
-				"wali-kelas": "string",
+				"wali-kelas": {
+					"id": "WK-002",
+					"nama": "Ibu Siti"
+				},
 				"tahun-ajaran": "string",
 				"mapel": []
 			}
@@ -130,24 +108,66 @@
 			{
 				"ayah": {
 					"nama": "",
+					"jenis-kelamin":"pria",
 					"tahun-lahir": "",
 					"pendidikan": "",
 					"pekerjaan": "",
-					"penghasilan": ""
+					"penghasilan": "",
+					"nik": "",
+					"no-kk": "",
+					"no-ktp": "",
+					"agama": "",
+					"nomor-hp": "",
+					"alamat": "",
+					"hubungan": "",
+					"tempat-kerja": "",
+					"jabatan": "",
+					"tempat-lahir":"",
+					"tanggal-lahir":"",
+					"kewarganegaraan":""
 				},
 				"ibu": {
 					"nama": "",
+					"jenis-kelamin":"wanita",
 					"tahun-lahir": "",
 					"pendidikan": "",
 					"pekerjaan": "",
-					"penghasilan": ""
+					"penghasilan": "",
+					"nik": "",
+					"no-kk": "",
+					"no-ktp": "",
+					"agama": "",
+					"nomor-hp": "",
+					"alamat": "",
+					"hubungan": "",
+					"tempat-kerja": "",
+					"jabatan": "",
+					"tempat-lahir":"",
+					"tanggal-lahir":"",
+					"kewarganegaraan":""
 				},
 				"wali": {
 					"nama": "",
+					"jenis-kelamin":{
+						"pria": false,
+						"wanita": false
+					},
 					"tahun-lahir": "",
 					"pendidikan": "",
 					"pekerjaan": "",
-					"penghasilan": ""
+					"penghasilan": "",
+					"nik": "",
+					"no-kk": "",
+					"no-ktp": "",
+					"agama": "",
+					"nomor-hp": "",
+					"alamat": "",
+					"hubungan": "",
+					"tempat-kerja": "",
+					"jabatan": "",
+					"tempat-lahir":"",
+					"tanggal-lahir":"",
+					"kewarganegaraan":""
 				}
 			}
 		],
@@ -173,7 +193,10 @@
 					"semester-genap": ""
 				},
 				"nilai-tes-masuk": {
-					"psikotes": "",
+					"psikotes": {
+						"nilai": "",
+						"keterangan": ""
+					},
 					"akademik": {
 						"bahasa-indonesia": "",
 						"matematika": "",
@@ -182,23 +205,15 @@
 					"wawancara": {
 						"nilai": "",
 						"keterangan": ""
-					},
-					"tes-4": "",
-					"tes-5": "",
-					"tes-6": ""
+					}
 				},
-				"mapel": {
-					"agama": "",
-					"ppkn": "",
-					"bahasa-indonesia": "",
-					"matematika": "",
-					"ipa": "",
-					"ips": "",
-					"bahasa-inggris": "",
-					"seni-budaya": "",
-					"pendidikan-jasmani": "",
-					"prakarya": ""
-				}
+				"transkrip-mapel": [
+					{
+						"nama": "Matematika",
+						"nilai": "85",
+						"keterangan": "Tuntas"
+					}
+				]
 			}
 		]
 	}
