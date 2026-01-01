@@ -28,5 +28,16 @@
     "nama_lengkap": "rizal rover",
     "nip": "198605031234569",
     "jabatan": "Guru Mata Pelajaran chisa"
+  },
+  {
+    "id": 4,
+    "username": "guru3",
+    "email": "guru3@siakad.com",
+    "password": "guru321",
+    "role": "teacher",
+    "nama_lengkap": "Siti Rahayu",
+    "nip": "198705041234570",
+    "jabatan": "Guru Mata Pelajaran"
   }
+
 ]

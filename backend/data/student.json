@@ -1,42 +1,87 @@
 [
 	{
-		"id": "",
-		"nama-siswa": "",
-		"NISN": "",
-		"NIS-local": "",
+		"id": 1,
+		"nama-siswa": "string",
+		"NISN": "int",
+		"NIS-local": "int",
 		"jenis-kelamin": {
-			"laki-laki": false,
+			"laki-laki": true,
 			"perempuan": false
 		},
-		"kelas": "",
+		"kelas": [
+			{
+				"7 IPA": {
+					"wali-kelas": "string",
+					"tahun-ajaran": "string"
+				},
+				"8 IPA": {
+					"wali-kelas": "string",
+					"tahun-ajaran": "string"
+				},
+				"9 IPA": {
+					"wali-kelas": "string",
+					"tahun-ajaran": "string"
+				},
+				"10 IPA": {
+					"wali-kelas": "string",
+					"tahun-ajaran": "string"
+				},
+				"11 IPA": {
+					"wali-kelas": "string",
+					"tahun-ajaran": "string"
+				},
+				"12 IPA": {
+					"wali-kelas": "string",
+					"tahun-ajaran": "string"
+				}
+				"nama-kelas": "7 IPA",
+				"wali-kelas": "string",
+				"tahun-ajaran": "string",
+				"mapel": [
+					{
+						"nama": "Matematika",
+						"guru": "string"
+					},
+					{
+						"nama": "Bahasa Indonesia",
+						"guru": "string"
+					}
+				]
+			},
+			{
+				"nama-kelas": "8 IPA",
+				"wali-kelas": "string",
+				"tahun-ajaran": "string",
+				"mapel": []
+			}
+		],
 		"status": {
 			"aktif": [
-        {
-          "tahun-ajaran": "",
-          "kelas": "",
-          "tanggal-masuk": "",
-          "status-kelas": "",
-          "keterangan": "",
-          "guru-wali-kelas": ""
-        }
-      ],
+				{
+					"tahun-ajaran": "",
+					"kelas": "outset kelas relation",
+					"tanggal-masuk": "",
+					"status-kelas": "",
+					"keterangan": "",
+					"guru-wali-kelas": ""
+				}
+			],
 			"keluar": false,
-      "berhenti": false,
+			"berhenti": false,
 			"lulus": [
-        {
-          "tahun-lulus": "",
-          "no-ijazah": "",
-          "no-skhun": "",
-          "tanggal-ijazah": "",
-          "tanggal-skhun": "",
-          "keterangan": "",
-          "surat-ijazah": "",
-          "surat-skhun": "",
-          "sekolah-asal": "",
-          "sekolah-tujuan": ""
-        }
-      ],
-			"alumni": false,
+				{
+					"tahun-lulus": "",
+					"no-ijazah": "",
+					"no-skhun": "",
+					"tanggal-ijazah": "",
+					"tanggal-skhun": "",
+					"keterangan": "",
+					"surat-ijazah": "",
+					"surat-skhun": "",
+					"sekolah-asal": "",
+					"sekolah-tujuan": ""
+				}
+			],
 			"pindah": [
 				{
 					"tujuan-pindah": "",
@@ -53,12 +98,19 @@
 		"tempat-lahir": "",
 		"asal-sekolah": "",
 		"nomor-hp": "",
-		"alamat": "",
-		"kabupaten": "",
-		"RT": "",
-		"RW": "",
-		"kode-pos": "",
-		"provinsi": "",
+		"alamat": {
+			"kabupaten": "",
+			"kecamatan": "",
+			"kelurahan": "",
+			"jalan": "",
+			"no-rumah": "",
+			"RT": "",
+			"RW": "",
+			"kode-pos": "",
+			"provinsi": "",
+			"desa": "",
+			"dusun": ""
+		},
 		"anak-ke": "",
 		"jumlah-saudara": "",
 		"asal-daerah": "",
