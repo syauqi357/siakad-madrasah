@@ -23,6 +23,10 @@ const corsOptions = {
 app.use(cors(corsOptions));
 // restAPI
 app.use(express.json());
+// Serve static files from the '(public)' directory
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // --- Explanation of Environment Variables ---
 //
@@ -46,13 +50,9 @@ app.use(express.json());
 //    - `process.env.PORT` reads that value, which is then assigned to the `port` constant.
 //
 
-// Serve static files from the '(public)' directory
-import { fileURLToPath } from 'url';
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 // middleware statis
-app.use(express.static(path.join(__dirname, 'public')));
+// app.use(express.static(path.join(__dirname, 'public')));
 app.use('/upload', express.static(path.join(__dirname, 'upload')));
 
 // 2. Use a more standard API route
