@@ -118,15 +118,15 @@
 			<div
 				class="col-span-2 grid grid-cols-5 gap-8 text-xs font-semibold uppercase md:grid-cols-7 md:text-base"
 			>
-				<div class="flex cursor-pointer items-center justify-center bg-blue-300 py-3">
+				<div class="flex cursor-pointer hover:scale-109 transition-all ease-in-out items-center justify-center py-3">
 					nisn <Sort />
 				</div>
-				<div class="flex items-center justify-center py-3">nama</div>
-				<div class="flex items-center justify-center py-3">kelas</div>
-				<div class="hidden items-center justify-center py-3 md:flex">gender</div>
-				<div class="hidden items-center justify-center py-3 md:flex">asal</div>
-				<div class="flex items-center justify-center py-3">status</div>
-				<div class="flex items-center justify-center py-3">aksi</div>
+				<div class="flex items-center cursor-pointer hover:scale-109 transition-all ease-in-out justify-center py-3">nama<Sort /></div>
+				<div class="flex items-center justify-center py-3 cursor-pointer hover:scale-109 transition-all ease-in-out">kelas<Sort /></div>
+				<div class="hidden items-center justify-center py-3 md:flex cursor-pointer hover:scale-109 transition-all ease-in-out">gender <Sort /></div>
+				<div class="hidden items-center justify-center py-3 md:flex cursor-pointer hover:scale-109 transition-all ease-in-out">asal <Sort /></div>
+				<div class="flex items-center justify-center py-3 cursor-pointer hover:scale-109 transition-all ease-in-out">status <Sort /></div>
+				<div class="flex items-center justify-center py-3 cursor-pointer hover:scale-109 transition-all ease-in-out">aksi<Sort /></div>
 			</div>
 		</div>
 		<!-- line student -->
