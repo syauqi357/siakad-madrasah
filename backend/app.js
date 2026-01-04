@@ -52,7 +52,7 @@ const __dirname = path.dirname(__filename);
 
 
 // middleware statis
-// app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public')));
 app.use('/upload', express.static(path.join(__dirname, 'upload')));
 
 // 2. Use a more standard API route

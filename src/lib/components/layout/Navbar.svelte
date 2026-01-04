@@ -75,13 +75,6 @@ Summary of Changes:
 			console.error('Failed to fetch school data:', err);
 			error = true;
 			loading = false;
-
-			// Fallback data
-			// schoolData = {
-			// 	name: 'MTs. Persis 2 Bangil',
-			// 	npsn: '231698134',
-			// 	logoUrl: logo
-			// };
 		}
 	});
 
