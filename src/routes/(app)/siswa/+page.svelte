@@ -1,7 +1,5 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import Sort from '$lib/components/icons/sort.svelte';
-	import More from '$lib/components/icons/more.svelte';
 
 	type Student = {
 		id: number;
@@ -103,6 +101,56 @@
 			</div>
 			<!-- sort -->
 			<!-- classifier funct -->
+			<div class="flex gap-3 bg-slate-200 p-2 md:flex">
+				<button
+					aria-label="Sort by descending order"
+					title=""
+					class="flex w-fit items-center gap-2 rounded-sm bg-slate-700 p-4 text-slate-100 md:p-2 md:pr-4 md:pl-4"
+				>
+					<span class="hidden md:flex"> descending </span>
+					<span>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							viewBox="0 0 16 16"
+							fill="currentColor"
+							id="Arrow-Circle-Up-Fill--Streamline-Phosphor-Fill"
+							height="16"
+							width="16"
+						>
+							<desc> Arrow Circle Up Fill Streamline Icon: https://streamlinehq.com </desc>
+							<path
+								d="M8 0.16c-6.0352375 0 -9.80725625 6.53333125 -6.7896375 11.76 3.0176125 5.22666875 10.56165625 5.22666875 13.579275 0C15.47774375 10.72816875 15.84 9.37620625 15.84 8 15.83543125 3.67198125 12.32801875 0.164575 8 0.16Zm2.83898125 7.6636c-0.23556875 0.23583125 -0.61778125 0.23583125 -0.85335 0l-1.38255625 -1.38330625v4.57509375c0 0.46424375 -0.5025625 0.7544 -0.9046125 0.522275 -0.18659375 -0.107725 -0.3015375 -0.30681875 -0.3015375 -0.522275v-4.57509375l-1.38255625 1.38330625c-0.32845625 0.32845625 -0.88930625 0.178175 -1.009525 -0.2705 -0.0558 -0.2082375 0.0037375 -0.43041875 0.15616875 -0.58285625l2.4123125 -2.41230625c0.23556875 -0.23583125 0.61778125 -0.23583125 0.85335 0l2.41230625 2.41230625c0.2358375 0.235575 0.2358375 0.6177875 0 0.85335625Z"
+								stroke-width="0.0625"
+							>
+							</path>
+						</svg>
+					</span>
+				</button>
+				<button
+					aria-label="Sort by ascending order"
+					title=""
+					class="flex w-fit items-center gap-2 rounded-sm bg-slate-700 p-4 text-slate-100 md:p-2 md:pr-4 md:pl-4"
+				>
+					<span class="hidden md:flex"> ascending </span>
+					<span>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							viewBox="0 0 16 16"
+							fill="currentColor"
+							id="Arrow-Circle-Down-Fill--Streamline-Phosphor-Fill"
+							height="16"
+							width="16"
+						>
+							<desc> Arrow Circle Down Fill Streamline Icon: https://streamlinehq.com </desc>
+							<path
+								d="M8 0.16c-6.0352375 0 -9.80725625 6.53333125 -6.7896375 11.76 3.0176125 5.22666875 10.56165625 5.22666875 13.579275 0C15.47774375 10.72816875 15.84 9.37620625 15.84 8 15.83543125 3.67198125 12.32801875 0.164575 8 0.16Zm2.83898125 8.86975625 -2.41230625 2.41230625c-0.23556875 0.23583125 -0.61778125 0.23583125 -0.85335 0l-2.4123125 -2.41230625c-0.32845 -0.32845625 -0.178175 -0.88930625 0.27050625 -1.00953125 0.20823125 -0.05579375 0.4304125 0.0037375 0.58285 0.156175l1.38255625 1.38330625V4.9846125c0 -0.46424375 0.5025625 -0.7544 0.9046125 -0.522275 0.18659375 0.107725 0.3015375 0.30681875 0.3015375 0.522275v4.57509375l1.38255625 -1.38330625c0.32845625 -0.32845625 0.88930625 -0.178175 1.009525 0.2705 0.0558 0.2082375 -0.0037375 0.43041875 -0.156175 0.58285625Z"
+								stroke-width="0.0625"
+							>
+							</path>
+						</svg>
+					</span>
+				</button>
+			</div>
 		</div>
 	</div>
 	<div
@@ -111,42 +159,18 @@
 		<!--	head of student	-->
 
 		<div
-			class="mb-4 grid h-auto w-full gap-3 rounded-md border-2 border-blue-700 bg-blue-500 text-slate-50 transition-all duration-150 ease-in-out hover:bg-blue-600"
+			class="mb-4 grid h-auto w-full gap-3 rounded-md border-2 border-blue-700 bg-blue-500 p-3 text-slate-50 transition-all duration-150 ease-in-out hover:bg-blue-600"
 		>
 			<div
-				class="col-span-2 grid grid-cols-5 gap-8 text-xs font-semibold uppercase md:grid-cols-7 md:text-base"
+				class="col-span-2 grid grid-cols-5 gap-8 p-2 text-xs font-semibold uppercase md:grid-cols-7 md:text-base"
 			>
-				<div
-					class="flex w-full items-center justify-center px-2 py-3 transition-all ease-in-out hover:scale-109"
-				>
-					nisn<Sort />
-				</div>
-				<div
-					class="flex w-full items-center justify-center px-2 py-3 transition-all ease-in-out hover:scale-109"
-				>
-					nama<Sort />
-				</div>
-				<div
-					class="flex w-full items-center justify-center px-2 py-3 transition-all ease-in-out hover:scale-109"
-				>
-					kelas<Sort />
-				</div>
-				<div
-					class="hidden w-full items-center justify-center px-2 py-3 transition-all ease-in-out hover:scale-109 md:flex"
-				>
-					gender<Sort />
-				</div>
-				<div
-					class="hidden w-full items-center justify-center px-2 py-3 transition-all ease-in-out hover:scale-109 md:flex"
-				>
-					asal<Sort />
-				</div>
-				<div
-					class="flex w-full items-center justify-center px-2 py-3 transition-all ease-in-out hover:scale-109"
-				>
-					status<Sort />
-				</div>
-				<div class="flex w-full items-center justify-center px-2 py-3">aksi</div>
+				<div class="flex items-center justify-center">nisn <span></span> </div>
+				<div class="flex items-center justify-center">nama</div>
+				<div class="">kelas</div>
+				<div class="md:flex hidden">gender</div>
+				<div class="hidden md:flex">asal</div>
+				<div class="">status</div>
+				<div class="flex items-center justify-center">aksi</div>
 			</div>
 		</div>
 		<!-- line student -->
@@ -154,38 +178,47 @@
 			<div
 				class="mb-3 grid h-auto w-full grid-cols-1 items-center justify-between gap-6 rounded-lg bg-slate-200 p-3 transition-all duration-150 ease-in-out hover:bg-slate-300"
 			>
-				<div class=" grid grid-cols-6 items-center gap-8 p-2 text-xs md:grid-cols-7 md:text-base">
+				<div class=" grid grid-cols-5 items-center gap-8 p-2 text-xs md:grid-cols-7 md:text-base">
 					<div class="flex items-center justify-center">
 						{student.nisn}
 					</div>
 					<div class="flex items-center justify-center text-slate-700">
 						{student.nama}
 					</div>
-					<div class="flex items-center bg-red-500 justify-center">{student.kelas}</div>
-					<div class="flex items-center justify-center">
-						<div class={getGenderStyle(student.jenisKelamin)}>
-							{student.jenisKelamin}
-						</div>
+					<div class="">{student.kelas}</div>
+					<div class={getGenderStyle(student.jenisKelamin)}>
+						{student.jenisKelamin}
 					</div>
-					<div class="hidden items-center justify-center md:flex">{student.asal}</div>
-					<div class="flex items-center justify-center">
-						<div class={getStatusStyle(student.status)}>
-							{getStatusText(student.status)}
-							{#if student.status === 'aktif'}
-								<div
-									class="flex h-2 w-2 items-center justify-center rounded-full bg-green-500"
-								></div>
-							{/if}
-						</div>
-					</div>
-					<a href="/siswa/{student.id}" class=" flex justify-end">
+					<div class="hidden md:flex">{student.asal}</div>
+					<span class={getStatusStyle(student.status)}>
+						{getStatusText(student.status)}
+						{#if student.status === 'aktif'}
+							<div class="flex h-2 w-2 items-center justify-center rounded-full bg-green-500"></div>
+						{/if}
+					</span>
+					<a href="/siswa/{student.id}">
 						<button
 							aria-label="More details"
 							title="More details"
 							class=" flex flex-row-reverse items-center justify-center gap-3 rounded-md bg-blue-500 p-2 text-white hover:bg-blue-600 md:pr-5 md:pl-5"
 						>
 							<!-- icon more details -->
-							<More />
+							<span>
+								<svg
+									class="fill-white-100"
+									fill="none"
+									viewBox="0 0 24 24"
+									id="Call-Made-Fill--Streamline-Rounded-Fill-Material"
+									height="24"
+									width="24"
+								>
+									<path
+										fill="currentColor"
+										d="m17.4998 7.55 -11.925 11.925c-0.15 0.15 -0.325 0.225 -0.525 0.225 -0.199995 0 -0.374995 -0.075 -0.524995 -0.225 -0.15 -0.15 -0.225 -0.325 -0.225 -0.525s0.075 -0.375 0.225 -0.525L16.4498 6.5h-6.6c-0.2125 0 -0.3906 -0.07235 -0.53425 -0.217 -0.14385 -0.1445 -0.21575 -0.32365 -0.21575 -0.5375 0 -0.21365 0.0719 -0.39135 0.21575 -0.533 0.14365 -0.14165 0.32175 -0.2125 0.53425 -0.2125h8.4c0.2125 0 0.39065 0.07185 0.5345 0.2155 0.14365 0.14385 0.2155 0.322 0.2155 0.5345v8.4c0 0.2125 -0.07235 0.3906 -0.217 0.53425 -0.1445 0.14385 -0.32365 0.21575 -0.5375 0.21575 -0.21365 0 -0.39135 -0.0719 -0.533 -0.21575 -0.14165 -0.14365 -0.2125 -0.32175 -0.2125 -0.53425V7.55Z"
+										stroke-width="0.5"
+									></path>
+								</svg>
+							</span>
 							<!-- more -->
 							<span class="hidden text-xs md:flex md:text-sm"> selengkapnya </span>
 						</button>
