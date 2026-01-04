@@ -185,7 +185,7 @@
 							class=" flex flex-row-reverse items-center justify-center gap-3 rounded-md bg-blue-500 p-2 text-white hover:bg-blue-600 md:pr-5 md:pl-5"
 						>
 							<!-- icon more details -->
-							<More/>
+							<More />
 							<!-- more -->
 							<span class="hidden text-xs md:flex md:text-sm"> selengkapnya </span>
 						</button>
