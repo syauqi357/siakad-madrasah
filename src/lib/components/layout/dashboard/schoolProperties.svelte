@@ -41,7 +41,7 @@
 	const facilitiesPromise = fetchFacilities();
 </script>
 
-<section class="bg-slate-400">
+<section class="">
 
 	{#await facilitiesPromise}
 		<p>Loading facilities...</p>

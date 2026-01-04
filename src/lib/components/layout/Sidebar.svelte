@@ -54,7 +54,7 @@
 						>
 							<div class="flex items-center justify-center">
 								<span
-									class="h-6 w-6 transition-transform bg-gray-400 duration-200 {openDropdowns[item.name]
+									class="h-6 w-6 transition-transform duration-200 {openDropdowns[item.name]
 										? 'scale-110'
 										: ''}"
 								>
@@ -111,7 +111,7 @@
 							class="group flex items-center justify-between rounded-lg p-2 text-slate-900 transition-all duration-200 hover:translate-x-1 hover:bg-slate-200"
 						>
 							<div class="flex items-center justify-center">
-								<span class="h-6 w-6 bg-gray-500 transition-transform duration-200 group-hover:scale-110">
+								<span class="h-6 w-6  transition-transform duration-200 group-hover:scale-110">
 									{@html item.icon || ''}
 								</span>
 								<span class="ml-3">{item.name}</span>
