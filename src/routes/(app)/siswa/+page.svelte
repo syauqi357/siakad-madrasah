@@ -176,7 +176,7 @@
 		<!-- line student -->
 		{#each students as student (student.id)}
 			<div
-				class="mb-3 grid h-auto w-full grid-cols-1 items-center justify-between gap-6 rounded-lg bg-slate-200 p-3 transition-all duration-150 ease-in-out hover:bg-slate-300"
+				class="mb-3 grid h-auto grid-cols-1 items-center justify-between gap-6 rounded-lg bg-slate-200 p-3 transition-all duration-150 ease-in-out hover:bg-slate-300"
 			>
 				<div class=" grid grid-cols-5 items-center gap-8 p-2 text-xs md:grid-cols-7 md:text-base">
 					<div class="flex items-center justify-center">
@@ -185,7 +185,7 @@
 					<div class="flex items-center justify-center text-slate-700">
 						{student.nama}
 					</div>
-					<div class="">{student.kelas}</div>
+					<div class="flex items-center justify-center ">{student.kelas}</div>
 					<div class={getGenderStyle(student.jenisKelamin)}>
 						{student.jenisKelamin}
 					</div>
@@ -203,22 +203,6 @@
 							class=" flex flex-row-reverse items-center justify-center gap-3 rounded-md bg-blue-500 p-2 text-white hover:bg-blue-600 md:pr-5 md:pl-5"
 						>
 							<!-- icon more details -->
-							<span>
-								<svg
-									class="fill-white-100"
-									fill="none"
-									viewBox="0 0 24 24"
-									id="Call-Made-Fill--Streamline-Rounded-Fill-Material"
-									height="24"
-									width="24"
-								>
-									<path
-										fill="currentColor"
-										d="m17.4998 7.55 -11.925 11.925c-0.15 0.15 -0.325 0.225 -0.525 0.225 -0.199995 0 -0.374995 -0.075 -0.524995 -0.225 -0.15 -0.15 -0.225 -0.325 -0.225 -0.525s0.075 -0.375 0.225 -0.525L16.4498 6.5h-6.6c-0.2125 0 -0.3906 -0.07235 -0.53425 -0.217 -0.14385 -0.1445 -0.21575 -0.32365 -0.21575 -0.5375 0 -0.21365 0.0719 -0.39135 0.21575 -0.533 0.14365 -0.14165 0.32175 -0.2125 0.53425 -0.2125h8.4c0.2125 0 0.39065 0.07185 0.5345 0.2155 0.14365 0.14385 0.2155 0.322 0.2155 0.5345v8.4c0 0.2125 -0.07235 0.3906 -0.217 0.53425 -0.1445 0.14385 -0.32365 0.21575 -0.5375 0.21575 -0.21365 0 -0.39135 -0.0719 -0.533 -0.21575 -0.14165 -0.14365 -0.2125 -0.32175 -0.2125 -0.53425V7.55Z"
-										stroke-width="0.5"
-									></path>
-								</svg>
-							</span>
 							<!-- more -->
 							<span class="hidden text-xs md:flex md:text-sm"> selengkapnya </span>
 						</button>
