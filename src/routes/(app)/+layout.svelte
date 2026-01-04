@@ -42,7 +42,7 @@
 {#if user}
 	<div class="flex min-h-screen">
 		<div class="print:hidden">
-			<Sidebar bind:sidebarOpen={sidebarOpen} {navItems} bind:openDropdowns />
+			<Sidebar bind:sidebarOpen {navItems} bind:openDropdowns />
 		</div>
 
 		<div class="flex-1">
@@ -50,14 +50,19 @@
 				<Navbar bind:sidebarOpen {user} {logout} />
 			</div>
 
-			<main class="p-6 sm:ml-64 sm:mt-20 mt-20 bg-white print:m-0 print:p-0 print:ml-0 print:mt-0">
+			<main class="mt-20 bg-white p-6 sm:mt-20 sm:ml-64 print:m-0 print:mt-0 print:ml-0 print:p-0">
 				<slot />
 			</main>
 		</div>
 	</div>
 {:else}
-	<div class="flex items-center justify-center min-h-screen">
-		<p>Loading...</p>
+	<div class="flex min-h-screen items-center justify-center">
+		<!--		<p>Loading...</p>-->
+		<!--	loading animations	-->
+		<!-- From Uiverse.io by Fresnel11 -->
+		<div
+			class="h-10 w-10 animate-spin rounded-full border-4 border-gray-300 border-t-blue-500"
+		></div>
 	</div>
 {/if}
 
