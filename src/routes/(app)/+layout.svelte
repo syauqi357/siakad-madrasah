@@ -57,7 +57,7 @@
 	</div>
 {:else}
 	<div class="flex min-h-screen items-center justify-center">
-		<!--		<p>Loading...</p>-->
+				<p>Loading</p>
 		<!--	loading animations	-->
 		<!-- From Uiverse.io by Fresnel11 -->
 		<div
