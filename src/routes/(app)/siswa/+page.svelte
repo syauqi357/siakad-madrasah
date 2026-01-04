@@ -154,14 +154,14 @@
 			<div
 				class="mb-3 grid h-auto w-full grid-cols-1 items-center justify-between gap-6 rounded-lg bg-slate-200 p-3 transition-all duration-150 ease-in-out hover:bg-slate-300"
 			>
-				<div class=" grid grid-cols-5 items-center gap-8 p-2 text-xs md:grid-cols-7 md:text-base">
+				<div class=" grid grid-cols-6 items-center gap-8 p-2 text-xs md:grid-cols-7 md:text-base">
 					<div class="flex items-center justify-center">
 						{student.nisn}
 					</div>
 					<div class="flex items-center justify-center text-slate-700">
 						{student.nama}
 					</div>
-					<div class="flex items-center justify-center">{student.kelas}</div>
+					<div class="flex items-center bg-red-500 justify-center">{student.kelas}</div>
 					<div class="flex items-center justify-center">
 						<div class={getGenderStyle(student.jenisKelamin)}>
 							{student.jenisKelamin}
