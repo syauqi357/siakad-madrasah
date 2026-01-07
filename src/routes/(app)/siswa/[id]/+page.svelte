@@ -2,6 +2,8 @@
 	// This file goes in: src/routes/student/[id]/+page.svelte
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
+    import { goto } from '$app/navigation';
+    import { apiFetch } from '$lib/api';
 
 	type Student = {
 		id: number;
@@ -24,11 +26,20 @@
 
 	onMount(async () => {
 		try {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                goto('/login');
+                return;
+            }
+
 			// Make request to your Express API endpoint
-			const apiUrl = import.meta.env.VITE_API_URL;
-			const response = await fetch(`${apiUrl}/routes/api/studentData/${$page.params.id}`);
+			const response = await apiFetch(`/routes/api/studentData/${$page.params.id}`);
 
 			if (!response.ok) {
+                if (response.status === 401) {
+                    goto('/login');
+                    return;
+                }
 				throw new Error('Student not found');
 			}
 

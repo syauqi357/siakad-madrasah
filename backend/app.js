@@ -4,6 +4,7 @@ import authRouter from './routes/api/auth.js';
 import schoolDataRouter from './routes/api/schooldataNav.js';
 import studentDataRouter from './routes/api/student.js';
 import auditLogsRouter from './routes/auditLog/APILogs/audit_logs.js';
+import { auditLog } from './middleware/middlewareAudit.js'; // Import audit middleware
 import dotenv from 'dotenv';
 import path from 'path'; // Import path module
 
@@ -23,6 +24,11 @@ const corsOptions = {
 app.use(cors(corsOptions));
 // restAPI
 app.use(express.json());
+
+// Apply Audit Log Middleware globally
+// This ensures all API requests are logged
+app.use(auditLog);
+
 // Serve static files from the '(public)' directory
 import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);

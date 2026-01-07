@@ -1,69 +1,85 @@
 // backend/middleware/middlewareAudit.js
 import { drizzle } from 'drizzle-orm/better-sqlite3';
-// importing database
 import Database from 'better-sqlite3';
-// importing from : backend\src\db\schema\auditlog.js
 import { auditTable } from '../src/db/schema/auditlog.js'; 
+import jwt from 'jsonwebtoken'; 
 
-// env database positions
 const sqlite = new Database(process.env.DATABASE_URL);
 const db = drizzle(sqlite);
 
-/**
- * Audit log middleware
- * Automatically logs API actions to database
- */
-
-// auditlog export usage : 
 export const auditLog = async (req, res, next) => {
-  // Store original json method
   const originalJson = res.json.bind(res);
 
-  // Override res.json to capture successful responses
   res.json = function(data) {
-    // Only log if response is successful (2xx status)
     if (res.statusCode >= 200 && res.statusCode < 300) {
-      // Don't wait for logging to complete
-      saveAuditLog(req, res).catch(err => {
+      saveAuditLog(req, res, data).catch(err => {
         console.error('❌ Audit log failed:', err);
       });
     }
-    
     return originalJson(data);
   };
 
   next();
 };
 
-/**
- * Save audit log to database
- */
-async function saveAuditLog(req, res) {
+async function saveAuditLog(req, res, responseData) {
   try {
-    // Generate action description from route
     const action = generateActionDescription(req);
-    
-    // Determine audit type from route path
     const auditType = determineAuditType(req.path);
-    
-    // Determine status from HTTP method
     const status = determineStatus(req.method, req.path);
-    
-    // Get target if available (from params or body)
     const target = determineTarget(req);
+
+    // --- USER IDENTIFICATION LOGIC ---
+    let userId = 'anonymous';
+
+    // 1. Try req.user (from verifyToken middleware)
+    if (req.user?.username) {
+      userId = req.user.username;
+    } 
+    // 2. If Login action, get from response
+    else if (action === 'User Login' && responseData?.user?.username) {
+      userId = responseData.user.username;
+    }
+    // 3. If Login action, try request body (Fallback)
+    else if (action === 'User Login' && req.body?.username) {
+      userId = req.body.username;
+    }
+    // 4. Try to decode token from header
+    else if (req.headers.authorization) {
+      try {
+        const tokenParts = req.headers.authorization.split(' ');
+        if (tokenParts.length === 2 && tokenParts[0] === 'Bearer') {
+            const token = tokenParts[1];
+            const decoded = jwt.decode(token);
+            if (decoded?.username) {
+                userId = decoded.username;
+            }
+        }
+      } catch (e) {
+        console.log('⚠️ Audit Log: Failed to decode token:', e.message);
+      }
+    }
+
+    // DEBUG: Diagnose why user is anonymous
+    if (userId === 'anonymous') {
+         // Only log this if it's NOT the login page itself (which is expected to be anonymous)
+         if (action !== 'User Login') {
+             console.log(`⚠️ Audit: User is anonymous for ${action}. Auth Header: ${req.headers.authorization ? 'PRESENT' : 'MISSING'}`);
+         }
+    }
 
     const auditEntry = {
       audit_type: auditType,
-      user_id: req.user?.username || req.user?.id || 'anonymous',
+      user_id: userId,
       action: action,
-      target: target,
+      target: target || 'General',
       status: status,
       metadata: JSON.stringify({
         method: req.method,
         path: req.path,
-        body: sanitizeBody(req.body),
         query: req.query,
-        params: req.params
+        // Only log body for non-GET requests to keep logs clean
+        body: req.method !== 'GET' ? sanitizeBody(req.body) : undefined
       }),
       ip_address: req.ip || req.socket?.remoteAddress || 'unknown',
       user_agent: req.get('user-agent') || 'unknown',
@@ -71,79 +87,55 @@ async function saveAuditLog(req, res) {
     };
 
     await db.insert(auditTable).values(auditEntry);
-    console.log('📝 Audit logged:', action);
+    console.log(`📝 Audit: [${userId}] ${action} -> ${target || 'General'}`);
   } catch (error) {
     console.error('❌ Failed to save audit log:', error);
-    // Don't throw error - we don't want to break the actual request
   }
 }
 
-/**
- * Generate human-readable action description from route
- */
 function generateActionDescription(req) {
   const path = req.path;
   const method = req.method;
 
-  // Convert path to readable format
-  // Examples: 
-  // /change-password -> "Changed password"
-  // /users/123 -> "Modified user"
-  // /grades -> "Created grade"
-  
+  if (path.includes('change-password')) return 'Changed Password';
+  if (path.includes('login')) return 'User Login';
+  if (path.includes('logout')) return 'User Logout';
+  if (path.includes('register')) return 'User Registration';
+
   let action = path
     .split('/')
-    .filter(part => part && !part.match(/^\d+$/) && !part.match(/^[a-f0-9-]{36}$/)) // remove IDs
+    .filter(part => part && !part.match(/^\d+$/) && !part.match(/^[a-f0-9-]{36}$/) && part !== 'api' && part !== 'routes')
     .join(' ')
     .replace(/-/g, ' ')
     .trim();
 
-  // Add verb based on HTTP method
   switch (method) {
-    case 'POST':
-      action = `Created ${action}` || 'Created resource';
-      break;
+    case 'POST': action = `Created ${action}`; break;
     case 'PUT':
-    case 'PATCH':
-      action = `Updated ${action}` || 'Updated resource';
-      break;
-    case 'DELETE':
-      action = `Deleted ${action}` || 'Deleted resource';
-      break;
-    case 'GET':
-      action = `Viewed ${action}` || 'Viewed resource';
-      break;
-    default:
-      action = `${method} ${action}`;
+    case 'PATCH': action = `Updated ${action}`; break;
+    case 'DELETE': action = `Deleted ${action}`; break;
+    case 'GET': action = `Viewed ${action}`; break;
+    default: action = `${method} ${action}`;
   }
 
-  // Capitalize first letter
   return action.charAt(0).toUpperCase() + action.slice(1);
 }
 
-/**
- * Determine audit type from route path
- */
 function determineAuditType(path) {
   if (path.includes('grade')) return 'grades';
   if (path.includes('attendance')) return 'attendance';
   if (path.includes('user') || path.includes('auth')) return 'users';
   if (path.includes('student')) return 'students';
   if (path.includes('teacher') || path.includes('guru')) return 'teachers';
-  
+  if (path.includes('school')) return 'school';
   return 'system';
 }
 
-/**
- * Determine status from HTTP method and route
- */
 function determineStatus(method, path) {
-  // Special cases based on route
   if (path.includes('change-password') || path.includes('update')) return 'changed';
   if (path.includes('login')) return 'success';
   if (path.includes('logout')) return 'success';
   
-  // Default based on HTTP method
   switch (method) {
     case 'POST': return 'created';
     case 'PUT':
@@ -154,37 +146,41 @@ function determineStatus(method, path) {
   }
 }
 
-/**
- * Determine target from request
- */
 function determineTarget(req) {
-  // Try to get meaningful target from params or body
+  // 1. Specific ID in params
   const id = req.params.id || req.params.studentId || req.params.userId;
+  // 2. Specific Name in body
   const name = req.body?.name || req.body?.username || req.body?.studentName;
   
   if (name && id) return `${name} (ID: ${id})`;
   if (name) return name;
   if (id) return `ID: ${id}`;
+
+  // 3. Search Query
+  if (req.query?.search) return `Search: "${req.query.search}"`;
+  if (req.query?.q) return `Search: "${req.query.q}"`;
+
+  // 4. Fallback: Use the URL path as the target (e.g., "School Data", "Student List")
+  // This captures "position of the link or menu set"
+  const pathSegments = req.path.split('/').filter(p => p && p !== 'api' && p !== 'routes' && !p.match(/^\d+$/));
+  
+  if (pathSegments.length > 0) {
+      // Get the last meaningful segment
+      const lastSegment = pathSegments[pathSegments.length - 1];
+      // Format it: "school-data" -> "School Data"
+      return lastSegment.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+  }
   
   return null;
 }
 
-/**
- * Remove sensitive data from body before logging
- */
 function sanitizeBody(body) {
   if (!body) return body;
-  
   const sanitized = { ...body };
-  
-  // Remove sensitive fields
-  const sensitiveFields = ['password', 'token', 'secret', 'apiKey', 'api_key'];
+  const sensitiveFields = ['password', 'token', 'secret', 'apiKey', 'api_key', 'newPassword', 'oldPassword'];
   sensitiveFields.forEach(field => {
-    if (sanitized[field]) {
-      sanitized[field] = '[REDACTED]';
-    }
+    if (sanitized[field]) sanitized[field] = '[REDACTED]';
   });
-  
   return sanitized;
 }
 

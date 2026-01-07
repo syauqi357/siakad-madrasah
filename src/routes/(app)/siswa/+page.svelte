@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+    import { goto } from '$app/navigation';
+    import { apiFetch } from '$lib/api';
 	import Sort from '$lib/components/icons/sort.svelte';
 	import More from '$lib/components/icons/more.svelte';
 	import Arrow_up from '$lib/components/icons/arrow_up.svelte';
@@ -20,8 +22,22 @@
 
 	onMount(async () => {
 		try {
-			const apiUrl = import.meta.env.VITE_API_URL;
-			const response = await fetch(`${apiUrl}/routes/api/studentData`);
+            const token = localStorage.getItem('token');
+            if (!token) {
+                goto('/login');
+                return;
+            }
+
+			const response = await apiFetch('/routes/api/studentData');
+
+            if (!response.ok) {
+                if (response.status === 401) {
+                    goto('/login');
+                    return;
+                }
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
 			const dataFromApi = await response.json();
 
 			// Transform the data from the API to match the component's expected structure
