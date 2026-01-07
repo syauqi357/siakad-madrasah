@@ -92,3 +92,27 @@ export const changePassword = async (req, res) => {
 		});
 	}
 };
+
+// Get current user profile
+export const getSelfrec = async (req, res) => {
+    try {
+        // req.user is set by verifyToken middleware
+        if (!req.user) {
+            return res.status(401).json({
+                success: false,
+                message: 'Unauthorized'
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            user: req.user
+        });
+    } catch (error) {
+        console.error('Get profile error:', error);
+        return res.status(500).json({
+            success: false,
+            message: 'Internal server error'
+        });
+    }
+};

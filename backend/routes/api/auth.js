@@ -13,4 +13,7 @@ router.post('/logout', authController.logout);
 // change password route
 router.post('/change-password', verifyToken, authController.changePassword);
 
+// Get current user profile
+router.get('/profileUsers', verifyToken, authController.getSelfrec);
+
 export default router;
