@@ -8,6 +8,11 @@ const sqlite = new Database(process.env.DATABASE_URL);
 const db = drizzle(sqlite);
 
 export const auditLog = async (req, res, next) => {
+  // 1. SKIP ROOT PATH IMMEDIATELY
+  if (req.path === '/' || req.path === '/favicon.ico') {
+    return next();
+  }
+
   const originalJson = res.json.bind(res);
 
   res.json = function(data) {
@@ -60,13 +65,17 @@ async function saveAuditLog(req, res, responseData) {
       }
     }
 
-    // DEBUG: Diagnose why user is anonymous
-    if (userId === 'anonymous') {
-         // Only log this if it's NOT the login page itself (which is expected to be anonymous)
-         if (action !== 'User Login') {
-             console.log(`⚠️ Audit: User is anonymous for ${action}. Auth Header: ${req.headers.authorization ? 'PRESENT' : 'MISSING'}`);
-         }
+    // --- NOISE FILTERING ---
+    // If the target is "General" AND the user is "anonymous", DO NOT LOG IT.
+    // This hides the scary "anonymous viewed General" logs.
+    if (userId === 'anonymous' && (target === 'General' || !target)) {
+        return; 
     }
+
+    // Optional: Also hide anonymous views of public school data if you want strictly user actions
+    // if (userId === 'anonymous' && target === 'SchoolData' && req.method === 'GET') {
+    //    return;
+    // }
 
     const auditEntry = {
       audit_type: auditType,
