@@ -14,6 +14,7 @@ Summary of Changes:
 	
 	*/
 	import { onMount } from 'svelte';
+    import { apiFetch } from '$lib/api';
 
 	// importing logo by default
 	import logo from '$lib/assets/favicon.svg';
@@ -53,7 +54,7 @@ Summary of Changes:
 			// endpoint app.js
 			// docs : pending
 
-			const response = await fetch(`${apiUrl}/routes/api/schoolData`);
+			const response = await apiFetch('/routes/api/schoolData');
 			//get API from backend using express from localhost:3000/api/schoolData and this is taking a variable const on the file
 
 			if (!response.ok) {
