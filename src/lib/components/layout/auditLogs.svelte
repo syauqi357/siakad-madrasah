@@ -101,7 +101,7 @@
 		if (s.includes('success') || s.includes('completed')) return 'bg-green-100 text-green-800 border-green-200';
 		if (s.includes('changed') || s.includes('updated')) return 'bg-yellow-100 text-yellow-800 border-yellow-200';
 		if (s.includes('deleted') || s.includes('failed') || s.includes('error')) return 'bg-red-100 text-red-800 border-red-200';
-		if (s.includes('viewed')) return 'bg-gray-100 text-gray-800 border-gray-200';
+		if (s.includes('viewed')) return 'bg-cyan-100 text-cyan-800 border-cyan-400';
 
 		return 'bg-gray-100 text-gray-800 border-gray-200'; // Default
 	}
