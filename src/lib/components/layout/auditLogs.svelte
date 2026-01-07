@@ -30,7 +30,7 @@
 	// Filter options
 	const filters: Filter[] = [
 		{ id: 'all', label: 'Semua' },
-		{ id: 'users', label: 'Users' },
+		{ id: 'user_id', label: 'Users' },
 		{ id: 'grades', label: 'Nilai' },
 		{ id: 'students', label: 'Siswa' },
 		{ id: 'attendance', label: 'Absensi' },
@@ -92,6 +92,18 @@
 	// Refetch when filters change
 	function handleFilterChange() {
 		fetchLogs();
+	}
+
+	// Helper function for status colors
+	function getStatusColor(status: string): string {
+		const s = status.toLowerCase();
+		if (s.includes('created')) return 'bg-blue-100 text-blue-800 border-blue-200';
+		if (s.includes('success') || s.includes('completed')) return 'bg-green-100 text-green-800 border-green-200';
+		if (s.includes('changed') || s.includes('updated')) return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+		if (s.includes('deleted') || s.includes('failed') || s.includes('error')) return 'bg-red-100 text-red-800 border-red-200';
+		if (s.includes('viewed')) return 'bg-gray-100 text-gray-800 border-gray-200';
+
+		return 'bg-gray-100 text-gray-800 border-gray-200'; // Default
 	}
 </script>
 
@@ -187,7 +199,7 @@
 							<td class="truncate px-4 py-3">{log.action}</td>
 							<td class="truncate px-4 py-3">{log.target || '-'}</td>
 							<td class="px-4 py-3">
-								<span class="inline-block rounded border border-gray-300 px-2 py-1 text-xs">
+								<span class="inline-block rounded border px-2 py-1 text-xs capitalize {getStatusColor(log.status)}">
 									{log.status}
 								</span>
 							</td>

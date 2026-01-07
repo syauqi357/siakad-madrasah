@@ -147,7 +147,7 @@ function determineStatus(method, path) {
   
   switch (method) {
     case 'POST': return 'created';
-    case 'PUT':
+    case 'PUT': return 'changed';
     case 'PATCH': return 'changed';
     case 'DELETE': return 'deleted';
     case 'GET': return 'viewed';

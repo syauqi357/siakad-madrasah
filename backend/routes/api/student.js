@@ -4,7 +4,8 @@ import {
 	getStudentById,
 	createStudent,
 	updateStudent,
-	deleteStudent
+	deleteStudent,
+	getStudentCount
 } from '../../controllers/studentDatacontroller.js';
 
 const router = express.Router();
@@ -13,6 +14,7 @@ const router = express.Router();
 // @desc    Get all students
 // @access  Public
 router.get('/studentData', getAllStudents);
+router.get('/studentData/count', getStudentCount)
 router.get('/studentData/:id', getStudentById);
 router.post('/students', createStudent);
 router.put('/students/:id', updateStudent);
