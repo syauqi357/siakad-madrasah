@@ -1,4 +1,4 @@
-// controllers/studentDatacontroller.js
+// controllers/studentController.js
 import { db } from '../src/index.js';
 import { studentTable } from '../src/index.js';
 import { eq } from 'drizzle-orm';
