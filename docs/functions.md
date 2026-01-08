@@ -91,7 +91,7 @@
 ---
 
 ## 👨‍🎓 Student Data Controller
-**File**: `backend/controllers/studentDatacontroller.js`
+**File**: `backend/controllers/studentController.js`
 
 ### `getAllStudents(req, res)`
 - **Route**: `GET /api/studentData`

@@ -6,16 +6,16 @@ import {
 	updateStudent,
 	deleteStudent,
 	getStudentCount
-} from '../../controllers/studentDatacontroller.js';
+} from '../../controllers/studentController.js';
 
 const router = express.Router();
 
 // @route   GET api/students
 // @desc    Get all students
 // @access  Public
-router.get('/studentData', getAllStudents);
-router.get('/studentData/count', getStudentCount)
-router.get('/studentData/:id', getStudentById);
+router.get('/studentDataSet', getAllStudents);
+router.get('/studentDataSet/count', getStudentCount)
+router.get('/studentDataSet/:id', getStudentById);
 router.post('/students', createStudent);
 router.put('/students/:id', updateStudent);
 router.delete('/students/:id', deleteStudent);
