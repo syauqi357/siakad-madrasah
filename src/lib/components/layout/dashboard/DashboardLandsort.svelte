@@ -24,7 +24,7 @@
 			}
 
 			// 2. Fetch Student Count
-			const studentRes = await apiFetch('/routes/api/studentData/count');
+			const studentRes = await apiFetch('/routes/api/studentDataSet/count');
 			if (studentRes.ok) {
 				const data = await studentRes.json();
 				studentCount = data.count;
@@ -71,7 +71,7 @@
 			{loading}
 			icon={studentIcon}
 			iconBg="bg-blue-100"
-			change={studentCount ? `+${Math.round((studentCount / 100) * 100)}%` : null}
+			change={studentCount ? `${Math.round((studentCount / 100) * 100)}%` : null}
 			changeColor="text-green-600"
 		/>
 

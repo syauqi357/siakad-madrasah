@@ -28,7 +28,7 @@
                 return;
             }
 
-			const response = await apiFetch('/routes/api/studentData');
+			const response = await apiFetch('/routes/api/studentDataSet');
 
             if (!response.ok) {
                 if (response.status === 401) {
@@ -46,8 +46,8 @@
 				nisn: item.nisn,
 				nama: item.name,
 				kelas: item.class,
-				jenisKelamin: item.gender === 'male' ? 'M' : 'F',
-				asal: item.cityOfOrigin,
+				jenisKelamin: item.gender === 'Laki-laki' ? 'M' : 'F',
+				asal: item.cityOfOrigin || 'Unknown', // Default value if missing
 				// Ensure status matches the component's type, defaulting if needed
 				status: item.status === 'active' ? 'aktif' : 'nonaktif'
 			}));

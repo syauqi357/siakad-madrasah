@@ -33,7 +33,7 @@
             }
 
 			// Make request to your Express API endpoint
-			const response = await apiFetch(`/routes/api/studentData/${$page.params.id}`);
+			const response = await apiFetch(`/routes/api/studentDataSet/${$page.params.id}`);
 
 			if (!response.ok) {
                 if (response.status === 401) {
