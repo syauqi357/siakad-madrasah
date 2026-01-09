@@ -1,14 +1,10 @@
 // controllers/studentController.js
-import { db } from '../src/index.js';
-import { studentTable } from '../src/index.js';
-import { eq } from 'drizzle-orm';
-import { count, sql } from 'drizzle-orm';
+import * as studentService from '../services/student.service.js';
 
 // Controller to get all student data
 export const getAllStudents = async (req, res) => {
 	try {
-		// async to ORM using select function from studentTable (changed)
-		const students = await db.select().from(studentTable);
+		const students = await studentService.findAllStudents();
 		res.status(200).json(students);
 	} catch (error) {
 		console.error('Database error:', error);
@@ -19,7 +15,7 @@ export const getAllStudents = async (req, res) => {
 // student counter data
 export const getStudentCount = async (req, res) => {
 	try {
-		const [result] = await db.select({ count: count() }).from(studentTable);
+		const result = await studentService.countStudents();
 		res.status(200).json(result);
 	} catch (error) {
 		console.error('Database error:', error);
@@ -31,18 +27,13 @@ export const getStudentCount = async (req, res) => {
 export const getStudentById = async (req, res) => {
 	try {
 		const studentId = parseInt(req.params.id);
+		const student = await studentService.findStudentById(studentId);
 
-		const student = await db
-			.select()
-			.from(studentTable)
-			.where(eq(studentTable.id, studentId))
-			.limit(1);
-
-		if (!student || student.length === 0) {
+		if (!student) {
 			return res.status(404).json({ message: `No student found with id ${studentId}` });
 		}
 
-		res.status(200).json(student[0]);
+		res.status(200).json(student);
 	} catch (error) {
 		console.error('Database error:', error);
 		res.status(500).json({ message: 'Error fetching student data', error: error.message });
@@ -51,9 +42,8 @@ export const getStudentById = async (req, res) => {
 
 export const createStudent = async (req, res) => {
 	try {
-		const newStudent = await db.insert(studentTable).values(req.body).returning();
-
-		res.status(201).json(newStudent[0]);
+		const newStudent = await studentService.createStudentData(req.body);
+		res.status(201).json(newStudent);
 	} catch (error) {
 		console.error('Database error:', error);
 		res.status(500).json({ message: 'Error creating student', error: error.message });
@@ -63,18 +53,13 @@ export const createStudent = async (req, res) => {
 export const updateStudent = async (req, res) => {
 	try {
 		const studentId = parseInt(req.params.id);
+		const updated = await studentService.updateStudentData(studentId, req.body);
 
-		const updated = await db
-			.update(studentTable)
-			.set(req.body)
-			.where(eq(studentTable.id, studentId))
-			.returning();
-
-		if (!updated || updated.length === 0) {
+		if (!updated) {
 			return res.status(404).json({ message: 'Student not found' });
 		}
 
-		res.status(200).json(updated[0]);
+		res.status(200).json(updated);
 	} catch (error) {
 		console.error('Database error:', error);
 		res.status(500).json({ message: 'Error updating student', error: error.message });
@@ -84,14 +69,13 @@ export const updateStudent = async (req, res) => {
 export const deleteStudent = async (req, res) => {
 	try {
 		const studentId = parseInt(req.params.id);
+		const deleted = await studentService.deleteStudentData(studentId);
 
-		const deleted = await db.delete(studentTable).where(eq(studentTable.id, studentId)).returning();
-
-		if (!deleted || deleted.length === 0) {
+		if (!deleted) {
 			return res.status(404).json({ message: 'Student not found' });
 		}
 
-		res.status(200).json({ message: 'Student deleted successfully', student: deleted[0] });
+		res.status(200).json({ message: 'Student deleted successfully', student: deleted });
 	} catch (error) {
 		console.error('Database error:', error);
 		res.status(500).json({ message: 'Error deleting student', error: error.message });
