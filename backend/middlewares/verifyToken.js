@@ -1,6 +1,6 @@
 import { verifyTokenService } from '../services/authService.js';
 
-// Verify token middleware
+// Verify token middlewares
 export const verifyToken = (req, res, next) => {
 	try {
 		const token = req.headers.authorization?.split(' ')[1];

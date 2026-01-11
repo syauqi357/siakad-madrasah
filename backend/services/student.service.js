@@ -2,7 +2,9 @@ import { db } from '../src/index.js';
 import { studentTable } from '../src/index.js';
 import { eq, count } from 'drizzle-orm';
 
-export const findAllStudents = async () => {
+export const findAllStudents = async (page = 1, limit = 10) => {
+	const offset = (page - 1) * limit;
+	
 	return db
 		.select({
 			id: studentTable.id,
@@ -11,9 +13,11 @@ export const findAllStudents = async () => {
 			class: studentTable.class,
 			gender: studentTable.gender,
 			cityOfOrigin: studentTable.cityOfOrigin,
-			status: studentTable.status,
+			status: studentTable.status
 		})
-		.from(studentTable);
+		.from(studentTable)
+		.limit(limit)
+		.offset(offset);
 };
 
 export const countStudents = async () => {
@@ -25,9 +29,11 @@ export const findStudentById = async (id) => {
 	const student = await db
 		.select()
 		.from(studentTable)
-		.where(eq(studentTable.id, id))
+		.where(
+			eq(studentTable.id, id)
+		)
 		.limit(1);
-	
+
 	return student[0];
 };
 

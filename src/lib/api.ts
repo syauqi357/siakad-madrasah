@@ -31,7 +31,12 @@ export async function apiFetch(endpoint: string, options: FetchOptions = {}) {
             // Token expired or invalid
             localStorage.removeItem('token');
             localStorage.removeItem('user');
-            goto('/login');
+            // Instead of goto, we can redirect via window.location to ensure a full reload and clear state
+            // or let the component handle the redirect if needed.
+            // But for security, clearing storage is key.
+             if (typeof window !== 'undefined') {
+                 window.location.href = '/login';
+             }
             throw new Error('Unauthorized');
         }
 

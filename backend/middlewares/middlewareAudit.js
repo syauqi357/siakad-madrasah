@@ -1,4 +1,4 @@
-// backend/middleware/middlewareAudit.js
+// backend/middlewares/middlewareAudit.js
 import { drizzle } from 'drizzle-orm/better-sqlite3';
 import Database from 'better-sqlite3';
 import { auditTable } from '../src/db/schema/auditlog.js'; 
@@ -37,7 +37,7 @@ async function saveAuditLog(req, res, responseData) {
     // --- USER IDENTIFICATION LOGIC ---
     let userId = 'anonymous';
 
-    // 1. Try req.user (from verifyToken middleware)
+    // 1. Try req.user (from verifyToken middlewares)
     if (req.user?.username) {
       userId = req.user.username;
     } 
