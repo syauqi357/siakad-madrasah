@@ -44,7 +44,7 @@ export const createStudentData = async (data) => {
 
 export const createBulkstudentData = async (data) => {
 	const newBulkStudent = await db.insert(studentTable).values(data).returning();
-	return newBulkStudent;
+	return data;
 };
 
 export const updateStudentData = async (id, data) => {
