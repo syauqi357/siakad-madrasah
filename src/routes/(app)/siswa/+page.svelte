@@ -64,7 +64,7 @@
 				nisn: item.nisn,
 				nama: item.name,
 				kelas: item.class,
-				jenisKelamin: item.gender === 'Laki-laki' ? 'M' : 'F',
+				jenisKelamin: item.gender === 'male' ? 'M' : 'F',
 				asal: item.cityOfOrigin || 'Unknown', // Default value if missing
 				// Ensure status matches the component's type, defaulting if needed
 				status: item.status === 'active' ? 'aktif' : 'nonaktif'
@@ -181,11 +181,13 @@
 			</div>
 		</div>
 		<div class="flex gap-2 text-sm">
+			<a href="/siswa/addStudent">
 			<button
 				class="flex w-fit items-center justify-center gap-2 rounded-md bg-blue-500 px-4 py-2 text-slate-50 capitalize"
 			>
 				<AddIcon /> tambah siswa</button
 			>
+			</a>
 			<button
 				class="flex w-fit items-center justify-center gap-2 rounded-md border-2 border-blue-500 px-4 py-2 font-semibold text-blue-500 capitalize"
 			>
