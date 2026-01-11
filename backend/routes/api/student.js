@@ -9,6 +9,7 @@ import {
 } from '../../controllers/studentController.js';
 
 const router = express.Router();
+let upload;
 
 // @route   GET api/students
 // @desc    Get all students
@@ -17,6 +18,7 @@ router.get('/studentDataSet', getAllStudents);
 router.get('/studentDataSet/count', getStudentCount)
 router.get('/studentDataSet/:id', getStudentById);
 router.post('/students', createStudent);
+router.post('/studentByexcel', upload.single('file'))
 router.put('/students/:id', updateStudent);
 router.delete('/students/:id', deleteStudent);
 

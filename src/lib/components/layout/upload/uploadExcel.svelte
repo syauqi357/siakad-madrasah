@@ -16,6 +16,9 @@
 		dispatch('upload', formData);
 		close();
 	}
+
+
+
 </script>
 
 {#if isOpen}
