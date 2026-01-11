@@ -182,17 +182,21 @@
 		</div>
 		<div class="flex gap-2 text-sm">
 			<a href="/siswa/addStudent">
-			<button
-				class="flex w-fit items-center justify-center gap-2 rounded-md bg-blue-500 px-4 py-2 text-slate-50 capitalize"
-			>
-				<AddIcon /> tambah siswa</button
-			>
+				<button
+					class="flex w-fit items-center justify-center gap-2 rounded-md bg-blue-500 px-4 py-2 text-slate-50 capitalize"
+				>
+					<AddIcon /> tambah siswa</button
+				>
 			</a>
-			<button
-				class="flex w-fit items-center justify-center gap-2 rounded-md border-2 border-blue-500 px-4 py-2 font-semibold text-blue-500 capitalize"
-			>
-				<UploadIcon />upload excel</button
-			>
+			<form action="" enctype="multipart/form-data" id="uploadExcel">
+				<button
+					id="uploadExcel"
+					type="submit"
+					class="flex w-fit items-center justify-center gap-2 rounded-md border-2 border-blue-500 px-4 py-2 font-semibold text-blue-500 capitalize"
+				>
+					<UploadIcon />upload excel</button
+				>
+			</form>
 		</div>
 	</div>
 	<div
@@ -204,11 +208,9 @@
 			class="mb-4 grid h-auto w-full gap-3 rounded-md border-2 border-blue-700 bg-blue-500 text-slate-50 transition-all duration-150 ease-in-out hover:bg-blue-600"
 		>
 			<div
-				class="col-span-2 grid grid-cols-5 gap-8 text-xs font-semibold transition-all ease-in-out uppercase md:grid-cols-7 md:text-base"
+				class="col-span-2 grid grid-cols-5 gap-8 text-xs font-semibold uppercase transition-all ease-in-out md:grid-cols-7 md:text-base"
 			>
-				<div
-					class="flex cursor-pointer items-center justify-center py-3  hover:scale-109"
-				>
+				<div class="flex cursor-pointer items-center justify-center py-3 hover:scale-109">
 					nisn <Sort />
 				</div>
 				<div
@@ -253,7 +255,9 @@
 				<div
 					class="mb-3 grid h-auto w-full grid-cols-1 items-center justify-between gap-6 rounded-lg bg-slate-200 p-2 transition-all duration-150 ease-in-out hover:bg-slate-300"
 				>
-					<div class=" grid grid-cols-5 items-center gap-8 px-2 text-xs md:grid-cols-7 md:text-base">
+					<div
+						class=" grid grid-cols-5 items-center gap-8 px-2 text-xs md:grid-cols-7 md:text-base"
+					>
 						<div class="flex items-center justify-center">
 							{student.nisn}
 						</div>
