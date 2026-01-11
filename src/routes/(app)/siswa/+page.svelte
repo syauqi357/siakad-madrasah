@@ -7,6 +7,7 @@
 	import UploadIcon from '$lib/components/icons/uploadIcon.svelte';
 	import More from '$lib/components/icons/more.svelte';
 	import Arrow_up from '$lib/components/icons/arrow_up.svelte';
+	import UploadExcel from '$lib/components/layout/upload/uploadExcel.svelte';
 
 	type Student = {
 		id: number;
@@ -24,6 +25,7 @@
 	let totalPages = 1;
 	let limit = 10;
 	let loading = false;
+	let isUploadModalOpen = false;
 
 	// Options for items per page
 	const limitOptions = [5, 10, 20, 50];
@@ -113,6 +115,30 @@
 		return range;
 	}
 
+	async function handleUpload(event: CustomEvent<FormData>) {
+		const formData = event.detail;
+		// TODO: Replace with your actual upload endpoint
+		console.log('Uploading file...', formData.get('file'));
+
+		try {
+			// Example upload logic:
+			// const response = await apiFetch('/routes/api/uploadStudents', {
+			// 	method: 'POST',
+			// 	body: formData
+			// });
+
+			// if (response.ok) {
+			// 	fetchStudents(currentPage);
+			// 	alert('Upload successful!');
+			// } else {
+			// 	alert('Upload failed.');
+			// }
+			alert('Fitur upload belum diimplementasikan sepenuhnya. Cek console untuk data.');
+		} catch (error) {
+			console.error('Upload error:', error);
+		}
+	}
+
 	onMount(() => {
 		fetchStudents(currentPage);
 	});
@@ -152,6 +178,12 @@
 	}
 </script>
 
+<UploadExcel
+	isOpen={isUploadModalOpen}
+	on:close={() => (isUploadModalOpen = false)}
+	on:upload={handleUpload}
+/>
+
 <div class="flex w-fit flex-col items-center justify-center md:p-3">
 	<!-- header -->
 	<div
@@ -181,24 +213,24 @@
 			</div>
 		</div>
 		<div class="flex gap-2 text-sm">
-			<a href="/siswa/addStudent">
-				<button
+			<button>
+				<a
 					class="flex w-fit items-center justify-center gap-2 rounded-md bg-blue-500 px-4 py-2 text-slate-50 capitalize"
+					href="/siswa/addStudent"
 				>
-					<AddIcon /> tambah siswa</button
-				>
-			</a>
-			<form action="" enctype="multipart/form-data" id="uploadExcel">
-				<button
-					id="uploadExcel"
-					type="submit"
-					class="flex w-fit items-center justify-center gap-2 rounded-md border-2 border-blue-500 px-4 py-2 font-semibold text-blue-500 capitalize"
-				>
-					<UploadIcon />upload excel</button
-				>
-			</form>
+					<AddIcon /> tambah siswa
+				</a>
+			</button>
+			<button
+				type="button"
+				class="flex w-fit items-center justify-center gap-2 rounded-md border-2 border-blue-500 px-4 py-2 font-semibold text-blue-500 capitalize"
+				on:click={() => (isUploadModalOpen = true)}
+			>
+				<UploadIcon />upload excel</button
+			>
 		</div>
 	</div>
+
 	<div
 		class="flex h-auto w-full flex-col items-center justify-center rounded-xl bg-slate-100 p-3 md:w-full md:p-4"
 	>
