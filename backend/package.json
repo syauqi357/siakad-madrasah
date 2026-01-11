@@ -17,6 +17,7 @@
     "@libsql/client": "^0.15.15",
     "bcrypt": "^6.0.0",
     "better-sqlite3": "^12.4.1",
+    "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "drizzle-orm": "^0.45.1",

@@ -13,8 +13,12 @@
 	let showPassword = false; // Variable to toggle password visibility
 
 	onMount(() => {
+		// Ideally, this check should be done in a layout load function or hooks.server.ts
+		// to prevent the page from rendering at all if the user is already logged in.
+		// However, for client-side only logic, this is acceptable but can cause a flash.
 		const token = localStorage.getItem('token');
 		if (token) {
+			// eslint-disable-next-line svelte/no-navigation-without-resolve
 			goto('/dashboard');
 		}
 	});

@@ -4,8 +4,21 @@ import * as studentService from '../services/student.service.js';
 // Controller to get all student data
 export const getAllStudents = async (req, res) => {
 	try {
-		const students = await studentService.findAllStudents();
-		res.status(200).json(students);
+		const page = parseInt(req.query.page) || 1;
+		const limit = parseInt(req.query.limit) || 10;
+		
+		const students = await studentService.findAllStudents(page, limit);
+		const totalCount = await studentService.countStudents();
+		
+		res.status(200).json({
+			data: students,
+			pagination: {
+				total: totalCount.count,
+				page: page,
+				limit: limit,
+				totalPages: Math.ceil(totalCount.count / limit)
+			}
+		});
 	} catch (error) {
 		console.error('Database error:', error);
 		res.status(500).json({ message: 'Error fetching student data', error: error.message });

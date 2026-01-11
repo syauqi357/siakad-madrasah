@@ -50,7 +50,7 @@ export const logout = async (req, res) => {
 export const changePassword = async (req, res) => {
 	try {
 		const { currentPassword, newPassword } = req.body;
-		const userId = req.user.id; // From verifyToken middleware
+		const userId = req.user.id; // From verifyToken middlewares
 
 		// Validation
 		if (!currentPassword || !newPassword) {
@@ -96,7 +96,7 @@ export const changePassword = async (req, res) => {
 // Get current user profile
 export const getSelfrec = async (req, res) => {
     try {
-        // req.user is set by verifyToken middleware
+        // req.user is set by verifyToken middlewares
         if (!req.user) {
             return res.status(401).json({
                 success: false,
