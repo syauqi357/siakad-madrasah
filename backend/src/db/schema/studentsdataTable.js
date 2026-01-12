@@ -1,24 +1,36 @@
 import { sqliteTable, int, text } from 'drizzle-orm/sqlite-core';
 
-export const studentTable = sqliteTable('student', {
-	id: int().primaryKey({ autoIncrement: true }),
-	nisn: int().notNull(),
-	nis: int().notNull(),
-	name: text().notNull(),
-	class: text().notNull(),
-	gender: text('gender', { enum: ['Laki-laki', 'Perempuan'] }).notNull(),
-	cityOfOrigin: text().notNull(),
-	status: text('status', {
-		enum: ['active', 'nonactive', 'warning', 'alumni']
+export const studentTable = sqliteTable(
+	'student',
+	{
+		id: integer('id').primaryKey({ autoIncrement: true }),
+		studentName: text('student_name').notNull(),
+		nisn: integer('nisn').notNull().unique(),
+		localNis: integer('local_nis').unique(),
+		gender: text('gender', { enum: ['male', 'female'] }),
+		religion: text('religion'),
+		birthPlace: text('birth_place'),
+		birthDate: text('birth_date'), // SQLite stores dates as text
+		previousSchool: text('previous_school'),
+		phoneNumber: text('phone_number'),
+		childOrder: integer('child_order'), // anak ke-berapa
+		siblingsCount: integer('siblings_count'),
+		originRegion: text('origin_region'),
+		bpjs: text('bpjs'), // health insurance number
+		idCardNumber: text('id_card_number'), // KTP
+		birthCertificateNumber: text('birth_certificate_number'), // akta
+		nationality: text('nationality').default('Indonesia'),
+		livingWith: text('living_with'), // tinggal bersama
+		transportation: text('transportation'),
+		profilePhoto: text('profile_photo'),
+		createdAt: text('created_at').default(sql`CURRENT_TIMESTAMP`),
+		updatedAt: text('updated_at').default(sql`CURRENT_TIMESTAMP`)
+		},
+	(table) => ({
+		nisnIdx: index('idx_students_nisn').on(table.nisn),
+		localNisIdx: index('idx_students_local_nis').on(table.localNis)
 	})
-		.notNull()
-		.default('active'),
-	age: int().notNull(),
-	address: text().notNull()
-
-	// indexing in id and nisn and name.
-	//id nisn and name is used frequently and often be called, for suggestion on the db need to use this column to indexed as well
-});
+);
 
 /*
 
