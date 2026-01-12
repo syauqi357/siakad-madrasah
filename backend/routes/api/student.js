@@ -18,7 +18,7 @@ router.get('/studentDataSet', getAllStudents);
 router.get('/studentDataSet/count', getStudentCount)
 router.get('/studentDataSet/:id', getStudentById);
 router.post('/students', createStudent);
-router.post('/studentByexcel', upload.single('file'))
+// router.post('/studentByexcel', upload.single('file'))
 router.put('/students/:id', updateStudent);
 router.delete('/students/:id', deleteStudent);
 
