@@ -1,7 +1,7 @@
 ## Translation reference:
 
 | Indonesian      | English                  |
-|-----------------|--------------------------|
+| --------------- | ------------------------ |
 | siswa           | students (table name)    |
 | nama_siswa      | student_name             |
 | jenis_kelamin   | gender                   |
@@ -68,18 +68,35 @@ export const studentTable = pgTable(
 
 # studentAddress table
 
-| Indonesian Column | English Column  | Description |
-|-------------------|----------------|-------------|
-| id                | id             | Primary key |
+| Indonesian Column | English Column | Description                |
+| ----------------- | -------------- | -------------------------- |
+| id                | id             | Primary key                |
 | siswa_id          | student_id     | Reference to student table |
-| provinsi          | province       | Province |
-| kabupaten         | regency        | Regency / City |
-| kecamatan         | district       | District |
-| kelurahan         | sub_district   | Urban village |
-| desa              | village        | Rural village |
-| dusun             | hamlet         | Hamlet |
-| jalan             | street         | Street name |
-| no_rumah          | house_number   | House number |
-| rt                | rt             | Neighborhood unit |
-| rw                | rw             | Community unit |
-| kode_pos          | postal_code    | Postal code |
+| provinsi          | province       | Province                   |
+| kabupaten         | regency        | Regency / City             |
+| kecamatan         | district       | District                   |
+| kelurahan         | sub_district   | Urban village              |
+| desa              | village        | Rural village              |
+| dusun             | hamlet         | Hamlet                     |
+| jalan             | street         | Street name                |
+| no_rumah          | house_number   | House number               |
+| rt                | rt             | Neighborhood unit          |
+| rw                | rw             | Community unit             |
+| kode_pos          | postal_code    | Postal code                |
+
+# studentFather table EN - ID
+
+| Indonesian Column    | English Column | Description                |
+| -------------------- | -------------- | -------------------------- |
+| id                   | id             | Primary key                |
+| siswa_id             | student_id     | Reference to student table |
+| nik                  | nik            | National ID number         |
+| nama                 | name           | Father's name              |
+| tempat_lahir         | birth_place    | Place of birth             |
+| tanggal_lahir        | birth_date     | Date of birth              |
+| tahun_lahir          | birth_year     | Year of birth              |
+| pendidikan           | education      | Education level            |
+| pekerjaan            | occupation     | Job                        |
+| penghasilan_perbulan | monthly_income | Monthly income             |
+| nomor_hp             | phone_number   | Phone number               |
+| status_hidup         | is_alive       | Living status (1 = alive)  |

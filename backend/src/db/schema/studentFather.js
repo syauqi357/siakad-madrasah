@@ -1,0 +1,26 @@
+import { sqliteTable, integer, text, real } from 'drizzle-orm/sqlite-core';
+import { studentTable } from './studentsdataTable.js';
+
+export const studentFather = sqliteTable('student_father', {
+	id: integer('id').primaryKey({ autoIncrement: true }),
+
+	studentId: integer('student_id')
+		.notNull()
+		.unique()
+		.references(() => studentTable.id, {
+			onDelete: 'cascade'
+		}),
+
+	nik: text('nik'),
+	name: text('name'),
+	birthPlace: text('birth_place'),
+	birthDate: text('birth_date'), // SQLite DATE = TEXT
+	birthYear: integer('birth_year'),
+
+	education: text('education'),
+	occupation: text('occupation'),
+	monthlyIncome: real('monthly_income'), // DECIMAL → REAL (SQLite)
+
+	phoneNumber: text('phone_number'),
+	isAlive: integer('is_alive').default(1) // BOOLEAN → INTEGER (0/1)
+});
