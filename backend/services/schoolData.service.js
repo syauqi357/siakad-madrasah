@@ -79,12 +79,12 @@ export function getFacilitiesData() {
 }
 
 export const getSchoolDataFromDB = async () => {
-	const [schoolData] = await db.select().from(schoolTable).limit(1);
-	return schoolData;
+	const [GetschoolData] = await db.select().from(schoolTable).limit(1);
+	return GetschoolData;
 };
 
 export const updateSchoolDataInDB = async (id, data) => {
-	const [updated] = await db
+	const [updatedSchoolData] = await db
 		.update(schoolTable)
 		.set({
 			...data,
@@ -92,16 +92,16 @@ export const updateSchoolDataInDB = async (id, data) => {
 		})
 		.where(eq(schoolTable.id, id))
 		.returning();
-	return updated;
+	return updatedSchoolData;
 };
 
 export const createSchoolDataInDB = async (data) => {
-	const [school] = await db
+	const [createSchool] = await db
 		.insert(schoolTable)
 		.values({
 			...data,
 			logoUrl: findLogoFile()
 		})
 		.returning();
-	return school;
+	return createSchool;
 };
