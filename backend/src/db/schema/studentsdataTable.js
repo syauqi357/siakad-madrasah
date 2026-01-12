@@ -1,20 +1,21 @@
-import { sqliteTable, int, text } from 'drizzle-orm/sqlite-core';
+import { sqliteTable, text, int, index } from 'drizzle-orm/sqlite-core';
+import { sql } from 'drizzle-orm';
 
 export const studentTable = sqliteTable(
 	'student',
 	{
-		id: integer('id').primaryKey({ autoIncrement: true }),
+		id: int('id').primaryKey({ autoIncrement: true }),
 		studentName: text('student_name').notNull(),
-		nisn: integer('nisn').notNull().unique(),
-		localNis: integer('local_nis').unique(),
-		gender: text('gender', { enum: ['male', 'female'] }),
+		nisn: int('nisn').notNull().unique(),
+		localNis: int('local_nis').unique(),
+		gender: text('gender', { enum: ['laki-laki', 'Perempuan'] }),
 		religion: text('religion'),
 		birthPlace: text('birth_place'),
 		birthDate: text('birth_date'), // SQLite stores dates as text
 		previousSchool: text('previous_school'),
 		phoneNumber: text('phone_number'),
-		childOrder: integer('child_order'), // anak ke-berapa
-		siblingsCount: integer('siblings_count'),
+		childOrder: int('child_order'), // anak ke-berapa
+		siblingsCount: int('siblings_count'),
 		originRegion: text('origin_region'),
 		bpjs: text('bpjs'), // health insurance number
 		idCardNumber: text('id_card_number'), // KTP
@@ -25,9 +26,10 @@ export const studentTable = sqliteTable(
 		profilePhoto: text('profile_photo'),
 		createdAt: text('created_at').default(sql`CURRENT_TIMESTAMP`),
 		updatedAt: text('updated_at').default(sql`CURRENT_TIMESTAMP`)
-		},
+	},
 	(table) => ({
 		nisnIdx: index('idx_students_nisn').on(table.nisn),
+		studentNameIdx: index('idx_students_student_name').on(table.studentName),
 		localNisIdx: index('idx_students_local_nis').on(table.localNis)
 	})
 );

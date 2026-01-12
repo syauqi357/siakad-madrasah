@@ -9,11 +9,13 @@ export const findAllStudents = async (page = 1, limit = 10) => {
 		.select({
 			id: studentTable.id,
 			nisn: studentTable.nisn,
-			name: studentTable.name,
-			class: studentTable.class,
+			name: studentTable.studentName,
+			// class: studentTable.class,
 			gender: studentTable.gender,
-			cityOfOrigin: studentTable.cityOfOrigin,
-			status: studentTable.status
+			originRegion: studentTable.originRegion,
+			// status: studentTable.status,
+
+
 		})
 		.from(studentTable)
 		.limit(limit)
