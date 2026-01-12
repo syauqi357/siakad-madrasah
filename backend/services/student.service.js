@@ -42,6 +42,11 @@ export const createStudentData = async (data) => {
 	return newStudent[0];
 };
 
+export const createBulkstudentData = async (data) => {
+	const newBulkStudent = await db.insert(studentTable).values(data).returning();
+	return data;
+};
+
 export const updateStudentData = async (id, data) => {
 	const updated = await db
 		.update(studentTable)

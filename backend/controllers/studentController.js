@@ -63,6 +63,16 @@ export const createStudent = async (req, res) => {
 	}
 };
 
+export const createBulkStudent = async (req,res) => {
+	try {
+		const newBulkStudent = await studentService.createStudentData(req.body);
+		res.status(201).json(newBulkStudent);
+	} catch (error) {
+		console.error('Database error:', error);
+		res.status(500).json({ message: 'Error uploading student', error: error.message });
+	}
+}
+
 export const updateStudent = async (req, res) => {
 	try {
 		const studentId = parseInt(req.params.id);
