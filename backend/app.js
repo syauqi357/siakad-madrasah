@@ -59,4 +59,6 @@ app.get('/', (req, res) => {
 app.listen(PORT, () => {
 	console.log(`✅ Server running at ${address}:${PORT}`);
 	console.log('✅ database running at:', process.env.DATABASE_URL);
+// 	jwt secret check
+	console.log('✅ jwt secret:', process.env.JWT_SECRET);
 });

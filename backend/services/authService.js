@@ -10,7 +10,7 @@ import { db } from '../src/index.js';
 // const __filename = fileURLToPath(import.meta.url);
 // const __dirname = path.dirname(__filename);
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_key_change_this';
+const JWT_SECRET = process.env.JWT_SECRET;
 
 // ============================================================================
 // SERVICE LAYER - Business Logic Only
