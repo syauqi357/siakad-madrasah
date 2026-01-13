@@ -4,7 +4,7 @@
 
 	async function fetchFacilities() {
 		try {
-			const response = await apiFetch('/routes/api/schoolData');
+			const response = await apiFetch('/routes/api/schoolAdministrativeData');
 
 			if (!response.ok) {
 				throw new Error(`HTTP error! status: ${response.status}`);

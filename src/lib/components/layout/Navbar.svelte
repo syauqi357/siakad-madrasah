@@ -54,8 +54,8 @@ Summary of Changes:
 			// endpoint app.js
 			// docs : pending
 
-			const response = await apiFetch('/routes/api/schoolData');
-			//get API from backend using express from localhost:3000/api/schoolData and this is taking a variable const on the file
+			const response = await apiFetch('/routes/api/schoolAdministrativeData');
+			//get API from backend using express from localhost:3000/api/schoolAdministrativeData and this is taking a variable const on the file
 
 			if (!response.ok) {
 				throw new Error(`HTTP error! status: ${response.status}`);
