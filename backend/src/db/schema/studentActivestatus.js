@@ -1,3 +1,3 @@
 import { sqliteTable } from 'drizzle-orm/sqlite-core';
 
-export const studentClass = sqliteTable ('',{});
+export const studentActivestatus = sqliteTable('', {});

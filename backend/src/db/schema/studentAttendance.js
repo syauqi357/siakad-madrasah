@@ -35,12 +35,12 @@ export const studentAttendance = sqliteTable(
 		),
 
 		// INDEXES
-		idxStudent: index('idx_student_attendance_student').on(t.studentId),
-		idxDate: index('idx_student_attendance_date').on(t.date),
+		idxStudent: index('idx_student_attendance_student').on(table.studentId),
+		idxDate: index('idx_student_attendance_date').on(table.date),
 
 		// CHECK (status IN (...))
 		statusCheck: sql`
-      CHECK (${t.status} IN ('hadir', 'sakit', 'izin', 'alpha'))
+      CHECK (${table.status} IN ('hadir', 'sakit', 'izin', 'alpha'))
     `
 	})
 );

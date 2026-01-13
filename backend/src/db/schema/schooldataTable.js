@@ -2,8 +2,9 @@
 import { sqliteTable, int, text } from 'drizzle-orm/sqlite-core';
 
 // create table
-export const schoolTable = sqliteTable('school_data', {
-
+export const schoolDataTable = sqliteTable(
+	'school_data',
+	{
 	id: int().primaryKey({ autoIncrement: true }),
 	name: text().notNull(),
 	npsn: int().notNull(),

@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { eq } from 'drizzle-orm';
-import { db, schoolTable } from '../src/index.js';
+import { db, schoolDataTable } from '../src/index.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -79,25 +79,25 @@ export function getFacilitiesData() {
 }
 
 export const getSchoolDataFromDB = async () => {
-	const [GetschoolData] = await db.select().from(schoolTable).limit(1);
+	const [GetschoolData] = await db.select().from(schoolDataTable).limit(1);
 	return GetschoolData;
 };
 
 export const updateSchoolDataInDB = async (id, data) => {
 	const [updatedSchoolData] = await db
-		.update(schoolTable)
+		.update(schoolDataTable)
 		.set({
 			...data,
 			logoUrl: findLogoFile()
 		})
-		.where(eq(schoolTable.id, id))
+		.where(eq(schoolDataTable.id, id))
 		.returning();
 	return updatedSchoolData;
 };
 
 export const createSchoolDataInDB = async (data) => {
 	const [createSchool] = await db
-		.insert(schoolTable)
+		.insert(schoolDataTable)
 		.values({
 			...data,
 			logoUrl: findLogoFile()
