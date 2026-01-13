@@ -32,8 +32,6 @@
 		"@types/better-sqlite3": "^7.6.13",
 		"@types/node": "^22",
 		"concurrently": "^9.2.1",
-		"drizzle-kit": "^0.31.5",
-		"drizzle-orm": "^0.44.6",
 		"eslint": "^9.38.0",
 		"eslint-config-prettier": "^10.1.8",
 		"eslint-plugin-svelte": "^3.12.4",
