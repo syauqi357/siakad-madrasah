@@ -17,7 +17,7 @@ const FE_port = process.env.FRONTEND_URL_DEV;
 // const FE_port_prod = process.env.FRONTEND_URL_;
 const PORT = process.env.PORT;
 
-const address = process.env.ADDRESS_SERVER;
+const ADDRESS = process.env.ADDRESS_SERVER;
 const corsOptions = {
 	origin: FE_port,
 	credentials: true,
@@ -58,7 +58,7 @@ app.get('/', (req, res) => {
 });
 
 app.listen(PORT, () => {
-	console.log(`✅ Server running at ${address}:${PORT}`);
+	console.log(`✅ Server running at ${ADDRESS}:${PORT}`);
 	console.log('✅ database running at:', process.env.DATABASE_URL);
 	// 	jwt secret check
 	// 	console.log('✅ jwt secret:', process.env.JWT_SECRET);
