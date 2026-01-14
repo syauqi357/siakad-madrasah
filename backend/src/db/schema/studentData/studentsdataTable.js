@@ -33,15 +33,3 @@ export const studentTable = sqliteTable(
 		localNisIdx: index('idx_students_local_nis').on(table.localNis)
 	})
 );
-
-/*
-
-   "id": 25020001,
-   "name": "Ahmad Rizki",
-   "class": "XII RPL 1",
-   "gender": "Laki-laki",
-   "cityOfOrigin": "Jakarta",
-   "status": "active",
-   "address": "Jalan Merdeka No. 123"
-
-*/

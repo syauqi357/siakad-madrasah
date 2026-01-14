@@ -1,6 +1,6 @@
 import rateLimit from 'express-rate-limit';
 
-export const GlobalRatelimit = rateLimit({
+export const GLOBAL_RATE_LIMIT = rateLimit({
 	/*
 	 *
 	 * catch source from :
