@@ -1,14 +1,14 @@
 import express from 'express';
 import cors from 'cors';
+import path from 'path';
+import dotenv from 'dotenv'; // main dependencies
 import authRouter from './routes/api/auth.js';
 import schoolDataRouter from './routes/api/schooldataNav.js';
 import studentDataRouter from './routes/api/student.js';
-import auditLogsRouter from './routes/auditLog/APILogs/audit_logs.js';
-import { auditLog } from './middlewares/middlewareAudit.js'; // Import audit middlewares
-import dotenv from 'dotenv';
-import path from 'path'; // Import path module
+import auditLogsRouter from './routes/auditLog/APILogs/audit_logs.js'; // routes
+import { auditLog } from './middlewares/middlewareAudit.js'; // middleware audit logs
 import { GlobalRatelimit } from './middlewares/globalRatelimit/rateLimiter.js';
-import { speedLimit } from './middlewares/throttleFeat/throttleLimit.js';
+import { speedLimit } from './middlewares/throttleFeat/throttleLimit.js'; // rate limit and throttle
 
 // This line loads the environment variables from a .env file into process.env
 dotenv.config();
@@ -23,6 +23,7 @@ const corsOptions = {
 	credentials: true,
 	optionsSuccessStatus: 200
 };
+
 // header line
 app.use(cors(corsOptions));
 // restAPI
@@ -53,12 +54,12 @@ app.use('/api/audit-logs', auditLogsRouter);
 
 // Root endpoint
 app.get('/', (req, res) => {
-	res.send('Backend API is running!');
+	res.send(`Backend Express API is running on port : ${PORT}`);
 });
 
 app.listen(PORT, () => {
 	console.log(`✅ Server running at ${address}:${PORT}`);
 	console.log('✅ database running at:', process.env.DATABASE_URL);
-// 	jwt secret check
-	console.log('✅ jwt secret:', process.env.JWT_SECRET);
+	// 	jwt secret check
+	// 	console.log('✅ jwt secret:', process.env.JWT_SECRET);
 });

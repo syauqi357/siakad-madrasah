@@ -37,7 +37,7 @@ async function saveAuditLog(req, res, responseData) {
     // --- USER IDENTIFICATION LOGIC ---
     let userId = 'anonymous';
 
-    // 1. Try req.user (from verifyToken middlewares)
+    // 1. Try req.user (from VERIFY_TOKEN_MIDDLEWARE middlewares)
     if (req.user?.username) {
       userId = req.user.username;
     } 
