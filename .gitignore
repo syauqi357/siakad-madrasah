@@ -19,7 +19,7 @@ Thumbs.db
 
 backend/*.xlsx
 
-.env.*
+.env
 !.env.example
 !.env.test
 

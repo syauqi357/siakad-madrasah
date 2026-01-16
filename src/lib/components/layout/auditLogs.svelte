@@ -61,7 +61,7 @@
 			if (selectedFilter !== 'all') params.append('type', selectedFilter);
 			if (selectedTimeRange !== 'all') params.append('timeRange', selectedTimeRange);
 
-			const response = await fetch(`${apiBaseUrl}/api/audit-logs?${params.toString()}`);
+			const response = await fetch(`${apiBaseUrl}/routes/api/audit-logs?${params.toString()}`);
 
 			if (!response.ok) {
 				throw new Error(`Gagal memuat data: ${response.statusText}`);

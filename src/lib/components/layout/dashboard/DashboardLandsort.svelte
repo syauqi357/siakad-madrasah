@@ -17,7 +17,7 @@
 		$activeMenu = 'dashboard';
 		try {
 			// 1. Fetch School Data
-			const schoolRes = await apiFetch('/routes/api/schoolAdministrativeData');
+			const schoolRes = await apiFetch('/routes/api/schoolData');
 			if (schoolRes.ok) {
 				const data = await schoolRes.json();
 				schoolName = data.name;

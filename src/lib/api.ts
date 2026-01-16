@@ -1,4 +1,4 @@
-import { goto } from '$app/navigation';
+// import { goto } from '$app/navigation';
 
 const API_URL = import.meta.env.VITE_API_URL;
 

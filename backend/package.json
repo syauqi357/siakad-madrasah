@@ -6,7 +6,6 @@
   "type": "module",
   "scripts": {
     "dev": "node --watch app.js",
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "build": "tsc",
     "db:generate": "drizzle-kit generate",
     "db:reset": "rm -f sqlite.db && npm run db:migrate && npm run db:seed"

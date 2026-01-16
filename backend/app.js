@@ -47,13 +47,25 @@ app.use(GLOBAL_RATE_LIMIT);
 
 
 // 2. Use a more standard API route
-app.use('/routes/api', speedLimit);
-// - changing route using data from API for school data navbar set
-app.use('/routes/api/school', schoolDataRouter);
-app.use('/routes/api/student', studentDataRouter);
-app.use('/api/auth', authRouter);
-app.use('/api/audit-logs', auditLogsRouter);
+// app.use('/routes/api', speedLimit);
+
+// --- ROUTE CONFIGURATION ---
+// 1. School Data: /routes/api/schoolData
+app.use('/routes/api/schoolData', schoolDataRouter);
+
+// 2. Student Data: /routes/api/studentDataSet... (handled inside studentDataRouter)
+// Note: studentDataRouter has routes like '/studentDataSet', so we mount it at '/routes/api'
+app.use('/routes/api', studentDataRouter);
+
+// 3. Auth: /routes/api/auth/login, /routes/api/auth/logout
+app.use('/routes/api/auth', authRouter);
+
+// 4. Audit Logs: /routes/api/audit-logs
+app.use('/routes/api/audit-logs', auditLogsRouter);
+
+// 5. Scores: /routes/api/score/scorebyclass, /routes/api/score/scores
 app.use('/routes/api/score', scoreRouter);
+
 
 // Root endpoint
 app.get('/', (req, res) => {
