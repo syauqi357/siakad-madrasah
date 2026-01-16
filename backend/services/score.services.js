@@ -3,7 +3,7 @@ import { studentScores } from '../src/db/schema/studentScore.js';
 import { studentTable } from '../src/db/schema/studentsdataTable.js';
 import { assessmentType } from '../src/db/schema/assesmentType.js';
 import { eq, sql, inArray } from 'drizzle-orm';
-import * as ExcelJS from 'exceljs';
+import ExcelJS from 'exceljs';
 
 /**
  * Fetch scores for a specific class subject and pivot them by student.
@@ -88,6 +88,7 @@ export const saveBulkScores = async (classSubjectId, assessmentTypeId, scores) =
 
 /**
  * Reads an Excel file buffer, validates the content, and saves the scores.
+ * This version is smarter: it finds columns by header name, not by fixed position.
  * @param {Buffer} fileBuffer - The buffer of the uploaded .xlsx file.
  * @param {number} classSubjectId
  * @param {number} assessmentTypeId
@@ -102,16 +103,38 @@ export const uploadScoresFromExcel = async (fileBuffer, classSubjectId, assessme
 		throw new Error('No worksheet found in the Excel file.');
 	}
 
+	let nisnCol = -1;
+	let scoreCol = -1;
+	let headerRowNumber = -1;
+
+	// Find the header row and column indices
+	worksheet.eachRow({ includeEmpty: false }, (row, rowNumber) => {
+		row.eachCell((cell, colNumber) => {
+			const cellValue = cell.value?.toString().trim().toLowerCase();
+			if (cellValue === 'nisn') {
+				nisnCol = colNumber;
+				headerRowNumber = rowNumber;
+			}
+			if (cellValue === 'score') {
+				scoreCol = colNumber;
+			}
+		});
+		if (headerRowNumber !== -1) return false; // Stop searching after header is found
+	});
+
+	if (nisnCol === -1 || scoreCol === -1) {
+		throw new Error('Required columns "NISN" and/or "Score" not found in the Excel file.');
+	}
+
 	const scoresToProcess = [];
 	const nisnsToFind = [];
 
 	// First pass: Read all NISNs and scores from the Excel file
-	// Assuming format: Column A = NISN, Column B = Score
 	worksheet.eachRow({ includeEmpty: false }, (row, rowNumber) => {
-		if (rowNumber === 1) return; // Skip header row
+		if (rowNumber <= headerRowNumber) return; // Skip header and any rows above it
 
-		const nisn = row.getCell(1).value?.toString().trim();
-		const score = parseFloat(row.getCell(2).value);
+		const nisn = row.getCell(nisnCol).value?.toString().trim();
+		const score = parseFloat(row.getCell(scoreCol).value);
 
 		if (nisn) {
 			scoresToProcess.push({ row: rowNumber, nisn, score });
