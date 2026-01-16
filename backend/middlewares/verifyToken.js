@@ -1,4 +1,4 @@
-import { VERIFY_TOKEN_SERVICES } from '../services/authService.js';
+import { VERIFY_TOKEN_SERVICES } from '../services/auth.service.js';
 
 // Verify token middlewares
 export const VERIFY_TOKEN_MIDDLEWARE = (req, res, next) => {

@@ -1,12 +1,21 @@
 import express from 'express';
-import { getScores, saveScores } from '../../controllers/scoreController.js';
+import multer from 'multer';
+import { getScores, saveScores, uploadScores } from '../../controllers/scoreController.js';
 
 const router = express.Router();
 
-// GET /api/scores?classSubjectId=1
+// Configure Multer (Memory Storage is fine for small Excel files)
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
+// GET /routes/api/score/scorebyclass?classSubjectId=1
 router.get('/scorebyclass', getScores);
 
-// POST /api/scores
+// POST /routes/api/score/scores (JSON Bulk Save)
 router.post('/scores', saveScores);
+
+// POST /routes/api/score/upload (Excel File Upload)
+// Expects form-data with fields: 'file' (the excel file), 'classSubjectId', 'assessmentTypeId'
+router.post('/upload', upload.single('file'), uploadScores);
 
 export default router;

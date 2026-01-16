@@ -1,5 +1,5 @@
-import { AUTHENTICATE_USERS } from '../services/authService.js';
-import { CHANGE_PASSWORD_SERVICES } from '../services/authService.js';
+import { AUTHENTICATE_USERS } from '../services/auth.service.js';
+import { CHANGE_PASSWORD_SERVICES } from '../services/auth.service.js';
 
 
 // Login controller

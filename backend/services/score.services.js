@@ -2,7 +2,8 @@ import { db } from '../src/index.js';
 import { studentScores } from '../src/db/schema/studentScore.js';
 import { studentTable } from '../src/db/schema/studentsdataTable.js';
 import { assessmentType } from '../src/db/schema/assesmentType.js';
-import { eq, sql } from 'drizzle-orm';
+import { eq, sql, inArray } from 'drizzle-orm';
+import * as ExcelJS from 'exceljs';
 
 /**
  * Fetch scores for a specific class subject and pivot them by student.
@@ -82,4 +83,77 @@ export const saveBulkScores = async (classSubjectId, assessmentTypeId, scores) =
 				assessmentDate: sql`excluded.assessment_date`
 			}
 		});
+};
+
+
+/**
+ * Reads an Excel file buffer, validates the content, and saves the scores.
+ * @param {Buffer} fileBuffer - The buffer of the uploaded .xlsx file.
+ * @param {number} classSubjectId
+ * @param {number} assessmentTypeId
+ * @returns {Promise<{successCount: number, errors: Array<{row: number, nisn: string, error: string}>}>}
+ */
+export const uploadScoresFromExcel = async (fileBuffer, classSubjectId, assessmentTypeId) => {
+	const workbook = new ExcelJS.Workbook();
+	await workbook.xlsx.load(fileBuffer);
+
+	const worksheet = workbook.getWorksheet(1);
+	if (!worksheet) {
+		throw new Error('No worksheet found in the Excel file.');
+	}
+
+	const scoresToProcess = [];
+	const nisnsToFind = [];
+
+	// First pass: Read all NISNs and scores from the Excel file
+	// Assuming format: Column A = NISN, Column B = Score
+	worksheet.eachRow({ includeEmpty: false }, (row, rowNumber) => {
+		if (rowNumber === 1) return; // Skip header row
+
+		const nisn = row.getCell(1).value?.toString().trim();
+		const score = parseFloat(row.getCell(2).value);
+
+		if (nisn) {
+			scoresToProcess.push({ row: rowNumber, nisn, score });
+			nisnsToFind.push(nisn);
+		}
+	});
+
+	if (nisnsToFind.length === 0) {
+		return { successCount: 0, errors: [{ row: 0, nisn: '', error: 'No data found in Excel file.' }] };
+	}
+
+	// Second pass: Efficiently fetch all students from the DB in one query
+	const studentsFound = await db
+		.select({ id: studentTable.id, nisn: studentTable.nisn })
+		.from(studentTable)
+		.where(inArray(studentTable.nisn, nisnsToFind));
+
+	const studentNisnToIdMap = new Map(studentsFound.map((s) => [s.nisn.toString(), s.id]));
+
+	// Third pass: Validate and prepare the final payload
+	const validScores = [];
+	const errors = [];
+
+	for (const item of scoresToProcess) {
+		const studentId = studentNisnToIdMap.get(item.nisn);
+
+		if (!studentId) {
+			errors.push({ row: item.row, nisn: item.nisn, error: 'NISN not found in database.' });
+		} else if (isNaN(item.score) || item.score < 0 || item.score > 100) {
+			errors.push({ row: item.row, nisn: item.nisn, error: `Invalid score value: ${item.score}` });
+		} else {
+			validScores.push({ studentId, score: item.score });
+		}
+	}
+
+	// Final step: Save the valid scores using our existing bulk function
+	if (validScores.length > 0) {
+		await saveBulkScores(classSubjectId, assessmentTypeId, validScores);
+	}
+
+	return {
+		successCount: validScores.length,
+		errors
+	};
 };

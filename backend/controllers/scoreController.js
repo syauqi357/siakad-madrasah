@@ -38,3 +38,28 @@ export const saveScores = async (req, res) => {
 		res.status(500).json({ success: false, message: 'Internal server error' });
 	}
 };
+
+export const uploadScores = async (req, res) => {
+	try {
+		const { classSubjectId, assessmentTypeId } = req.body;
+		const file = req.file;
+
+		if (!file) {
+			return res.status(400).json({ success: false, message: 'No file uploaded' });
+		}
+		if (!classSubjectId || !assessmentTypeId) {
+			return res.status(400).json({ success: false, message: 'classSubjectId and assessmentTypeId are required' });
+		}
+
+		const result = await scoreService.uploadScoresFromExcel(file.buffer, parseInt(classSubjectId), parseInt(assessmentTypeId));
+
+		res.json({
+			success: true,
+			message: `Processed ${result.successCount} scores successfully.`,
+			errors: result.errors
+		});
+	} catch (error) {
+		console.error('Error uploading scores:', error);
+		res.status(500).json({ success: false, message: 'Internal server error: ' + error.message });
+	}
+};
