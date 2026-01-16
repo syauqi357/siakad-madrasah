@@ -1,11 +1,29 @@
 import ExcelJS from 'exceljs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { db } from '../src/index.js';
+import dotenv from 'dotenv';
+import { drizzle } from 'drizzle-orm/better-sqlite3';
+import Database from 'better-sqlite3';
+
+// --- Step 1: Explicitly load the .env file from the root of the 'backend' directory ---
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
+// ------------------------------------------------------------------------------------
+
+// --- Step 2: Create a dedicated database connection for this script ---
+// This ensures we are connecting to the correct database file specified in the .env
+if (!process.env.DATABASE_URL) {
+	throw new Error('DATABASE_URL is not defined in your .env file.');
+}
+const dbPath = path.resolve(__dirname, '..', process.env.DATABASE_URL);
+console.log(`🔌 Connecting to database at: ${dbPath}`);
+const sqlite = new Database(dbPath);
+const db = drizzle(sqlite);
+// --------------------------------------------------------------------
+
+// Import schema after db connection is established
 import { classes } from '../src/db/schema/classesDataTable.js';
 import { Subjects } from '../src/db/schema/subjectTable.js';
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 async function generateTestExcel() {
 	console.log('📝 Creating dynamic test Excel file...');
@@ -17,7 +35,7 @@ async function generateTestExcel() {
 
 	if (classData.length === 0 || subjectData.length === 0) {
 		console.error('❌ Database is empty. Please run the seed script (`node seed.js`) first.');
-		process.exit(1); // Exit with an error
+		process.exit(1);
 	}
 
 	const className = classData[0].className;
@@ -36,9 +54,9 @@ async function generateTestExcel() {
 	titleCell.alignment = { vertical: 'middle', horizontal: 'center' };
 
 	worksheet.getCell('A3').value = 'Kelas';
-	worksheet.getCell('B3').value = `: ${className}`; // Dynamic Class Name
+	worksheet.getCell('B3').value = `: ${className}`;
 	worksheet.getCell('A4').value = 'Mata Pelajaran';
-	worksheet.getCell('B4').value = `: ${subjectName}`; // Dynamic Subject Name
+	worksheet.getCell('B4').value = `: ${subjectName}`;
 
 	// --- Table Header ---
 	const headerRow = worksheet.getRow(6);
