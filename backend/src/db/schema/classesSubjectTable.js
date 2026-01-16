@@ -17,6 +17,6 @@ export const classSubject = sqliteTable(
 	},
 	(table) => ({
 		// Composite unique constraint
-		unq: unique().on(table.classId, table.subjectId)
+		// unq: unique().on(table.classId, table.subjectId)
 	})
 );

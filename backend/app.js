@@ -6,6 +6,7 @@ import authRouter from './routes/api/auth.js';
 import schoolDataRouter from './routes/api/schooldataNav.js';
 import studentDataRouter from './routes/api/student.js';
 import auditLogsRouter from './routes/auditLog/APILogs/audit_logs.js'; // ROUTES API
+import scoreRouter from './routes/api/scores.js'; // Import scoreRouter
 import { auditLog } from './middlewares/middlewareAudit.js';
 import { GLOBAL_RATE_LIMIT } from './middlewares/globalRatelimit/rateLimiter.js';
 import { speedLimit } from './middlewares/throttleFeat/throttleLimit.js'; // MIDDLEWARE RATE LIMIT, THROTTLE and AUDIT LOGS
@@ -52,6 +53,7 @@ app.use('/routes/api/school', schoolDataRouter);
 app.use('/routes/api/student', studentDataRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/audit-logs', auditLogsRouter);
+app.use('/routes/api/score', scoreRouter);
 
 // Root endpoint
 app.get('/', (req, res) => {

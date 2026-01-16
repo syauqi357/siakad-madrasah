@@ -1,3 +1,3 @@
-import { sqliteTable } from 'drizzle-orm/sqlite-core';
-
-export const studentClass = sqliteTable ('',{});
+// This file was causing errors because it exported an empty table.
+// It should be deleted if not needed.
+// export const studentClass = sqliteTable ('',{});

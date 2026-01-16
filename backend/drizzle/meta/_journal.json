@@ -29,6 +29,13 @@
       "when": 1768216209601,
       "tag": "0003_exotic_wallflower",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "6",
+      "when": 1768530522023,
+      "tag": "0004_outgoing_vindicator",
+      "breakpoints": true
     }
   ]
 }

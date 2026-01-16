@@ -1,6 +1,6 @@
 import { integer, real, sqliteTable, text, uniqueIndex } from 'drizzle-orm/sqlite-core';
 import { sql } from 'drizzle-orm';
-import { studentTable } from './studentData/studentsdataTable.js';
+import { studentTable } from './studentsdataTable.js';
 import { classSubject } from './classesSubjectTable.js';
 import { assessmentType } from './assesmentType.js';
 
