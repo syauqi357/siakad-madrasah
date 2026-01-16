@@ -2,6 +2,8 @@ import { db } from '../src/index.js';
 import { studentScores } from '../src/db/schema/studentScore.js';
 import { studentTable } from '../src/db/schema/studentsdataTable.js';
 import { assessmentType } from '../src/db/schema/assesmentType.js';
+import { Subjects } from '../src/db/schema/subjectTable.js';
+import { classSubject } from '../src/db/schema/classesSubjectTable.js';
 import { eq, sql, inArray } from 'drizzle-orm';
 import ExcelJS from 'exceljs';
 
@@ -77,7 +79,11 @@ export const saveBulkScores = async (classSubjectId, assessmentTypeId, scores) =
 		.insert(studentScores)
 		.values(valuesToInsert)
 		.onConflictDoUpdate({
-			target: [studentScores.studentId, studentScores.classSubjectId, studentScores.assessmentTypeId],
+			target: [
+				studentScores.studentId,
+				studentScores.classSubjectId,
+				studentScores.assessmentTypeId
+			],
 			set: {
 				score: sql`excluded.score`, // Update with the new value
 				assessmentDate: sql`excluded.assessment_date`
@@ -85,11 +91,9 @@ export const saveBulkScores = async (classSubjectId, assessmentTypeId, scores) =
 		});
 };
 
-
 /**
- * Reads an Excel file buffer, validates the content, and saves the scores.
- * This version is smarter: it finds columns by header name, not by fixed position.
- * @param {Buffer} fileBuffer - The buffer of the uploaded .xlsx file.
+ * Reads an Excel file buffer (single subject format), validates, and saves scores.
+ * @param {Buffer} fileBuffer
  * @param {number} classSubjectId
  * @param {number} assessmentTypeId
  * @returns {Promise<{successCount: number, errors: Array<{row: number, nisn: string, error: string}>}>}
@@ -129,9 +133,8 @@ export const uploadScoresFromExcel = async (fileBuffer, classSubjectId, assessme
 	const scoresToProcess = [];
 	const nisnsToFind = [];
 
-	// First pass: Read all NISNs and scores from the Excel file
 	worksheet.eachRow({ includeEmpty: false }, (row, rowNumber) => {
-		if (rowNumber <= headerRowNumber) return; // Skip header and any rows above it
+		if (rowNumber <= headerRowNumber) return;
 
 		const nisn = row.getCell(nisnCol).value?.toString().trim();
 		const score = parseFloat(row.getCell(scoreCol).value);
@@ -143,10 +146,12 @@ export const uploadScoresFromExcel = async (fileBuffer, classSubjectId, assessme
 	});
 
 	if (nisnsToFind.length === 0) {
-		return { successCount: 0, errors: [{ row: 0, nisn: '', error: 'No data found in Excel file.' }] };
+		return {
+			successCount: 0,
+			errors: [{ row: 0, nisn: '', error: 'No data found in Excel file.' }]
+		};
 	}
 
-	// Second pass: Efficiently fetch all students from the DB in one query
 	const studentsFound = await db
 		.select({ id: studentTable.id, nisn: studentTable.nisn })
 		.from(studentTable)
@@ -154,7 +159,6 @@ export const uploadScoresFromExcel = async (fileBuffer, classSubjectId, assessme
 
 	const studentNisnToIdMap = new Map(studentsFound.map((s) => [s.nisn.toString(), s.id]));
 
-	// Third pass: Validate and prepare the final payload
 	const validScores = [];
 	const errors = [];
 
@@ -170,7 +174,6 @@ export const uploadScoresFromExcel = async (fileBuffer, classSubjectId, assessme
 		}
 	}
 
-	// Final step: Save the valid scores using our existing bulk function
 	if (validScores.length > 0) {
 		await saveBulkScores(classSubjectId, assessmentTypeId, validScores);
 	}
@@ -179,4 +182,133 @@ export const uploadScoresFromExcel = async (fileBuffer, classSubjectId, assessme
 		successCount: validScores.length,
 		errors
 	};
+};
+
+/**
+ * Reads a "pivoted" Excel file (subjects as columns) and saves all scores.
+ * @param {Buffer} fileBuffer
+ * @param {number} classId
+ * @param {number} assessmentTypeId
+ * @returns {Promise<{successCount: number, errors: Array<{row: number, nisn: string, error: string}>}>}
+ */
+export const uploadBulkScoresFromPivotExcel = async (fileBuffer, classId, assessmentTypeId) => {
+	const workbook = new ExcelJS.Workbook();
+	await workbook.xlsx.load(fileBuffer);
+
+	const worksheet = workbook.getWorksheet(1);
+	if (!worksheet) throw new Error('No worksheet found.');
+
+	const headerRow = worksheet.getRow(1).values;
+	const subjectNames = headerRow.slice(3);
+
+	const subjectsInDb = await db.select().from(Subjects).where(inArray(Subjects.name, subjectNames));
+	const subjectNameToIdMap = new Map(subjectsInDb.map((s) => [s.name, s.id]));
+
+	const classSubjectsInDb = await db
+		.select()
+		.from(classSubject)
+		.where(eq(classSubject.classId, classId));
+	const subjectIdToClassSubjectIdMap = new Map(
+		classSubjectsInDb.map((cs) => [cs.subjectId, cs.id])
+	);
+
+	const scoresToProcess = [];
+	const nisnsToFind = [];
+	const errors = [];
+
+	worksheet.eachRow({ includeEmpty: false }, (row, rowNumber) => {
+		if (rowNumber === 1) return;
+
+		const nisn = row.getCell(1).value?.toString().trim();
+		if (nisn) {
+			nisnsToFind.push(nisn);
+			subjectNames.forEach((subjectName, index) => {
+				const subjectId = subjectNameToIdMap.get(subjectName);
+				const classSubjectId = subjectIdToClassSubjectIdMap.get(subjectId);
+				const score = parseFloat(row.getCell(3 + index).value);
+
+				if (classSubjectId && !isNaN(score)) {
+					scoresToProcess.push({ nisn, classSubjectId, score });
+				}
+			});
+		}
+	});
+
+	const studentsFound = await db
+		.select({ id: studentTable.id, nisn: studentTable.nisn })
+		.from(studentTable)
+		.where(inArray(studentTable.nisn, nisnsToFind));
+	const studentNisnToIdMap = new Map(studentsFound.map((s) => [s.nisn.toString(), s.id]));
+
+	const finalScoresPayload = [];
+	scoresToProcess.forEach((item) => {
+		const studentId = studentNisnToIdMap.get(item.nisn);
+		if (studentId) {
+			finalScoresPayload.push({
+				studentId,
+				classSubjectId: item.classSubjectId,
+				assessmentTypeId,
+				score: item.score,
+				assessmentDate: new Date().toISOString().split('T')[0]
+			});
+		} else {
+			errors.push({ row: 'N/A', nisn: item.nisn, error: 'NISN not found.' });
+		}
+	});
+
+	if (finalScoresPayload.length > 0) {
+		await db
+			.insert(studentScores)
+			.values(finalScoresPayload)
+			.onConflictDoUpdate({
+				target: [
+					studentScores.studentId,
+					studentScores.classSubjectId,
+					studentScores.assessmentTypeId
+				],
+				set: { score: sql`excluded.score`, assessmentDate: sql`excluded.assessment_date` }
+			});
+	}
+
+	return {
+		successCount: finalScoresPayload.length,
+		errors
+	};
+};
+
+/**
+ * Generates an Excel template for bulk score entry with dynamic subject columns.
+ * This function creates the workbook in memory without saving it to a file.
+ * @returns {Promise<ExcelJS.Workbook>} The generated Excel workbook object.
+ */
+export const generateBulkScoreTemplate = async () => {
+	console.log('📝 Generating bulk score upload template in memory...');
+
+	// 1. Fetch ALL subjects to use as columns
+	const allSubjects = await db.select().from(Subjects);
+
+	if (allSubjects.length === 0) {
+		throw new Error('No subjects found in the database. Please run the seed script first.');
+	}
+
+	const workbook = new ExcelJS.Workbook();
+	const worksheet = workbook.addWorksheet('Bulk Scores');
+
+	// --- Table Header ---
+	// The parser will dynamically read these subject names
+	const headers = ['NISN', 'Nama Siswa', ...allSubjects.map((s) => s.name)];
+	const headerRow = worksheet.getRow(1);
+	headerRow.values = headers;
+	headerRow.font = { bold: true };
+
+	// Set column widths
+	worksheet.columns = [
+		{ key: 'nisn', width: 15 },
+		{ key: 'nama', width: 30 },
+		...allSubjects.map((s) => ({ key: s.name, width: s.name.length + 5 }))
+	];
+
+	// Note: We are NOT adding any student rows, so the teacher gets a clean template.
+
+	return workbook;
 };

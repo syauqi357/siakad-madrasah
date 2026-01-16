@@ -1,6 +1,12 @@
 import express from 'express';
 import multer from 'multer';
-import { getScores, saveScores, uploadScores } from '../../controllers/scoreController.js';
+import {
+	getScores,
+	saveScores,
+	uploadScores,
+	uploadBulkPivotScores,
+	downloadBulkTemplate
+} from '../../controllers/scoreController.js';
 
 const router = express.Router();
 
@@ -14,8 +20,14 @@ router.get('/scorebyclass', getScores);
 // POST /routes/api/score/scores (JSON Bulk Save)
 router.post('/scores', saveScores);
 
-// POST /routes/api/score/upload (Excel File Upload)
+// POST /routes/api/score/upload (Single Subject Excel Upload)
 // Expects form-data with fields: 'file' (the excel file), 'classSubjectId', 'assessmentTypeId'
 router.post('/upload', upload.single('file'), uploadScores);
+
+// POST /routes/api/score/upload-bulk (Multi-Subject "Pivot" Excel Upload)
+router.post('/upload-bulk', upload.single('file'), uploadBulkPivotScores);
+
+// GET /routes/api/score/download-template (Download Bulk Excel Template)
+router.get('/download-template', downloadBulkTemplate);
 
 export default router;
