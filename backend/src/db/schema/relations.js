@@ -5,15 +5,15 @@ import { classes } from './classesDataTable.js';
 import { academicYear } from './academicYear.js';
 import { Subjects } from './subjectTable.js';
 import { classSubject } from './classesSubjectTable.js';
-
-
+import { rombel } from './classGroup.js';
 
 export const teachersRelations = relations(teachers, ({ one, many }) => ({
 	user: one(users, {
 		fields: [teachers.userId],
 		references: [users.id]
 	}),
-	homeroomClasses: many(classes),
+	// A teacher can advise multiple rombels (over years)
+	advisedRombels: many(rombel),
 	classSubjects: many(classSubject)
 }));
 
@@ -22,19 +22,31 @@ export const subjectsRelations = relations(Subjects, ({ many }) => ({
 }));
 
 export const academicYearsRelations = relations(academicYear, ({ many }) => ({
-	classes: many(classes)
+	rombels: many(rombel)
 }));
 
-export const classesRelations = relations(classes, ({ one, many }) => ({
+export const classesRelations = relations(classes, ({ many }) => ({
+	// A Grade Level (e.g. X) has many Rombels (e.g. X-A, X-B)
+	rombels: many(rombel),
+	// If subjects are assigned per grade level (curriculum), keep this. 
+	// If assigned per specific class group, move to rombel.
+	classSubjects: many(classSubject)
+}));
+
+export const rombelRelations = relations(rombel, ({ one }) => ({
+	// The generic grade level (e.g. Class X)
+	gradeLevel: one(classes, {
+		fields: [rombel.classId],
+		references: [classes.id]
+	}),
 	academicYear: one(academicYear, {
-		fields: [classes.academicYearId],
+		fields: [rombel.academicYearId],
 		references: [academicYear.id]
 	}),
-	homeroomTeacher: one(teachers, {
-		fields: [classes.homeroomTeacherId],
+	classAdvisor: one(teachers, {
+		fields: [rombel.classAdvisorId],
 		references: [teachers.id]
-	}),
-	classSubjects: many(classSubject)
+	})
 }));
 
 export const classSubjectsRelations = relations(classSubject, ({ one }) => ({

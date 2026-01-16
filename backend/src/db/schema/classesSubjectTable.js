@@ -1,7 +1,7 @@
 import { integer, sqliteTable, unique } from 'drizzle-orm/sqlite-core';
-import { SubjectTable } from './subjectTable.js';
-import { teacher } from './teacherUser.js';
-import { classesTable } from './classesDataTable.js';
+import { Subjects } from './subjectTable.js';
+import { teachers } from './teacherUser.js';
+import { classes } from './classesDataTable.js';
 
 export const classSubject = sqliteTable(
 	'class_subject',
@@ -9,11 +9,11 @@ export const classSubject = sqliteTable(
 		id: integer('id').primaryKey({ autoIncrement: true }),
 		classId: integer('class_id')
 			.notNull()
-			.references(() => classesTable.id, { onDelete: 'cascade' }),
+			.references(() => classes.id, { onDelete: 'cascade' }),
 		subjectId: integer('subject_id')
 			.notNull()
-			.references(() => SubjectTable.id),
-		teacherId: integer('teacher_id').references(() => teacher.id)
+			.references(() => Subjects.id),
+		teacherId: integer('teacher_id').references(() => teachers.id)
 	},
 	(table) => ({
 		// Composite unique constraint
