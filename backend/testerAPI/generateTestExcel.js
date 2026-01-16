@@ -5,13 +5,11 @@ import dotenv from 'dotenv';
 import { drizzle } from 'drizzle-orm/better-sqlite3';
 import Database from 'better-sqlite3';
 
-// --- Step 1: Explicitly load the .env file from the root of the 'backend' directory ---
+// --- Step 1: Explicitly load the .env file ---
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
-// ------------------------------------------------------------------------------------
 
-// --- Step 2: Create a dedicated database connection for this script ---
-// This ensures we are connecting to the correct database file specified in the .env
+// --- Step 2: Create a dedicated database connection ---
 if (!process.env.DATABASE_URL) {
 	throw new Error('DATABASE_URL is not defined in your .env file.');
 }
@@ -19,80 +17,83 @@ const dbPath = path.resolve(__dirname, '..', process.env.DATABASE_URL);
 console.log(`🔌 Connecting to database at: ${dbPath}`);
 const sqlite = new Database(dbPath);
 const db = drizzle(sqlite);
-// --------------------------------------------------------------------
 
-// Import schema after db connection is established
+// --- Import schema after db connection is established ---
 import { classes } from '../src/db/schema/classesDataTable.js';
 import { Subjects } from '../src/db/schema/subjectTable.js';
 
-async function generateTestExcel() {
-	console.log('📝 Creating dynamic test Excel file...');
+async function generateAllTemplates() {
+	console.log('📝 Generating dynamic Excel templates for all classes...');
 
-	// 1. Fetch real data from the database
-	console.log('🔍 Fetching class and subject from database...');
-	const classData = await db.select().from(classes).limit(1);
+	// 1. Fetch ALL classes and the first subject
+	const allClasses = await db.select().from(classes);
 	const subjectData = await db.select().from(Subjects).limit(1);
 
-	if (classData.length === 0 || subjectData.length === 0) {
-		console.error('❌ Database is empty. Please run the seed script (`node seed.js`) first.');
+	if (allClasses.length === 0) {
+		console.error('❌ No classes found in the database. Please run the seed script first.');
+		process.exit(1);
+	}
+	if (subjectData.length === 0) {
+		console.error('❌ No subjects found in the database. Please run the seed script first.');
 		process.exit(1);
 	}
 
-	const className = classData[0].className;
 	const subjectName = subjectData[0].name;
-	console.log(`Found Class: ${className}, Subject: ${subjectName}`);
 
-	// 2. Create the Excel workbook
-	const workbook = new ExcelJS.Workbook();
-	const worksheet = workbook.addWorksheet('Scores Upload');
+	// 2. Loop through each class and generate a file
+	for (const classInfo of allClasses) {
+		const className = classInfo.className;
+		console.log(`\n--- Generating template for Class: ${className} ---`);
 
-	// --- Header Information (now dynamic) ---
-	worksheet.mergeCells('A1:C1');
-	const titleCell = worksheet.getCell('A1');
-	titleCell.value = 'Data Nilai untuk di-Upload';
-	titleCell.font = { name: 'Calibri', size: 16, bold: true };
-	titleCell.alignment = { vertical: 'middle', horizontal: 'center' };
+		const workbook = new ExcelJS.Workbook();
+		const worksheet = workbook.addWorksheet(`Scores - ${className}`);
 
-	worksheet.getCell('A3').value = 'Kelas';
-	worksheet.getCell('B3').value = `: ${className}`;
-	worksheet.getCell('A4').value = 'Mata Pelajaran';
-	worksheet.getCell('B4').value = `: ${subjectName}`;
+		// --- Header Information ---
+		worksheet.mergeCells('A1:C1');
+		const titleCell = worksheet.getCell('A1');
+		titleCell.value = 'Template Upload Nilai';
+		titleCell.font = { name: 'Calibri', size: 16, bold: true };
+		titleCell.alignment = { vertical: 'middle', horizontal: 'center' };
 
-	// --- Table Header ---
-	const headerRow = worksheet.getRow(6);
-	headerRow.values = ['NISN', 'Nama Siswa', 'Score'];
-	headerRow.font = { bold: true };
+		worksheet.getCell('A3').value = 'Kelas';
+		worksheet.getCell('B3').value = `: ${className}`;
+		worksheet.getCell('A4').value = 'Mata Pelajaran';
+		worksheet.getCell('B4').value = `: ${subjectName}`;
 
-	worksheet.columns = [
-		{ key: 'nisn', width: 15 },
-		{ key: 'nama', width: 30 },
-		{ key: 'score', width: 10 }
-	];
+		// --- Table Header ---
+		const headerRow = worksheet.getRow(6);
+		headerRow.values = ['NISN', 'Nama Siswa', 'Score'];
+		headerRow.font = { bold: true };
 
-	// --- Add Data Rows ---
-	const data = [
-		{ nisn: '1234567890', nama: 'Ahmad', score: 88 },
-		{ nisn: '1234567891', nama: 'Budi', score: 92 },
-		{ nisn: '1234567892', nama: 'Citra', score: 76 },
-		{ nisn: '9999999999', nama: 'Siswa Hantu', score: 80 },
-		{ nisn: '1234567890', nama: 'Ahmad (Error Test)', score: 105 },
-		{ nisn: '1234567891', nama: 'Budi (Error Test)', score: 'abc' }
-	];
+		worksheet.columns = [
+			{ key: 'nisn', width: 15 },
+			{ key: 'nama', width: 30 },
+			{ key: 'score', width: 10 }
+		];
 
-	worksheet.addRows(data);
+		// --- Add Example Data Rows ---
+		// You can fetch real students for each class here in the future if needed
+		const exampleData = [
+			{ nisn: '1234567890', nama: 'Contoh Siswa 1', score: 85 },
+			{ nisn: '1234567891', nama: 'Contoh Siswa 2', score: 90 }
+		];
+		worksheet.addRows(exampleData);
 
-	// 3. Save the file
-	const outputPath = path.resolve(__dirname, 'test_scores_upload.xlsx');
-	await workbook.xlsx.writeFile(outputPath);
+		// --- Save the file with a unique name ---
+		const safeClassName = className.replace(/[^a-z0-9]/gi, '_'); // Sanitize filename
+		const outputPath = path.resolve(__dirname, `upload_template_${safeClassName}.xlsx`);
+		await workbook.xlsx.writeFile(outputPath);
 
-	console.log(`✅ Successfully created dynamic test Excel file at: ${outputPath}`);
+		console.log(`✅ Successfully created template: ${outputPath}`);
+	}
 }
 
-generateTestExcel()
+generateAllTemplates()
 	.then(() => {
+		console.log('\n🎉 All templates generated successfully!');
 		process.exit(0);
 	})
 	.catch((err) => {
-		console.error('❌ Failed to generate Excel file:', err);
+		console.error('❌ Failed to generate Excel files:', err);
 		process.exit(1);
 	});
