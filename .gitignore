@@ -17,6 +17,8 @@ Thumbs.db
 
 #backend/testerAPI
 
+backend/*.xlsx
+
 .env.*
 !.env.example
 !.env.test

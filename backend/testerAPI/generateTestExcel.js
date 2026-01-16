@@ -23,68 +23,70 @@ import { classes } from '../src/db/schema/classesDataTable.js';
 import { Subjects } from '../src/db/schema/subjectTable.js';
 
 async function generateAllTemplates() {
-	console.log('📝 Generating dynamic Excel templates for all classes...');
+	console.log('📝 Generating dynamic Excel templates for all class/subject combinations...');
 
-	// 1. Fetch ALL classes and the first subject
+	// 1. Fetch ALL classes and ALL subjects
 	const allClasses = await db.select().from(classes);
-	const subjectData = await db.select().from(Subjects).limit(1);
+	const allSubjects = await db.select().from(Subjects);
 
-	if (allClasses.length === 0) {
-		console.error('❌ No classes found in the database. Please run the seed script first.');
+	if (allClasses.length === 0 || allSubjects.length === 0) {
+		console.error(
+			'❌ No classes or subjects found in the database. Please run the seed script first.'
+		);
 		process.exit(1);
 	}
-	if (subjectData.length === 0) {
-		console.error('❌ No subjects found in the database. Please run the seed script first.');
-		process.exit(1);
-	}
 
-	const subjectName = subjectData[0].name;
-
-	// 2. Loop through each class and generate a file
+	// 2. Loop through each class and each subject to generate a unique file
 	for (const classInfo of allClasses) {
-		const className = classInfo.className;
-		console.log(`\n--- Generating template for Class: ${className} ---`);
+		for (const subjectInfo of allSubjects) {
+			const className = classInfo.className;
+			const subjectName = subjectInfo.name;
+			console.log(`\n--- Generating template for Class: ${className}, Subject: ${subjectName} ---`);
 
-		const workbook = new ExcelJS.Workbook();
-		const worksheet = workbook.addWorksheet(`Scores - ${className}`);
+			const workbook = new ExcelJS.Workbook();
+			const worksheet = workbook.addWorksheet(`Scores - ${className} - ${subjectName}`);
 
-		// --- Header Information ---
-		worksheet.mergeCells('A1:C1');
-		const titleCell = worksheet.getCell('A1');
-		titleCell.value = 'Template Upload Nilai';
-		titleCell.font = { name: 'Calibri', size: 16, bold: true };
-		titleCell.alignment = { vertical: 'middle', horizontal: 'center' };
+			// --- Header Information ---
+			worksheet.mergeCells('A1:C1');
+			const titleCell = worksheet.getCell('A1');
+			titleCell.value = 'Template Upload Nilai';
+			titleCell.font = { name: 'Calibri', size: 16, bold: true };
+			titleCell.alignment = { vertical: 'middle', horizontal: 'center' };
 
-		worksheet.getCell('A3').value = 'Kelas';
-		worksheet.getCell('B3').value = `: ${className}`;
-		worksheet.getCell('A4').value = 'Mata Pelajaran';
-		worksheet.getCell('B4').value = `: ${subjectName}`;
+			worksheet.getCell('A3').value = 'Kelas';
+			worksheet.getCell('B3').value = `: ${className}`;
+			worksheet.getCell('A4').value = 'Mata Pelajaran';
+			worksheet.getCell('B4').value = `: ${subjectName}`;
 
-		// --- Table Header ---
-		const headerRow = worksheet.getRow(6);
-		headerRow.values = ['NISN', 'Nama Siswa', 'Score'];
-		headerRow.font = { bold: true };
+			// --- Table Header ---
+			const headerRow = worksheet.getRow(6);
+			headerRow.values = ['NISN', 'Nama Siswa', 'Score'];
+			headerRow.font = { bold: true };
 
-		worksheet.columns = [
-			{ key: 'nisn', width: 15 },
-			{ key: 'nama', width: 30 },
-			{ key: 'score', width: 10 }
-		];
+			worksheet.columns = [
+				{ key: 'nisn', width: 15 },
+				{ key: 'nama', width: 30 },
+				{ key: 'score', width: 10 }
+			];
 
-		// --- Add Example Data Rows ---
-		// You can fetch real students for each class here in the future if needed
-		const exampleData = [
-			{ nisn: '1234567890', nama: 'Contoh Siswa 1', score: 85 },
-			{ nisn: '1234567891', nama: 'Contoh Siswa 2', score: 90 }
-		];
-		worksheet.addRows(exampleData);
+			// --- Add Example Data Rows ---
+			const exampleData = [
+				{ nisn: '1234567890', nama: 'Contoh Siswa 1', score: 85 },
+				{ nisn: '1234567891', nama: 'Contoh Siswa 2', score: 90 }
+			];
+			worksheet.addRows(exampleData);
 
-		// --- Save the file with a unique name ---
-		const safeClassName = className.replace(/[^a-z0-9]/gi, '_'); // Sanitize filename
-		const outputPath = path.resolve(__dirname, `upload_template_${safeClassName}.xlsx`);
-		await workbook.xlsx.writeFile(outputPath);
+			// --- Save the file with a unique name ---
+			const safeClassName = className.replace(/[^a-z0-9]/gi, '_');
+			const safeSubjectName = subjectName.replace(/[^a-z0-9]/gi, '_');
+			const outputPath = path.resolve(
+				__dirname,
+				`upload_template_${safeClassName}_${safeSubjectName}.xlsx`
+			);
+			await workbook.xlsx.writeFile(outputPath);
 
-		console.log(`✅ Successfully created template: ${outputPath}`);
+			console.log(`✅ Successfully created template: ${outputPath}`);
+		}
 	}
 }
 
