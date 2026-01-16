@@ -93,13 +93,13 @@
                 </div>
 
                 <!-- Markdown Content Wrapper -->
-                <!-- This div ensures that any wide content (tables, code) scrolls internally -->
-                <div class="overflow-x-auto w-full">
+                <div class="w-full">
                     <article class="prose prose-slate prose-sm md:prose-lg max-w-none
                         prose-headings:font-bold prose-headings:text-slate-800
                         prose-h1:text-3xl prose-h2:text-2xl prose-h3:text-xl
                         prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline
-                        prose-pre:bg-slate-900 prose-pre:shadow-lg prose-pre:rounded-xl prose-pre:overflow-x-auto
+                        prose-pre:bg-slate-900 prose-pre:shadow-lg prose-pre:rounded-xl
+                        prose-pre:whitespace-pre-wrap prose-pre:break-words
                         prose-img:rounded-xl prose-img:shadow-md prose-img:max-w-full
                         prose-blockquote:border-l-4 prose-blockquote:border-blue-500 prose-blockquote:bg-blue-50 prose-blockquote:py-2 prose-blockquote:px-4 prose-blockquote:rounded-r-lg prose-blockquote:not-italic">
                         {@html selectedDoc.content}
