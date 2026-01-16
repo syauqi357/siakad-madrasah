@@ -4,6 +4,7 @@
 /* @plugin '@tailwindcss/forms'; */
 @plugin '@tailwindcss/typography';
 
+/* --- Stack Sans (Body Font) --- */
 @font-face {
 	font-family: 'StackSansText-Regular';
 	src: url('/src/lib/fonts/StackSansText-Regular.woff2') format('woff2');
@@ -29,6 +30,38 @@
 	font-style: normal;
 }
 
+/* --- JetBrains Mono (Code Font) --- */
+@font-face {
+	font-family: 'JetBrains Mono';
+	src: url('/src/lib/fonts/monospace_fonts/JetBrainsMono-Regular.woff2') format('woff2');
+	font-weight: 400;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'JetBrains Mono';
+	src: url('/src/lib/fonts/monospace_fonts/JetBrainsMono-Bold.woff2') format('woff2');
+	font-weight: 700;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'JetBrains Mono';
+	src: url('/src/lib/fonts/monospace_fonts/JetBrainsMono-Italic.woff2') format('woff2');
+	font-weight: 400;
+	font-style: italic;
+}
+@font-face {
+	font-family: 'JetBrains Mono';
+	src: url('/src/lib/fonts/monospace_fonts/JetBrainsMono-Medium.woff2') format('woff2');
+	font-weight: 500;
+	font-style: normal;
+}
+
 body {
 	font-family: 'StackSansText-light', sans-serif;
+}
+
+/* Custom Typography Overrides */
+.prose code,
+.prose pre {
+    font-family: 'JetBrains Mono', monospace !important;
 }
