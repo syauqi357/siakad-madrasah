@@ -2,33 +2,33 @@
 
 /* shutdown the forms plugin */
 /* @plugin '@tailwindcss/forms'; */
-/* @plugin '@tailwindcss/typography'; */
+@plugin '@tailwindcss/typography';
 
 @font-face {
-  font-family: 'StackSansText-Regular';
-  src: url('/src/lib/fonts/StackSansText-Regular.woff2') format('woff2');
-  font-weight: 300;
-  font-style: normal;
+	font-family: 'StackSansText-Regular';
+	src: url('/src/lib/fonts/StackSansText-Regular.woff2') format('woff2');
+	font-weight: 300;
+	font-style: normal;
 }
 @font-face {
-  font-family: 'StackSansText-semiBold';
-  src: url('/src/lib/fonts/StackSansText-SemiBold.woff2') format('woff2');
-  font-weight: 500;
-  font-style: normal;
+	font-family: 'StackSansText-semiBold';
+	src: url('/src/lib/fonts/StackSansText-SemiBold.woff2') format('woff2');
+	font-weight: 500;
+	font-style: normal;
 }
 @font-face {
-  font-family: 'StackSansText-bold';
-  src: url('/src/lib/fonts/StackSansText-Bold.woff2') format('woff2');
-  font-weight: 600;
-  font-style: normal;
+	font-family: 'StackSansText-bold';
+	src: url('/src/lib/fonts/StackSansText-Bold.woff2') format('woff2');
+	font-weight: 600;
+	font-style: normal;
 }
 @font-face {
-  font-family: 'StackSansText-light';
-  src: url('/src/lib/fonts/StackSansText-Light.woff2') format('woff2');
-  font-weight: 200;
-  font-style: normal;
+	font-family: 'StackSansText-light';
+	src: url('/src/lib/fonts/StackSansText-Light.woff2') format('woff2');
+	font-weight: 200;
+	font-style: normal;
 }
 
 body {
-  font-family: 'StackSansText-light', sans-serif;
+	font-family: 'StackSansText-light', sans-serif;
 }

@@ -125,7 +125,7 @@
 		<!-- Additional Sidebar Section -->
 		<div class="mt-4 space-y-2 border-t border-neutral-500 pt-4">
 			<a
-				href="/docs"
+				href="/Documentations"
 				class="flex items-center rounded-lg p-2 text-sm text-neutral-400 transition-colors hover:bg-neutral-800"
 			>
 				<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
