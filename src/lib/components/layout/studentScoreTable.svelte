@@ -6,8 +6,12 @@
 	export let loading: boolean = false;
 </script>
 
-<div class="w-full overflow-hidden rounded-2xl border border-white/50 bg-white/80 shadow-xl backdrop-blur-md">
-	<div class="flex flex-col items-start justify-between gap-4 border-b border-slate-100 p-6 sm:flex-row sm:items-center">
+<div
+	class="w-full overflow-hidden rounded-xl border border-slate-500 bg-white/80 shadow-xl backdrop-blur-md"
+>
+	<div
+		class="flex flex-col items-start justify-between gap-4 border-b border-slate-100 p-6 sm:flex-row sm:items-center"
+	>
 		<div>
 			<h3 class="flex items-center gap-2 text-xl font-bold text-slate-800">
 				<span class="rounded-lg bg-blue-100 p-1.5 text-blue-600">
@@ -34,10 +38,10 @@
 			</p>
 		</div>
 
-        <!-- Slot for extra controls (like the dropdown) -->
-        <div class="flex items-center gap-3">
-            <slot name="controls" />
-        </div>
+		<!-- Slot for extra controls (like the dropdown) -->
+		<div class="flex items-center gap-3">
+			<slot name="controls" />
+		</div>
 	</div>
 
 	<div class="overflow-x-auto">

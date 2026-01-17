@@ -50,7 +50,7 @@
 				<Navbar bind:sidebarOpen {user} {logout} />
 			</div>
 
-			<main class="mt-20 bg-white sm:mt-20 sm:ml-64 print:m-0 print:mt-0 print:ml-0 print:p-0">
+			<main class="mt-20 bg-white sm:mt-30 sm:ml-64 print:m-0 print:mt-0 print:ml-0 print:p-0">
 				<slot />
 			</main>
 		</div>

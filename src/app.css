@@ -1,7 +1,6 @@
 @import 'tailwindcss';
 
-/* shutdown the forms plugin */
-/* @plugin '@tailwindcss/forms'; */
+ @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
 
 /* --- Stack Sans (Body Font) --- */
