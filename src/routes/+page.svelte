@@ -199,7 +199,7 @@
 				<div slot="controls" class="flex items-center gap-3">
 					<!-- Class Selector -->
 					<select
-						class="select select-sm select-bordered w-full max-w-xs bg-white"
+						class="select select-sm outline-none  select-bordered w-full max-w-xs bg-white"
 						on:change={handleClassChange}
 						value={selectedClassId}
 					>
@@ -214,7 +214,7 @@
 
 					{#if usingRealData}
 						<span
-							class="animate-pulse rounded-full bg-green-100 px-2 py-1 text-xs font-bold whitespace-nowrap text-green-700"
+							class="animate-pulse rounded-md bg-green-100 px-2 py-1 text-xs font-bold whitespace-nowrap text-green-700"
 							>LIVE</span
 						>
 					{:else}
