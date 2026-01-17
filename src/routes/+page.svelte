@@ -1,21 +1,119 @@
 <script lang="ts">
-	// logic for turn out
+	import { onMount } from 'svelte';
+
+    // Default demo data (fallback)
+    const demoHeaders = ['Nama Siswa', 'NISN', 'UH1', 'UTS', 'UAS', 'Total'];
+    const demoData = [
+        { studentName: 'Ahmad Santoso', nisn: '1234567890', scores: { 'UH1': 85, 'UTS': 90, 'UAS': 88 }, total: 87.6 },
+        { studentName: 'Budi Pratama', nisn: '1234567891', scores: { 'UH1': 78, 'UTS': 85, 'UAS': 92 }, total: 85.0 },
+    ];
+
+    let tableHeaders = demoHeaders;
+    let tableData = demoData;
+    let loading = true;
+    let usingRealData = false;
+    let subjectName = "Matematika (Demo)";
+    let className = "X-IPA-1 (Demo)";
+
+    // Dropdown State
+    let selectedClassId: number | null = null;
+    let classOptions: Array<{id: number, name: string}> = [];
+
+    async function fetchClassSubjects() {
+        try {
+            const response = await fetch('http://localhost:3000/routes/api/score/class-subjects');
+            if (response.ok) {
+                const result = await response.json();
+                if (result.success && result.data.length > 0) {
+                    classOptions = result.data;
+                    selectedClassId = classOptions[0].id; // Select first one by default
+                    fetchScores(selectedClassId); // Fetch scores for the first class
+                } else {
+                    // No classes found, stick to demo
+                    console.warn("No class subjects found.");
+                }
+            }
+        } catch (e) {
+            console.error("Failed to fetch class subjects:", e);
+        }
+    }
+
+    async function fetchScores(classId: number | null) {
+        if (!classId) return;
+
+        loading = true;
+        try {
+            const response = await fetch(`http://localhost:3000/routes/api/score/scorebyclass?classSubjectId=${classId}`);
+
+            if (response.ok) {
+                const result = await response.json();
+
+                if (result.success) {
+                    usingRealData = true;
+                    subjectName = result.subjectName || "Unknown Subject";
+                    className = result.className || "Unknown Class";
+
+                    // 1. Build Headers from Assessment Types (The Correct Way)
+                    if (result.assessmentTypes && result.assessmentTypes.length > 0) {
+                        const assessmentCodes = result.assessmentTypes.map((t: any) => t.code);
+                        tableHeaders = ['Nama Siswa', 'NISN', ...assessmentCodes];
+                    } else {
+                        // Fallback if no assessment types defined
+                        tableHeaders = ['Nama Siswa', 'NISN'];
+                    }
+
+                    // 2. Map Data
+                    if (result.data && result.data.length > 0) {
+                        tableData = result.data.map((student: any) => {
+                            return {
+                                studentName: student.studentName,
+                                nisn: student.nisn,
+                                scores: student.scores || {}
+                            };
+                        });
+                    } else {
+                        tableData = [];
+                    }
+                } else {
+                    // Fallback if no data found for this class
+                    usingRealData = false;
+                    subjectName = "No Data Found";
+                    tableData = [];
+                }
+            }
+        } catch (e) {
+            console.error("Failed to fetch real data, using demo data.", e);
+            usingRealData = false;
+        } finally {
+            loading = false;
+        }
+    }
+
+    onMount(() => {
+        fetchClassSubjects();
+    });
+
+    function handleClassChange(event: Event) {
+        const select = event.target as HTMLSelectElement;
+        selectedClassId = parseInt(select.value);
+        fetchScores(selectedClassId);
+    }
 </script>
 
 <div class="min-h-screen">
 	<!-- login board -->
-	<div class="flex h-screen flex-col items-center justify-center gap-24 bg-[url(/src/lib/image/pattern-randomized.svg)] bg-cover bg-center">
-		<div class="flex h-fit w-full flex-col items-center justify-center">
-			<div class=" mb-21 flex sm:w-4xl flex-col items-center gap-3 w-full">
-				<h1 class="text-transparent text-center text-4xl sm:text-6xl/21 font-bold tracking-wide capitalize bg-radial-[at_60%_85%] from-cyan-500 to-blue-800 bg-clip-text">
+	<div class="flex min-h-screen flex-col items-center justify-center gap-16 bg-[url(/src/lib/image/pattern-randomized.svg)] bg-cover bg-center py-20">
+		<div class="flex h-fit w-full flex-col items-center justify-center px-4">
+			<div class=" mb-12 flex sm:w-4xl flex-col items-center gap-3 w-full text-center">
+				<h1 class="text-transparent text-4xl sm:text-6xl font-bold tracking-wide capitalize bg-radial-[at_60%_85%] from-cyan-500 to-blue-800 bg-clip-text leading-tight">
 					selamat datang di platform akademik madrasah!
 				</h1>
-				<h3 class="text-lg sm:text-2xl capitalize bg-radial-[at_60%_85%] from-emerald-600 to-cyan-700 bg-clip-text text-transparent">jaga data dan banyak hal!</h3>
+				<h3 class="text-lg sm:text-2xl capitalize bg-radial-[at_60%_85%] from-emerald-600 to-cyan-700 bg-clip-text text-transparent font-medium">jaga data dan banyak hal!</h3>
 			</div>
-			<div class="flex items-center justify-center gap-3">
+			<div class="flex flex-wrap items-center justify-center gap-4">
 				<a href="/login">
 					<button
-						class="flex flex-row-reverse items-center justify-center gap-2 sm:rounded-xl rounded-lg bg-blue-500 sm:p-3 sm:pr-6 sm:pl-6 p-2 pl-4 pr-4 text-md sm:text-lg text-white capitalize transition-all duration-200 ease-in-out hover:bg-blue-700"
+						class="flex flex-row-reverse items-center justify-center gap-2 rounded-xl bg-blue-600 px-6 py-3 text-lg font-semibold text-white capitalize transition-all duration-200 ease-in-out hover:bg-blue-700 hover:shadow-lg hover:-translate-y-0.5"
 					>
 						<span class="h-6 w-6">
 							<svg
@@ -47,7 +145,7 @@
 				<!-- contribute in another version -->
 				<a href="https://github.com/syauqi357" aria-labelledby="contribute">
 					<button
-						class="text-sm sm:text-md text-bold flex items-center justify-center gap-2 sm:rounded-xl rounded-lg border ring-2 ring-blue-700 bg-slate-200 sm:p-3 sm:pr-6 sm:pl-6 p-2 pr-4 pl-4 text-slate-600 transition-all ease-in-out duration-300 hover:drop-shadow-lg drop-shadow-blue-500 "
+						class="text-md flex items-center justify-center gap-2 rounded-xl border-2 border-blue-200 bg-white/80 px-6 py-3 font-medium text-blue-700 backdrop-blur-sm transition-all duration-300 ease-in-out hover:bg-blue-50 hover:border-blue-300 hover:shadow-md"
 					>
 						<span class="h-6 w-6">
 							<svg
@@ -70,17 +168,122 @@
 			</div>
 		</div>
 
-		<div>
-			<table>
-				<thead>
-					<tr>
-						<td>1</td>
-						<td>2</td>
-						<td>3</td>
-						<td>4</td>
-					</tr>
-				</thead>
-			</table>
+        <!-- Demo Table Section -->
+		<div class="w-full max-w-5xl px-4 mt-12 animate-fade-in-up">
+            <div class="bg-white/80 backdrop-blur-md rounded-2xl shadow-xl border border-white/50 overflow-hidden">
+                <div class="p-6 border-b border-slate-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-800 flex items-center gap-2">
+                            <span class="bg-blue-100 text-blue-600 p-1.5 rounded-lg">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                                </svg>
+                            </span>
+                            Rekap Nilai Siswa
+                        </h3>
+                        <p class="text-slate-500 text-sm mt-1">
+                            Kelas: <span class="font-semibold text-slate-700">{className}</span> •
+                            Mapel: <span class="font-semibold text-blue-600">{subjectName}</span>
+                        </p>
+                    </div>
+
+                    <div class="flex items-center gap-3">
+                        <!-- Class Selector -->
+                        <select
+                            class="select select-sm select-bordered w-full max-w-xs bg-white"
+                            on:change={handleClassChange}
+                            value={selectedClassId}
+                        >
+                            {#if classOptions.length > 0}
+                                {#each classOptions as option}
+                                    <option value={option.id}>{option.name}</option>
+                                {/each}
+                            {:else}
+                                <option disabled>Loading classes...</option>
+                            {/if}
+                        </select>
+
+                        {#if usingRealData}
+                            <span class="bg-green-100 text-green-700 text-xs font-bold px-2 py-1 rounded-full animate-pulse whitespace-nowrap">LIVE</span>
+                        {:else}
+                            <span class="bg-slate-100 text-slate-500 text-xs font-bold px-2 py-1 rounded-full whitespace-nowrap">DEMO</span>
+                        {/if}
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-slate-50 text-slate-600 font-semibold uppercase tracking-wider">
+                            <tr>
+                                {#each tableHeaders as header}
+                                    <th class="px-6 py-4 border-b border-slate-100 whitespace-nowrap">{header}</th>
+                                {/each}
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100">
+                            {#if loading}
+                                <tr>
+                                    <td colspan={tableHeaders.length} class="px-6 py-12 text-center text-slate-500">
+                                        <span class="loading loading-spinner loading-lg text-blue-500"></span>
+                                        <p class="mt-2">Memuat data...</p>
+                                    </td>
+                                </tr>
+                            {:else if tableData.length === 0}
+                                <tr>
+                                    <td colspan={tableHeaders.length} class="px-6 py-12 text-center text-slate-500">
+                                        <p>Tidak ada data nilai untuk kelas ini.</p>
+                                    </td>
+                                </tr>
+                            {:else}
+                                {#each tableData as row}
+                                    <tr class="hover:bg-blue-50/50 transition-colors">
+                                        <td class="px-6 py-4 font-medium text-slate-800 whitespace-nowrap">{row.studentName}</td>
+                                        <td class="px-6 py-4 text-slate-500 font-mono text-xs">{row.nisn}</td>
+
+                                        <!-- Dynamic Score Columns -->
+                                        {#each tableHeaders.slice(2) as header}
+                                            <td class="px-6 py-4 text-slate-600">
+                                                {#if row.scores && row.scores[header] !== undefined}
+                                                    <span class="inline-flex items-center justify-center w-8 h-8 rounded-full {row.scores[header] >= 90 ? 'bg-green-100 text-green-700' : row.scores[header] >= 80 ? 'bg-blue-100 text-blue-700' : 'bg-amber-100 text-amber-700'} font-medium text-xs">
+                                                        {row.scores[header]}
+                                                    </span>
+                                                {:else}
+                                                    <span class="text-slate-300">-</span>
+                                                {/if}
+                                            </td>
+                                        {/each}
+                                    </tr>
+                                {/each}
+                            {/if}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="bg-slate-50 px-6 py-3 border-t border-slate-100 text-xs text-slate-500 flex justify-between items-center">
+                    <span>Menampilkan {tableData.length} siswa</span>
+                    <span class="flex gap-1">
+                        <div class="w-2 h-2 rounded-full bg-slate-300"></div>
+                        <div class="w-2 h-2 rounded-full bg-slate-300"></div>
+                        <div class="w-2 h-2 rounded-full bg-blue-500"></div>
+                    </span>
+                </div>
+            </div>
 		</div>
 	</div>
 </div>
+
+<style>
+    @keyframes fade-in-up {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    .animate-fade-in-up {
+        animation: fade-in-up 0.8s ease-out forwards;
+    }
+</style>

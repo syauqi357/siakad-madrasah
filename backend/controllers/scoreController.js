@@ -1,5 +1,15 @@
 import * as scoreService from '../services/score.services.js';
 
+export const getClassSubjects = async (req, res) => {
+    try {
+        const result = await scoreService.getAllClassSubjects();
+        res.json({ success: true, data: result });
+    } catch (error) {
+        console.error('Error fetching class subjects:', error);
+        res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+};
+
 export const getScores = async (req, res) => {
 	try {
 		const { classSubjectId } = req.query;
@@ -8,10 +18,13 @@ export const getScores = async (req, res) => {
 			return res.status(400).json({ success: false, message: 'classSubjectId is required' });
 		}
 
-		const result = await scoreService.getScoresByClassSubject(classSubjectId);
+		// Parse to integer to ensure DB query works correctly
+		const result = await scoreService.getScoresByClassSubject(parseInt(classSubjectId));
 
 		res.json({
 			success: true,
+			className: result.className,
+			subjectName: result.subjectName,
 			assessmentTypes: result.assessmentTypes,
 			data: result.data
 		});

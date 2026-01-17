@@ -5,7 +5,8 @@ import {
 	saveScores,
 	uploadScores,
 	uploadBulkPivotScores,
-	downloadBulkTemplate
+	downloadBulkTemplate,
+	getClassSubjects
 } from '../../controllers/scoreController.js';
 
 const router = express.Router();
@@ -13,6 +14,9 @@ const router = express.Router();
 // Configure Multer (Memory Storage is fine for small Excel files)
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
+
+// GET /routes/api/score/class-subjects (List all available class subjects)
+router.get('/class-subjects', getClassSubjects);
 
 // GET /routes/api/score/scorebyclass?classSubjectId=1
 router.get('/scorebyclass', getScores);

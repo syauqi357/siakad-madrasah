@@ -28,7 +28,7 @@ export const academicYearsRelations = relations(academicYear, ({ many }) => ({
 export const classesRelations = relations(classes, ({ many }) => ({
 	// A Grade Level (e.g. X) has many Rombels (e.g. X-A, X-B)
 	rombels: many(rombel),
-	// If subjects are assigned per grade level (curriculum), keep this. 
+	// If subjects are assigned per grade level (curriculum), keep this.
 	// If assigned per specific class group, move to rombel.
 	classSubjects: many(classSubject)
 }));

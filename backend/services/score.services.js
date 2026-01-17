@@ -4,19 +4,59 @@ import { studentTable } from '../src/db/schema/studentsdataTable.js';
 import { assessmentType } from '../src/db/schema/assesmentType.js';
 import { Subjects } from '../src/db/schema/subjectTable.js';
 import { classSubject } from '../src/db/schema/classesSubjectTable.js';
+import { classes } from '../src/db/schema/classesDataTable.js';
+import { teachers } from '../src/db/schema/teacherUser.js';
 import { eq, sql, inArray } from 'drizzle-orm';
 import ExcelJS from 'exceljs';
 
 /**
+ * Fetch all class subjects with their names and teacher.
+ * @returns {Promise<Array<{id: number, name: string}>>}
+ */
+export const getAllClassSubjects = async () => {
+	const result = await db
+		.select({
+			id: classSubject.id,
+			className: classes.className,
+			subjectName: Subjects.name,
+			teacherName: teachers.fullName
+		})
+		.from(classSubject)
+		.leftJoin(classes, eq(classSubject.classId, classes.id))
+		.leftJoin(Subjects, eq(classSubject.subjectId, Subjects.id))
+		.leftJoin(teachers, eq(classSubject.teacherId, teachers.id));
+
+	return result.map((item) => ({
+		id: item.id,
+		name: `${item.className || 'Unknown'} - ${item.subjectName || 'Unknown'} (${item.teacherName || 'No Teacher'})`
+	}));
+};
+
+/**
  * Fetch scores for a specific class subject and pivot them by student.
  * @param {number} classSubjectId
- * @returns {Promise<Object>} { assessmentTypes, data }
+ * @returns {Promise<Object>} { assessmentTypes, data, className, subjectName }
  */
 export const getScoresByClassSubject = async (classSubjectId) => {
-	// 1. Get all assessment types (columns)
+	// 1. Get Class and Subject Info
+	const classSubjectInfo = await db
+		.select({
+			className: classes.className,
+			subjectName: Subjects.name
+		})
+		.from(classSubject)
+		.leftJoin(classes, eq(classSubject.classId, classes.id))
+		.leftJoin(Subjects, eq(classSubject.subjectId, Subjects.id))
+		.where(eq(classSubject.id, classSubjectId))
+		.limit(1);
+
+	const className = classSubjectInfo[0]?.className || 'Unknown Class';
+	const subjectName = classSubjectInfo[0]?.subjectName || 'Unknown Subject';
+
+	// 2. Get all assessment types (columns)
 	const assessmentTypes = await db.select().from(assessmentType);
 
-	// 2. Get all scores for this class subject
+	// 3. Get all scores for this class subject
 	const rawScores = await db
 		.select({
 			studentId: studentScores.studentId,
@@ -31,7 +71,7 @@ export const getScoresByClassSubject = async (classSubjectId) => {
 		.leftJoin(assessmentType, eq(studentScores.assessmentTypeId, assessmentType.id))
 		.where(eq(studentScores.classSubjectId, classSubjectId));
 
-	// 3. Pivot Data (Transform into Student -> Scores map)
+	// 4. Pivot Data (Transform into Student -> Scores map)
 	const studentMap = new Map();
 
 	rawScores.forEach((row) => {
@@ -52,6 +92,8 @@ export const getScoresByClassSubject = async (classSubjectId) => {
 	const data = Array.from(studentMap.values());
 
 	return {
+		className,
+		subjectName,
 		assessmentTypes,
 		data
 	};

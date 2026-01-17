@@ -13,7 +13,7 @@ node_modules
 Thumbs.db
 
 # Env
-#backend/.env
+backend/.env
 
 #backend/testerAPI
 
