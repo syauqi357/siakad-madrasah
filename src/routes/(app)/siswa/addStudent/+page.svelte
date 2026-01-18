@@ -1,6 +1,7 @@
 <script lang="ts">
 	import PhoneInput from '$lib/components/input/PhoneInput.svelte';
 	import ParentBiodata from '$lib/components/layout/parentBiodata.svelte';
+	import Arrow_Left from '$lib/components/icons/arrow_left.svelte';
 
 	// Form Data State matching the Schema
 	let formData = {
@@ -57,6 +58,15 @@
 
 <div class="min-h-screen bg-slate-50 p-4 md:p-8">
 	<div class="mx-auto max-w-5xl">
+		<!--		back button    -->
+
+		<a
+			href="/siswa"
+			class="my-4 flex w-fit cursor-pointer items-center justify-center gap-3 rounded-full bg-blue-300 px-5 py-1.5 text-xs text-blue-800 capitalize md:text-lg"
+		>
+			<Arrow_Left /> kembali
+		</a>
+
 		<!-- Header -->
 		<div class="mb-8">
 			<h1 class="text-3xl font-bold text-slate-800">Tambah Siswa Baru</h1>
@@ -66,31 +76,31 @@
 		</div>
 
 		<!-- Tabs -->
-		<div class="mb-8 overflow-x-auto border-b border-slate-200">
-			<nav class="-mb-px flex space-x-8" aria-label="Tabs">
+		<div class="mb-8 border-b border-slate-200">
+			<nav class="-mb-px flex space-x-2" aria-label="Tabs">
 				<button
 					on:click={() => (activeTab = 'student')}
-					class="border-b-2 px-1 py-4 text-sm font-medium whitespace-nowrap transition-colors {activeTab ===
+					class="border-b-2 px-1 py-4 text-xs font-medium whitespace-nowrap transition-colors md:text-sm {activeTab ===
 					'student'
-						? 'border-blue-500 text-blue-600'
+						? 'border-blue-500 text-blue-600 font-semibold'
 						: 'border-transparent text-slate-500 hover:border-slate-300 hover:text-slate-700'}"
 				>
 					Data Siswa
 				</button>
 				<button
 					on:click={() => (activeTab = 'parents')}
-					class="border-b-2 px-1 py-4 text-sm font-medium whitespace-nowrap transition-colors {activeTab ===
+					class="border-b-2 px-1 py-4 text-xs font-medium whitespace-nowrap transition-colors md:text-sm {activeTab ===
 					'parents'
-						? 'border-blue-500 text-blue-600'
+						? 'border-blue-500 text-blue-600 font-semibold'
 						: 'border-transparent text-slate-500 hover:border-slate-300 hover:text-slate-700'}"
 				>
 					Data Orang Tua
 				</button>
 				<button
 					on:click={() => (activeTab = 'guardian')}
-					class="border-b-2 px-1 py-4 text-sm font-medium whitespace-nowrap transition-colors {activeTab ===
+					class="border-b-2 px-1 py-4 text-xs font-medium whitespace-nowrap transition-colors md:text-sm {activeTab ===
 					'guardian'
-						? 'border-blue-500 text-blue-600'
+						? 'border-blue-500 text-blue-600 font-semibold'
 						: 'border-transparent text-slate-500 hover:border-slate-300 hover:text-slate-700'}"
 				>
 					Data Wali (Opsional)
@@ -103,7 +113,7 @@
 			{#if activeTab === 'student'}
 				<div class="animate-fade-in space-y-8">
 					<!-- Section 0: Foto Profil -->
-					<div class="rounded-xl border border-slate-100 bg-white p-6 shadow-sm">
+					<div class="rounded-xl border border-slate-100 bg-white p-6">
 						<h2 class="mb-4 text-lg font-semibold text-slate-800">Foto Profil</h2>
 						<div class="flex items-center gap-6">
 							<div
@@ -136,7 +146,7 @@
 					</div>
 
 					<!-- Section 1: Identitas & Kelahiran -->
-					<div class="rounded-xl border border-slate-100 bg-white p-6 shadow-sm">
+					<div class="rounded-xl border border-slate-100 bg-white p-6">
 						<h2 class="mb-6 flex items-center gap-2 text-xl font-semibold text-slate-800">
 							<span
 								class="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-sm font-bold text-blue-600"
@@ -339,7 +349,7 @@
 					</div>
 
 					<!-- Section 2: Kontak & Alamat -->
-					<div class="rounded-xl border border-slate-100 bg-white p-6 shadow-sm">
+					<div class="rounded-xl border border-slate-100 bg-white p-6">
 						<h2 class="mb-6 flex items-center gap-2 text-xl font-semibold text-slate-800">
 							<span
 								class="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-sm font-bold text-blue-600"
@@ -361,11 +371,11 @@
 									id="street"
 									bind:value={formData.address.street}
 									placeholder=" "
-									class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 shadow-sm transition-all duration-300 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
+									class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
 								/>
 								<label
 									for="street"
-									class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
+									class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-100 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
 									>Nama Jalan</label
 								>
 							</div>
@@ -377,11 +387,11 @@
 										id="houseNumber"
 										bind:value={formData.address.houseNumber}
 										placeholder=" "
-										class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 shadow-sm transition-all duration-300 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
+										class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
 									/>
 									<label
 										for="houseNumber"
-										class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
+										class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-100 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
 										>No. Rumah</label
 									>
 								</div>
@@ -391,11 +401,11 @@
 										id="rt"
 										bind:value={formData.address.rt}
 										placeholder=" "
-										class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 shadow-sm transition-all duration-300 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
+										class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
 									/>
 									<label
 										for="rt"
-										class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
+										class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-100 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
 										>RT</label
 									>
 								</div>
@@ -405,11 +415,11 @@
 										id="rw"
 										bind:value={formData.address.rw}
 										placeholder=" "
-										class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 shadow-sm transition-all duration-300 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
+										class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
 									/>
 									<label
 										for="rw"
-										class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
+										class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-100 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
 										>RW</label
 									>
 								</div>
@@ -421,11 +431,11 @@
 									id="village"
 									bind:value={formData.address.village}
 									placeholder=" "
-									class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 shadow-sm transition-all duration-300 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
+									class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
 								/>
 								<label
 									for="village"
-									class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
+									class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-100 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
 									>Desa / Kelurahan</label
 								>
 							</div>
@@ -435,11 +445,11 @@
 									id="subDistrict"
 									bind:value={formData.address.subDistrict}
 									placeholder=" "
-									class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 shadow-sm transition-all duration-300 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
+									class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
 								/>
 								<label
 									for="subDistrict"
-									class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
+									class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-100 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
 									>Kecamatan</label
 								>
 							</div>
@@ -449,11 +459,11 @@
 									id="regency"
 									bind:value={formData.address.regency}
 									placeholder=" "
-									class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 shadow-sm transition-all duration-300 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
+									class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
 								/>
 								<label
 									for="regency"
-									class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
+									class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-100 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
 									>Kabupaten / Kota</label
 								>
 							</div>
@@ -463,11 +473,11 @@
 									id="province"
 									bind:value={formData.address.province}
 									placeholder=" "
-									class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 shadow-sm transition-all duration-300 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
+									class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
 								/>
 								<label
 									for="province"
-									class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
+									class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-100 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
 									>Provinsi</label
 								>
 							</div>
@@ -477,11 +487,11 @@
 									id="postalCode"
 									bind:value={formData.address.postalCode}
 									placeholder=" "
-									class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 shadow-sm transition-all duration-300 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
+									class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
 								/>
 								<label
 									for="postalCode"
-									class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
+									class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-100 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
 									>Kode Pos</label
 								>
 							</div>
@@ -542,7 +552,7 @@
 				</button>
 				<button
 					type="submit"
-					class="rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-medium text-white shadow-md transition-all hover:bg-blue-700 hover:shadow-lg"
+					class="rounded-md bg-blue-500 px-5 py-2.5 text-sm font-medium text-white transition-all hover:bg-blue-700"
 				>
 					Simpan Data Siswa
 				</button>
