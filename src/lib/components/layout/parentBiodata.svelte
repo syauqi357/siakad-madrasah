@@ -1,86 +1,454 @@
 <script lang="ts">
 	import PhoneInput from '$lib/components/input/PhoneInput.svelte';
 
-    // Props to bind data back to the parent
-    export let fatherData = {
-        name: '',
-        nik: '',
-        job: '',
-        phone: ''
-    };
+	// Props to bind data back to the parent
+	export let fatherData = {
+		name: '',
+		nik: '',
+		job: '', // occupation
+		phone: '', // phoneNumber
+		birthPlace: '',
+		birthDate: '',
+		birthYear: '',
+		education: '',
+		monthlyIncome: '',
+		isAlive: '1' // Default to Alive (1)
+	};
 
-    export let motherData = {
-        name: '',
-        nik: '',
-        job: '',
-        phone: ''
-    };
+	export let motherData = {
+		name: '',
+		nik: '',
+		job: '', // occupation
+		phone: '', // phoneNumber
+		birthPlace: '',
+		birthDate: '',
+		birthYear: '',
+		education: '',
+		monthlyIncome: '',
+		isAlive: '1' // Default to Alive (1)
+	};
 </script>
 
 <div class="space-y-8">
-    <!-- Data Ayah -->
-    <div class="rounded-xl bg-white p-6 shadow-sm border border-slate-100">
-        <h2 class="mb-6 text-xl font-semibold text-slate-800 flex items-center gap-2">
-            <span class="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-blue-600 text-sm font-bold">A</span>
-            Data Ayah Kandung
-        </h2>
+	<!-- Data Ayah -->
+	<div class="rounded-xl border border-slate-400 bg-white p-6">
+		<h2 class="mb-6 flex items-center gap-2 text-xl font-semibold text-slate-800">
+			<span
+				class="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-sm font-bold text-blue-600"
+				>A</span
+			>
+			Data Ayah Kandung
+		</h2>
 
-        <div class="grid gap-6 md:grid-cols-2">
-            <!-- Nama Ayah -->
-            <div class="relative w-full md:col-span-2">
-                <input type="text" id="fatherName" bind:value={fatherData.name} placeholder=" " class="peer w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 shadow-sm transition-all duration-300 ease focus:border-blue-500 focus:shadow focus:outline-none hover:border-slate-300" />
-                <label for="fatherName" class="absolute left-2.5 top-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400">Nama Lengkap Ayah</label>
-            </div>
+		<div class="grid gap-6 md:grid-cols-2">
+			<!-- Status Hidup -->
+			<div class="relative w-full md:col-span-2">
+				<select
+					id="fatherIsAlive"
+					bind:value={fatherData.isAlive}
+					class="peer ease w-full appearance-none rounded-md border border-slate-400 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
+				>
+					<option value="1">Masih Hidup</option>
+					<option value="0">Meninggal Dunia</option>
+				</select>
+				<label
+					for="fatherIsAlive"
+					class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-100 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
+					>Status</label
+				>
+				<div
+					class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-500"
+				>
+					<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+						><path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M19 9l-7 7-7-7"
+						/></svg
+					>
+				</div>
+			</div>
 
-            <!-- NIK Ayah -->
-            <div class="relative w-full">
-                <input type="text" id="fatherNik" bind:value={fatherData.nik} placeholder=" " class="peer w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 shadow-sm transition-all duration-300 ease focus:border-blue-500 focus:shadow focus:outline-none hover:border-slate-300" />
-                <label for="fatherNik" class="absolute left-2.5 top-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400">NIK Ayah</label>
-            </div>
+			<!-- Nama Ayah -->
+			<div class="relative w-full md:col-span-2">
+				<input
+					type="text"
+					id="fatherName"
+					bind:value={fatherData.name}
+					placeholder=" "
+					class="peer ease w-full rounded-md border border-slate-400 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
+				/>
+				<label
+					for="fatherName"
+					class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-100 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
+					>Nama Lengkap Ayah</label
+				>
+			</div>
 
-            <!-- Pekerjaan Ayah -->
-            <div class="relative w-full">
-                <input type="text" id="fatherJob" bind:value={fatherData.job} placeholder=" " class="peer w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 shadow-sm transition-all duration-300 ease focus:border-blue-500 focus:shadow focus:outline-none hover:border-slate-300" />
-                <label for="fatherJob" class="absolute left-2.5 top-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400">Pekerjaan Ayah</label>
-            </div>
+			<!-- NIK Ayah -->
+			<div class="relative w-full">
+				<input
+					type="text"
+					id="fatherNik"
+					bind:value={fatherData.nik}
+					placeholder=" "
+					class="peer ease w-full rounded-md border border-slate-400 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
+				/>
+				<label
+					for="fatherNik"
+					class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-100 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
+					>NIK Ayah</label
+				>
+			</div>
 
-            <!-- Phone Number (Component) -->
-            <div class="md:col-span-2">
-                <PhoneInput bind:value={fatherData.phone} label="Nomor Telepon / WA Ayah" />
-            </div>
-        </div>
-    </div>
+			<!-- Tempat Lahir -->
+			<div class="relative w-full">
+				<input
+					type="text"
+					id="fatherBirthPlace"
+					bind:value={fatherData.birthPlace}
+					placeholder=" "
+					class="peer ease w-full rounded-md border border-slate-400 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
+				/>
+				<label
+					for="fatherBirthPlace"
+					class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-100 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
+					>Tempat Lahir</label
+				>
+			</div>
 
-    <!-- Data Ibu -->
-    <div class="rounded-xl bg-white p-6 shadow-sm border border-slate-100">
-        <h2 class="mb-6 text-xl font-semibold text-slate-800 flex items-center gap-2">
-            <span class="flex h-8 w-8 items-center justify-center rounded-full bg-pink-100 text-pink-600 text-sm font-bold">I</span>
-            Data Ibu Kandung
-        </h2>
+			<!-- Tanggal Lahir -->
+			<div class="relative w-full">
+				<input
+					type="date"
+					id="fatherBirthDate"
+					bind:value={fatherData.birthDate}
+					class="peer ease w-full rounded-md border border-slate-400 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
+				/>
+				<label
+					for="fatherBirthDate"
+					class="absolute -top-2 left-2.5 z-10 cursor-text bg-white px-1 text-xs text-slate-400 transition-all duration-100 peer-focus:text-blue-500"
+					>Tanggal Lahir</label
+				>
+			</div>
 
-        <div class="grid gap-6 md:grid-cols-2">
-            <!-- Nama Ibu -->
-            <div class="relative w-full md:col-span-2">
-                <input type="text" id="motherName" bind:value={motherData.name} placeholder=" " class="peer w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 shadow-sm transition-all duration-300 ease focus:border-blue-500 focus:shadow focus:outline-none hover:border-slate-300" />
-                <label for="motherName" class="absolute left-2.5 top-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400">Nama Lengkap Ibu</label>
-            </div>
+			<!-- Tahun Lahir -->
+			<div class="relative w-full">
+				<input
+					type="number"
+					id="fatherBirthYear"
+					bind:value={fatherData.birthYear}
+					placeholder=" "
+					class="peer ease w-full rounded-md border border-slate-400 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
+				/>
+				<label
+					for="fatherBirthYear"
+					class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-100 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
+					>Tahun Lahir</label
+				>
+			</div>
 
-            <!-- NIK Ibu -->
-            <div class="relative w-full">
-                <input type="text" id="motherNik" bind:value={motherData.nik} placeholder=" " class="peer w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 shadow-sm transition-all duration-300 ease focus:border-blue-500 focus:shadow focus:outline-none hover:border-slate-300" />
-                <label for="motherNik" class="absolute left-2.5 top-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400">NIK Ibu</label>
-            </div>
+			<!-- Pendidikan -->
+			<div class="relative w-full">
+				<select
+					id="fatherEducation"
+					bind:value={fatherData.education}
+					class="peer ease w-full appearance-none rounded-md border border-slate-400 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
+				>
+					<option value="" disabled selected></option>
+					<option value="SD">SD / Sederajat</option>
+					<option value="SMP">SMP / Sederajat</option>
+					<option value="SMA">SMA / Sederajat</option>
+					<option value="D3">D3</option>
+					<option value="S1">S1</option>
+					<option value="S2">S2</option>
+					<option value="S3">S3</option>
+					<option value="Tidak Sekolah">Tidak Sekolah</option>
+				</select>
+				<label
+					for="fatherEducation"
+					class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-100 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
+					>Pendidikan Terakhir</label
+				>
+				<div
+					class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-500"
+				>
+					<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+						><path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M19 9l-7 7-7-7"
+						/></svg
+					>
+				</div>
+			</div>
 
-            <!-- Pekerjaan Ibu -->
-            <div class="relative w-full">
-                <input type="text" id="motherJob" bind:value={motherData.job} placeholder=" " class="peer w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 shadow-sm transition-all duration-300 ease focus:border-blue-500 focus:shadow focus:outline-none hover:border-slate-300" />
-                <label for="motherJob" class="absolute left-2.5 top-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400">Pekerjaan Ibu</label>
-            </div>
+			<!-- Pekerjaan Ayah -->
+			<div class="relative w-full">
+				<input
+					type="text"
+					id="fatherJob"
+					bind:value={fatherData.job}
+					placeholder=" "
+					class="peer ease w-full rounded-md border border-slate-400 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
+				/>
+				<label
+					for="fatherJob"
+					class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-100 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
+					>Pekerjaan Ayah</label
+				>
+			</div>
 
-            <!-- Phone Number (Component) -->
-            <div class="md:col-span-2">
-                <PhoneInput bind:value={motherData.phone} label="Nomor Telepon / WA Ibu" />
-            </div>
-        </div>
-    </div>
+			<!-- Penghasilan Bulanan -->
+			<div class="relative w-full">
+				<select
+					id="fatherIncome"
+					bind:value={fatherData.monthlyIncome}
+					class="peer ease w-full appearance-none rounded-md border border-slate-400 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
+				>
+					<option value="" disabled selected></option>
+					<option value="< 500.000">Kurang dari Rp 500.000</option>
+					<option value="500.000 - 1.000.000">Rp 500.000 - Rp 1.000.000</option>
+					<option value="1.000.000 - 2.000.000">Rp 1.000.000 - Rp 2.000.000</option>
+					<option value="2.000.000 - 5.000.000">Rp 2.000.000 - Rp 5.000.000</option>
+					<option value="> 5.000.000">Lebih dari Rp 5.000.000</option>
+				</select>
+				<label
+					for="fatherIncome"
+					class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-100 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
+					>Penghasilan Bulanan</label
+				>
+				<div
+					class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-500"
+				>
+					<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+						><path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M19 9l-7 7-7-7"
+						/></svg
+					>
+				</div>
+			</div>
+
+			<!-- Phone Number (Component) -->
+			<div class="md:col-span-2">
+				<PhoneInput bind:value={fatherData.phone} label="Nomor Telepon / WA Ayah" />
+			</div>
+		</div>
+	</div>
+
+	<!-- Data Ibu -->
+	<div class="rounded-xl border border-slate-400 bg-white p-6">
+		<h2 class="mb-6 flex items-center gap-2 text-xl font-semibold text-slate-800">
+			<span
+				class="flex h-8 w-8 items-center justify-center rounded-full bg-pink-100 text-sm font-bold text-pink-600"
+				>I</span
+			>
+			Data Ibu Kandung
+		</h2>
+
+		<div class="grid gap-6 md:grid-cols-2">
+			<!-- Status Hidup -->
+			<div class="relative w-full md:col-span-2">
+				<select
+					id="motherIsAlive"
+					bind:value={motherData.isAlive}
+					class="peer ease w-full appearance-none rounded-md border border-slate-400 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
+				>
+					<option value="1">Masih Hidup</option>
+					<option value="0">Meninggal Dunia</option>
+				</select>
+				<label
+					for="motherIsAlive"
+					class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-100 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
+					>Status</label
+				>
+				<div
+					class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-500"
+				>
+					<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+						><path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M19 9l-7 7-7-7"
+						/></svg
+					>
+				</div>
+			</div>
+
+			<!-- Nama Ibu -->
+			<div class="relative w-full md:col-span-2">
+				<input
+					type="text"
+					id="motherName"
+					bind:value={motherData.name}
+					placeholder=" "
+					class="peer ease w-full rounded-md border border-slate-400 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
+				/>
+				<label
+					for="motherName"
+					class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-100 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
+					>Nama Lengkap Ibu</label
+				>
+			</div>
+
+			<!-- NIK Ibu -->
+			<div class="relative w-full">
+				<input
+					type="text"
+					id="motherNik"
+					bind:value={motherData.nik}
+					placeholder=" "
+					class="peer ease w-full rounded-md border border-slate-400 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
+				/>
+				<label
+					for="motherNik"
+					class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-100 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
+					>NIK Ibu</label
+				>
+			</div>
+
+			<!-- Tempat Lahir -->
+			<div class="relative w-full">
+				<input
+					type="text"
+					id="motherBirthPlace"
+					bind:value={motherData.birthPlace}
+					placeholder=" "
+					class="peer ease w-full rounded-md border border-slate-400 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
+				/>
+				<label
+					for="motherBirthPlace"
+					class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-100 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
+					>Tempat Lahir</label
+				>
+			</div>
+
+			<!-- Tanggal Lahir -->
+			<div class="relative w-full">
+				<input
+					type="date"
+					id="motherBirthDate"
+					bind:value={motherData.birthDate}
+					class="peer ease w-full rounded-md border border-slate-400 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
+				/>
+				<label
+					for="motherBirthDate"
+					class="absolute -top-2 left-2.5 z-10 cursor-text bg-white px-1 text-xs text-slate-400 transition-all duration-100 peer-focus:text-blue-500"
+					>Tanggal Lahir</label
+				>
+			</div>
+
+			<!-- Tahun Lahir -->
+			<div class="relative w-full">
+				<input
+					type="number"
+					id="motherBirthYear"
+					bind:value={motherData.birthYear}
+					placeholder=" "
+					class="peer ease w-full rounded-md border border-slate-400 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
+				/>
+				<label
+					for="motherBirthYear"
+					class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-100 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
+					>Tahun Lahir</label
+				>
+			</div>
+
+			<!-- Pendidikan -->
+			<div class="relative w-full">
+				<select
+					id="motherEducation"
+					bind:value={motherData.education}
+					class="peer ease w-full appearance-none rounded-md border border-slate-400 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
+				>
+					<option value="" disabled selected></option>
+					<option value="SD">SD / Sederajat</option>
+					<option value="SMP">SMP / Sederajat</option>
+					<option value="SMA">SMA / Sederajat</option>
+					<option value="D3">D3</option>
+					<option value="S1">S1</option>
+					<option value="S2">S2</option>
+					<option value="S3">S3</option>
+					<option value="Tidak Sekolah">Tidak Sekolah</option>
+				</select>
+				<label
+					for="motherEducation"
+					class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-100 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
+					>Pendidikan Terakhir</label
+				>
+				<div
+					class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-500"
+				>
+					<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+						><path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M19 9l-7 7-7-7"
+						/></svg
+					>
+				</div>
+			</div>
+
+			<!-- Pekerjaan Ibu -->
+			<div class="relative w-full">
+				<input
+					type="text"
+					id="motherJob"
+					bind:value={motherData.job}
+					placeholder=" "
+					class="peer ease w-full rounded-md border border-slate-400 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
+				/>
+				<label
+					for="motherJob"
+					class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-100 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
+					>Pekerjaan Ibu</label
+				>
+			</div>
+
+			<!-- Penghasilan Bulanan -->
+			<div class="relative w-full">
+				<select
+					id="motherIncome"
+					bind:value={motherData.monthlyIncome}
+					class="peer ease w-full appearance-none rounded-md border border-slate-400 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
+				>
+					<option value="" disabled selected></option>
+					<option value="< 500.000">Kurang dari Rp 500.000</option>
+					<option value="500.000 - 1.000.000">Rp 500.000 - Rp 1.000.000</option>
+					<option value="1.000.000 - 2.000.000">Rp 1.000.000 - Rp 2.000.000</option>
+					<option value="2.000.000 - 5.000.000">Rp 2.000.000 - Rp 5.000.000</option>
+					<option value="> 5.000.000">Lebih dari Rp 5.000.000</option>
+				</select>
+				<label
+					for="motherIncome"
+					class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-100 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
+					>Penghasilan Bulanan</label
+				>
+				<div
+					class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-500"
+				>
+					<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+						><path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M19 9l-7 7-7-7"
+						/></svg
+					>
+				</div>
+			</div>
+
+			<!-- Phone Number (Component) -->
+			<div class="md:col-span-2">
+				<PhoneInput bind:value={motherData.phone} label="Nomor Telepon / WA Ibu" />
+			</div>
+		</div>
+	</div>
 </div>

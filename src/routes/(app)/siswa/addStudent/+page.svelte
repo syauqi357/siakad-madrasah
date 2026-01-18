@@ -54,7 +54,7 @@
 		</div>
 
 		<!-- Tabs -->
-		<div class="mb-8 overflow-x-auto border-b border-slate-200">
+		<div class="mb-8 border-b border-slate-200">
 			<nav class="-mb-px flex space-x-8" aria-label="Tabs">
 				<button
 					on:click={() => (activeTab = 'student')}
@@ -91,7 +91,7 @@
 			{#if activeTab === 'student'}
 				<div class="animate-fade-in space-y-8">
 					<!-- Section 0: Foto Profil -->
-					<div class="rounded-xl border border-slate-100 bg-white p-6 shadow-sm">
+					<div class="rounded-xl border border-slate-400 bg-white p-6">
 						<h2 class="mb-4 text-lg font-semibold text-slate-800">Foto Profil</h2>
 						<div class="flex items-center gap-6">
 							<div
@@ -124,7 +124,7 @@
 					</div>
 
 					<!-- Section 1: Identitas & Kelahiran -->
-					<div class="rounded-xl border border-slate-100 bg-white p-6 shadow-sm">
+					<div class="rounded-xl border border-slate-400 bg-white p-6">
 						<h2 class="mb-6 flex items-center gap-2 text-xl font-semibold text-slate-800">
 							<span
 								class="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-sm font-bold text-blue-600"
@@ -141,11 +141,11 @@
 									id="studentName"
 									bind:value={formData.studentName}
 									placeholder=" "
-									class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 shadow-sm transition-all duration-300 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
+									class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
 								/>
 								<label
 									for="studentName"
-									class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
+									class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-100 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
 									>Nama Lengkap Siswa</label
 								>
 							</div>
@@ -157,11 +157,11 @@
 									id="nisn"
 									bind:value={formData.nisn}
 									placeholder=" "
-									class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 shadow-sm transition-all duration-300 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
+									class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
 								/>
 								<label
 									for="nisn"
-									class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
+									class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-100 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
 									>NISN</label
 								>
 							</div>
@@ -173,11 +173,11 @@
 									id="localNis"
 									bind:value={formData.localNis}
 									placeholder=" "
-									class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 shadow-sm transition-all duration-300 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
+									class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
 								/>
 								<label
 									for="localNis"
-									class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
+									class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-100 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
 									>NIS Lokal</label
 								>
 							</div>
@@ -189,11 +189,11 @@
 									id="idCardNumber"
 									bind:value={formData.idCardNumber}
 									placeholder=" "
-									class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 shadow-sm transition-all duration-300 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
+									class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
 								/>
 								<label
 									for="idCardNumber"
-									class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
+									class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-100 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
 									>NIK / No. KTP</label
 								>
 							</div>
@@ -205,11 +205,11 @@
 									id="birthCertificateNumber"
 									bind:value={formData.birthCertificateNumber}
 									placeholder=" "
-									class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 shadow-sm transition-all duration-300 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
+									class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
 								/>
 								<label
 									for="birthCertificateNumber"
-									class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
+									class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-100 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
 									>No. Akta Kelahiran</label
 								>
 							</div>
@@ -221,11 +221,11 @@
 									id="birthPlace"
 									bind:value={formData.birthPlace}
 									placeholder=" "
-									class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 shadow-sm transition-all duration-300 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
+									class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
 								/>
 								<label
 									for="birthPlace"
-									class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
+									class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-100 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
 									>Tempat Lahir</label
 								>
 							</div>
@@ -236,11 +236,11 @@
 									type="date"
 									id="birthDate"
 									bind:value={formData.birthDate}
-									class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 shadow-sm transition-all duration-300 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
+									class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
 								/>
 								<label
 									for="birthDate"
-									class="absolute -top-2 left-2.5 z-10 cursor-text bg-white px-1 text-xs text-slate-400 transition-all duration-300 peer-focus:text-blue-500"
+									class="absolute -top-2 left-2.5 z-10 cursor-text bg-white px-1 text-xs text-slate-400 transition-all duration-100 peer-focus:text-blue-500"
 									>Tanggal Lahir</label
 								>
 							</div>
@@ -283,11 +283,11 @@
 									id="nationality"
 									bind:value={formData.nationality}
 									placeholder=" "
-									class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 shadow-sm transition-all duration-300 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
+									class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
 								/>
 								<label
 									for="nationality"
-									class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
+									class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-100 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
 									>Kewarganegaraan</label
 								>
 							</div>
@@ -300,11 +300,11 @@
 										id="childOrder"
 										bind:value={formData.childOrder}
 										placeholder=" "
-										class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 shadow-sm transition-all duration-300 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
+										class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
 									/>
 									<label
 										for="childOrder"
-										class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
+										class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-100 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
 										>Anak ke-</label
 									>
 								</div>
@@ -314,11 +314,11 @@
 										id="siblingsCount"
 										bind:value={formData.siblingsCount}
 										placeholder=" "
-										class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 shadow-sm transition-all duration-300 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
+										class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
 									/>
 									<label
 										for="siblingsCount"
-										class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
+										class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-100 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
 										>Jml Saudara</label
 									>
 								</div>
@@ -327,7 +327,7 @@
 					</div>
 
 					<!-- Section 2: Kontak & Alamat -->
-					<div class="rounded-xl border border-slate-100 bg-white p-6 shadow-sm">
+					<div class="rounded-xl border border-slate-400 bg-white p-6">
 						<h2 class="mb-6 flex items-center gap-2 text-xl font-semibold text-slate-800">
 							<span
 								class="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-sm font-bold text-blue-600"
@@ -349,11 +349,11 @@
 									bind:value={formData.address}
 									rows="3"
 									placeholder=" "
-									class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 shadow-sm transition-all duration-300 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
+									class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
 								></textarea>
 								<label
 									for="address"
-									class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
+									class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-100 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
 									>Alamat Lengkap (Jalan, RT/RW, Kelurahan, Kecamatan)</label
 								>
 							</div>
@@ -365,11 +365,11 @@
 									id="originRegion"
 									bind:value={formData.originRegion}
 									placeholder=" "
-									class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 shadow-sm transition-all duration-300 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
+									class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
 								/>
 								<label
 									for="originRegion"
-									class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
+									class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-100 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
 									>Asal Daerah (Kota/Kab)</label
 								>
 							</div>
@@ -379,7 +379,7 @@
 								<select
 									id="livingWith"
 									bind:value={formData.livingWith}
-									class="peer ease w-full appearance-none rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 shadow-sm transition-all duration-300 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
+									class="peer ease w-full appearance-none rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
 								>
 									<option value="" disabled selected></option>
 									<option value="orang_tua">Orang Tua</option>
@@ -390,7 +390,7 @@
 								</select>
 								<label
 									for="livingWith"
-									class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
+									class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-100 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
 									>Tinggal Bersama</label
 								>
 								<div
@@ -410,7 +410,7 @@
 					</div>
 
 					<!-- Section 3: Data Penunjang -->
-					<div class="rounded-xl border border-slate-100 bg-white p-6 shadow-sm">
+					<div class="rounded-xl border border-slate-400 bg-white p-6">
 						<h2 class="mb-6 flex items-center gap-2 text-xl font-semibold text-slate-800">
 							<span
 								class="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-sm font-bold text-blue-600"
@@ -427,11 +427,11 @@
 									id="previousSchool"
 									bind:value={formData.previousSchool}
 									placeholder=" "
-									class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 shadow-sm transition-all duration-300 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
+									class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
 								/>
 								<label
 									for="previousSchool"
-									class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
+									class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-100 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
 									>Sekolah Sebelumnya</label
 								>
 							</div>
@@ -441,7 +441,7 @@
 								<select
 									id="religion"
 									bind:value={formData.religion}
-									class="peer ease w-full appearance-none rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 shadow-sm transition-all duration-300 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
+									class="peer ease w-full appearance-none rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
 								>
 									<option value="" disabled selected></option>
 									<option value="islam">Islam</option>
@@ -453,7 +453,7 @@
 								</select>
 								<label
 									for="religion"
-									class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
+									class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-100 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
 									>Agama</label
 								>
 								<div
@@ -475,7 +475,7 @@
 								<select
 									id="transportation"
 									bind:value={formData.transportation}
-									class="peer ease w-full appearance-none rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 shadow-sm transition-all duration-300 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
+									class="peer ease w-full appearance-none rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
 								>
 									<option value="" disabled selected></option>
 									<option value="jalan_kaki">Jalan Kaki</option>
@@ -486,7 +486,7 @@
 								</select>
 								<label
 									for="transportation"
-									class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
+									class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-100 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
 									>Transportasi</label
 								>
 								<div
@@ -510,11 +510,11 @@
 									id="bpjs"
 									bind:value={formData.bpjs}
 									placeholder=" "
-									class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 shadow-sm transition-all duration-300 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
+									class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
 								/>
 								<label
 									for="bpjs"
-									class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
+									class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-100 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
 									>No. BPJS (Opsional)</label
 								>
 							</div>
@@ -531,7 +531,7 @@
 				<!-- Tab Content: Guardian Data -->
 			{:else if activeTab === 'guardian'}
 				<div class="animate-fade-in">
-					<div class="rounded-xl border border-slate-100 bg-white p-6 py-12 text-center shadow-sm">
+					<div class="rounded-xl border border-slate-400 bg-white p-6 py-12 text-center">
 						<div
 							class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-slate-100"
 						>
@@ -566,16 +566,16 @@
 			{/if}
 
 			<!-- Action Buttons (Always Visible) -->
-			<div class="mt-8 flex items-center justify-end gap-4 border-t border-slate-200 pt-4">
+			<div class="mt-8 flex items-center justify-end gap-3 border-t border-slate-200 pt-4">
 				<button
 					type="button"
-					class="rounded-lg px-6 py-2.5 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-100"
+					class="rounded-lg bg-red-200 px-4 py-2.5 text-sm font-medium text-red-600 transition-colors hover:bg-red-300"
 				>
 					Batal
 				</button>
 				<button
 					type="submit"
-					class="rounded-lg bg-blue-600 px-8 py-2.5 text-sm font-medium text-white shadow-md transition-all hover:bg-blue-700 hover:shadow-lg"
+					class="rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-medium text-white shadow-md transition-all hover:bg-blue-700 hover:shadow-lg"
 				>
 					Simpan Data Siswa
 				</button>
