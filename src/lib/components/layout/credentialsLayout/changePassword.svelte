@@ -1,6 +1,6 @@
 <script lang="ts">
 	import EyeIcon from '$lib/components/icons/EyeIcon.svelte';
-	import { apiFetch } from '$lib/api.ts';
+	import { API_FETCH } from '$lib/api.ts';
 	import PassIndicatorStrength from '$lib/components/layout/passIndicatorStrength.svelte';
 
 	let currentPassword = '';
@@ -56,7 +56,7 @@
 			const token = localStorage.getItem('token');
 
 			// const apiUrl = import.meta.env.VITE_API_URL;
-			const response = await apiFetch(`/api/auth/change-password`, {
+			const response = await API_FETCH(`/api/auth/change-password`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',

@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
-	import { apiFetch } from '$lib/api';
+	import { API_FETCH } from '$lib/api';
 
 	type Student = {
 		id: number;
@@ -28,7 +28,7 @@
 				return;
 			}
 
-			const response = await apiFetch(`/routes/api/studentDataSet/${$page.params.id}`);
+			const response = await API_FETCH(`/routes/api/studentDataSet/${$page.params.id}`);
 
 			if (!response.ok) {
 				if (response.status === 401) {

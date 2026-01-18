@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { activeMenu } from '$lib/stores.js';
 	import { onMount } from 'svelte';
-	import { apiFetch } from '$lib/api';
+	import { API_FETCH } from '$lib/api';
 	import StatCard from './StatCard.svelte';
 
 	// State for metrics
@@ -17,14 +17,14 @@
 		$activeMenu = 'dashboard';
 		try {
 			// 1. Fetch School Data
-			const schoolRes = await apiFetch('/routes/api/schoolData');
+			const schoolRes = await API_FETCH('/routes/api/schoolData');
 			if (schoolRes.ok) {
 				const data = await schoolRes.json();
 				schoolName = data.name;
 			}
 
 			// 2. Fetch Student Count
-			const studentRes = await apiFetch('/routes/api/studentDataSet/count');
+			const studentRes = await API_FETCH('/routes/api/studentDataSet/count');
 			if (studentRes.ok) {
 				const data = await studentRes.json();
 				studentCount = data.count;

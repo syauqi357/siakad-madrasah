@@ -1,11 +1,13 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
-	import { apiFetch } from '$lib/api';
+	import { API_FETCH } from '$lib/api';
+	// import { DOWNLOAD_EXCEL_TEMPLATE } from '$env/dynamic/public';
 	import Sort from '$lib/components/icons/sort.svelte';
 	import AddIcon from '$lib/components/icons/addIcon.svelte';
 	import UploadIcon from '$lib/components/icons/uploadIcon.svelte';
-	import More from '$lib/components/icons/more.svelte';
+	import DownloadIcon from '$lib/components/icons/downloadIcon.svelte';
+	// import More from '$lib/components/icons/more.svelte';
 	import Arrow_up from '$lib/components/icons/arrow_up.svelte';
 	import UploadExcel from '$lib/components/layout/upload/uploadExcel.svelte';
 
@@ -18,6 +20,10 @@
 		asal: string;
 		status: 'aktif' | 'warning' | 'nonaktif';
 	};
+
+	const DOWNLOAD_EXCEL_TEMPLATE = import.meta.env.VITE_API_URL;
+
+	const downloadTemplateUrl = `${DOWNLOAD_EXCEL_TEMPLATE}/routes/api/students/download-template`;
 
 	// This will be populated from the API
 	let students: Student[] = [];
@@ -39,7 +45,7 @@
 				return;
 			}
 
-			const response = await apiFetch(`/routes/api/studentDataSet?page=${page}&limit=${limit}`);
+			const response = await API_FETCH(`/routes/api/studentDataSet?page=${page}&limit=${limit}`);
 
 			if (!response.ok) {
 				if (response.status === 401) {
@@ -122,7 +128,7 @@
 
 		try {
 			// Example upload logic:
-			// const response = await apiFetch('/routes/api/uploadStudents', {
+			// const response = await API_FETCH('/routes/api/uploadStudents', {
 			// 	method: 'POST',
 			// 	body: formData
 			// });
@@ -221,6 +227,12 @@
 					<AddIcon /> tambah siswa
 				</a>
 			</button>
+			<a
+				href={downloadTemplateUrl}
+				class="flex w-fit items-center justify-center gap-2 rounded-md border-2 border-green-500 px-4 py-2 font-semibold text-green-600 capitalize"
+			>
+				<DownloadIcon /> Download Template
+			</a>
 			<button
 				type="button"
 				class="flex w-fit items-center justify-center gap-2 rounded-md border-2 border-blue-500 px-4 py-2 font-semibold text-blue-500 capitalize"
