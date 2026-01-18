@@ -22,10 +22,22 @@
 		nationality: 'Indonesia',
 		religion: '',
 
-		// Contact & Address
+		// Contact
 		phoneNumber: '',
-		address: '',
-		originRegion: '', // Asal Daerah
+
+		// Address (Structured)
+		address: {
+			street: '',
+			houseNumber: '',
+			rt: '',
+			rw: '',
+			village: '',
+			subDistrict: '',
+			district: '',
+			regency: '',
+			province: '',
+			postalCode: ''
+		},
 
 		// Additional Data
 		previousSchool: '',
@@ -44,7 +56,7 @@
 </script>
 
 <div class="min-h-screen bg-slate-50 p-4 md:p-8">
-	<div class="mx-auto max-w-2xl">
+	<div class="mx-auto max-w-5xl">
 		<!-- Header -->
 		<div class="mb-8">
 			<h1 class="text-3xl font-bold text-slate-800">Tambah Siswa Baru</h1>
@@ -54,7 +66,7 @@
 		</div>
 
 		<!-- Tabs -->
-		<div class="mb-8 border-b border-slate-200">
+		<div class="mb-8 overflow-x-auto border-b border-slate-200">
 			<nav class="-mb-px flex space-x-8" aria-label="Tabs">
 				<button
 					on:click={() => (activeTab = 'student')}
@@ -91,11 +103,11 @@
 			{#if activeTab === 'student'}
 				<div class="animate-fade-in space-y-8">
 					<!-- Section 0: Foto Profil -->
-					<div class="rounded-xl border border-slate-400 bg-white p-6">
+					<div class="rounded-xl border border-slate-100 bg-white p-6 shadow-sm">
 						<h2 class="mb-4 text-lg font-semibold text-slate-800">Foto Profil</h2>
 						<div class="flex items-center gap-6">
 							<div
-								class="flex h-24 w-24 items-center justify-center rounded-md border-2 border-dashed border-slate-300 bg-slate-100 text-slate-400"
+								class="flex h-24 w-24 items-center justify-center rounded-full border-2 border-dashed border-slate-300 bg-slate-100 text-slate-400"
 							>
 								<svg
 									xmlns="http://www.w3.org/2000/svg"
@@ -124,7 +136,7 @@
 					</div>
 
 					<!-- Section 1: Identitas & Kelahiran -->
-					<div class="rounded-xl border border-slate-400 bg-white p-6">
+					<div class="rounded-xl border border-slate-100 bg-white p-6 shadow-sm">
 						<h2 class="mb-6 flex items-center gap-2 text-xl font-semibold text-slate-800">
 							<span
 								class="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-sm font-bold text-blue-600"
@@ -327,7 +339,7 @@
 					</div>
 
 					<!-- Section 2: Kontak & Alamat -->
-					<div class="rounded-xl border border-slate-400 bg-white p-6">
+					<div class="rounded-xl border border-slate-100 bg-white p-6 shadow-sm">
 						<h2 class="mb-6 flex items-center gap-2 text-xl font-semibold text-slate-800">
 							<span
 								class="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-sm font-bold text-blue-600"
@@ -337,185 +349,140 @@
 						</h2>
 
 						<div class="grid gap-6 md:grid-cols-2">
-							<!-- Phone Number (Component) -->
+							<!-- Phone Number -->
 							<div class="md:col-span-2">
 								<PhoneInput bind:value={formData.phoneNumber} label="Nomor Telepon / WA Siswa" />
 							</div>
 
-							<!-- Alamat Lengkap -->
-							<div class="relative w-full md:col-span-2">
-								<textarea
-									id="address"
-									bind:value={formData.address}
-									rows="3"
-									placeholder=" "
-									class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
-								></textarea>
-								<label
-									for="address"
-									class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-100 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
-									>Alamat Lengkap (Jalan, RT/RW, Kelurahan, Kecamatan)</label
-								>
-							</div>
-
-							<!-- Asal Daerah -->
-							<div class="relative w-full">
-								<input
-									type="text"
-									id="originRegion"
-									bind:value={formData.originRegion}
-									placeholder=" "
-									class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
-								/>
-								<label
-									for="originRegion"
-									class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-100 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
-									>Asal Daerah (Kota/Kab)</label
-								>
-							</div>
-
-							<!-- Tinggal Bersama -->
-							<div class="relative w-full">
-								<select
-									id="livingWith"
-									bind:value={formData.livingWith}
-									class="peer ease w-full appearance-none rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
-								>
-									<option value="" disabled selected></option>
-									<option value="orang_tua">Orang Tua</option>
-									<option value="wali">Wali</option>
-									<option value="asrama">Asrama</option>
-									<option value="kost">Kost</option>
-									<option value="lainnya">Lainnya</option>
-								</select>
-								<label
-									for="livingWith"
-									class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-100 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
-									>Tinggal Bersama</label
-								>
-								<div
-									class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-500"
-								>
-									<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-										><path
-											stroke-linecap="round"
-											stroke-linejoin="round"
-											stroke-width="2"
-											d="M19 9l-7 7-7-7"
-										/></svg
-									>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<!-- Section 3: Data Penunjang -->
-					<div class="rounded-xl border border-slate-400 bg-white p-6">
-						<h2 class="mb-6 flex items-center gap-2 text-xl font-semibold text-slate-800">
-							<span
-								class="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-sm font-bold text-blue-600"
-								>3</span
-							>
-							Data Penunjang
-						</h2>
-
-						<div class="grid gap-6 md:grid-cols-2">
-							<!-- Sekolah Sebelumnya -->
+							<!-- Address Fields -->
 							<div class="relative w-full md:col-span-2">
 								<input
 									type="text"
-									id="previousSchool"
-									bind:value={formData.previousSchool}
+									id="street"
+									bind:value={formData.address.street}
 									placeholder=" "
-									class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
+									class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 shadow-sm transition-all duration-300 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
 								/>
 								<label
-									for="previousSchool"
-									class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-100 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
-									>Sekolah Sebelumnya</label
+									for="street"
+									class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
+									>Nama Jalan</label
 								>
 							</div>
 
-							<!-- Agama -->
-							<div class="relative w-full">
-								<select
-									id="religion"
-									bind:value={formData.religion}
-									class="peer ease w-full appearance-none rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
-								>
-									<option value="" disabled selected></option>
-									<option value="islam">Islam</option>
-									<option value="kristen">Kristen</option>
-									<option value="katolik">Katolik</option>
-									<option value="hindu">Hindu</option>
-									<option value="buddha">Buddha</option>
-									<option value="konghucu">Konghucu</option>
-								</select>
-								<label
-									for="religion"
-									class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-100 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
-									>Agama</label
-								>
-								<div
-									class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-500"
-								>
-									<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-										><path
-											stroke-linecap="round"
-											stroke-linejoin="round"
-											stroke-width="2"
-											d="M19 9l-7 7-7-7"
-										/></svg
+							<div class="grid grid-cols-3 gap-4 md:col-span-2">
+								<div class="relative w-full">
+									<input
+										type="text"
+										id="houseNumber"
+										bind:value={formData.address.houseNumber}
+										placeholder=" "
+										class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 shadow-sm transition-all duration-300 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
+									/>
+									<label
+										for="houseNumber"
+										class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
+										>No. Rumah</label
+									>
+								</div>
+								<div class="relative w-full">
+									<input
+										type="text"
+										id="rt"
+										bind:value={formData.address.rt}
+										placeholder=" "
+										class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 shadow-sm transition-all duration-300 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
+									/>
+									<label
+										for="rt"
+										class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
+										>RT</label
+									>
+								</div>
+								<div class="relative w-full">
+									<input
+										type="text"
+										id="rw"
+										bind:value={formData.address.rw}
+										placeholder=" "
+										class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 shadow-sm transition-all duration-300 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
+									/>
+									<label
+										for="rw"
+										class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
+										>RW</label
 									>
 								</div>
 							</div>
 
-							<!-- Transportasi -->
-							<div class="relative w-full">
-								<select
-									id="transportation"
-									bind:value={formData.transportation}
-									class="peer ease w-full appearance-none rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
-								>
-									<option value="" disabled selected></option>
-									<option value="jalan_kaki">Jalan Kaki</option>
-									<option value="kendaraan_pribadi">Kendaraan Pribadi</option>
-									<option value="angkutan_umum">Angkutan Umum</option>
-									<option value="antar_jemput">Antar Jemput</option>
-									<option value="lainnya">Lainnya</option>
-								</select>
-								<label
-									for="transportation"
-									class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-100 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
-									>Transportasi</label
-								>
-								<div
-									class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-500"
-								>
-									<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-										><path
-											stroke-linecap="round"
-											stroke-linejoin="round"
-											stroke-width="2"
-											d="M19 9l-7 7-7-7"
-										/></svg
-									>
-								</div>
-							</div>
-
-							<!-- BPJS -->
 							<div class="relative w-full">
 								<input
 									type="text"
-									id="bpjs"
-									bind:value={formData.bpjs}
+									id="village"
+									bind:value={formData.address.village}
 									placeholder=" "
-									class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
+									class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 shadow-sm transition-all duration-300 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
 								/>
 								<label
-									for="bpjs"
-									class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-100 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
-									>No. BPJS (Opsional)</label
+									for="village"
+									class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
+									>Desa / Kelurahan</label
+								>
+							</div>
+							<div class="relative w-full">
+								<input
+									type="text"
+									id="subDistrict"
+									bind:value={formData.address.subDistrict}
+									placeholder=" "
+									class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 shadow-sm transition-all duration-300 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
+								/>
+								<label
+									for="subDistrict"
+									class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
+									>Kecamatan</label
+								>
+							</div>
+							<div class="relative w-full">
+								<input
+									type="text"
+									id="regency"
+									bind:value={formData.address.regency}
+									placeholder=" "
+									class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 shadow-sm transition-all duration-300 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
+								/>
+								<label
+									for="regency"
+									class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
+									>Kabupaten / Kota</label
+								>
+							</div>
+							<div class="relative w-full">
+								<input
+									type="text"
+									id="province"
+									bind:value={formData.address.province}
+									placeholder=" "
+									class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 shadow-sm transition-all duration-300 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
+								/>
+								<label
+									for="province"
+									class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
+									>Provinsi</label
+								>
+							</div>
+							<div class="relative w-full">
+								<input
+									type="text"
+									id="postalCode"
+									bind:value={formData.address.postalCode}
+									placeholder=" "
+									class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 shadow-sm transition-all duration-300 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
+								/>
+								<label
+									for="postalCode"
+									class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
+									>Kode Pos</label
 								>
 							</div>
 						</div>
@@ -583,19 +550,3 @@
 		</form>
 	</div>
 </div>
-
-<!--<style>-->
-<!--	@keyframes fade-in {-->
-<!--		from {-->
-<!--			opacity: 0;-->
-<!--			transform: translateY(5px);-->
-<!--		}-->
-<!--		to {-->
-<!--			opacity: 1;-->
-<!--			transform: translateY(0);-->
-<!--		}-->
-<!--	}-->
-<!--	.animate-fade-in {-->
-<!--		animation: fade-in 0.3s ease-out forwards;-->
-<!--	}-->
-<!--</style>-->

@@ -3,6 +3,7 @@ import { studentTable } from '../src/db/schema/studentsdataTable.js';
 import { studentFather } from '../src/db/schema/studentFather.js';
 import { studentMother } from '../src/db/schema/studentMother.js';
 import { studentWali } from '../src/db/schema/studentWali.js';
+import { studentAddress } from '../src/db/schema/studentAddress.js';
 import { eq, count } from 'drizzle-orm';
 
 export const findAllStudents = async (page = 1, limit = 10) => {
@@ -13,10 +14,8 @@ export const findAllStudents = async (page = 1, limit = 10) => {
 			id: studentTable.id,
 			nisn: studentTable.nisn,
 			name: studentTable.studentName,
-			// class: studentTable.class,
 			gender: studentTable.gender,
 			originRegion: studentTable.originRegion
-			// status: studentTable.status,
 		})
 		.from(studentTable)
 		.limit(limit)
@@ -29,20 +28,19 @@ export const countStudents = async () => {
 };
 
 export const findStudentById = async (id) => {
-	// TODO: Join with parent tables to get full profile
+	// TODO: Join with parent and address tables to get full profile
 	const student = await db.select().from(studentTable).where(eq(studentTable.id, id)).limit(1);
 
 	return student[0];
 };
 
 /**
- * Creates a new student and their parents/guardian in a single transaction.
+ * Creates a new student and their related data in a single transaction.
  * @param {Object} payload - The full JSON payload from the frontend.
  */
 export const createStudentData = async (payload) => {
 	return db.transaction(async (tx) => {
 		// 1. Extract Student Data
-		// We map the frontend keys to the database columns
 		const studentData = {
 			studentName: payload.studentName,
 			nisn: payload.nisn,
@@ -57,19 +55,26 @@ export const createStudentData = async (payload) => {
 			siblingsCount: payload.siblingsCount,
 			originRegion: payload.originRegion,
 			bpjs: payload.bpjs,
-			idCardNumber: payload.idCardNumber, // NIK
-			birthCertificateNumber: payload.birthCertificateNumber, // Akta
+			idCardNumber: payload.idCardNumber,
+			birthCertificateNumber: payload.birthCertificateNumber,
 			nationality: payload.nationality,
 			livingWith: payload.livingWith,
-			transportation: payload.transportation,
-			address: payload.address // Assuming address is a string or handled elsewhere
+			transportation: payload.transportation
 		};
 
 		// 2. Insert Student
 		const [newStudent] = await tx.insert(studentTable).values(studentData).returning();
 		const studentId = newStudent.id;
 
-		// 3. Insert Father (if provided)
+		// 3. Insert Address (if provided)
+		if (payload.address) {
+			await tx.insert(studentAddress).values({
+				studentId: studentId,
+				...payload.address
+			});
+		}
+
+		// 4. Insert Father (if provided)
 		if (payload.father && payload.father.name) {
 			await tx.insert(studentFather).values({
 				studentId: studentId,
@@ -86,7 +91,7 @@ export const createStudentData = async (payload) => {
 			});
 		}
 
-		// 4. Insert Mother (if provided)
+		// 5. Insert Mother (if provided)
 		if (payload.mother && payload.mother.name) {
 			await tx.insert(studentMother).values({
 				studentId: studentId,
@@ -103,8 +108,7 @@ export const createStudentData = async (payload) => {
 			});
 		}
 
-		// 5. Insert Guardian (if provided)
-		// Note: The frontend payload might have 'guardian' or 'wali' key
+		// 6. Insert Guardian (if provided)
 		const guardian = payload.guardian || payload.wali;
 		if (guardian && guardian.name) {
 			await tx.insert(studentWali).values({
@@ -127,7 +131,6 @@ export const createStudentData = async (payload) => {
 };
 
 export const createBulkstudentData = async (data) => {
-	// This might need updates if bulk upload also includes parents
 	const newBulkStudent = await db.insert(studentTable).values(data).returning();
 	return data;
 };
