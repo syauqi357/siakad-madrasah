@@ -12,6 +12,8 @@ export const studentFather = sqliteTable('student_father', {
 		}),
 
 	nik: text('nik'),
+	familyCardNumberId: text('family_card_number_id'),
+	religion: text('religion'),
 	name: text('name'),
 	birthPlace: text('birth_place'),
 	birthDate: text('birth_date'), // SQLite DATE = TEXT
@@ -24,3 +26,28 @@ export const studentFather = sqliteTable('student_father', {
 	phoneNumber: text('phone_number'),
 	isAlive: integer('is_alive').default(1) // BOOLEAN → INTEGER (0/1)
 });
+
+/**
+ *
+ * {
+ *   "nama": "",
+ *   "jenis-kelamin": "pria",
+ *   "tahun-lahir": "",
+ *   "pendidikan": "",
+ *   "pekerjaan": "",
+ *   "penghasilan": "",
+ *   "nik": "",
+ *   "no-kk": "",
+ *   "no-ktp": "",
+ *   "agama": "",
+ *   "nomor-hp": "",
+ *   "alamat": "",
+ *   "hubungan": "",
+ *   "tempat-kerja": "",
+ *   "jabatan": "",
+ *   "tempat-lahir": "",
+ *   "tanggal-lahir": "",
+ *   "kewarganegaraan": ""
+ * }
+ *
+ * */
