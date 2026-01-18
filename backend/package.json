@@ -5,7 +5,7 @@
 	"main": "app.js",
 	"type": "module",
 	"scripts": {
-		"dev": "node --watch app.js",
+		"dev": "nodemon --watch app.js",
 		"build": "tsc",
 		"test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
 		"db:generate": "drizzle-kit generate",
@@ -35,6 +35,7 @@
 		"@types/node": "^24.10.1",
 		"drizzle-kit": "^0.31.8",
 		"jest": "^30.2.0",
+		"nodemon": "^3.1.11",
 		"tsx": "^4.21.0"
 	}
 }

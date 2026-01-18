@@ -23,7 +23,7 @@
 
 	const DOWNLOAD_EXCEL_TEMPLATE = import.meta.env.VITE_API_URL;
 
-	const downloadTemplateUrl = `${DOWNLOAD_EXCEL_TEMPLATE}/routes/api/students/download-template`;
+	const DOWNLOAD_TEMPLATE_EXCEL = `${DOWNLOAD_EXCEL_TEMPLATE}/routes/api/students/download-template`;
 
 	// This will be populated from the API
 	let students: Student[] = [];
@@ -228,7 +228,7 @@
 				</a>
 			</button>
 			<a
-				href={downloadTemplateUrl}
+				href={DOWNLOAD_TEMPLATE_EXCEL}
 				class="flex w-fit items-center justify-center gap-2 rounded-md border-2 border-green-500 px-4 py-2 font-semibold text-green-600 capitalize"
 			>
 				<DownloadIcon /> Download Template

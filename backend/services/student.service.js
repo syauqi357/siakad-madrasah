@@ -7,87 +7,106 @@ import { studentAddress } from '../src/db/schema/studentAddress.js';
 import { eq, count } from 'drizzle-orm';
 import ExcelJS from 'exceljs';
 
+// --- Header Mapping Configuration ---
+// Key: Human Readable Header (Excel) -> Value: Internal Data Key (DB/Payload)
+const EXCEL_HEADER_MAP = {
+	// Student Info
+	'Nama Siswa': 'studentName',
+	NISN: 'nisn',
+	'NIS Lokal': 'localNis',
+	'NIK / No. KTP': 'idCardNumber',
+	'No. Akta Kelahiran': 'birthCertificateNumber',
+	'Jenis Kelamin (L/P)': 'gender',
+	'Tempat Lahir': 'birthPlace',
+	'Tanggal Lahir (YYYY-MM-DD)': 'birthDate',
+	'Anak Ke-': 'childOrder',
+	'Jumlah Saudara': 'siblingsCount',
+	Kewarganegaraan: 'nationality',
+	Agama: 'religion',
+	'No. HP Siswa': 'phoneNumber',
+	'Sekolah Sebelumnya': 'previousSchool',
+	'Tinggal Bersama': 'livingWith',
+	Transportasi: 'transportation',
+	'No. BPJS': 'bpjs',
+
+	// Address Info
+	'Alamat - Jalan': 'address_street',
+	'Alamat - No. Rumah': 'address_houseNumber',
+	'Alamat - RT': 'address_rt',
+	'Alamat - RW': 'address_rw',
+	'Alamat - Desa/Kelurahan': 'address_village',
+	'Alamat - Kecamatan': 'address_subDistrict',
+	'Alamat - Kab/Kota': 'address_district', // or regency
+	'Alamat - Provinsi': 'address_province',
+	'Alamat - Kode Pos': 'address_postalCode',
+
+	// Father Info
+	'Ayah - Nama': 'father_name',
+	'Ayah - NIK': 'father_nik',
+	'Ayah - Pekerjaan': 'father_job',
+	'Ayah - No. HP': 'father_phone',
+	'Ayah - Tempat Lahir': 'father_birthPlace',
+	'Ayah - Tanggal Lahir': 'father_birthDate',
+	'Ayah - Tahun Lahir': 'father_birthYear',
+	'Ayah - Pendidikan': 'father_education',
+	'Ayah - Penghasilan': 'father_monthlyIncome',
+	'Ayah - Status Hidup (1/0)': 'father_isAlive',
+
+	// Mother Info
+	'Ibu - Nama': 'mother_name',
+	'Ibu - NIK': 'mother_nik',
+	'Ibu - Pekerjaan': 'mother_job',
+	'Ibu - No. HP': 'mother_phone',
+	'Ibu - Tempat Lahir': 'mother_birthPlace',
+	'Ibu - Tanggal Lahir': 'mother_birthDate',
+	'Ibu - Tahun Lahir': 'mother_birthYear',
+	'Ibu - Pendidikan': 'mother_education',
+	'Ibu - Penghasilan': 'mother_monthlyIncome',
+	'Ibu - Status Hidup (1/0)': 'mother_isAlive'
+};
+
+/**
+ *
+ * Reverse Map for Generator (Internal Key -> Human Header)
+ * // We need this to know which Human Header corresponds to which Internal Key order,
+ * // or just use the keys of EXCEL_HEADER_MAP as the headers.
+ *
+ */
+
+const HUMAN_HEADERS = Object.keys(EXCEL_HEADER_MAP);
+
 /**
  * Generates an Excel template for bulk student data entry.
  * @returns {Promise<ExcelJS.Workbook>}
  */
 export const createStudentdataInputExcelBulkGenerator = async () => {
 	const workbook = new ExcelJS.Workbook();
-	const worksheet = workbook.addWorksheet('Bulk Student Upload');
+	const worksheet = workbook.addWorksheet('Data Siswa Bulk Upload'); // Changed name to force update
 
-	// Define all headers based on the flat structure
-	const headers = [
-		// Student Info
-		'studentName',
-		'nisn',
-		'localNis',
-		'idCardNumber',
-		'birthCertificateNumber',
-		'gender',
-		'birthPlace',
-		'birthDate',
-		'childOrder',
-		'siblingsCount',
-		'nationality',
-		'religion',
-		'phoneNumber',
-		'previousSchool',
-		'livingWith',
-		'transportation',
-		'bpjs',
-		// Address Info (Prefixed)
-		'address_street',
-		'address_houseNumber',
-		'address_rt',
-		'address_rw',
-		'address_village',
-		'address_subDistrict',
-		'address_district',
-		'address_regency',
-		'address_province',
-		'address_postalCode',
-		// Father Info (Prefixed)
-		'father_name',
-		'father_nik',
-		'father_job',
-		'father_phone',
-		'father_birthPlace',
-		'father_birthDate',
-		'father_birthYear',
-		'father_education',
-		'father_monthlyIncome',
-		'father_isAlive',
-		// Mother Info (Prefixed)
-		'mother_name',
-		'mother_nik',
-		'mother_job',
-		'mother_phone',
-		'mother_birthPlace',
-		'mother_birthDate',
-		'mother_birthYear',
-		'mother_education',
-		'mother_monthlyIncome',
-		'mother_isAlive'
-	];
-
+	// Use the Human Readable Headers
 	const headerRow = worksheet.getRow(1);
-	headerRow.values = headers;
-	headerRow.font = { bold: true, color: { argb: 'FFFFFFFF' } };
+	headerRow.values = HUMAN_HEADERS;
+
+	// Styling
+	headerRow.font = { bold: true, color: { argb: 'FFFFFFFF' }, size: 12 };
 	headerRow.fill = {
 		type: 'pattern',
 		pattern: 'solid',
-		fgColor: { argb: 'FF007BFF' }
+		fgColor: { argb: 'FF2563EB' } // Blue color
 	};
+	headerRow.alignment = { vertical: 'middle', horizontal: 'center' };
+	headerRow.height = 30;
 
-	// Set column widths
-	worksheet.columns = headers.map((header) => ({
+	// Set column widths dynamically based on header length
+	worksheet.columns = HUMAN_HEADERS.map((header) => ({
 		header: header,
 		key: header,
-		width: header.length < 15 ? 20 : header.length + 5
+		width: Math.max(20, header.length + 5)
 	}));
 
-	// Add a comment to the NISN cell to guide the user
-	worksheet.getCell('B1').note = 'NISN is required and must be unique for each student.';
+	// Add data validation or comments (Optional but helpful)
+	worksheet.getCell('F1').note = 'Isi dengan "Laki-laki" atau "Perempuan"';
+	worksheet.getCell('H1').note = 'Format: YYYY-MM-DD (Contoh: 2010-05-20)';
 
 	return workbook;
 };
@@ -226,14 +245,22 @@ export const createBulkStudentsFromExcel = async (fileBuffer) => {
 	const worksheet = workbook.getWorksheet(1);
 
 	const payloads = [];
-	const headerRow = worksheet.getRow(1).values;
+	const headerRow = worksheet.getRow(1).values; // Array of human headers
 
 	worksheet.eachRow((row, rowNumber) => {
 		if (rowNumber === 1) return; // Skip header row
 
 		const rowData = {};
+
+		// Map Human Headers back to Internal Keys
 		row.values.forEach((value, index) => {
-			rowData[headerRow[index]] = value;
+			// ExcelJS values array is 1-indexed, but sometimes 0-indexed depending on parsing
+			// headerRow is usually [empty, 'Header1', 'Header2'...]
+			const humanHeader = headerRow[index];
+			if (humanHeader && EXCEL_HEADER_MAP[humanHeader]) {
+				const internalKey = EXCEL_HEADER_MAP[humanHeader];
+				rowData[internalKey] = value;
+			}
 		});
 
 		// Construct the nested payload from the flat row data
@@ -264,7 +291,7 @@ export const createBulkStudentsFromExcel = async (fileBuffer) => {
 				village: rowData.address_village,
 				subDistrict: rowData.address_subDistrict,
 				district: rowData.address_district,
-				regency: rowData.address_regency,
+				regency: rowData.address_regency, // Map district/regency correctly
 				province: rowData.address_province,
 				postalCode: rowData.address_postalCode
 			},
@@ -272,15 +299,25 @@ export const createBulkStudentsFromExcel = async (fileBuffer) => {
 				name: rowData.father_name,
 				nik: rowData.father_nik,
 				job: rowData.father_job,
-				phone: rowData.father_phone
-				// ... add all other father fields
+				phone: rowData.father_phone,
+				birthPlace: rowData.father_birthPlace,
+				birthDate: rowData.father_birthDate,
+				birthYear: rowData.father_birthYear,
+				education: rowData.father_education,
+				monthlyIncome: rowData.father_monthlyIncome,
+				isAlive: rowData.father_isAlive
 			},
 			mother: {
 				name: rowData.mother_name,
 				nik: rowData.mother_nik,
 				job: rowData.mother_job,
-				phone: rowData.mother_phone
-				// ... add all other mother fields
+				phone: rowData.mother_phone,
+				birthPlace: rowData.mother_birthPlace,
+				birthDate: rowData.mother_birthDate,
+				birthYear: rowData.mother_birthYear,
+				education: rowData.mother_education,
+				monthlyIncome: rowData.mother_monthlyIncome,
+				isAlive: rowData.mother_isAlive
 			}
 		};
 		payloads.push(payload);
@@ -290,14 +327,18 @@ export const createBulkStudentsFromExcel = async (fileBuffer) => {
 	return db.transaction(async (tx) => {
 		const results = [];
 		for (const payload of payloads) {
-			// This is a simplified version of the createStudentData logic
-			// In a real app, you'd reuse the logic more directly
+			// Reuse the logic (simplified for bulk)
 			const [newStudent] = await tx
 				.insert(studentTable)
 				.values({
 					studentName: payload.studentName,
-					nisn: payload.nisn
-					// ... other student fields
+					nisn: payload.nisn,
+					localNis: payload.localNis,
+					gender: payload.gender,
+					religion: payload.religion,
+					birthPlace: payload.birthPlace,
+					birthDate: payload.birthDate
+					// ... map other fields
 				})
 				.returning();
 
@@ -306,10 +347,10 @@ export const createBulkStudentsFromExcel = async (fileBuffer) => {
 			if (payload.address) {
 				await tx.insert(studentAddress).values({ studentId, ...payload.address });
 			}
-			if (payload.father) {
+			if (payload.father && payload.father.name) {
 				await tx.insert(studentFather).values({ studentId, ...payload.father });
 			}
-			if (payload.mother) {
+			if (payload.mother && payload.mother.name) {
 				await tx.insert(studentMother).values({ studentId, ...payload.mother });
 			}
 			results.push(newStudent);
