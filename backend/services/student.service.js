@@ -18,7 +18,7 @@ const EXCEL_HEADER_MAP = {
 	'No. Akta Kelahiran': 'birthCertificateNumber',
 	'Jenis Kelamin (L/P)': 'gender',
 	'Tempat Lahir': 'birthPlace',
-	'Tanggal Lahir (YYYY-MM-DD)': 'birthDate',
+	'Tanggal Lahir': 'birthDate', // Format: DD/MM/YYYY
 	'Anak Ke-': 'childOrder',
 	'Jumlah Saudara': 'siblingsCount',
 	Kewarganegaraan: 'nationality',
@@ -46,7 +46,7 @@ const EXCEL_HEADER_MAP = {
 	'Ayah - Pekerjaan': 'father_job',
 	'Ayah - No. HP': 'father_phone',
 	'Ayah - Tempat Lahir': 'father_birthPlace',
-	'Ayah - Tanggal Lahir': 'father_birthDate',
+	'Ayah - Tanggal Lahir': 'father_birthDate', // Format: DD/MM/YYYY
 	'Ayah - Tahun Lahir': 'father_birthYear',
 	'Ayah - Pendidikan': 'father_education',
 	'Ayah - Penghasilan': 'father_monthlyIncome',
@@ -58,21 +58,14 @@ const EXCEL_HEADER_MAP = {
 	'Ibu - Pekerjaan': 'mother_job',
 	'Ibu - No. HP': 'mother_phone',
 	'Ibu - Tempat Lahir': 'mother_birthPlace',
-	'Ibu - Tanggal Lahir': 'mother_birthDate',
+	'Ibu - Tanggal Lahir': 'mother_birthDate', // Format: DD/MM/YYYY
 	'Ibu - Tahun Lahir': 'mother_birthYear',
 	'Ibu - Pendidikan': 'mother_education',
 	'Ibu - Penghasilan': 'mother_monthlyIncome',
 	'Ibu - Status Hidup (1/0)': 'mother_isAlive'
 };
 
-/**
- *
- * Reverse Map for Generator (Internal Key -> Human Header)
- * // We need this to know which Human Header corresponds to which Internal Key order,
- * // or just use the keys of EXCEL_HEADER_MAP as the headers.
- *
- */
-
+// Reverse Map for Generator (Internal Key -> Human Header)
 const HUMAN_HEADERS = Object.keys(EXCEL_HEADER_MAP);
 
 /**
@@ -81,7 +74,7 @@ const HUMAN_HEADERS = Object.keys(EXCEL_HEADER_MAP);
  */
 export const createStudentdataInputExcelBulkGenerator = async () => {
 	const workbook = new ExcelJS.Workbook();
-	const worksheet = workbook.addWorksheet('Data Siswa Bulk Upload'); // Changed name to force update
+	const worksheet = workbook.addWorksheet('Data Siswa Bulk Upload');
 
 	// Use the Human Readable Headers
 	const headerRow = worksheet.getRow(1);
@@ -98,15 +91,37 @@ export const createStudentdataInputExcelBulkGenerator = async () => {
 	headerRow.height = 30;
 
 	// Set column widths dynamically based on header length
-	worksheet.columns = HUMAN_HEADERS.map((header) => ({
-		header: header,
-		key: header,
-		width: Math.max(20, header.length + 5)
-	}));
+	worksheet.columns = HUMAN_HEADERS.map((header) => {
+		// Default config
+		let colConfig = {
+			header: header,
+			key: header,
+			width: Math.max(20, header.length + 5)
+		};
+
+		// Apply Date Format to specific columns
+		if (header.includes('Tanggal Lahir')) {
+			colConfig.style = { numFmt: 'dd/mm/yyyy' };
+		}
+		// Apply Text Format to ID columns to prevent scientific notation (e.g. 3.5E+15)
+		if (header.includes('NIK') || header.includes('NISN') || header.includes('HP')) {
+			colConfig.style = { numFmt: '@' }; // Text format
+		}
+
+		return colConfig;
+	});
 
 	// Add data validation or comments (Optional but helpful)
 	worksheet.getCell('F1').note = 'Isi dengan "Laki-laki" atau "Perempuan"';
-	worksheet.getCell('H1').note = 'Format: YYYY-MM-DD (Contoh: 2010-05-20)';
+
+	// Find the column index for 'Tanggal Lahir' to add a specific note
+	const dobIndex = HUMAN_HEADERS.indexOf('Tanggal Lahir (YYYY-MM-DD)');
+	if (dobIndex !== -1) {
+		// ExcelJS uses 1-based indexing for columns, but getCell can take column letter.
+		// Easier to just add a general note or find the cell if needed.
+		// For now, let's just update the note we had before.
+		// worksheet.getCell(1, dobIndex + 1).note = 'Format: DD/MM/YYYY (Contoh: 20/05/2010)';
+	}
 
 	return workbook;
 };
@@ -259,7 +274,14 @@ export const createBulkStudentsFromExcel = async (fileBuffer) => {
 			const humanHeader = headerRow[index];
 			if (humanHeader && EXCEL_HEADER_MAP[humanHeader]) {
 				const internalKey = EXCEL_HEADER_MAP[humanHeader];
-				rowData[internalKey] = value;
+
+				// Handle Date Objects from Excel
+				if (value instanceof Date) {
+					// Convert to YYYY-MM-DD string for DB
+					rowData[internalKey] = value.toISOString().split('T')[0];
+				} else {
+					rowData[internalKey] = value;
+				}
 			}
 		});
 
