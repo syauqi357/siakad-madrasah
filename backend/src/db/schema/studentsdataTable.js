@@ -33,3 +33,4 @@ export const studentTable = sqliteTable(
 		localNisIdx: index('idx_students_local_nis').on(table.localNis)
 	})
 );
+

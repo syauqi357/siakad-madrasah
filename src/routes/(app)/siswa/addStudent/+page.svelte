@@ -44,7 +44,7 @@
 </script>
 
 <div class="min-h-screen bg-slate-50 p-4 md:p-8">
-	<div class="mx-auto max-w-5xl">
+	<div class="mx-auto max-w-2xl">
 		<!-- Header -->
 		<div class="mb-8">
 			<h1 class="text-3xl font-bold text-slate-800">Tambah Siswa Baru</h1>
@@ -95,7 +95,7 @@
 						<h2 class="mb-4 text-lg font-semibold text-slate-800">Foto Profil</h2>
 						<div class="flex items-center gap-6">
 							<div
-								class="flex h-24 w-24 items-center justify-center rounded-full border-2 border-dashed border-slate-300 bg-slate-100 text-slate-400"
+								class="flex h-24 w-24 items-center justify-center rounded-md border-2 border-dashed border-slate-300 bg-slate-100 text-slate-400"
 							>
 								<svg
 									xmlns="http://www.w3.org/2000/svg"
