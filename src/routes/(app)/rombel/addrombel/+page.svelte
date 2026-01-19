@@ -61,6 +61,12 @@
 	}
 
 	async function handleSubmit() {
+		// --- Frontend Validation ---
+		if (!formData.nama_rombel || !formData.tingkat_kelas || !formData.wali_kelas) {
+			alert('Mohon lengkapi data wajib: Nama Rombel, Tingkat Kelas, dan Wali Kelas.');
+			return;
+		}
+
 		// Construct the payload
 		const payload = [
 			{

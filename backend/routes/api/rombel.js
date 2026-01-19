@@ -10,4 +10,10 @@ router.post('/rombel', createRombel);
 // GET /api/rombel/:id - Get Rombel details
 // router.get('/rombel/:id', getRombelDetail); // Placeholder for future implementation
 
+// PUT /api/rombel/:id - Update Rombel details
+// router.put('/rombel/:id', updateRombel); // Placeholder for future implementation
+
+// DELETE /api/rombel/:id - Delete a Rombel
+// router.delete('/rombel/:id', deleteRombel); // Placeholder for future implementation
+
 export default router;
