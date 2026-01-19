@@ -1,6 +1,7 @@
 <script lang="ts">
-
-import AddIcon from '$lib/components/icons/addIcon.svelte';
+	import AddIcon from '$lib/components/icons/addIcon.svelte';
+	import ArrowLeft from '$lib/components/icons/arrow_left.svelte';
+	import { goto } from '$app/navigation';
 
 	// Mock data for demonstration
 	let students = [
@@ -20,28 +21,40 @@ import AddIcon from '$lib/components/icons/addIcon.svelte';
 		}
 	}
 
+	function backtomain() {
+		goto('/rombel');
+	}
+
 	// Reactive statement to update the "Select All" checkbox state
 	$: allSelected = students.length > 0 && selectedStudents.length === students.length;
 </script>
 
-<div class=" w-full grid md:grid-cols-2 md:px-7 px-1 grid-cols-1 gap-3 min-h-screen">
+<div class="mx-8">
+	<button
+		on:click={backtomain}
+		class="text-md mb-6 flex items-center justify-center gap-2 rounded-sm bg-blue-500 px-5 py-2 text-blue-50 capitalize"
+	>
+		<ArrowLeft /> back
+	</button>
+</div>
+<div class=" grid min-h-screen w-full grid-cols-1 gap-3 px-1 md:grid-cols-2 md:px-7">
 	<!-- Form Section -->
-	<div class="bg-white rounded-lg h-fit shadow-sm border border-gray-200 p-6">
-		<h2 class="text-xl font-bold text-gray-800 mb-6 border-b pb-2">Tambah Rombongan Belajar</h2>
+	<div class="h-fit rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
+		<h2 class="mb-6 border-b pb-2 text-xl font-bold text-gray-800">Tambah Rombongan Belajar</h2>
 
-		<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+		<div class="grid grid-cols-1 gap-6 md:grid-cols-2">
 			<!-- Tahun Ajaran -->
 			<div class="relative">
 				<input
 					type="text"
 					id="tahun_ajaran"
 					value="2025/2026 Genap"
-					class="peer block w-full rounded-md border border-gray-300 bg-transparent px-3 pb-2.5 pt-4 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0"
+					class="peer block w-full rounded-md border border-gray-300 bg-transparent px-3 pt-4 pb-2.5 text-sm text-gray-900 focus:border-blue-600 focus:ring-0 focus:outline-none"
 					placeholder=" "
 				/>
 				<label
 					for="tahun_ajaran"
-					class="absolute left-1 top-2 z-10 origin-left -translate-y-4 scale-75 transform bg-white px-2 text-sm text-gray-500 duration-75 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-blue-600"
+					class="absolute top-2 left-1 z-10 origin-left -translate-y-4 scale-75 transform bg-white px-2 text-sm text-gray-500 duration-75 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-blue-600"
 				>
 					Tahun Ajaran
 				</label>
@@ -51,7 +64,7 @@ import AddIcon from '$lib/components/icons/addIcon.svelte';
 			<div class="relative">
 				<select
 					id="tingkat_kelas"
-					class="peer block w-full rounded-md border border-gray-300 bg-transparent px-3 pb-2.5 pt-4 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0"
+					class="peer block w-full rounded-md border border-gray-300 bg-transparent px-3 pt-4 pb-2.5 text-sm text-gray-900 focus:border-blue-600 focus:ring-0 focus:outline-none"
 				>
 					<option value="" disabled selected></option>
 					<option value="10">Kelas 10</option>
@@ -60,7 +73,7 @@ import AddIcon from '$lib/components/icons/addIcon.svelte';
 				</select>
 				<label
 					for="tingkat_kelas"
-					class="absolute left-1 top-2 z-10 origin-left -translate-y-4 scale-75 transform bg-white px-2 text-sm text-gray-500 duration-75 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-blue-600"
+					class="absolute top-2 left-1 z-10 origin-left -translate-y-4 scale-75 transform bg-white px-2 text-sm text-gray-500 duration-75 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-blue-600"
 				>
 					Tingkat Kelas
 				</label>
@@ -71,12 +84,12 @@ import AddIcon from '$lib/components/icons/addIcon.svelte';
 				<input
 					type="text"
 					id="nama_rombel"
-					class="peer block w-full rounded-md border border-gray-300 bg-transparent px-3 pb-2.5 pt-4 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0"
+					class="peer block w-full rounded-md border border-gray-300 bg-transparent px-3 pt-4 pb-2.5 text-sm text-gray-900 focus:border-blue-600 focus:ring-0 focus:outline-none"
 					placeholder=" "
 				/>
 				<label
 					for="nama_rombel"
-					class="absolute left-1 top-2 z-10 origin-left -translate-y-4 scale-75 transform after:ml-0.5 after:text-red-500 after:content-['*'] bg-white px-2 text-sm text-gray-500 duration-75 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-blue-600"
+					class="absolute top-2 left-1 z-10 origin-left -translate-y-4 scale-75 transform bg-white px-2 text-sm text-gray-500 duration-75 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-blue-600 after:ml-0.5 after:text-red-500 after:content-['*']"
 				>
 					Nama Rombel
 				</label>
@@ -86,7 +99,7 @@ import AddIcon from '$lib/components/icons/addIcon.svelte';
 			<div class="relative">
 				<select
 					id="wali_kelas"
-					class="peer block w-full rounded-md border border-gray-300 bg-transparent px-3 pb-2.5 pt-4 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0"
+					class="peer block w-full rounded-md border border-gray-300 bg-transparent px-3 pt-4 pb-2.5 text-sm text-gray-900 focus:border-blue-600 focus:ring-0 focus:outline-none"
 				>
 					<option value="" disabled selected></option>
 					<option value="12345">12345 - Linus Torvalds</option>
@@ -94,7 +107,7 @@ import AddIcon from '$lib/components/icons/addIcon.svelte';
 				</select>
 				<label
 					for="wali_kelas"
-					class="absolute left-1 top-2 z-10 origin-left -translate-y-4 scale-75 transform bg-white px-2 text-sm text-gray-500 duration-75 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-blue-600"
+					class="absolute top-2 left-1 z-10 origin-left -translate-y-4 scale-75 transform bg-white px-2 text-sm text-gray-500 duration-75 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-blue-600"
 				>
 					Wali Kelas
 				</label>
@@ -104,7 +117,7 @@ import AddIcon from '$lib/components/icons/addIcon.svelte';
 			<div class="relative">
 				<select
 					id="nama_ruangan"
-					class="peer block w-full rounded-md border border-gray-300 bg-transparent px-3 pb-2.5 pt-4 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0"
+					class="peer block w-full rounded-md border border-gray-300 bg-transparent px-3 pt-4 pb-2.5 text-sm text-gray-900 focus:border-blue-600 focus:ring-0 focus:outline-none"
 				>
 					<option value="" disabled selected></option>
 					<option value="R01">Ruang 01</option>
@@ -112,7 +125,7 @@ import AddIcon from '$lib/components/icons/addIcon.svelte';
 				</select>
 				<label
 					for="nama_ruangan"
-					class="absolute left-1 top-2 z-10 origin-left -translate-y-4 scale-75 transform bg-white px-2 text-sm text-gray-500 duration-75 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-blue-600"
+					class="absolute top-2 left-1 z-10 origin-left -translate-y-4 scale-75 transform bg-white px-2 text-sm text-gray-500 duration-75 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-blue-600"
 				>
 					Nama Ruangan
 				</label>
@@ -123,12 +136,12 @@ import AddIcon from '$lib/components/icons/addIcon.svelte';
 				<input
 					type="text"
 					id="kurikulum"
-					class="peer block w-full rounded-md border border-gray-300 bg-transparent px-3 pb-2.5 pt-4 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0"
+					class="peer block w-full rounded-md border border-gray-300 bg-transparent px-3 pt-4 pb-2.5 text-sm text-gray-900 focus:border-blue-600 focus:ring-0 focus:outline-none"
 					placeholder=" "
 				/>
 				<label
 					for="kurikulum"
-					class="absolute left-1 top-2 z-10 origin-left -translate-y-4 scale-75 transform bg-white px-2 text-sm text-gray-500 duration-75 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-blue-600"
+					class="absolute top-2 left-1 z-10 origin-left -translate-y-4 scale-75 transform bg-white px-2 text-sm text-gray-500 duration-75 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-blue-600"
 				>
 					Kurikulum
 				</label>
@@ -138,7 +151,7 @@ import AddIcon from '$lib/components/icons/addIcon.svelte';
 			<div class="relative">
 				<select
 					id="jenis_rombel"
-					class="peer block w-full rounded-md border border-gray-300 bg-transparent px-3 pb-2.5 pt-4 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0"
+					class="peer block w-full rounded-md border border-gray-300 bg-transparent px-3 pt-4 pb-2.5 text-sm text-gray-900 focus:border-blue-600 focus:ring-0 focus:outline-none"
 				>
 					<option value="" disabled selected></option>
 					<option value="kelas">Kelas Reguler</option>
@@ -146,7 +159,7 @@ import AddIcon from '$lib/components/icons/addIcon.svelte';
 				</select>
 				<label
 					for="jenis_rombel"
-					class="absolute left-1 top-2 z-10 origin-left -translate-y-4 scale-75 transform bg-white px-2 text-sm text-gray-500 duration-75 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-blue-600"
+					class="absolute top-2 left-1 z-10 origin-left -translate-y-4 scale-75 transform bg-white px-2 text-sm text-gray-500 duration-75 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-blue-600"
 				>
 					Jenis Rombel
 				</label>
@@ -174,9 +187,9 @@ import AddIcon from '$lib/components/icons/addIcon.svelte';
 						<th class="px-4 py-3">NOMOR ABSEN</th>
 						<th class="px-4 py-3 text-right">
 							<button
-								class="inline-flex items-center gap-1 rounded-md bg-blue-600 px-4 py-2 capitalize text-md font-medium text-white transition-colors hover:bg-blue-700"
+								class="text-md inline-flex items-center gap-1 rounded-md bg-blue-600 px-4 py-2 font-medium text-white capitalize transition-colors hover:bg-blue-700"
 							>
-								<AddIcon/> tambah siswa
+								<AddIcon /> tambah siswa
 							</button>
 						</th>
 					</tr>
