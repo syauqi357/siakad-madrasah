@@ -6,6 +6,7 @@ import { studentTable } from './db/schema/studentsdataTable.js';
 import { schoolDataTable } from './db/schema/schooldataTable.js';
 import { auditTable } from './db/schema/auditlog.js';
 import { teachersRelations, subjectsRelations, academicYearsRelations, classesRelations, rombelRelations, classSubjectsRelations } from './db/schema/relations.js'
+// import {} from '';
 
 
 const sqlite = new Database(process.env.DATABASE_URL);

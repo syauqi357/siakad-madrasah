@@ -15,11 +15,10 @@
 	});
 </script>
 
-<div class="flex mb-4">
+<div class="mb-4 flex flex-col md:flex-row ">
 	<!-- dashboard landing -->
 	<DashboardLandsort />
-	<div class="flex w-1/3">
-
+	<div class="flex p-6 md:p-2 md:w-1/3">
 		<CalendarLayout />
 	</div>
 </div>

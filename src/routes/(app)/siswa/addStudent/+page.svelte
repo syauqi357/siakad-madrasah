@@ -70,7 +70,7 @@
 		<!-- Header -->
 		<div class="mb-8">
 			<h1 class="text-3xl font-bold text-slate-800">Tambah Siswa Baru</h1>
-			<p class="mt-2 text-slate-600">
+			<p class="mt-2 text-sm text-slate-600">
 				Lengkapi data siswa di bawah ini sesuai dengan dokumen resmi (KK/Akta).
 			</p>
 		</div>

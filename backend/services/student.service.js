@@ -85,7 +85,7 @@ export const createStudentdataInputExcelBulkGenerator = async () => {
 	headerRow.fill = {
 		type: 'pattern',
 		pattern: 'solid',
-		fgColor: { argb: 'FF2563EB' } // Blue color
+		fgColor: { argb: 'FF628141' } // Blue color
 	};
 	headerRow.alignment = { vertical: 'middle', horizontal: 'center' };
 	headerRow.height = 30;

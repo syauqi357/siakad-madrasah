@@ -193,7 +193,7 @@
 <div class="flex w-fit flex-col items-center justify-center md:p-3">
 	<!-- header -->
 	<div
-		class="mb-6 flex w-full flex-col items-start justify-between gap-2 gap-5 rounded-lg bg-slate-200 p-3 md:w-full md:flex-row"
+		class="mb-6 flex w-full flex-col items-start justify-between gap-2 rounded-lg bg-slate-200 p-3 md:w-full md:flex-row"
 	>
 		<div class="flex flex-col gap-2">
 			<span class="text-md font-bold tracking-wide capitalize md:text-4xl"> siswa </span>
@@ -218,28 +218,33 @@
 				</div>
 			</div>
 		</div>
-		<div class="flex gap-2 text-sm">
+
+		<!--	interactive button	-->
+		<div
+			class="flex w-full flex-col items-end md:items-center justify-center gap-2  text-sm md:w-fit md:flex-row"
+		>
 			<button>
 				<a
-					class="flex w-fit items-center justify-center gap-2 rounded-md bg-blue-500 px-4 py-2 text-slate-50 capitalize"
+					class="flex w-full items-center justify-center gap-2 rounded-md bg-blue-500 px-4 py-2 text-slate-50 capitalize md:w-fit"
 					href="/siswa/addStudent"
 				>
 					<AddIcon /> tambah siswa
 				</a>
 			</button>
-			<a
-				href={DOWNLOAD_TEMPLATE_EXCEL}
-				class="flex w-fit items-center justify-center gap-2 rounded-md border-2 border-green-500 px-4 py-2 font-semibold text-green-600 capitalize"
-			>
-				<DownloadIcon /> Download Template
+			<a href={DOWNLOAD_TEMPLATE_EXCEL}>
+				<button
+					class="flex w-full items-center justify-center gap-2 rounded-md bg-emerald-700 px-4 py-2 text-emerald-100 capitalize hover:bg-emerald-800"
+				>
+					<DownloadIcon /> Download Template
+				</button>
 			</a>
 			<button
 				type="button"
-				class="flex w-fit items-center justify-center gap-2 rounded-md border-2 border-blue-500 px-4 py-2 font-semibold text-blue-500 capitalize"
+				class="flex w-fit items-center justify-center gap-2 rounded-md bg-green-600 px-4 py-2 text-white capitalize"
 				on:click={() => (isUploadModalOpen = true)}
 			>
-				<UploadIcon />upload excel</button
-			>
+				<UploadIcon /> upload excel
+			</button>
 		</div>
 	</div>
 

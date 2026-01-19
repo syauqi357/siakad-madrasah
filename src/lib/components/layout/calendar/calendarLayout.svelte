@@ -102,7 +102,7 @@
 	});
 </script>
 
-<div class="w-full max-w-md mx-auto p-4 border border-gray-300 rounded-lg bg-white">
+<div class="w-full max-w-sm mx-auto p-4 border border-gray-300 rounded-lg bg-white">
 	<!-- Header -->
 	<div class="flex items-center justify-between mb-4">
 		<h2 class="text-lg font-semibold">
