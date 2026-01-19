@@ -1,4 +1,4 @@
-import { db } from '../app.js';
+import { db } from '../src/index.js';
 import { rombel } from '../src/db/schema/classGroup.js';
 import { studentTable } from '../src/db/schema/studentsdataTable.js';
 // We need a junction table for rombel <-> student.
