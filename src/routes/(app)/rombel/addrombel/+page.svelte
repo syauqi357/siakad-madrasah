@@ -225,3 +225,22 @@
 		</div>
 	</div>
 </div>
+
+<!--
+JSON Payload Summary:
+
+{
+  "tahun_ajaran": "2025/2026 Genap", // string
+  "tingkat_kelas": "10",             // string (value from dropdown)
+  "nama_rombel": "X-IPA-1",          // string
+  "wali_kelas": "12345",             // string (ID of the teacher)
+  "nama_ruangan": "R01",             // string (ID/Code of the room)
+  "kurikulum": "Kurikulum Merdeka",  // string
+  "jenis_rombel": "kelas",           // string ("kelas" or "sks")
+  "siswa": [                         // array of selected student IDs
+      1,
+      2,
+      3
+  ]
+}
+-->
