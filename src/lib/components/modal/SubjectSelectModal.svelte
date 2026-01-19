@@ -28,7 +28,10 @@
 	<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
 		<div class="w-full max-w-md rounded-lg bg-white p-6 shadow-xl">
 			<h3 class="mb-4 text-lg font-bold text-gray-900">
-				Pilih Mata Pelajaran {#if rombelName}- {rombelName}{/if}
+				Pilih Mata Pelajaran
+				{#if rombelName}
+					- {rombelName}
+				{/if}
 			</h3>
 
 			<div class="mb-6">

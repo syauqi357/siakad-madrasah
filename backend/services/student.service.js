@@ -4,7 +4,8 @@ import { studentFather } from '../src/db/schema/studentFather.js';
 import { studentMother } from '../src/db/schema/studentMother.js';
 import { studentWali } from '../src/db/schema/studentWali.js';
 import { studentAddress } from '../src/db/schema/studentAddress.js';
-import { eq, count } from 'drizzle-orm';
+import { rombelStudents } from '../src/db/schema/rombelStudents.js';
+import { eq, count, isNull } from 'drizzle-orm';
 import ExcelJS from 'exceljs';
 
 // --- Header Mapping Configuration ---
@@ -142,15 +143,19 @@ export const findAllStudents = async (page = 1, limit = 10) => {
 		.offset(offset);
 };
 
+// ... existing code ...
+
 export const findAllStudentsLite = async () => {
+	// Filter out students who are already in a rombel (rombelStudents table)
 	return db
 		.select({
 			id: studentTable.id,
 			name: studentTable.studentName,
-			nisn: studentTable.nisn,
-			// You can add 'absen' here if it exists in your DB, otherwise calculate it or omit it
+			nisn: studentTable.nisn
 		})
-		.from(studentTable);
+		.from(studentTable)
+		.leftJoin(rombelStudents, eq(studentTable.id, rombelStudents.studentId))
+		.where(isNull(rombelStudents.studentId));
 };
 
 export const countStudents = async () => {
