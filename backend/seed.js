@@ -7,6 +7,7 @@ import { Subjects } from './src/db/schema/subjectTable.js';
 import { classSubject } from './src/db/schema/classesSubjectTable.js';
 import { teachers } from './src/db/schema/teacherUser.js';
 import { users } from './src/db/schema/user.js';
+import { academicYear } from './src/db/schema/academicYear.js'; // Import Academic Year
 import path from 'path';
 import { eq } from 'drizzle-orm';
 
@@ -70,6 +71,23 @@ async function seed() {
             classId = classData[0].id;
         }
 
+        // 3.5 Create Academic Year (CRITICAL for Rombel)
+        console.log('Creating Academic Year...');
+        let year = await db.select().from(academicYear).where(eq(academicYear.name, '2025/2026 Genap')).limit(1);
+        let academicYearId;
+
+        if (year.length === 0) {
+            const newYear = await db.insert(academicYear).values({
+                name: '2025/2026 Genap',
+                startYear: 2025,
+                endYear: 2026,
+                isActive: 1
+            }).returning();
+            academicYearId = newYear[0].id;
+        } else {
+            academicYearId = year[0].id;
+        }
+
 		// 4. Create Subject
 		console.log('Creating Subject...');
         // Subjects name is unique
@@ -118,6 +136,7 @@ async function seed() {
 
 		console.log('✅ Seeding complete!');
         console.log(`👉 Use classSubjectId: ${classSubjectId}`);
+        console.log(`👉 Use academicYearId: ${academicYearId}`);
         console.log(`👉 Use assessmentTypeId: 1 (UH1)`);
         console.log(`👉 Use studentIds: ${students.map(s => s.id).join(', ')}`);
         

@@ -7,8 +7,9 @@ import schoolDataRouter from './routes/api/schooldataNav.js';
 import studentDataRouter from './routes/api/student.js';
 import auditLogsRouter from './routes/auditLog/APILogs/audit_logs.js'; // ROUTES API
 import rombelRouter from './routes/api/rombel.js';
-import classDataRouter from './routes/api/classData.js';
 import scoreRouter from './routes/api/scores.js'; // Import scoreRouter
+import classDataRouter from './routes/api/classData.js'; // Import classDataRouter
+import teacherRouter from './routes/api/teacher.js'; // Import teacherRouter
 import { auditLog } from './middlewares/middlewareAudit.js';
 import { GLOBAL_RATE_LIMIT } from './middlewares/globalRatelimit/rateLimiter.js';
 import { speedLimit } from './middlewares/throttleFeat/throttleLimit.js'; // MIDDLEWARE RATE LIMIT, THROTTLE and AUDIT LOGS
@@ -71,7 +72,11 @@ app.use('/routes/api/score', scoreRouter);
 // 6. Rombel: /routes/api/rombel
 app.use('/routes/api', rombelRouter);
 
-app.use('/routes/api/class-data', classDataRouter)
+// 7. Class Data: /routes/api/class-data
+app.use('/routes/api/class-data', classDataRouter);
+
+// 8. Teacher Data: /routes/api/teachers
+app.use('/routes/api/teachers', teacherRouter);
 
 
 // Root endpoint
