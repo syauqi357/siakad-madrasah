@@ -1,13 +1,69 @@
 import * as scoreService from '../services/score.services.js';
 
+/**
+ * Downloads a pre-populated Excel template for a specific rombel.
+ */
+export const downloadScoreTemplateForRombel = async (req, res) => {
+	try {
+		const { rombelId } = req.params;
+		const { subjectId } = req.query; // Get subjectId from query
+
+		if (!rombelId) {
+			return res.status(400).json({ success: false, message: 'Rombel ID is required.' });
+		}
+
+		/*
+			Pass valid subjectId to the service.
+			Parsing subjectId to int logic:
+			- If provided and valid number > 0, use it.
+			- Otherwise pass null.
+		*/
+		const pSubjectId = subjectId ? parseInt(subjectId) : null;
+
+		const workbook = await scoreService.generateScoreTemplateForRombel(
+			parseInt(rombelId),
+			pSubjectId
+		);
+
+		res.setHeader(
+			'Content-Type',
+			'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+		);
+		res.setHeader(
+			'Content-Disposition',
+			`attachment; filename="template_nilai_rombel_${rombelId}.xlsx"`
+		);
+
+		await workbook.xlsx.write(res);
+		res.end();
+	} catch (error) {
+		console.error('Error generating score template:', error);
+		res.status(500).json({ success: false, message: 'Internal server error: ' + error.message });
+	}
+};
+
+export const getSubjects = async (req, res) => {
+	try {
+		const { rombelId } = req.params;
+		if (!rombelId) {
+			return res.status(400).json({ success: false, message: 'Rombel ID is required' });
+		}
+		const result = await scoreService.getSubjectsForRombel(parseInt(rombelId));
+		res.json({ success: true, data: result });
+	} catch (error) {
+		console.error('Error fetching subjects:', error);
+		res.status(500).json({ success: false, message: 'Internal server error: ' + error.message });
+	}
+};
+
 export const getClassSubjects = async (req, res) => {
-    try {
-        const result = await scoreService.getAllClassSubjects();
-        res.json({ success: true, data: result });
-    } catch (error) {
-        console.error('Error fetching class subjects:', error);
-        res.status(500).json({ success: false, message: 'Internal server error' });
-    }
+	try {
+		const result = await scoreService.getAllClassSubjects();
+		res.json({ success: true, data: result });
+	} catch (error) {
+		console.error('Error fetching class subjects:', error);
+		res.status(500).json({ success: false, message: 'Internal server error' });
+	}
 };
 
 export const getScores = async (req, res) => {
@@ -109,26 +165,6 @@ export const uploadBulkPivotScores = async (req, res) => {
 		});
 	} catch (error) {
 		console.error('Error uploading bulk scores:', error);
-		res.status(500).json({ success: false, message: 'Internal server error: ' + error.message });
-	}
-};
-
-export const downloadBulkTemplate = async (req, res) => {
-	try {
-		const workbook = await scoreService.generateBulkScoreTemplate();
-
-		// Set headers to instruct the browser to download the file
-		res.setHeader(
-			'Content-Type',
-			'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-		);
-		res.setHeader('Content-Disposition', 'attachment; filename="bulk_score_template.xlsx"');
-
-		// Write the workbook to the response stream
-		await workbook.xlsx.write(res);
-		res.end();
-	} catch (error) {
-		console.error('Error generating template:', error);
 		res.status(500).json({ success: false, message: 'Internal server error: ' + error.message });
 	}
 };

@@ -1,11 +1,14 @@
 import express from 'express';
-import { createRombel } from '../../controllers/rombelController.js';
+import { createRombel, getRombelList } from '../../controllers/rombelController.js';
 
 const router = express.Router();
 
 // POST /api/rombel - Create a new Rombel
 // Assuming this router is mounted at /api
 router.post('/rombel', createRombel);
+
+// GET /api/rombel - Get all Rombels
+router.get('/rombel', getRombelList);
 
 // GET /api/rombel/:id - Get Rombel details
 // router.get('/rombel/:id', getRombelDetail); // Placeholder for future implementation

@@ -5,8 +5,9 @@ import {
 	saveScores,
 	uploadScores,
 	uploadBulkPivotScores,
-	downloadBulkTemplate,
-	getClassSubjects
+	getClassSubjects,
+	getSubjects,
+	downloadScoreTemplateForRombel
 } from '../../controllers/scoreController.js';
 
 const router = express.Router();
@@ -15,23 +16,20 @@ const router = express.Router();
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
-// GET /routes/api/score/class-subjects (List all available class subjects)
+// --- Template Download ---
+// GET /routes/api/score/template/:rombelId
+router.get('/template/:rombelId', downloadScoreTemplateForRombel);
+
+// GET /routes/api/score/subjects/:rombelId - Get subjects for simple selector
+router.get('/subjects/:rombelId', getSubjects);
+
+// --- Data Routes ---
 router.get('/class-subjects', getClassSubjects);
-
-// GET /routes/api/score/scorebyclass?classSubjectId=1
 router.get('/scorebyclass', getScores);
-
-// POST /routes/api/score/scores (JSON Bulk Save)
 router.post('/scores', saveScores);
 
-// POST /routes/api/score/upload (Single Subject Excel Upload)
-// Expects form-data with fields: 'file' (the excel file), 'classSubjectId', 'assessmentTypeId'
+// --- Upload Routes ---
 router.post('/upload', upload.single('file'), uploadScores);
-
-// POST /routes/api/score/upload-bulk (Multi-Subject "Pivot" Excel Upload)
 router.post('/upload-bulk', upload.single('file'), uploadBulkPivotScores);
-
-// GET /routes/api/score/download-template (Download Bulk Excel Template)
-router.get('/download-template', downloadBulkTemplate);
 
 export default router;

@@ -6,13 +6,149 @@ import { Subjects } from '../src/db/schema/subjectTable.js';
 import { classSubject } from '../src/db/schema/classesSubjectTable.js';
 import { classes } from '../src/db/schema/classesDataTable.js';
 import { teachers } from '../src/db/schema/teacherUser.js';
+import { rombelStudents } from '../src/db/schema/rombelStudents.js';
+import { rombel } from '../src/db/schema/classGroup.js';
 import { eq, sql, inArray } from 'drizzle-orm';
 import ExcelJS from 'exceljs';
 
 /**
- * Fetch all class subjects with their names and teacher.
+ * Generates a pre-populated Excel score template for a specific rombel.
+ * The template includes all students assigned to the rombel via rombelStudents table,
+ * with empty score columns for each assessment type.
+ * @param {number} rombelId - The ID of the rombel (class group).
+ * @param {number|null} subjectId - Optional subject ID to restrict/label the template.
+ * @returns {Promise<ExcelJS.Workbook>}
+ */
+export const generateScoreTemplateForRombel = async (rombelId, subjectId = null) => {
+	// 1. Fetch rombel info for the header
+	const rombelInfo = await db
+		.select({
+			name: rombel.name,
+			classroom: rombel.classroom
+		})
+		.from(rombel)
+		.where(eq(rombel.id, rombelId))
+		.limit(1);
+
+	const rombelName = rombelInfo[0]?.name || 'Unknown Rombel';
+
+	let subjectName = 'Semua Mata Pelajaran';
+	if (subjectId) {
+		const subject = await db
+			.select({ name: Subjects.name })
+			.from(Subjects)
+			.where(eq(Subjects.id, subjectId))
+			.limit(1);
+		if (subject.length > 0) {
+			subjectName = subject[0].name;
+		}
+	}
+
+	// 2. Fetch all students assigned to this rombel via rombelStudents junction table
+	const studentsInRombel = await db
+		.select({
+			id: studentTable.id,
+			nisn: studentTable.nisn,
+			studentName: studentTable.studentName
+		})
+		.from(rombelStudents)
+		.innerJoin(studentTable, eq(rombelStudents.studentId, studentTable.id))
+		.where(eq(rombelStudents.rombelId, rombelId));
+
+	if (studentsInRombel.length === 0) {
+		throw new Error(
+			`Tidak ada siswa di rombel "${rombelName}". Silakan assign siswa terlebih dahulu.`
+		);
+	}
+
+	// 3. Fetch all assessment types to create the score columns
+	const allAssessmentTypes = await db.select().from(assessmentType);
+	const scoreHeaders = allAssessmentTypes.map((at) => at.code);
+
+	// 4. Create the Excel Workbook
+	const workbook = new ExcelJS.Workbook();
+	const worksheet = workbook.addWorksheet('Input Nilai');
+
+	// 5. Add Rombel Info Header
+	worksheet.mergeCells('A1:C1');
+	const titleCell = worksheet.getCell('A1');
+	titleCell.value = 'Template Input Nilai';
+	titleCell.font = { name: 'Calibri', size: 16, bold: true };
+	titleCell.alignment = { vertical: 'middle', horizontal: 'center' };
+
+	worksheet.getCell('A2').value = 'Rombel';
+	worksheet.getCell('B2').value = `: ${rombelName}`;
+	worksheet.getCell('A3').value = 'Mata Pelajaran';
+	worksheet.getCell('B3').value = `: ${subjectName}`;
+	worksheet.getCell('A4').value = 'Jumlah Siswa';
+	worksheet.getCell('B4').value = `: ${studentsInRombel.length} siswa`;
+
+	// 6. Define Table Headers at row 6: Static student info + dynamic score columns
+	const headers = ['ID Siswa', 'NISN', 'Nama Siswa', ...scoreHeaders];
+	const headerRow = worksheet.getRow(6);
+	headerRow.values = headers;
+
+	// Style the header
+	headerRow.font = { bold: true, color: { argb: 'FFFFFFFF' }, size: 11 };
+	headerRow.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF2563EB' } };
+	headerRow.alignment = { vertical: 'middle', horizontal: 'center' };
+	headerRow.height = 28;
+
+	// 7. Populate the worksheet with student data (starting at row 6)
+	studentsInRombel.forEach((student) => {
+		const row = worksheet.addRow([student.id, student.nisn, student.studentName]);
+		// Lock the ID cell (first column) to prevent accidental edits
+		row.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFE5E7EB' } };
+	});
+
+	// 8. Set column widths and formatting
+	worksheet.getColumn(1).width = 10; // ID Siswa
+	worksheet.getColumn(2).width = 18; // NISN
+	worksheet.getColumn(2).numFmt = '@'; // Text format for NISN
+	worksheet.getColumn(3).width = 35; // Nama Siswa
+
+	// Set width for score columns
+	scoreHeaders.forEach((_, index) => {
+		worksheet.getColumn(4 + index).width = 12;
+	});
+
+	// Add note to guide users
+	worksheet.getCell('A7').note = 'ID Siswa jangan diubah. ID ini digunakan untuk menyimpan nilai.';
+
+	return workbook;
+};
+
+/**
+ * Fetches all subjects associated with the class of a given rombel.
+ * @param {number} rombelId
  * @returns {Promise<Array<{id: number, name: string}>>}
  */
+export const getSubjectsForRombel = async (rombelId) => {
+	// 1. Get classId from rombel
+	const rombelData = await db
+		.select({ classId: rombel.classId })
+		.from(rombel)
+		.where(eq(rombel.id, rombelId))
+		.limit(1);
+
+	if (!rombelData.length) throw new Error('Rombel not found');
+
+	// 2. Get subjects for that class
+	const subjects = await db
+		.select({
+			id: Subjects.id,
+			name: Subjects.name,
+			code: Subjects.subjectCode
+		})
+		.from(classSubject)
+		.innerJoin(Subjects, eq(classSubject.subjectId, Subjects.id))
+		.where(eq(classSubject.classId, rombelData[0].classId));
+
+	return subjects;
+};
+
+// --- OTHER SERVICE FUNCTIONS ---
+
 export const getAllClassSubjects = async () => {
 	const result = await db
 		.select({
@@ -32,13 +168,7 @@ export const getAllClassSubjects = async () => {
 	}));
 };
 
-/**
- * Fetch scores for a specific class subject and pivot them by student.
- * @param {number} classSubjectId
- * @returns {Promise<Object>} { assessmentTypes, data, className, subjectName }
- */
 export const getScoresByClassSubject = async (classSubjectId) => {
-	// 1. Get Class and Subject Info
 	const classSubjectInfo = await db
 		.select({
 			className: classes.className,
@@ -52,11 +182,7 @@ export const getScoresByClassSubject = async (classSubjectId) => {
 
 	const className = classSubjectInfo[0]?.className || 'Unknown Class';
 	const subjectName = classSubjectInfo[0]?.subjectName || 'Unknown Subject';
-
-	// 2. Get all assessment types (columns)
 	const assessmentTypes = await db.select().from(assessmentType);
-
-	// 3. Get all scores for this class subject
 	const rawScores = await db
 		.select({
 			studentId: studentScores.studentId,
@@ -71,9 +197,7 @@ export const getScoresByClassSubject = async (classSubjectId) => {
 		.leftJoin(assessmentType, eq(studentScores.assessmentTypeId, assessmentType.id))
 		.where(eq(studentScores.classSubjectId, classSubjectId));
 
-	// 4. Pivot Data (Transform into Student -> Scores map)
 	const studentMap = new Map();
-
 	rawScores.forEach((row) => {
 		if (!studentMap.has(row.studentId)) {
 			studentMap.set(row.studentId, {
@@ -83,147 +207,13 @@ export const getScoresByClassSubject = async (classSubjectId) => {
 				scores: {}
 			});
 		}
-
 		if (row.assessmentCode) {
 			studentMap.get(row.studentId).scores[row.assessmentCode] = row.score;
 		}
 	});
 
 	const data = Array.from(studentMap.values());
-
-	return {
-		className,
-		subjectName,
-		assessmentTypes,
-		data
-	};
-};
-
-/**
- * Bulk save or update scores.
- * @param {number} classSubjectId
- * @param {number} assessmentTypeId
- * @param {Array<{studentId: number, score: number}>} scores
- * @returns {Promise<void>}
- */
-export const saveBulkScores = async (classSubjectId, assessmentTypeId, scores) => {
-	// Prepare data for upsert
-	const valuesToInsert = scores.map((item) => ({
-		studentId: item.studentId,
-		classSubjectId: parseInt(classSubjectId),
-		assessmentTypeId: parseInt(assessmentTypeId),
-		score: parseFloat(item.score),
-		assessmentDate: new Date().toISOString().split('T')[0] // Current date YYYY-MM-DD
-	}));
-
-	// Perform Upsert (Insert or Update on Conflict)
-	await db
-		.insert(studentScores)
-		.values(valuesToInsert)
-		.onConflictDoUpdate({
-			target: [
-				studentScores.studentId,
-				studentScores.classSubjectId,
-				studentScores.assessmentTypeId
-			],
-			set: {
-				score: sql`excluded.score`, // Update with the new value
-				assessmentDate: sql`excluded.assessment_date`
-			}
-		});
-};
-
-/**
- * Reads an Excel file buffer (single subject format), validates, and saves scores.
- * @param {Buffer} fileBuffer
- * @param {number} classSubjectId
- * @param {number} assessmentTypeId
- * @returns {Promise<{successCount: number, errors: Array<{row: number, nisn: string, error: string}>}>}
- */
-export const uploadScoresFromExcel = async (fileBuffer, classSubjectId, assessmentTypeId) => {
-	const workbook = new ExcelJS.Workbook();
-	await workbook.xlsx.load(fileBuffer);
-
-	const worksheet = workbook.getWorksheet(1);
-	if (!worksheet) {
-		throw new Error('No worksheet found in the Excel file.');
-	}
-
-	let nisnCol = -1;
-	let scoreCol = -1;
-	let headerRowNumber = -1;
-
-	// Find the header row and column indices
-	worksheet.eachRow({ includeEmpty: false }, (row, rowNumber) => {
-		row.eachCell((cell, colNumber) => {
-			const cellValue = cell.value?.toString().trim().toLowerCase();
-			if (cellValue === 'nisn') {
-				nisnCol = colNumber;
-				headerRowNumber = rowNumber;
-			}
-			if (cellValue === 'score') {
-				scoreCol = colNumber;
-			}
-		});
-		if (headerRowNumber !== -1) return false; // Stop searching after header is found
-	});
-
-	if (nisnCol === -1 || scoreCol === -1) {
-		throw new Error('Required columns "NISN" and/or "Score" not found in the Excel file.');
-	}
-
-	const scoresToProcess = [];
-	const nisnsToFind = [];
-
-	worksheet.eachRow({ includeEmpty: false }, (row, rowNumber) => {
-		if (rowNumber <= headerRowNumber) return;
-
-		const nisn = row.getCell(nisnCol).value?.toString().trim();
-		const score = parseFloat(row.getCell(scoreCol).value);
-
-		if (nisn) {
-			scoresToProcess.push({ row: rowNumber, nisn, score });
-			nisnsToFind.push(nisn);
-		}
-	});
-
-	if (nisnsToFind.length === 0) {
-		return {
-			successCount: 0,
-			errors: [{ row: 0, nisn: '', error: 'No data found in Excel file.' }]
-		};
-	}
-
-	const studentsFound = await db
-		.select({ id: studentTable.id, nisn: studentTable.nisn })
-		.from(studentTable)
-		.where(inArray(studentTable.nisn, nisnsToFind));
-
-	const studentNisnToIdMap = new Map(studentsFound.map((s) => [s.nisn.toString(), s.id]));
-
-	const validScores = [];
-	const errors = [];
-
-	for (const item of scoresToProcess) {
-		const studentId = studentNisnToIdMap.get(item.nisn);
-
-		if (!studentId) {
-			errors.push({ row: item.row, nisn: item.nisn, error: 'NISN not found in database.' });
-		} else if (isNaN(item.score) || item.score < 0 || item.score > 100) {
-			errors.push({ row: item.row, nisn: item.nisn, error: `Invalid score value: ${item.score}` });
-		} else {
-			validScores.push({ studentId, score: item.score });
-		}
-	}
-
-	if (validScores.length > 0) {
-		await saveBulkScores(classSubjectId, assessmentTypeId, validScores);
-	}
-
-	return {
-		successCount: validScores.length,
-		errors
-	};
+	return { className, subjectName, assessmentTypes, data };
 };
 
 /**

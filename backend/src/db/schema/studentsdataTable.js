@@ -1,5 +1,6 @@
 import { sqliteTable, text, int, index } from 'drizzle-orm/sqlite-core';
 import { sql } from 'drizzle-orm';
+import { classSubject } from './classesSubjectTable.js'; // Import classSubject for the foreign key
 
 export const studentTable = sqliteTable(
 	'student',
@@ -24,6 +25,10 @@ export const studentTable = sqliteTable(
 		livingWith: text('living_with'), // tinggal bersama
 		transportation: text('transportation'),
 		profilePhoto: text('profile_photo'),
+		
+		// --- NEW: Link to Rombel (classSubject) ---
+		rombelId: int('rombel_id').references(() => classSubject.id), // Optional, can be null if not assigned yet
+
 		createdAt: text('created_at').default(sql`CURRENT_TIMESTAMP`),
 		updatedAt: text('updated_at').default(sql`CURRENT_TIMESTAMP`)
 	},
@@ -33,4 +38,3 @@ export const studentTable = sqliteTable(
 		localNisIdx: index('idx_students_local_nis').on(table.localNis)
 	})
 );
-
