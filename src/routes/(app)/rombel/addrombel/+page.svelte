@@ -2,19 +2,54 @@
 	import AddIcon from '$lib/components/icons/addIcon.svelte';
 	import ArrowLeft from '$lib/components/icons/arrow_left.svelte';
 	import { goto } from '$app/navigation';
+	import { onMount } from 'svelte';
+	import { API_FETCH } from '$lib/api.ts';
 
-	// Mock data for demonstration
-	let students = [
-		{ id: 1, name: 'bill gates', nisn: '1123', absen: 1 },
-		{ id: 2, name: 'steve jobs', nisn: '1124', absen: 2 },
-		{ id: 3, name: 'linus torvalds', nisn: '1125', absen: 3 }
-	];
+	// Define Student Interface
+	interface Student {
+		id: number;
+		name: string;
+		nisn: string;
+		absen?: number; // Optional if not in DB yet
+	}
 
-	let selectedStudents = [];
+	let students: Student[] = [];
+	let selectedStudents: number[] = [];
+	let isLoading = true;
+
+	// Form Data State
+	let formData = {
+		tahun_ajaran: '2025/2026 Genap',
+		tingkat_kelas: '',
+		nama_rombel: '',
+		wali_kelas: '',
+		nama_ruangan: '',
+		kurikulum: '',
+		jenis_rombel: ''
+	};
+
+	// Fetch students on mount
+	onMount(async () => {
+		try {
+			// Updated URL to match backend route structure
+			const response = await API_FETCH(`/routes/api/studentDataSet/lite`);
+			if (response.ok) {
+				students = await response.json();
+			} else {
+				console.error('Failed to fetch students');
+				alert('Failed to load student list.');
+			}
+		} catch (error) {
+			console.error('Error fetching students:', error);
+		} finally {
+			isLoading = false;
+		}
+	});
 
 	// Function to toggle all checkboxes
-	function toggleAll(event) {
-		if (event.target.checked) {
+	function toggleAll(event: Event) {
+		const target = event.target as HTMLInputElement;
+		if (target.checked) {
 			selectedStudents = students.map((student) => student.id);
 		} else {
 			selectedStudents = [];
@@ -23,6 +58,39 @@
 
 	function backtomain() {
 		goto('/rombel');
+	}
+
+	async function handleSubmit() {
+		// Construct the payload
+		const payload = [
+			{
+				...formData,
+				siswa: selectedStudents
+			}
+		];
+
+		try {
+			// Updated URL to match backend route structure
+			const response = await API_FETCH(`/routes/api/rombel`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(payload)
+			});
+
+			const result = await response.json();
+
+			if (response.ok) {
+				alert('Rombel created successfully!');
+				goto('/rombel');
+			} else {
+				alert('Failed to create rombel: ' + result.message);
+			}
+		} catch (error) {
+			console.error('Error submitting form:', error);
+			alert('An error occurred while submitting the form.');
+		}
 	}
 
 	// Reactive statement to update the "Select All" checkbox state
@@ -37,7 +105,8 @@
 		<ArrowLeft /> back
 	</button>
 </div>
-<div class=" grid min-h-screen w-full grid-cols-1 gap-3 px-1 md:grid-cols-2 md:px-7">
+
+<div class="mb-20 grid min-h-screen w-full grid-cols-1 gap-3 px-1 md:grid-cols-2 md:px-7">
 	<!-- Form Section -->
 	<div class="h-fit rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
 		<h2 class="mb-6 border-b pb-2 text-xl font-bold text-gray-800">Tambah Rombongan Belajar</h2>
@@ -48,7 +117,7 @@
 				<input
 					type="text"
 					id="tahun_ajaran"
-					value="2025/2026 Genap"
+					bind:value={formData.tahun_ajaran}
 					class="peer block w-full rounded-md border border-gray-300 bg-transparent px-3 pt-4 pb-2.5 text-sm text-gray-900 focus:border-blue-600 focus:ring-0 focus:outline-none"
 					placeholder=" "
 				/>
@@ -64,6 +133,7 @@
 			<div class="relative">
 				<select
 					id="tingkat_kelas"
+					bind:value={formData.tingkat_kelas}
 					class="peer block w-full rounded-md border border-gray-300 bg-transparent px-3 pt-4 pb-2.5 text-sm text-gray-900 focus:border-blue-600 focus:ring-0 focus:outline-none"
 				>
 					<option value="" disabled selected></option>
@@ -84,6 +154,7 @@
 				<input
 					type="text"
 					id="nama_rombel"
+					bind:value={formData.nama_rombel}
 					class="peer block w-full rounded-md border border-gray-300 bg-transparent px-3 pt-4 pb-2.5 text-sm text-gray-900 focus:border-blue-600 focus:ring-0 focus:outline-none"
 					placeholder=" "
 				/>
@@ -99,6 +170,7 @@
 			<div class="relative">
 				<select
 					id="wali_kelas"
+					bind:value={formData.wali_kelas}
 					class="peer block w-full rounded-md border border-gray-300 bg-transparent px-3 pt-4 pb-2.5 text-sm text-gray-900 focus:border-blue-600 focus:ring-0 focus:outline-none"
 				>
 					<option value="" disabled selected></option>
@@ -117,6 +189,7 @@
 			<div class="relative">
 				<select
 					id="nama_ruangan"
+					bind:value={formData.nama_ruangan}
 					class="peer block w-full rounded-md border border-gray-300 bg-transparent px-3 pt-4 pb-2.5 text-sm text-gray-900 focus:border-blue-600 focus:ring-0 focus:outline-none"
 				>
 					<option value="" disabled selected></option>
@@ -136,6 +209,7 @@
 				<input
 					type="text"
 					id="kurikulum"
+					bind:value={formData.kurikulum}
 					class="peer block w-full rounded-md border border-gray-300 bg-transparent px-3 pt-4 pb-2.5 text-sm text-gray-900 focus:border-blue-600 focus:ring-0 focus:outline-none"
 					placeholder=" "
 				/>
@@ -151,6 +225,7 @@
 			<div class="relative">
 				<select
 					id="jenis_rombel"
+					bind:value={formData.jenis_rombel}
 					class="peer block w-full rounded-md border border-gray-300 bg-transparent px-3 pt-4 pb-2.5 text-sm text-gray-900 focus:border-blue-600 focus:ring-0 focus:outline-none"
 				>
 					<option value="" disabled selected></option>
@@ -164,6 +239,16 @@
 					Jenis Rombel
 				</label>
 			</div>
+		</div>
+
+		<!-- Submit Button -->
+		<div class="mt-6 flex justify-end">
+			<button
+				on:click={handleSubmit}
+				class="rounded-md bg-blue-600 px-6 py-2 text-white transition-colors hover:bg-blue-700"
+			>
+				Simpan Rombel
+			</button>
 		</div>
 	</div>
 
@@ -195,7 +280,13 @@
 					</tr>
 				</thead>
 				<tbody class="divide-y divide-gray-100">
-					{#if students.length === 0}
+					{#if isLoading}
+						<tr>
+							<td colspan="6" class="px-4 py-12 text-center text-gray-500">
+								Loading data siswa...
+							</td>
+						</tr>
+					{:else if students.length === 0}
 						<tr>
 							<td colspan="6" class="px-4 py-12 text-center text-gray-500">
 								Data siswa masih Kosong
@@ -215,7 +306,7 @@
 								<td class="px-4 py-3 text-gray-500">{i + 1}</td>
 								<td class="px-4 py-3 font-medium text-gray-900 capitalize">{student.name}</td>
 								<td class="px-4 py-3 text-gray-500">{student.nisn}</td>
-								<td class="px-4 py-3 text-gray-500">{student.absen}</td>
+								<td class="px-4 py-3 text-gray-500">{student.absen || '-'}</td>
 								<td class="px-4 py-3"></td>
 							</tr>
 						{/each}
@@ -225,22 +316,3 @@
 		</div>
 	</div>
 </div>
-
-<!--
-JSON Payload Summary:
-
-{
-  "tahun_ajaran": "2025/2026 Genap", // string
-  "tingkat_kelas": "10",             // string (value from dropdown)
-  "nama_rombel": "X-IPA-1",          // string
-  "wali_kelas": "12345",             // string (ID of the teacher)
-  "nama_ruangan": "R01",             // string (ID/Code of the room)
-  "kurikulum": "Kurikulum Merdeka",  // string
-  "jenis_rombel": "kelas",           // string ("kelas" or "sks")
-  "siswa": [                         // array of selected student IDs
-      1,
-      2,
-      3
-  ]
-}
--->

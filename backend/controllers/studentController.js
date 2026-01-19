@@ -25,6 +25,17 @@ export const getAllStudents = async (req, res) => {
 	}
 };
 
+// Controller to get lite student data (for dropdowns/lists)
+export const getStudentsLite = async (req, res) => {
+	try {
+		const students = await studentService.findAllStudentsLite();
+		res.status(200).json(students);
+	} catch (error) {
+		console.error('Database error:', error);
+		res.status(500).json({ message: 'Error fetching student list', error: error.message });
+	}
+};
+
 // student counter data
 export const getStudentCount = async (req, res) => {
 	try {

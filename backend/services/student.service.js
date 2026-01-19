@@ -142,6 +142,17 @@ export const findAllStudents = async (page = 1, limit = 10) => {
 		.offset(offset);
 };
 
+export const findAllStudentsLite = async () => {
+	return db
+		.select({
+			id: studentTable.id,
+			name: studentTable.studentName,
+			nisn: studentTable.nisn,
+			// You can add 'absen' here if it exists in your DB, otherwise calculate it or omit it
+		})
+		.from(studentTable);
+};
+
 export const countStudents = async () => {
 	const [result] = await db.select({ count: count() }).from(studentTable);
 	return result;

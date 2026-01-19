@@ -2,6 +2,7 @@ import express from 'express';
 import multer from 'multer';
 import {
 	getAllStudents,
+	getStudentsLite,
 	getStudentById,
 	createStudent,
 	updateStudent,
@@ -16,6 +17,7 @@ const upload = multer({ storage: multer.memoryStorage() });
 
 // --- Student Data Routes ---
 router.get('/studentDataSet', getAllStudents);
+router.get('/studentDataSet/lite', getStudentsLite); // New endpoint for lite list
 router.get('/studentDataSet/count', getStudentCount);
 router.get('/studentDataSet/:id', getStudentById);
 router.post('/students', createStudent);

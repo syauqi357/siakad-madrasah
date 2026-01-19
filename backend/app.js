@@ -6,6 +6,7 @@ import authRouter from './routes/api/auth.js';
 import schoolDataRouter from './routes/api/schooldataNav.js';
 import studentDataRouter from './routes/api/student.js';
 import auditLogsRouter from './routes/auditLog/APILogs/audit_logs.js'; // ROUTES API
+import rombelRouter from './routes/api/rombel.js';
 import scoreRouter from './routes/api/scores.js'; // Import scoreRouter
 import { auditLog } from './middlewares/middlewareAudit.js';
 import { GLOBAL_RATE_LIMIT } from './middlewares/globalRatelimit/rateLimiter.js';
@@ -65,6 +66,9 @@ app.use('/routes/api/audit-logs', auditLogsRouter);
 
 // 5. Scores: /routes/api/score/scorebyclass, /routes/api/score/scores
 app.use('/routes/api/score', scoreRouter);
+
+// 6. Rombel: /routes/api/rombel
+app.use('/routes/api', rombelRouter);
 
 
 // Root endpoint
