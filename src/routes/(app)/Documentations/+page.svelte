@@ -12,7 +12,7 @@
 	}
 </script>
 
-<div class="flex min-h-screen bg-white">
+<div class="flex min-h-screen flex-col bg-white md:flex-row">
 	<!-- Desktop Sidebar -->
 	<aside class="hidden w-72 flex-none flex-col border-r border-slate-200 bg-slate-50/50 md:flex">
 		<div class="sticky top-0 h-screen overflow-y-auto p-6">
@@ -78,7 +78,7 @@
 	</aside>
 
 	<!-- Mobile Header & Menu -->
-	<div class="sticky top-0 z-30 flex flex-col bg-white shadow-sm md:hidden">
+	<div class="sticky top-20 z-30 flex flex-col bg-white shadow-sm md:hidden">
 		<div class="flex items-center justify-between border-b border-slate-100 p-4">
 			<div class="flex items-center gap-2">
 				<div class="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600 text-white">

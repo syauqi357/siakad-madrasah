@@ -5,6 +5,7 @@ import { studentMother } from '../src/db/schema/studentMother.js';
 import { studentWali } from '../src/db/schema/studentWali.js';
 import { studentAddress } from '../src/db/schema/studentAddress.js';
 import { rombelStudents } from '../src/db/schema/rombelStudents.js';
+import { rombel } from '../src/db/schema/classGroup.js';
 import { eq, count, isNull } from 'drizzle-orm';
 import ExcelJS from 'exceljs';
 
@@ -136,9 +137,12 @@ export const findAllStudents = async (page = 1, limit = 10) => {
 			nisn: studentTable.nisn,
 			name: studentTable.studentName,
 			gender: studentTable.gender,
-			originRegion: studentTable.originRegion
+			originRegion: studentTable.originRegion,
+			className: rombel.name // Fetch the class name
 		})
 		.from(studentTable)
+		.leftJoin(rombelStudents, eq(studentTable.id, rombelStudents.studentId))
+		.leftJoin(rombel, eq(rombelStudents.rombelId, rombel.id))
 		.limit(limit)
 		.offset(offset);
 };
