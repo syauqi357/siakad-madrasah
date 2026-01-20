@@ -31,6 +31,12 @@
 	// Generate a list of years for the dropdown
 	const currentYear = new Date().getFullYear();
 	const years = Array.from({ length: 70 }, (_, i) => currentYear - i - 15); // From 15 years ago to ~85 years ago
+
+	// Helper to restrict input to numbers only
+	const onlyNumbers = (e: Event) => {
+		const target = e.target as HTMLInputElement;
+		target.value = target.value.replace(/[^0-9]/g, '');
+	};
 </script>
 
 <div class="space-y-8">
@@ -96,6 +102,7 @@
 					type="text"
 					id="fatherNik"
 					bind:value={fatherData.nik}
+					on:input={onlyNumbers}
 					placeholder=" "
 					class="peer ease w-full rounded-md border border-slate-400 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
 				/>
@@ -322,6 +329,7 @@
 					type="text"
 					id="motherNik"
 					bind:value={motherData.nik}
+					on:input={onlyNumbers}
 					placeholder=" "
 					class="peer ease w-full rounded-md border border-slate-400 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
 				/>

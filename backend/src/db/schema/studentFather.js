@@ -12,8 +12,6 @@ export const studentFather = sqliteTable('student_father', {
 		}),
 
 	nik: text('nik'),
-	familyCardNumberId: text('family_card_number_id'),
-	religion: text('religion'),
 	name: text('name'),
 	birthPlace: text('birth_place'),
 	birthDate: text('birth_date'), // SQLite DATE = TEXT

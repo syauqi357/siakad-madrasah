@@ -164,18 +164,42 @@ export const countStudents = async () => {
 };
 
 export const findStudentById = async (id) => {
-	// TODO: Join with parent and address tables to get full profile
-	const student = await db.select().from(studentTable).where(eq(studentTable.id, id)).limit(1);
+	console.log(`[findStudentById] Searching for student ID: ${id}`);
 
-	return student[0];
+	const student = await db.select().from(studentTable).where(eq(studentTable.id, id)).get();
+
+	if (!student) {
+		console.log(`[findStudentById] Student not found for ID: ${id}`);
+		return null;
+	}
+	console.log(`[findStudentById] Found student:`, student.studentName);
+
+	const address = await db
+		.select()
+		.from(studentAddress)
+		.where(eq(studentAddress.studentId, id))
+		.get();
+	console.log(`[findStudentById] Address found:`, address ? 'Yes' : 'No');
+
+	const father = await db.select().from(studentFather).where(eq(studentFather.studentId, id)).get();
+	const mother = await db.select().from(studentMother).where(eq(studentMother.studentId, id)).get();
+	const guardian = await db.select().from(studentWali).where(eq(studentWali.studentId, id)).get();
+
+	return {
+		...student,
+		address: address || null, // Ensure null is returned instead of undefined for JSON
+		father: father || null,
+		mother: mother || null,
+		guardian: guardian || null
+	};
 };
 
 /**
  * Creates a new student and their related data in a single transaction.
  * @param {Object} payload - The full JSON payload from the frontend.
  */
-export const createStudentData = async (payload) => {
-	return db.transaction(async (tx) => {
+export const createStudentData = (payload) => {
+	return db.transaction((tx) => {
 		// 1. Extract Student Data
 		const studentData = {
 			studentName: payload.studentName,
@@ -199,67 +223,75 @@ export const createStudentData = async (payload) => {
 		};
 
 		// 2. Insert Student
-		const [newStudent] = await tx.insert(studentTable).values(studentData).returning();
+		const newStudent = tx.insert(studentTable).values(studentData).returning().get();
 		const studentId = newStudent.id;
 
 		// 3. Insert Address (if provided)
 		if (payload.address) {
-			await tx.insert(studentAddress).values({
-				studentId: studentId,
-				...payload.address
-			});
+			tx.insert(studentAddress)
+				.values({
+					studentId: studentId,
+					...payload.address
+				})
+				.run();
 		}
 
 		// 4. Insert Father (if provided)
 		if (payload.father && payload.father.name) {
-			await tx.insert(studentFather).values({
-				studentId: studentId,
-				name: payload.father.name,
-				nik: payload.father.nik,
-				occupation: payload.father.job,
-				phoneNumber: payload.father.phone,
-				birthPlace: payload.father.birthPlace,
-				birthDate: payload.father.birthDate,
-				birthYear: payload.father.birthYear,
-				education: payload.father.education,
-				monthlyIncome: payload.father.monthlyIncome,
-				isAlive: payload.father.isAlive
-			});
+			tx.insert(studentFather)
+				.values({
+					studentId: studentId,
+					name: payload.father.name,
+					nik: payload.father.nik,
+					occupation: payload.father.job,
+					phoneNumber: payload.father.phone,
+					birthPlace: payload.father.birthPlace,
+					birthDate: payload.father.birthDate,
+					birthYear: payload.father.birthYear,
+					education: payload.father.education,
+					monthlyIncome: payload.father.monthlyIncome,
+					isAlive: payload.father.isAlive
+				})
+				.run();
 		}
 
 		// 5. Insert Mother (if provided)
 		if (payload.mother && payload.mother.name) {
-			await tx.insert(studentMother).values({
-				studentId: studentId,
-				name: payload.mother.name,
-				nik: payload.mother.nik,
-				occupation: payload.mother.job,
-				phoneNumber: payload.mother.phone,
-				birthPlace: payload.mother.birthPlace,
-				birthDate: payload.mother.birthDate,
-				birthYear: payload.mother.birthYear,
-				education: payload.mother.education,
-				monthlyIncome: payload.mother.monthlyIncome,
-				isAlive: payload.mother.isAlive
-			});
+			tx.insert(studentMother)
+				.values({
+					studentId: studentId,
+					name: payload.mother.name,
+					nik: payload.mother.nik,
+					occupation: payload.mother.job,
+					phoneNumber: payload.mother.phone,
+					birthPlace: payload.mother.birthPlace,
+					birthDate: payload.mother.birthDate,
+					birthYear: payload.mother.birthYear,
+					education: payload.mother.education,
+					monthlyIncome: payload.mother.monthlyIncome,
+					isAlive: payload.mother.isAlive
+				})
+				.run();
 		}
 
 		// 6. Insert Guardian (if provided)
 		const guardian = payload.guardian || payload.wali;
 		if (guardian && guardian.name) {
-			await tx.insert(studentWali).values({
-				studentId: studentId,
-				name: guardian.name,
-				nik: guardian.nik,
-				occupation: guardian.job || guardian.occupation,
-				phoneNumber: guardian.phone || guardian.phoneNumber,
-				birthPlace: guardian.birthPlace,
-				birthDate: guardian.birthDate,
-				birthYear: guardian.birthYear,
-				education: guardian.education,
-				monthlyIncome: guardian.monthlyIncome,
-				isAlive: guardian.isAlive
-			});
+			tx.insert(studentWali)
+				.values({
+					studentId: studentId,
+					name: guardian.name,
+					nik: guardian.nik,
+					occupation: guardian.job || guardian.occupation,
+					phoneNumber: guardian.phone || guardian.phoneNumber,
+					birthPlace: guardian.birthPlace,
+					birthDate: guardian.birthDate,
+					birthYear: guardian.birthYear,
+					education: guardian.education,
+					monthlyIncome: guardian.monthlyIncome,
+					isAlive: guardian.isAlive
+				})
+				.run();
 		}
 
 		return newStudent;
@@ -362,11 +394,11 @@ export const createBulkStudentsFromExcel = async (fileBuffer) => {
 	});
 
 	// Now, run the transaction for all payloads
-	return db.transaction(async (tx) => {
+	return db.transaction((tx) => {
 		const results = [];
 		for (const payload of payloads) {
 			// Reuse the logic (simplified for bulk)
-			const [newStudent] = await tx
+			const newStudent = tx
 				.insert(studentTable)
 				.values({
 					studentName: payload.studentName,
@@ -378,18 +410,25 @@ export const createBulkStudentsFromExcel = async (fileBuffer) => {
 					birthDate: payload.birthDate
 					// ... map other fields
 				})
-				.returning();
+				.returning()
+				.get();
 
 			const studentId = newStudent.id;
 
 			if (payload.address) {
-				await tx.insert(studentAddress).values({ studentId, ...payload.address });
+				tx.insert(studentAddress)
+					.values({ studentId, ...payload.address })
+					.run();
 			}
 			if (payload.father && payload.father.name) {
-				await tx.insert(studentFather).values({ studentId, ...payload.father });
+				tx.insert(studentFather)
+					.values({ studentId, ...payload.father })
+					.run();
 			}
 			if (payload.mother && payload.mother.name) {
-				await tx.insert(studentMother).values({ studentId, ...payload.mother });
+				tx.insert(studentMother)
+					.values({ studentId, ...payload.mother })
+					.run();
 			}
 			results.push(newStudent);
 		}

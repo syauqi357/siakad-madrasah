@@ -2,6 +2,8 @@
 	import PhoneInput from '$lib/components/input/PhoneInput.svelte';
 	import ParentBiodata from '$lib/components/layout/parentBiodata.svelte';
 	import Arrow_Left from '$lib/components/icons/arrow_left.svelte';
+	import { goto } from '$app/navigation';
+	import { API_FETCH } from '$lib/api';
 
 	// Form Data State matching the Schema
 	let formData = {
@@ -45,15 +47,95 @@
 		livingWith: '',
 		transportation: '',
 		bpjs: '',
+		originRegion: '',
 		profilePhoto: null,
 
 		// Parent Data
-		father: { name: '', nik: '', job: '', phone: '' },
-		mother: { name: '', nik: '', job: '', phone: '' }
+		father: {
+			name: '',
+			nik: '',
+			job: '',
+			phone: '',
+			birthPlace: '',
+			birthDate: '',
+			birthYear: '',
+			education: '',
+			monthlyIncome: '',
+			isAlive: '1'
+		},
+		mother: {
+			name: '',
+			nik: '',
+			job: '',
+			phone: '',
+			birthPlace: '',
+			birthDate: '',
+			birthYear: '',
+			education: '',
+			monthlyIncome: '',
+			isAlive: '1'
+		}
 	};
 
 	// Tab State
 	let activeTab = 'student'; // 'student' | 'parents' | 'guardian'
+	let isLoading = false;
+	let errorMessage = '';
+
+	const handleSubmit = async () => {
+		isLoading = true;
+		errorMessage = '';
+
+		try {
+			// Helper to fix gender casing for DB enum ['laki-laki', 'Perempuan']
+			let genderPayload = formData.gender;
+			if (formData.gender === 'perempuan') {
+				genderPayload = 'Perempuan';
+			}
+
+			// Construct Payload
+			const payload = {
+				...formData,
+				gender: genderPayload,
+				father: {
+					...formData.father,
+					isAlive: parseInt(formData.father.isAlive)
+				},
+				mother: {
+					...formData.mother,
+					isAlive: parseInt(formData.mother.isAlive)
+				}
+				// Ensure numbers are numbers where expected by DB (though usually DB adapters handle strings often, safer to be explicit if needed, but JS flexibility helps here. The service layer doesn't explicitly parse int for all fields, rely on consistency)
+			};
+
+			// API Call
+			const response = await API_FETCH('/routes/api/students', {
+				method: 'POST',
+				body: JSON.stringify(payload)
+			});
+
+			if (response.ok) {
+				alert('Data siswa berhasil disimpan!');
+				goto('/siswa');
+			} else {
+				const result = await response.json();
+				errorMessage = result.message || 'Gagal menyimpan data siswa';
+				alert(errorMessage);
+			}
+		} catch (error) {
+			console.error('Error submitting form:', error);
+			errorMessage = 'Terjadi kesalahan sistem';
+			alert(errorMessage);
+		} finally {
+			isLoading = false;
+		}
+	};
+
+	// Helper to restrict input to numbers only
+	const onlyNumbers = (e: Event) => {
+		const target = e.target as HTMLInputElement;
+		target.value = target.value.replace(/[^0-9]/g, '');
+	};
 </script>
 
 <div class="min-h-screen bg-slate-50 p-4 md:p-8">
@@ -82,7 +164,7 @@
 					on:click={() => (activeTab = 'student')}
 					class="border-b-2 px-1 py-4 text-xs font-medium whitespace-nowrap transition-colors md:text-sm {activeTab ===
 					'student'
-						? 'border-blue-500 text-blue-600 font-semibold'
+						? 'border-blue-500 font-semibold text-blue-600'
 						: 'border-transparent text-slate-500 hover:border-slate-300 hover:text-slate-700'}"
 				>
 					Data Siswa
@@ -91,7 +173,7 @@
 					on:click={() => (activeTab = 'parents')}
 					class="border-b-2 px-1 py-4 text-xs font-medium whitespace-nowrap transition-colors md:text-sm {activeTab ===
 					'parents'
-						? 'border-blue-500 text-blue-600 font-semibold'
+						? 'border-blue-500 font-semibold text-blue-600'
 						: 'border-transparent text-slate-500 hover:border-slate-300 hover:text-slate-700'}"
 				>
 					Data Orang Tua
@@ -100,7 +182,7 @@
 					on:click={() => (activeTab = 'guardian')}
 					class="border-b-2 px-1 py-4 text-xs font-medium whitespace-nowrap transition-colors md:text-sm {activeTab ===
 					'guardian'
-						? 'border-blue-500 text-blue-600 font-semibold'
+						? 'border-blue-500 font-semibold text-blue-600'
 						: 'border-transparent text-slate-500 hover:border-slate-300 hover:text-slate-700'}"
 				>
 					Data Wali (Opsional)
@@ -108,13 +190,17 @@
 			</nav>
 		</div>
 
-		<form class="space-y-8">
+		<form class="space-y-8" on:submit|preventDefault={handleSubmit}>
 			<!-- Tab Content: Student Data -->
 			{#if activeTab === 'student'}
 				<div class="animate-fade-in space-y-8">
+					<!-- ... existing code ... -->
 					<!-- Section 0: Foto Profil -->
 					<div class="rounded-xl border border-slate-100 bg-white p-6">
+						<!-- Note: Photo upload requires separate handling as endpoint expects /upload multipart or similar, but current endpoint is JSON only for data. Leaving purely as UI related for now or until service updated. -->
 						<h2 class="mb-4 text-lg font-semibold text-slate-800">Foto Profil</h2>
+						<!-- ... -->
+
 						<div class="flex items-center gap-6">
 							<div
 								class="flex h-24 w-24 items-center justify-center rounded-full border-2 border-dashed border-slate-300 bg-slate-100 text-slate-400"
@@ -178,6 +264,7 @@
 									type="text"
 									id="nisn"
 									bind:value={formData.nisn}
+									on:input={onlyNumbers}
 									placeholder=" "
 									class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
 								/>
@@ -194,6 +281,7 @@
 									type="text"
 									id="localNis"
 									bind:value={formData.localNis}
+									on:input={onlyNumbers}
 									placeholder=" "
 									class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
 								/>
@@ -210,6 +298,7 @@
 									type="text"
 									id="idCardNumber"
 									bind:value={formData.idCardNumber}
+									on:input={onlyNumbers}
 									placeholder=" "
 									class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
 								/>
@@ -226,6 +315,7 @@
 									type="text"
 									id="birthCertificateNumber"
 									bind:value={formData.birthCertificateNumber}
+									on:input={onlyNumbers}
 									placeholder=" "
 									class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
 								/>
@@ -314,6 +404,28 @@
 								>
 							</div>
 
+							<!-- Agama -->
+							<div class="relative w-full">
+								<select
+									id="religion"
+									bind:value={formData.religion}
+									class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
+								>
+									<option value="" disabled selected>Pilih Agama</option>
+									<option value="Islam">Islam</option>
+									<option value="Kristen">Kristen</option>
+									<option value="Katolik">Katolik</option>
+									<option value="Hindu">Hindu</option>
+									<option value="Buddha">Buddha</option>
+									<option value="Khonghucu">Khonghucu</option>
+								</select>
+								<label
+									for="religion"
+									class="absolute -top-2 left-2.5 z-10 cursor-text bg-white px-1 text-xs text-slate-400 transition-all duration-100 peer-focus:text-blue-500"
+									>Agama</label
+								>
+							</div>
+
 							<!-- Anak ke & Saudara -->
 							<div class="grid grid-cols-2 gap-4">
 								<div class="relative w-full">
@@ -321,6 +433,7 @@
 										type="number"
 										id="childOrder"
 										bind:value={formData.childOrder}
+										on:input={onlyNumbers}
 										placeholder=" "
 										class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
 									/>
@@ -335,6 +448,7 @@
 										type="number"
 										id="siblingsCount"
 										bind:value={formData.siblingsCount}
+										on:input={onlyNumbers}
 										placeholder=" "
 										class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
 									/>
@@ -386,6 +500,7 @@
 										type="text"
 										id="houseNumber"
 										bind:value={formData.address.houseNumber}
+										on:input={onlyNumbers}
 										placeholder=" "
 										class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
 									/>
@@ -400,6 +515,7 @@
 										type="text"
 										id="rt"
 										bind:value={formData.address.rt}
+										on:input={onlyNumbers}
 										placeholder=" "
 										class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
 									/>
@@ -414,6 +530,7 @@
 										type="text"
 										id="rw"
 										bind:value={formData.address.rw}
+										on:input={onlyNumbers}
 										placeholder=" "
 										class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
 									/>
@@ -486,6 +603,7 @@
 									type="text"
 									id="postalCode"
 									bind:value={formData.address.postalCode}
+									on:input={onlyNumbers}
 									placeholder=" "
 									class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
 								/>
@@ -497,8 +615,112 @@
 							</div>
 						</div>
 					</div>
-				</div>
 
+					<!-- Section 3: Data Tambahan (Inside Student Tab) -->
+					<div class="rounded-xl border border-slate-100 bg-white p-6">
+						<h2 class="mb-6 flex items-center gap-2 text-xl font-semibold text-slate-800">
+							<span
+								class="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-sm font-bold text-blue-600"
+								>3</span
+							>
+							Data Tambahan / Lainnya
+						</h2>
+
+						<div class="grid gap-6 md:grid-cols-2">
+							<!-- Sekolah Sebelumnya -->
+							<div class="relative w-full">
+								<input
+									type="text"
+									id="previousSchool"
+									bind:value={formData.previousSchool}
+									placeholder=" "
+									class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
+								/>
+								<label
+									for="previousSchool"
+									class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-100 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
+									>Sekolah Sebelumnya</label
+								>
+							</div>
+
+							<!-- Asal Daerah -->
+							<div class="relative w-full">
+								<input
+									type="text"
+									id="originRegion"
+									bind:value={formData.originRegion}
+									placeholder=" "
+									class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
+								/>
+								<label
+									for="originRegion"
+									class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-100 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
+									>Asal Daerah (Kota/Kab)</label
+								>
+							</div>
+
+							<!-- No. BPJS -->
+							<div class="relative w-full">
+								<input
+									type="text"
+									id="bpjs"
+									bind:value={formData.bpjs}
+									on:input={onlyNumbers}
+									placeholder=" "
+									class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
+								/>
+								<label
+									for="bpjs"
+									class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-100 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
+									>No. BPJS</label
+								>
+							</div>
+
+							<!-- Tinggal Bersama -->
+							<div class="relative w-full">
+								<select
+									id="livingWith"
+									bind:value={formData.livingWith}
+									class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
+								>
+									<option value="" disabled selected>Pilih...</option>
+									<option value="Orang Tua">Orang Tua</option>
+									<option value="Wali">Wali</option>
+									<option value="Asrama">Asrama</option>
+									<option value="Kos">Kos</option>
+									<option value="Lainnya">Lainnya</option>
+								</select>
+								<label
+									for="livingWith"
+									class="absolute -top-2 left-2.5 z-10 cursor-text bg-white px-1 text-xs text-slate-400 transition-all duration-100 peer-focus:text-blue-500"
+									>Tinggal Bersama</label
+								>
+							</div>
+
+							<!-- Transportasi -->
+							<div class="relative w-full">
+								<select
+									id="transportation"
+									bind:value={formData.transportation}
+									class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
+								>
+									<option value="" disabled selected>Pilih...</option>
+									<option value="Jalan Kaki">Jalan Kaki</option>
+									<option value="Sepeda">Sepeda</option>
+									<option value="Sepeda Motor">Sepeda Motor</option>
+									<option value="Antar Jemput">Antar Jemput</option>
+									<option value="Angkutan Umum">Angkutan Umum</option>
+									<option value="Lainnya">Lainnya</option>
+								</select>
+								<label
+									for="transportation"
+									class="absolute -top-2 left-2.5 z-10 cursor-text bg-white px-1 text-xs text-slate-400 transition-all duration-100 peer-focus:text-blue-500"
+									>Transportasi</label
+								>
+							</div>
+						</div>
+					</div>
+				</div>
 				<!-- Tab Content: Parent Data -->
 			{:else if activeTab === 'parents'}
 				<div class="animate-fade-in">
@@ -546,15 +768,17 @@
 			<div class="mt-8 flex items-center justify-end gap-3 border-t border-slate-200 pt-4">
 				<button
 					type="button"
+					on:click={() => goto('/siswa')}
 					class="rounded-lg bg-red-200 px-4 py-2.5 text-sm font-medium text-red-600 transition-colors hover:bg-red-300"
 				>
 					Batal
 				</button>
 				<button
 					type="submit"
-					class="rounded-md bg-blue-500 px-5 py-2.5 text-sm font-medium text-white transition-all hover:bg-blue-700"
+					disabled={isLoading}
+					class="rounded-md bg-blue-500 px-5 py-2.5 text-sm font-medium text-white transition-all hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
 				>
-					Simpan Data Siswa
+					{isLoading ? 'Menyimpan...' : 'Simpan Data Siswa'}
 				</button>
 			</div>
 		</form>

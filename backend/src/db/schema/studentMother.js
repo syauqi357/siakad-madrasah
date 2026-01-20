@@ -16,8 +16,6 @@ export const studentMother = sqliteTable('student_mother', {
 	birthPlace: text('birth_place'),
 	birthDate: text('birth_date'), // SQLite DATE = TEXT
 	birthYear: integer('birth_year'),
-	familyCardNumberId: text('family_card_number_id'),
-	religion: text('religion'),
 
 	education: text('education'),
 	occupation: text('occupation'),

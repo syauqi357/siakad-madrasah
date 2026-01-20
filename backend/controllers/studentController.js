@@ -57,7 +57,14 @@ export const getStudentById = async (req, res) => {
 			return res.status(404).json({ message: `No student found with id ${studentId}` });
 		}
 
-		res.status(200).json(student);
+		// Handle BigInt serialization
+		const serializedStudent = JSON.parse(
+			JSON.stringify(student, (key, value) =>
+				typeof value === 'bigint' ? value.toString() : value
+			)
+		);
+
+		res.status(200).json(serializedStudent);
 	} catch (error) {
 		console.error('Database error:', error);
 		res.status(500).json({ message: 'Error fetching student data', error: error.message });
@@ -67,7 +74,15 @@ export const getStudentById = async (req, res) => {
 export const createStudent = async (req, res) => {
 	try {
 		const newStudent = await studentService.createStudentData(req.body);
-		res.status(201).json(newStudent);
+
+		// Handle BigInt serialization (better-sqlite3 may return BigInt for IDs)
+		const serializedStudent = JSON.parse(
+			JSON.stringify(newStudent, (key, value) =>
+				typeof value === 'bigint' ? value.toString() : value
+			)
+		);
+
+		res.status(201).json(serializedStudent);
 	} catch (error) {
 		console.error('Database error:', error);
 		res.status(500).json({ message: 'Error creating student', error: error.message });
