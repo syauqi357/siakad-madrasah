@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { API_FETCH } from '$lib/api';
-	import Sort from '$lib/components/icons/sort.svelte';
+	// import Sort from '$lib/components/icons/sort.svelte';
 	import AddIcon from '$lib/components/icons/addIcon.svelte';
 	import UploadIcon from '$lib/components/icons/uploadIcon.svelte';
 	import DownloadIcon from '$lib/components/icons/downloadIcon.svelte';
@@ -115,6 +115,9 @@
 	onMount(() => {
 		fetchStudents(currentPage);
 	});
+
+
+
 </script>
 
 <UploadExcel
