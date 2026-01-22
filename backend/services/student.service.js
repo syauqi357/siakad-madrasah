@@ -162,6 +162,10 @@ export const findAllStudentsLite = async () => {
 		.where(isNull(rombelStudents.studentId));
 };
 
+export const searchStudents = async (searchTerm) => {
+	// using debounce methods
+};
+
 export const countStudents = async () => {
 	const [result] = await db.select({ count: count() }).from(studentTable);
 	return result;

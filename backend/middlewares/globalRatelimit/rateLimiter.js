@@ -1,14 +1,15 @@
 import rateLimit from 'express-rate-limit';
 
 export const GLOBAL_RATE_LIMIT = rateLimit({
-	/*
+	/**
 	 *
 	 * catch source from :
 	 * https://stackoverflow.com/questions/58486616/express-rate-limit-catching-the-message
 	 *
 	 * docs :
 	 * https://www.npmjs.com/package/express-rate-limit
-	 * */
+	 *
+	 **/
 	windowMs: 15 * 60 * 1000, // 15 minutes
 	message: 'too many request, please try again few minutes later',
 	max: 300,

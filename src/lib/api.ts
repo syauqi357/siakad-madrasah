@@ -14,6 +14,10 @@ export async function API_FETCH(endpoint: string, options: FetchOptions = {}) {
 		...options.headers
 	};
 
+	if (options.body instanceof FormData) {
+		delete headers['Content-Type'];
+	}
+
 	if (token) {
 		headers['Authorization'] = `Bearer ${token}`;
 	}

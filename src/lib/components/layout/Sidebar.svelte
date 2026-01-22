@@ -39,14 +39,14 @@
 		: '-translate-x-full'} sm:translate-x-0"
 >
 	<div class="h-full overflow-y-auto bg-slate-100 px-3 pb-5">
-		<ul class="space-y-2 font-medium">
+		<ul class="space-y-1 font-medium">
 			{#each navItems as item (item.name)}
 				<li>
 					{#if item.hasDropdown && item.children}
 						<!-- Parent item with dropdown -->
 						<button
 							on:click={() => toggleDropdown(item.name)}
-							class="group flex w-full items-center justify-between rounded-lg p-2 text-slate-900 transition-all duration-200 hover:bg-slate-200 {openDropdowns[
+							class="group flex w-full items-center justify-between rounded-lg p-2 text-sm text-slate-900 transition-all duration-200 hover:bg-slate-200 {openDropdowns[
 								item.name
 							]
 								? 'bg-slate-200'
@@ -108,7 +108,7 @@
 						<!-- Regular menu item without dropdown -->
 						<a
 							href={item.href}
-							class="group flex items-center justify-between rounded-lg p-2 text-slate-900 transition-all duration-200 hover:translate-x-1 hover:bg-slate-200"
+							class="group flex items-center justify-between rounded-lg p-2 text-sm text-slate-900 transition-all duration-200 hover:translate-x-1 hover:bg-slate-200"
 						>
 							<div class="flex items-center justify-center">
 								<span class="h-6 w-6  transition-transform duration-200 group-hover:scale-110">

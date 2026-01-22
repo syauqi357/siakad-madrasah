@@ -108,16 +108,33 @@
 	}
 
 	async function handleUpload(event: CustomEvent<FormData>) {
-		// Upload logic placeholder
-		alert('Fitur upload sedang dalam pengembangan.');
+		const formData = event.detail;
+		loading = true;
+		try {
+			const response = await API_FETCH('/routes/api/students/upload-bulk', {
+				method: 'POST',
+				body: formData
+			});
+
+			if (!response.ok) {
+				const result = await response.json();
+				throw new Error(result.message || 'Upload failed');
+			}
+
+			alert('Upload berhasil!');
+			isUploadModalOpen = false;
+			fetchStudents(currentPage);
+		} catch (error) {
+			console.error('Upload Error:', error);
+			alert(`Gagal upload: ${error instanceof Error ? error.message : 'Unknown error'}`);
+		} finally {
+			loading = false;
+		}
 	}
 
 	onMount(() => {
 		fetchStudents(currentPage);
 	});
-
-
-
 </script>
 
 <UploadExcel
@@ -200,28 +217,33 @@
 		</div>
 
 		{#if loading}
+			<!-- loading state -->
 			<div class="flex justify-center py-12">
 				<span class="loading loading-spinner loading-lg text-blue-600">Loading...</span>
 			</div>
 		{:else if students.length === 0}
+			<!-- empty state -->
 			<div
 				class="rounded-xl border border-dashed border-slate-300 bg-slate-50 py-12 text-center text-slate-500"
 			>
 				<p>Belum ada data siswa.</p>
 			</div>
 		{:else}
+
+			<!-- existed state -->
+
 			{#each students as student (student.id)}
 				<div
-					class="grid grid-cols-1 items-center gap-4 border-b border-slate-200 bg-white p-4 last:border-b-0 hover:bg-slate-50 md:grid-cols-12 md:px-6"
+					class="grid grid-cols-1 items-center gap-4 border border-slate-200 bg-white p-3 last:border rounded-lg hover:bg-slate-50 md:grid-cols-12 md:px-6"
 				>
 					<!-- Name -->
 					<div class="col-span-1 md:col-span-4">
-						<p class="font-semibold text-slate-800">{student.nama}</p>
-						<p class="text-xs text-slate-500 md:hidden">NISN: {student.nisn}</p>
+						<p class="font-bold text-slate-600">{student.nama}</p>
+						<p class="text-md text-slate-500 md:hidden">NISN: {student.nisn}</p>
 					</div>
 
 					<!-- NISN -->
-					<div class="col-span-2 hidden font-mono text-sm text-slate-600 md:block">
+					<div class="col-span-2 hidden tracking-wide text-sm text-slate-600 md:block">
 						{student.nisn}
 					</div>
 
@@ -246,7 +268,7 @@
 					<!-- Status -->
 					<div class="col-span-1 md:col-span-1">
 						<span
-							class="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium capitalize
+							class="inline-flex items-center rounded-md px-3 py-1 text-xs font-medium capitalize
                             {student.status === 'aktif'
 								? 'bg-green-100 text-green-700'
 								: student.status === 'warning'
@@ -264,13 +286,13 @@
 					</div>
 
 					<!-- Action -->
-					<div class="col-span-1 flex justify-end md:col-span-1">
+					<div class="col-span-1 flex justify-end md:col-span-1 ">
 						<button
 							on:click={() => goto(`/siswa/${student.id}`)}
-							class="flex items-center gap-1 text-sm font-medium text-blue-600 transition-colors hover:text-blue-800"
+							class="flex items-center gap-1 text-sm font-medium bg-blue-500 text-blue-100 py-2 px-4 justify-center rounded-md transition-colors hover:bg-blue-800"
 							title="Lihat Detail"
 						>
-							selengkapnya <Arrow_up />
+							<span class="hidden sm:flex">selengkapnya</span> <Arrow_up />
 						</button>
 					</div>
 				</div>

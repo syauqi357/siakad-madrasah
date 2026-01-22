@@ -144,7 +144,7 @@
 
 		<a
 			href="/siswa"
-			class="my-4 flex w-fit cursor-pointer items-center justify-center gap-3 rounded-full bg-blue-300 px-5 py-1.5 text-xs text-blue-800 capitalize md:text-lg"
+			class="my-4 flex w-fit cursor-pointer items-center justify-center gap-3 rounded-md bg-blue-600 hover:bg-blue-700 px-4 py-1 text-xs text-blue-100 capitalize md:text-sm"
 		>
 			<Arrow_Left /> kembali
 		</a>
