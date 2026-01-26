@@ -166,7 +166,7 @@ export const getAllFacilitiesFromDB = async () => {
  */
 export const getFacilitiesByType = async (facilityType, subFolder = null) => {
 	if (subFolder) {
-		return await db
+		return db
 			.select()
 			.from(schoolFacilitiesTable)
 			.where(
@@ -176,7 +176,7 @@ export const getFacilitiesByType = async (facilityType, subFolder = null) => {
 				)
 			);
 	}
-	return await db
+	return db
 		.select()
 		.from(schoolFacilitiesTable)
 		.where(eq(schoolFacilitiesTable.facilityType, facilityType));

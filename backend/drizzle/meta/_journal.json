@@ -50,6 +50,13 @@
       "when": 1768824318950,
       "tag": "0006_ambiguous_hobgoblin",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "6",
+      "when": 1769445379352,
+      "tag": "0007_optimal_stone_men",
+      "breakpoints": true
     }
   ]
 }
