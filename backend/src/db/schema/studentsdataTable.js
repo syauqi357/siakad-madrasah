@@ -25,7 +25,7 @@ export const studentTable = sqliteTable(
 		livingWith: text('living_with'), // tinggal bersama
 		transportation: text('transportation'),
 		profilePhoto: text('profile_photo'),
-		
+
 		// --- NEW: Link to Rombel (classSubject) ---
 		rombelId: int('rombel_id').references(() => classSubject.id), // Optional, can be null if not assigned yet
 
@@ -38,3 +38,38 @@ export const studentTable = sqliteTable(
 		localNisIdx: index('idx_students_local_nis').on(table.localNis)
 	})
 );
+
+// nisnIdx: index('idx_students_nisn').on(table.nisn),
+
+/**
+ * 
+ * 
+ * npx drizzle-kit push
+No config path provided, using default 'drizzle.config.js'
+Reading config file 'G:\01 - KULIAH\SEMESTER 7\SIAKAD-MADRASAH\siakad-madrasah\backend\drizzle.config.js'
+[✓] Pulling schema from database...
+LibsqlError: SQLITE_ERROR: index unique_student_assessment already exists
+    at mapSqliteError (file:///G:/01%20-%20KULIAH/SEMESTER%207/SIAKAD-MADRASAH/siakad-madrasah/backend/node_modules/@libsql/client/lib-esm/sqlite3.js:392:16)
+    at executeStmt (file:///G:/01%20-%20KULIAH/SEMESTER%207/SIAKAD-MADRASAH/siakad-madrasah/backend/node_modules/@libsql/client/lib-esm/sqlite3.js:297:15)
+    at Sqlite3Client.execute (file:///G:/01%20-%20KULIAH/SEMESTER%207/SIAKAD-MADRASAH/siakad-madrasah/backend/node_modules/@libsql/client/lib-esm/sqlite3.js:81:16)
+    ... 4 lines matching cause stack trace ...
+    at async run (G:\01 - KULIAH\SEMESTER 7\SIAKAD-MADRASAH\siakad-madrasah\backend\node_modules\drizzle-kit\bin.cjs:93117:7) {
+  code: 'SQLITE_ERROR',
+  rawCode: 1,
+  [cause]: SqliteError: index unique_student_assessment already exists
+      at convertError (G:\01 - KULIAH\SEMESTER 7\SIAKAD-MADRASAH\siakad-madrasah\backend\node_modules\libsql\index.js:59:12) 
+      at Database.prepare (G:\01 - KULIAH\SEMESTER 7\SIAKAD-MADRASAH\siakad-madrasah\backend\node_modules\libsql\index.js:131:13)
+      at executeStmt (file:///G:/01%20-%20KULIAH/SEMESTER%207/SIAKAD-MADRASAH/siakad-madrasah/backend/node_modules/@libsql/client/lib-esm/sqlite3.js:268:28)
+      at Sqlite3Client.execute (file:///G:/01%20-%20KULIAH/SEMESTER%207/SIAKAD-MADRASAH/siakad-madrasah/backend/node_modules/@libsql/client/lib-esm/sqlite3.js:81:16)
+      at Object.run (G:\01 - KULIAH\SEMESTER 7\SIAKAD-MADRASAH\siakad-madrasah\backend\node_modules\drizzle-kit\bin.cjs:81263:26)
+      at sqlitePush (G:\01 - KULIAH\SEMESTER 7\SIAKAD-MADRASAH\siakad-madrasah\backend\node_modules\drizzle-kit\bin.cjs:84519:24)
+      at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+      at async Object.handler (G:\01 - KULIAH\SEMESTER 7\SIAKAD-MADRASAH\siakad-madrasah\backend\node_modules\drizzle-kit\bin.cjs:93884:9)
+      at async run (G:\01 - KULIAH\SEMESTER 7\SIAKAD-MADRASAH\siakad-madrasah\backend\node_modules\drizzle-kit\bin.cjs:93117:7) {
+    code: 'SQLITE_ERROR',
+    rawCode: 1
+  }
+}
+ * 
+ * 
+*/

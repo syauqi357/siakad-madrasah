@@ -2,6 +2,7 @@
 	import PhoneInput from '$lib/components/input/PhoneInput.svelte';
 	import ParentBiodata from '$lib/components/layout/parentBiodata.svelte';
 	import Arrow_Left from '$lib/components/icons/arrow_left.svelte';
+	import ModalAlert from '$lib/components/modal/modalalert.svelte';
 	import { goto } from '$app/navigation';
 	import { API_FETCH } from '$lib/api';
 
@@ -82,6 +83,18 @@
 	let isLoading = false;
 	let errorMessage = '';
 
+	// Modal Alert State
+	let showAlert = false;
+	let alertType: 'success' | 'error' | 'warning' | 'info' = 'success';
+	let alertMessage = '';
+
+	function handleAlertConfirm() {
+		if (alertType === 'success') {
+			goto('/siswa');
+		}
+		showAlert = false;
+	}
+
 	const handleSubmit = async () => {
 		isLoading = true;
 		errorMessage = '';
@@ -115,17 +128,22 @@
 			});
 
 			if (response.ok) {
-				alert('Data siswa berhasil disimpan!');
-				goto('/siswa');
+				alertType = 'success';
+				alertMessage = 'Data siswa berhasil disimpan!';
+				showAlert = true;
 			} else {
 				const result = await response.json();
 				errorMessage = result.message || 'Gagal menyimpan data siswa';
-				alert(errorMessage);
+				alertType = 'error';
+				alertMessage = errorMessage;
+				showAlert = true;
 			}
 		} catch (error) {
 			console.error('Error submitting form:', error);
 			errorMessage = 'Terjadi kesalahan sistem';
-			alert(errorMessage);
+			alertType = 'error';
+			alertMessage = errorMessage;
+			showAlert = true;
 		} finally {
 			isLoading = false;
 		}
@@ -138,13 +156,22 @@
 	};
 </script>
 
+<!-- Modal Alert -->
+<ModalAlert
+	bind:show={showAlert}
+	type={alertType}
+	message={alertMessage}
+	confirmText={alertType === 'success' ? 'Lanjut' : 'OK'}
+	on:confirm={handleAlertConfirm}
+/>
+
 <div class="min-h-screen bg-slate-50 p-4 md:p-8">
 	<div class="mx-auto max-w-5xl">
 		<!--		back button    -->
 
 		<a
 			href="/siswa"
-			class="my-4 flex w-fit cursor-pointer items-center justify-center gap-3 rounded-md bg-blue-600 hover:bg-blue-700 px-4 py-1 text-xs text-blue-100 capitalize md:text-sm"
+			class="my-4 flex w-fit cursor-pointer items-center justify-center gap-3 rounded-md bg-blue-600 px-4 py-1 text-xs text-blue-100 capitalize hover:bg-blue-700 md:text-sm"
 		>
 			<Arrow_Left /> kembali
 		</a>
