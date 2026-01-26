@@ -220,7 +220,7 @@
 		<form class="space-y-8" on:submit|preventDefault={handleSubmit}>
 			<!-- Tab Content: Student Data -->
 			{#if activeTab === 'student'}
-				<div class="animate-fade-in space-y-8">
+				<div class="space-y-8">
 					<!-- ... existing code ... -->
 					<!-- Section 0: Foto Profil -->
 					<div class="rounded-xl border border-slate-100 bg-white p-6">
@@ -230,7 +230,7 @@
 
 						<div class="flex items-center gap-6">
 							<div
-								class="flex h-24 w-24 items-center justify-center rounded-full border-2 border-dashed border-slate-300 bg-slate-100 text-slate-400"
+								class="flex h-28 w-24 items-center justify-center rounded-lg border-2 border-dashed border-slate-300 bg-slate-100 text-slate-400"
 							>
 								<svg
 									xmlns="http://www.w3.org/2000/svg"
