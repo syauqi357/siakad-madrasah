@@ -3,8 +3,8 @@ import { getSchoolData, createSchoolData, updateSchoolData } from '../../control
 
 const router = express.Router();
 
-router.get('/schoolData', getSchoolData);
-router.post('/schoolData', createSchoolData);
-router.put('/schoolData', updateSchoolData);
+router.get('/', getSchoolData);
+router.post('/', createSchoolData);
+router.put('/', updateSchoolData);
 
 export default router;

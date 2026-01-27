@@ -1,5 +1,5 @@
 import express from 'express';
-import { verifyToken } from '../../middlewares/verifyToken.js';
+import { VERIFY_TOKEN_MIDDLEWARE } from '../../middlewares/verifyToken.js';
 import * as authController from '../../controllers/authController.js';
 
 const router = express.Router();
@@ -11,9 +11,9 @@ router.post('/login', authController.login);
 router.post('/logout', authController.logout);
 
 // change password route
-router.post('/change-password', verifyToken, authController.changePassword);
+router.post('/change-password', VERIFY_TOKEN_MIDDLEWARE, authController.changePassword);
 
 // Get current user profile
-router.get('/profileUsers', verifyToken, authController.getSelfrec);
+router.get('/profileUsers', VERIFY_TOKEN_MIDDLEWARE, authController.getSelfrec);
 
 export default router;

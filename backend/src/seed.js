@@ -15,7 +15,7 @@ async function seed() {
 	console.log('🌱 Seeding database...');
 
 	// add schooldata
-	// table name in database : schoolData
+	// table name in database : schoolAdministrativeData
 	// table name in drizzle is : schoolTable
 	for (const user of guruData){
 

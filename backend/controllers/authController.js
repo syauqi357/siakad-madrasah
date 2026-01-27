@@ -1,5 +1,5 @@
-import { authenticateUser } from '../services/authService.js';
-import { changePasswordService } from '../services/authService.js';
+import { AUTHENTICATE_USERS } from '../services/auth.service.js';
+import { CHANGE_PASSWORD_SERVICES } from '../services/auth.service.js';
 
 
 // Login controller
@@ -8,7 +8,7 @@ export const login = async (req, res) => {
 		const { username, password } = req.body;
 
 		// Call service layer to authenticate
-		const result = await authenticateUser(username, password); // ← ADD AWAIT!
+		const result = await AUTHENTICATE_USERS(username, password); // ← ADD AWAIT!
 
 		if (!result.success) {
 			return res.status(result.message === 'Username and password are required' ? 400 : 401).json({
@@ -50,7 +50,7 @@ export const logout = async (req, res) => {
 export const changePassword = async (req, res) => {
 	try {
 		const { currentPassword, newPassword } = req.body;
-		const userId = req.user.id; // From verifyToken middlewares
+		const userId = req.user.id; // From VERIFY_TOKEN_MIDDLEWARE middlewares
 
 		// Validation
 		if (!currentPassword || !newPassword) {
@@ -75,7 +75,7 @@ export const changePassword = async (req, res) => {
 		}
 
 		// Call service
-		const result = await changePasswordService(userId, currentPassword, newPassword);
+		const result = await CHANGE_PASSWORD_SERVICES(userId, currentPassword, newPassword);
 
 		if (!result.success) {
 			return res
@@ -96,7 +96,7 @@ export const changePassword = async (req, res) => {
 // Get current user profile
 export const getSelfrec = async (req, res) => {
     try {
-        // req.user is set by verifyToken middlewares
+        // req.user is set by VERIFY_TOKEN_MIDDLEWARE middlewares
         if (!req.user) {
             return res.status(401).json({
                 success: false,

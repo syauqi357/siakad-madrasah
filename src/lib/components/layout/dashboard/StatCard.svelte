@@ -9,7 +9,9 @@
 	export let subtext: string | null = null;
 </script>
 
-<div class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+<div
+	class="flex w-full flex-col justify-center gap-2 rounded-lg bg-gray-50 p-5 outline-1 outline-blue-400 transition-all duration-75 ease-in-out hover:bg-gray-100 hover:outline-3 hover:outline-offset-2 md:w-full"
+>
 	<div class="mb-4 flex items-center justify-between">
 		<!-- Icon -->
 		<div class="flex h-12 w-12 items-center justify-center rounded-lg {iconBg}">
@@ -32,7 +34,7 @@
 
 	<!-- Title -->
 	<h3 class="text-sm text-slate-500 duration-150 ease-in-out hover:rotate-3">
-		<span class="mt-4 mb-4 rounded-md border border-slate-400 bg-slate-200 p-2 pr-2.5 pl-2.5">
+		<span class=" my-4 rounded-md border border-slate-400 bg-slate-200 px-2.5 py-2">
 			{title}
 		</span>
 	</h3>

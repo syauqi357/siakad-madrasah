@@ -13,10 +13,14 @@ node_modules
 Thumbs.db
 
 # Env
-.env
-.env.*
-# backend/.env.example
 backend/.env
+
+#backend/testerAPI
+
+backend/*.xlsx
+
+.env
+!.env.example
 !.env.test
 
 # Vite

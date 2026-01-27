@@ -9,6 +9,6 @@ export const users = sqliteTable('users', {
 	nama_lengkap: text('nama_lengkap'),
 	nip: text('nip'),
 	jabatan: text('jabatan')
-	// indexing on the id and and username and password.
-	// indexing used cause frequently used and very important to setup faster data
+	// indexing on the id and username and password.
+	// indexing used cause frequently used and very important to set up faster data
 });

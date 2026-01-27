@@ -1,44 +1,32 @@
 // import fs from 'fs';
 // import path from 'path';
 import jwt from 'jsonwebtoken';
-import bcrypt from 'bcrypt'; // ← ADD THIS
-import { eq } from 'drizzle-orm'; // ← Remove 'and' since we only check username
-import { users } from '../src/db/schema/user.js';
-import { db } from '../src/index.js';
+import bcrypt from 'bcrypt'; // bcrypt for password hashing
+import { eq } from 'drizzle-orm'; // drizzle-orm for database queries
+import { users } from '../src/db/schema/user.js'; //schema user
+import { db } from '../src/index.js'; // database connection
 // import { fileURLToPath } from 'url';
 
 // const __filename = fileURLToPath(import.meta.url);
 // const __dirname = path.dirname(__filename);
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_key_change_this';
+const JWT_SECRET = process.env.JWT_SECRET;
 
-// ============================================================================
-// SERVICE LAYER - Business Logic Only
-// ============================================================================
-
-/**
+/*
+ *
+ * SERVICE LAYER - Business Logic Only
+ *
  * Read accounts from guru.json file
  * @returns {Array} List of accounts
-disabled code 
-*/
-// export const getAccounts = () => {
-// 	try {
-// 		const guruPath = path.join(__dirname, '../data/guru.json');
-// 		const data = fs.readFileSync(guruPath, 'utf-8');
-// 		return JSON.parse(data);
-// 	} catch (error) {
-// 		console.error('Error reading guru.json:', error);
-// 		return [];
-// 	}
-// };
-
-/**
+ * disabled code
+ *
  * Authenticate user with username and password
  * @param {string} username - User's username
  * @param {string} password - User's password
  * @returns {Object} User object with token, or null if authentication fails
- */
-export const authenticateUser = async (username, password) => {
+ *
+ * */
+export const AUTHENTICATE_USERS = async (username, password) => {
 	try {
 		// 1. Find user by username only
 		const user = await db
@@ -97,21 +85,17 @@ export const authenticateUser = async (username, password) => {
 	}
 };
 
-/**
+/*
  * Change user password
  * @param {number} userId - User's ID
  * @param {string} currentPassword - Current password (plain text)
  * @param {string} newPassword - New password (plain text)
  * @returns {Object} Result object
  */
-export const changePasswordService = async (userId, currentPassword, newPassword) => {
+export const CHANGE_PASSWORD_SERVICES = async (userId, currentPassword, newPassword) => {
 	try {
 		// 1. Get user from database
-		const user = await db
-			.select()
-			.from(users)
-			.where(eq(users.id, userId))
-			.limit(1);
+		const user = await db.select().from(users).where(eq(users.id, userId)).limit(1);
 
 		if (!user || user.length === 0) {
 			return {
@@ -136,10 +120,7 @@ export const changePasswordService = async (userId, currentPassword, newPassword
 		const hashedNewPassword = await bcrypt.hash(newPassword, 10);
 
 		// 4. Update password in database
-		await db
-			.update(users)
-			.set({ password: hashedNewPassword })
-			.where(eq(users.id, userId));
+		await db.update(users).set({ password: hashedNewPassword }).where(eq(users.id, userId));
 
 		return {
 			success: true,
@@ -154,12 +135,12 @@ export const changePasswordService = async (userId, currentPassword, newPassword
 	}
 };
 
-/**
+/*
  * Verify JWT token
  * @param {string} token - JWT token to verify
  * @returns {Object} Decoded token data or null if invalid
  */
-export const verifyTokenService = (token) => {
+export const VERIFY_TOKEN_SERVICES = (token) => {
 	try {
 		if (!token) {
 			return {

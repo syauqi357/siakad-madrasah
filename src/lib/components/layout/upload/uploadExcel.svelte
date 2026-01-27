@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
+	import { fade, scale } from 'svelte/transition';
 	import UploadIcon from '$lib/components/icons/uploadIcon.svelte';
 
 	export let isOpen = false;
@@ -16,16 +17,17 @@
 		dispatch('upload', formData);
 		close();
 	}
-
-
-
 </script>
 
 {#if isOpen}
 	<div
-		class="fixed inset-0 z-1 flex items-center justify-center bg-gray-900/50 backdrop-blur-sm transition-all ease-in-out"
+		class="fixed inset-0 z-1 flex items-center justify-center bg-gray-900/30 backdrop-blur-xs transition-all duration-75 ease-in-out"
+		transition:fade={{ duration: 100 }}
 	>
-		<div class="w-full max-w-md rounded-xl bg-white p-6 shadow-2xl">
+		<div
+			class="w-full max-w-md rounded-xl bg-white p-6 shadow-2xl"
+			transition:scale={{ duration: 150, start: 0.95 }}
+		>
 			<div class="mb-6 flex items-center justify-between">
 				<h2 class="text-xl font-bold text-slate-800">Upload Data Siswa</h2>
 				<button

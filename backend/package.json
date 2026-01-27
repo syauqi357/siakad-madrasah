@@ -1,35 +1,41 @@
 {
-  "name": "backend",
-  "version": "1.0.0",
-  "description": "",
-  "main": "app.js",
-  "type": "module",
-  "scripts": {
-    "dev": "node --watch app.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc",
-    "db:generate": "drizzle-kit generate",
-    "db:reset": "rm -f sqlite.db && npm run db:migrate && npm run db:seed"
-  },
-  "author": "Syauqi Husin",
-  "license": "MIT",
-  "dependencies": {
-    "@libsql/client": "^0.15.15",
-    "bcrypt": "^6.0.0",
-    "better-sqlite3": "^12.4.1",
-    "cookie-parser": "^1.4.7",
-    "cors": "^2.8.5",
-    "dotenv": "^17.2.3",
-    "drizzle-orm": "^0.45.1",
-    "express": "^4.21.2",
-    "jsonwebtoken": "^9.0.3",
-    "pnpm": "^10.27.0"
-  },
-  "devDependencies": {
-    "@types/cors": "^2.8.19",
-    "@types/express": "^5.0.5",
-    "@types/node": "^24.10.1",
-    "drizzle-kit": "^0.31.8",
-    "tsx": "^4.21.0"
-  }
+	"name": "backend",
+	"version": "1.0.0",
+	"description": "",
+	"main": "app.js",
+	"type": "module",
+	"scripts": {
+		"dev": "nodemon --watch app.js",
+		"build": "tsc",
+		"test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+		"db:generate": "drizzle-kit generate",
+		"db:reset": "rm -f sqlite.db && npm run db:migrate && npm run db:seed"
+	},
+	"author": "Syauqi Husin",
+	"license": "MIT",
+	"dependencies": {
+		"@libsql/client": "^0.15.15",
+		"bcrypt": "^6.0.0",
+		"better-sqlite3": "^12.4.1",
+		"cookie-parser": "^1.4.7",
+		"cors": "^2.8.5",
+		"dotenv": "^17.2.3",
+		"drizzle-orm": "^0.45.1",
+		"exceljs": "^4.4.0",
+		"express": "^4.21.2",
+		"express-rate-limit": "^8.2.1",
+		"express-slow-down": "^3.0.1",
+		"jsonwebtoken": "^9.0.3",
+		"multer": "^2.0.2",
+		"pnpm": "^10.27.0"
+	},
+	"devDependencies": {
+		"@types/cors": "^2.8.19",
+		"@types/express": "^5.0.5",
+		"@types/node": "^24.10.1",
+		"drizzle-kit": "^0.31.8",
+		"jest": "^30.2.0",
+		"nodemon": "^3.1.11",
+		"tsx": "^4.21.0"
+	}
 }

@@ -1,25 +1,31 @@
 import express from 'express';
+import multer from 'multer';
 import {
 	getAllStudents,
+	getStudentsLite,
 	getStudentById,
 	createStudent,
 	updateStudent,
 	deleteStudent,
-	getStudentCount
+	getStudentCount,
+	createBulkStudent,
+	downloadStudentBulkTemplate
 } from '../../controllers/studentController.js';
 
 const router = express.Router();
-// let upload;
+const upload = multer({ storage: multer.memoryStorage() });
 
-// @route   GET api/students
-// @desc    Get all students
-// @access  Public
+// --- Student Data Routes ---
 router.get('/studentDataSet', getAllStudents);
-router.get('/studentDataSet/count', getStudentCount)
+router.get('/studentDataSet/lite', getStudentsLite); // New endpoint for lite list
+router.get('/studentDataSet/count', getStudentCount);
 router.get('/studentDataSet/:id', getStudentById);
 router.post('/students', createStudent);
-// router.post('/studentByexcel', upload.single('file'));
 router.put('/students/:id', updateStudent);
 router.delete('/students/:id', deleteStudent);
+
+// --- Bulk Operations ---
+router.post('/students/upload-bulk', upload.single('file'), createBulkStudent);
+router.get('/students/download-template', downloadStudentBulkTemplate);
 
 export default router;

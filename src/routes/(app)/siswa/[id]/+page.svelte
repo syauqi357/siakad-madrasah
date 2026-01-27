@@ -1,9 +1,8 @@
 <script lang="ts">
-	// This file goes in: src/routes/student/[id]/+page.svelte
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
-    import { goto } from '$app/navigation';
-    import { apiFetch } from '$lib/api';
+	import { goto } from '$app/navigation';
+	import { API_FETCH } from '$lib/api';
 
 	type Student = {
 		id: number;
@@ -11,14 +10,36 @@
 		class: string;
 		gender: string;
 		cityOfOrigin: string;
-		father: string;
-		mother: string;
-		address: string;
 		status: 'active' | 'warning' | 'inactive';
-	};
 
-	// TODO: Move this to a separate file like src/lib/data/students.ts
-	// so you can import it in both list and detail pages
+		// Full Profile Data
+		nisn: string;
+		localNis: string;
+		birthDate: string;
+		religion: string;
+		address: {
+			street: string;
+			village: string;
+			subDistrict: string;
+			regency: string;
+			province: string;
+		} | null;
+		father: {
+			name: string;
+			phone: string;
+			job: string;
+		} | null;
+		mother: {
+			name: string;
+			phone: string;
+			job: string;
+		} | null;
+		guardian: {
+			name: string;
+			phone: string;
+			job: string;
+		} | null;
+	};
 
 	let student: Student | null = null;
 	let loading = true;
@@ -26,24 +47,70 @@
 
 	onMount(async () => {
 		try {
-            const token = localStorage.getItem('token');
-            if (!token) {
-                goto('/login');
-                return;
-            }
+			const token = localStorage.getItem('token');
+			if (!token) {
+				goto('/login');
+				return;
+			}
 
-			// Make request to your Express API endpoint
-			const response = await apiFetch(`/routes/api/studentDataSet/${$page.params.id}`);
+			// Endpoint matches backend/routes/api/student.js mounting (/:id)
+			const response = await API_FETCH(`/routes/api/studentDataSet/${$page.params.id}`);
 
 			if (!response.ok) {
-                if (response.status === 401) {
-                    goto('/login');
-                    return;
-                }
+				if (response.status === 401) {
+					goto('/login');
+					return;
+				}
 				throw new Error('Student not found');
 			}
 
-			student = await response.json();
+			const data = await response.json();
+
+			// Map API composite response to FE Student type
+			student = {
+				id: data.id,
+				name: data.studentName,
+				class: data.class || 'Belum Masuk Kelas', // Placeholder until joined with class data
+				gender: data.gender,
+				cityOfOrigin: data.originRegion || data.birthPlace || '-',
+				status: 'active', // Default or derived from data if available
+				nisn: data.nisn || '-',
+				localNis: data.localNis || '-',
+				birthDate: data.birthDate || '-',
+				religion: data.religion || '-',
+
+				// Optional chaining for nested objects in case they are null
+				address: data.address
+					? {
+							street: data.address.street,
+							village: data.address.village,
+							subDistrict: data.address.subDistrict,
+							regency: data.address.regency, // or district depending on schema
+							province: data.address.province
+						}
+					: null,
+				father: data.father
+					? {
+							name: data.father.name,
+							phone: data.father.phoneNumber,
+							job: data.father.occupation
+						}
+					: null,
+				mother: data.mother
+					? {
+							name: data.mother.name,
+							phone: data.mother.phoneNumber,
+							job: data.mother.occupation
+						}
+					: null,
+				guardian: data.guardian
+					? {
+							name: data.guardian.name,
+							phone: data.guardian.phoneNumber,
+							job: data.guardian.occupation
+						}
+					: null
+			} as Student;
 		} catch (err: unknown) {
 			error = err instanceof Error ? err.message : String(err);
 		} finally {
@@ -51,194 +118,268 @@
 		}
 	});
 
-	// Get the id from URL params - $page.params.id comes from the [id] folder name
-	// const studentId = Number($page.params.id);
-
-	// Find student by id
-	//const student = studentData.find((s) => s.id === studentId);
-
-	function getStatusStyle(status: Student['status']): string {
+	function getStatusStyle(status: string): string {
 		switch (status) {
 			case 'active':
+			case 'aktif':
 				return 'border-green-400 bg-green-300 text-emerald-700';
 			case 'warning':
 				return 'border-amber-400 bg-amber-300 text-amber-700';
 			case 'inactive':
+			case 'nonaktif':
 				return 'border-red-400 bg-red-300 text-red-700';
 			default:
-				return '';
+				return 'border-slate-400 bg-slate-300 text-slate-700';
 		}
 	}
 </script>
 
-<!-- student data main -->
-{#if student}
-	<div class="min-h-screen bg-slate-50 p-4 md:p-8">
-		<div class="mx-auto max-w-4xl">
-			<!-- Back button -->
-			<a
-				href="/siswa"
-				class="mb-6 flex w-fit items-center gap-2 rounded-full bg-blue-100 p-2 text-blue-600 hover:text-blue-800"
-			>
-				<span>
-					<svg
-						class="fill-blue-600"
-						xmlns="http://www.w3.org/2000/svg"
-						viewBox="0 0 24 24"
-						fill="#000000"
-						aria-hidden="true"
-						id="Arrow-Left-Circle--Streamline-Heroicons"
-						height="24"
-						width="24"
-					>
-						<desc> Arrow Left Circle Streamline Icon: https://streamlinehq.com </desc>
-						<path
-							fill-rule="evenodd"
-							d="M12 2.25c-5.385 0 -9.75 4.365 -9.75 9.75s4.365 9.75 9.75 9.75 9.75 -4.365 9.75 -9.75S17.385 2.25 12 2.25Zm-4.28 9.22a0.75 0.75 0 0 0 0 1.06l3 3a0.75 0.75 0 1 0 1.06 -1.06l-1.72 -1.72h5.69a0.75 0.75 0 0 0 0 -1.5h-5.69l1.72 -1.72a0.75 0.75 0 0 0 -1.06 -1.06l-3 3Z"
-							clip-rule="evenodd"
-							stroke-width="1"
-						></path>
-					</svg>
-				</span>
-				<span> Kembali ke daftar </span>
-			</a>
+<div class="min-h-screen bg-slate-50 p-4 md:p-8">
+	<div class="mx-auto max-w-4xl">
+		<!-- Back button (Always visible) -->
+		<a
+			href="/siswa"
+			class="mb-6 flex w-fit items-center gap-2 rounded-full bg-blue-100 p-2 text-blue-600 transition-colors hover:text-blue-800"
+		>
+			<span>
+				<svg
+					class="fill-blue-600"
+					xmlns="http://www.w3.org/2000/svg"
+					viewBox="0 0 24 24"
+					height="24"
+					width="24"
+				>
+					<path
+						fill-rule="evenodd"
+						d="M12 2.25c-5.385 0 -9.75 4.365 -9.75 9.75s4.365 9.75 9.75 9.75 9.75 -4.365 9.75 -9.75S17.385 2.25 12 2.25Zm-4.28 9.22a0.75 0.75 0 0 0 0 1.06l3 3a0.75 0.75 0 1 0 1.06 -1.06l-1.72 -1.72h5.69a0.75 0.75 0 0 0 0 -1.5h-5.69l1.72 -1.72a0.75 0.75 0 0 0 -1.06 -1.06l-3 3Z"
+						clip-rule="evenodd"
+					></path>
+				</svg>
+			</span>
+			<span> Kembali ke daftar </span>
+		</a>
 
+		{#if loading}
+			<div class="flex h-64 items-center justify-center rounded-lg bg-white shadow-lg">
+				<span class="loading loading-spinner loading-lg text-blue-500"></span>
+			</div>
+		{:else if error}
+			<div
+				class="flex h-64 flex-col items-center justify-center rounded-lg bg-white p-8 text-center shadow-lg"
+			>
+				<h1 class="text-2xl font-bold text-red-500">Error</h1>
+				<p class="mt-2 text-slate-600">{error}</p>
+			</div>
+		{:else if student}
 			<!-- Student card parent -->
-			<div class=" bg-white p-2 md:rounded-lg md:p-8 md:shadow-lg">
-				<!-- student header -->
-				<!-- 
-					all information in the head goes here
-				 -->
-				<div class="mb-5 flex items-center justify-between">
-					<div class="flex items-center gap-4">
-						<!-- student image -->
-						<div class="h-22 w-18 bg-slate-500"></div>
-						<!-- student name and id -->
-						<div>
-							<h1 class="text-xl font-bold text-slate-800 md:text-3xl">{student.name}</h1>
-							<p class="mt-2 text-slate-600">ID: {student.id}</p>
+			<div class="space-y-6">
+				<!-- Header Card -->
+				<div class="border border-slate-100 bg-white p-6 md:rounded-xl md:shadow-sm">
+					<div class="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+						<div class="flex items-center gap-6">
+							<!-- student image -->
+							<div
+								class="flex h-24 w-24 items-center justify-center overflow-hidden rounded-full border-4 border-white bg-slate-100 shadow-sm"
+							>
+								{#if student.gender === 'Perempuan' || student.gender === 'female'}
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										class="h-12 w-12 text-slate-400"
+										viewBox="0 0 20 20"
+										fill="currentColor"
+									>
+										<path
+											fill-rule="evenodd"
+											d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+											clip-rule="evenodd"
+										/>
+									</svg>
+								{:else}
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										class="h-12 w-12 text-slate-400"
+										viewBox="0 0 20 20"
+										fill="currentColor"
+									>
+										<path
+											fill-rule="evenodd"
+											d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+											clip-rule="evenodd"
+										/>
+									</svg>
+								{/if}
+							</div>
+
+							<!-- student name and id -->
+							<div>
+								<div class="flex items-center gap-3">
+									<h1 class="text-2xl font-bold tracking-tight text-slate-800">{student.name}</h1>
+									<span
+										class={`rounded-full px-3 py-0.5 text-xs font-bold tracking-wide uppercase ${getStatusStyle(student.status)}`}
+									>
+										{student.status}
+									</span>
+								</div>
+								<div class="mt-2 flex flex-wrap gap-x-6 gap-y-1 text-sm text-slate-500">
+									<p class="flex items-center gap-1.5">
+										<span class="font-medium text-slate-700">NISN:</span>
+										{student.nisn}
+									</p>
+									<p class="flex items-center gap-1.5">
+										<span class="font-medium text-slate-700">NIS Lokal:</span>
+										{student.localNis}
+									</p>
+									<p class="flex items-center gap-1.5">
+										<span class="font-medium text-slate-700">Kelas:</span>
+										{student.class}
+									</p>
+								</div>
+							</div>
 						</div>
 					</div>
-					<div class="mb-6 flex items-center p-2">
-						<!-- status siswa -->
-						<span
-							class={`rounded-lg border px-4 py-2 text-sm font-medium ${getStatusStyle(student.status)}`}
-						>
-							{student.status.toUpperCase()}
-						</span>
-					</div>
 				</div>
 
-				<!-- data student -->
-
-				<!-- 
-				
-				- content will be :
-				pokok di sini lah
-
-				-->
-
-				<div class="grid gap-4 md:grid-cols-2">
-					<!-- kelas siswa (harus nya terpisah) -->
-					<div class="rounded-lg bg-slate-50 p-4">
-						<p class="text-sm text-slate-600">Kelas</p>
-						<p class="mt-1 text-xl font-semibold text-slate-800">{student.class}</p>
+				<!-- Content Grid -->
+				<div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+					<!-- 1. Personal Info -->
+					<div class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+						<h3 class="mb-4 flex items-center gap-2 text-base font-semibold text-slate-800">
+							<svg
+								class="h-5 w-5 text-blue-500"
+								fill="none"
+								stroke="currentColor"
+								viewBox="0 0 24 24"
+								><path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+								></path></svg
+							>
+							Data Pribadi
+						</h3>
+						<div class="space-y-3 text-sm">
+							<div>
+								<p class="text-xs text-slate-500 uppercase">Jenis Kelamin</p>
+								<p class="font-medium text-slate-700 capitalize">{student.gender || '-'}</p>
+							</div>
+							<div>
+								<p class="text-xs text-slate-500 uppercase">Tempat, Tanggal Lahir</p>
+								<p class="font-medium text-slate-700">
+									{student.cityOfOrigin}, {student.birthDate}
+								</p>
+							</div>
+							<div>
+								<p class="text-xs text-slate-500 uppercase">Agama</p>
+								<p class="font-medium text-slate-700">{student.religion}</p>
+							</div>
+						</div>
 					</div>
 
-					<!-- jenis kelamin siswa -->
-					<div class="rounded-lg bg-slate-50 p-4">
-						<p class="text-sm text-slate-600">Jenis Kelamin</p>
-						<p class="mt-1 text-xl font-semibold text-slate-800">
-							<!-- logic loop dan cek jenis kelamin dengan ternary operator-->
-							{student.gender === 'male' ? 'male' : 'female'}
-						</p>
+					<!-- 2. Address -->
+					<div class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+						<h3 class="mb-4 flex items-center gap-2 text-base font-semibold text-slate-800">
+							<svg
+								class="h-5 w-5 text-orange-500"
+								fill="none"
+								stroke="currentColor"
+								viewBox="0 0 24 24"
+								><path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+								></path><path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+								></path></svg
+							>
+							Alamat Domisili
+						</h3>
+						{#if student.address}
+							<div class="space-y-3 text-sm">
+								<div>
+									<p class="text-xs text-slate-500 uppercase">Jalan</p>
+									<p class="font-medium text-slate-700">{student.address.street || '-'}</p>
+								</div>
+								<div>
+									<p class="text-xs text-slate-500 uppercase">Desa / Kec</p>
+									<p class="font-medium text-slate-700">
+										{student.address.village} / {student.address.subDistrict}
+									</p>
+								</div>
+								<div>
+									<p class="text-xs text-slate-500 uppercase">Kab / Prov</p>
+									<p class="font-medium text-slate-700">
+										{student.address.regency}, {student.address.province}
+									</p>
+								</div>
+							</div>
+						{:else}
+							<p class="text-sm text-slate-400 italic">Data alamat belum lengkap.</p>
+						{/if}
 					</div>
 
-					<!-- asal siswa (harus nya terpisah dan gabungan dari beberapa data yang di combine secara bersamaan) -->
-					<div class="rounded-lg bg-slate-50 p-4">
-						<p class="text-sm text-slate-600">Asal</p>
-						<p class="mt-1 text-xl font-semibold text-slate-800">
-							{student.cityOfOrigin}
-							<!-- disini harus nya ada data tambahan atau gabungan dari data resmi dukcapil -->
-						</p>
-					</div>
-
-					<!-- status (siswa aktif dst) -->
-					<div class="rounded-lg bg-slate-50 p-4">
-						<p class="text-sm text-slate-600">Status Siswa</p>
-						<p class="mt-1 text-xl font-semibold text-slate-800 capitalize">{student.status}</p>
-					</div>
-
-					<!-- ayah siswa -->
-					<div class="rounded-lg bg-slate-50 p-4">
-						<p class="text-sm text-slate-600">Ayah Siswa</p>
-						<p class="mt-1 flex items-center gap-2 text-xl font-semibold text-slate-800 capitalize">
-							<span>
-								<svg
-									xmlns="http://www.w3.org/2000/svg"
-									fill="none"
-									viewBox="0 0 24 24"
-									id="Boy-Fill--Streamline-Outlined-Fill-Material"
-									height="24"
-									width="24"
-								>
-									<desc> Boy Fill Streamline Icon: https://streamlinehq.com </desc>
-									<path
-										fill="#000000"
-										d="M11.9975 7c-0.415 0 -0.76835 -0.14665 -1.06 -0.44 -0.29165 -0.29335 -0.4375 -0.6475 -0.4375 -1.0625 0 -0.415 0.14665 -0.768335 0.44 -1.06 0.29335 -0.291665 0.6475 -0.4375 1.0625 -0.4375 0.415 0 0.76835 0.146665 1.06 0.44 0.29165 0.293335 0.4375 0.6475 0.4375 1.0625 0 0.415 -0.14665 0.76835 -0.44 1.06 -0.29335 0.29165 -0.6475 0.4375 -1.0625 0.4375ZM10.5 20V15h-1V10c0 -0.4125 0.1469 -0.76565 0.44075 -1.0595C10.2344 8.64685 10.5875 8.5 11 8.5h2c0.4125 0 0.76565 0.14685 1.0595 0.4405 0.29365 0.29385 0.4405 0.647 0.4405 1.0595v5h-1v5h-3Z"
-										stroke-width="0.5"
-									></path>
-								</svg>
-							</span>
-							{student.father}
-						</p>
-					</div>
-
-					<!-- ibu siswa -->
-					<div class="rounded-lg bg-slate-50 p-4">
-						<p class="text-sm text-slate-600">Ibu Siswa</p>
-						<p class="mt-1 flex items-center gap-2 text-xl font-semibold text-slate-800 capitalize">
-							<span>
-								<svg
-									xmlns="http://www.w3.org/2000/svg"
-									fill="none"
-									viewBox="0 0 24 24"
-									id="Woman-2-Fill--Streamline-Outlined-Fill-Material"
-									height="24"
-									width="24"
-								>
-									<desc> Woman 2 Fill Streamline Icon: https://streamlinehq.com </desc>
-									<path
-										fill="#000000"
-										d="M10.7 22V16.5H7.5l2.55 -8.2c0.13335 -0.41665 0.38335 -0.7375 0.75 -0.9625 0.36665 -0.225 0.76665 -0.3375 1.2 -0.3375 0.43335 0 0.83335 0.1125 1.2 0.3375 0.36665 0.225 0.61665 0.54585 0.75 0.9625L16.5 16.5h-3.2v5.5h-2.6Zm1.302 -16.35c-0.50135 0 -0.93115 -0.1785 -1.2895 -0.5355 -0.35835 -0.357 -0.5375 -0.786165 -0.5375 -1.2875 0 -0.501335 0.1785 -0.931165 0.5355 -1.2895C11.0675 2.179165 11.49665 2 11.998 2c0.50135 0 0.93115 0.1785 1.2895 0.5355 0.35835 0.357 0.5375 0.786165 0.5375 1.2875 0 0.501335 -0.1785 0.931165 -0.5355 1.2895 -0.357 0.35835 -0.78615 0.5375 -1.2875 0.5375Z"
-										stroke-width="0.5"
-									></path>
-								</svg>
-							</span>
-							{student.mother}
-						</p>
+					<!-- 3. Family Info (Merged for compactness or separate) -->
+					<div
+						class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm md:col-span-2 lg:col-span-1"
+					>
+						<h3 class="mb-4 flex items-center gap-2 text-base font-semibold text-slate-800">
+							<svg
+								class="h-5 w-5 text-emerald-500"
+								fill="none"
+								stroke="currentColor"
+								viewBox="0 0 24 24"
+								><path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+								></path></svg
+							>
+							Data Orang Tua
+						</h3>
+						<div class="space-y-4 text-sm">
+							<!-- Father -->
+							<div class="border-b border-slate-100 pb-3 last:border-0 last:pb-0">
+								<p class="mb-1 text-xs font-bold text-slate-400 uppercase">Ayah</p>
+								{#if student.father}
+									<p class="font-medium text-slate-800">{student.father.name}</p>
+									<p class="mt-0.5 text-xs text-slate-500">
+										{student.father.job} • {student.father.phone}
+									</p>
+								{:else}
+									<p class="text-slate-400 italic">-</p>
+								{/if}
+							</div>
+							<!-- Mother -->
+							<div class="border-b border-slate-100 pb-3 last:border-0 last:pb-0">
+								<p class="mb-1 text-xs font-bold text-slate-400 uppercase">Ibu</p>
+								{#if student.mother}
+									<p class="font-medium text-slate-800">{student.mother.name}</p>
+									<p class="mt-0.5 text-xs text-slate-500">
+										{student.mother.job} • {student.mother.phone}
+									</p>
+								{:else}
+									<p class="text-slate-400 italic">-</p>
+								{/if}
+							</div>
+							<!-- Guardian -->
+							{#if student.guardian}
+								<div>
+									<p class="mb-1 text-xs font-bold text-slate-400 uppercase">Wali</p>
+									<p class="font-medium text-slate-800">{student.guardian.name}</p>
+									<p class="mt-0.5 text-xs text-slate-500">
+										{student.guardian.job} • {student.guardian.phone}
+									</p>
+								</div>
+							{/if}
+						</div>
 					</div>
 				</div>
-
-				<!-- more sections here like: -->
-				<!-- - Nilai/grades -->
-				<!-- - Absensi/attendance -->
-				<!-- - Contact info -->
-				<!-- - etc -->
 			</div>
-		</div>
+		{/if}
 	</div>
-{:else}
-	<div class="flex min-h-screen items-center justify-center bg-slate-50">
-		<div class="text-center">
-			<h1 class="text-4xl font-bold text-slate-800">404</h1>
-			<p class="mt-2 text-slate-600">Siswa tidak ditemukan</p>
-			<a
-				href="/siswa"
-				class="mt-4 inline-block rounded-md bg-blue-500 px-6 py-2 text-white hover:bg-blue-600"
-			>
-				Kembali ke daftar
-			</a>
-		</div>
-	</div>
-{/if}
+</div>

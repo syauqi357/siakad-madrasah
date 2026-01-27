@@ -1,21 +1,137 @@
 <script lang="ts">
-	// logic for turn out
+	import { onMount } from 'svelte';
+	import StudentScoreTable from '$lib/components/layout/studentScoreTable.svelte';
+
+	// Default demo data (fallback)
+	const demoHeaders = ['Nama Siswa', 'NISN', 'UH1', 'UTS', 'UAS', 'Total'];
+	const demoData = [
+		{
+			studentName: 'Ahmad Santoso',
+			nisn: '1234567890',
+			scores: { UH1: 85, UTS: 90, UAS: 88 },
+			total: 87.6
+		},
+		{
+			studentName: 'Budi Pratama',
+			nisn: '1234567891',
+			scores: { UH1: 78, UTS: 85, UAS: 92 },
+			total: 85.0
+		}
+	];
+
+	let tableHeaders = demoHeaders;
+	let tableData = demoData;
+	let loading = true;
+	let usingRealData = false;
+	let subjectName = 'Matematika (Demo)';
+	let className = 'X-IPA-1 (Demo)';
+
+	// Dropdown State
+	let selectedClassId: number | null = null;
+	let classOptions: Array<{ id: number; name: string }> = [];
+
+	async function fetchClassSubjects() {
+		try {
+			const response = await fetch('http://localhost:3000/routes/api/score/class-subjects');
+			if (response.ok) {
+				const result = await response.json();
+				if (result.success && result.data.length > 0) {
+					classOptions = result.data;
+					selectedClassId = classOptions[0].id; // Select first one by default
+					fetchScores(selectedClassId); // Fetch scores for the first class
+				} else {
+					console.warn('No class subjects found.');
+				}
+			}
+		} catch (e) {
+			console.error('Failed to fetch class subjects:', e);
+		}
+	}
+
+	async function fetchScores(classId: number | null) {
+		if (!classId) return;
+
+		loading = true;
+		try {
+			const response = await fetch(
+				`http://localhost:3000/routes/api/score/scorebyclass?classSubjectId=${classId}`
+			);
+
+			if (response.ok) {
+				const result = await response.json();
+
+				if (result.success) {
+					usingRealData = true;
+					subjectName = result.subjectName || 'Unknown Subject';
+					className = result.className || 'Unknown Class';
+
+					// 1. Build Headers from Assessment Types
+					if (result.assessmentTypes && result.assessmentTypes.length > 0) {
+						const assessmentCodes = result.assessmentTypes.map((t: any) => t.code);
+						tableHeaders = ['Nama Siswa', 'NISN', ...assessmentCodes];
+					} else {
+						tableHeaders = ['Nama Siswa', 'NISN'];
+					}
+
+					// 2. Map Data
+					if (result.data && result.data.length > 0) {
+						tableData = result.data.map((student: any) => {
+							return {
+								studentName: student.studentName,
+								nisn: student.nisn,
+								scores: student.scores || {}
+							};
+						});
+					} else {
+						tableData = [];
+					}
+				} else {
+					usingRealData = false;
+					subjectName = 'No Data Found';
+					tableData = [];
+				}
+			}
+		} catch (e) {
+			console.error('Failed to fetch real data, using demo data.', e);
+			usingRealData = false;
+		} finally {
+			loading = false;
+		}
+	}
+
+	onMount(() => {
+		fetchClassSubjects();
+	});
+
+	function handleClassChange(event: Event) {
+		const select = event.target as HTMLSelectElement;
+		selectedClassId = parseInt(select.value);
+		fetchScores(selectedClassId);
+	}
 </script>
 
 <div class="min-h-screen">
 	<!-- login board -->
-	<div class="flex h-screen flex-col items-center justify-center gap-24 bg-[url(/src/lib/image/pattern-randomized.svg)] bg-cover bg-center">
-		<div class="flex h-fit w-full flex-col items-center justify-center">
-			<div class=" mb-21 flex sm:w-4xl flex-col items-center gap-3 w-full">
-				<h1 class="text-transparent text-center text-4xl sm:text-6xl/21 font-bold tracking-wide capitalize bg-radial-[at_60%_85%] from-cyan-500 to-blue-800 bg-clip-text">
+	<div
+		class="flex min-h-screen flex-col items-center justify-center gap-16 bg-[url(/src/lib/image/pattern-randomized.svg)] bg-cover bg-center py-20"
+	>
+		<div class="flex h-fit w-full flex-col items-center justify-center px-4">
+			<div class=" mb-12 flex w-full flex-col items-center gap-3 text-center sm:w-4xl">
+				<h1
+					class="bg-radial-[at_60%_85%] from-cyan-500 to-blue-800 bg-clip-text text-4xl leading-tight font-bold tracking-wide text-transparent capitalize sm:text-6xl"
+				>
 					selamat datang di platform akademik madrasah!
 				</h1>
-				<h3 class="text-lg sm:text-2xl capitalize bg-radial-[at_60%_85%] from-emerald-600 to-cyan-700 bg-clip-text text-transparent">jaga data dan banyak hal!</h3>
+				<h3
+					class="bg-radial-[at_60%_85%] from-emerald-600 to-cyan-700 bg-clip-text text-lg font-medium text-transparent capitalize sm:text-2xl"
+				>
+					jaga data dan banyak hal!
+				</h3>
 			</div>
-			<div class="flex items-center justify-center gap-3">
+			<div class="flex flex-wrap items-center justify-center gap-4">
 				<a href="/login">
 					<button
-						class="flex flex-row-reverse items-center justify-center gap-2 sm:rounded-xl rounded-lg bg-blue-500 sm:p-3 sm:pr-6 sm:pl-6 p-2 pl-4 pr-4 text-md sm:text-lg text-white capitalize transition-all duration-200 ease-in-out hover:bg-blue-700"
+						class="flex flex-row-reverse items-center justify-center gap-2 rounded-xl bg-blue-600 px-6 py-3 text-lg font-semibold text-white capitalize transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:bg-blue-700 hover:shadow-lg"
 					>
 						<span class="h-6 w-6">
 							<svg
@@ -47,7 +163,7 @@
 				<!-- contribute in another version -->
 				<a href="https://github.com/syauqi357" aria-labelledby="contribute">
 					<button
-						class="text-sm sm:text-md text-bold flex items-center justify-center gap-2 sm:rounded-xl rounded-lg border ring-2 ring-blue-700 bg-slate-200 sm:p-3 sm:pr-6 sm:pl-6 p-2 pr-4 pl-4 text-slate-600 transition-all ease-in-out duration-300 hover:drop-shadow-lg drop-shadow-blue-500 "
+						class="text-md flex items-center justify-center gap-2 rounded-xl border-2 border-blue-200 bg-white/80 px-6 py-3 font-medium text-blue-700 backdrop-blur-sm transition-all duration-300 ease-in-out hover:border-blue-300 hover:bg-blue-50 hover:shadow-md"
 					>
 						<span class="h-6 w-6">
 							<svg
@@ -70,17 +186,61 @@
 			</div>
 		</div>
 
-		<div>
-			<table>
-				<thead>
-					<tr>
-						<td>1</td>
-						<td>2</td>
-						<td>3</td>
-						<td>4</td>
-					</tr>
-				</thead>
-			</table>
+		<!-- Demo Table Section -->
+		<div class="animate-fade-in-up mt-12 w-full max-w-5xl px-4">
+			<StudentScoreTable
+				headers={tableHeaders}
+				data={tableData}
+				{className}
+				{subjectName}
+				{loading}
+			>
+				<!-- Inject the controls into the slot -->
+				<div slot="controls" class="flex items-center gap-3">
+					<!-- Class Selector -->
+					<select
+						class="select select-sm outline-none  select-bordered w-full max-w-xs bg-white"
+						on:change={handleClassChange}
+						value={selectedClassId}
+					>
+						{#if classOptions.length > 0}
+							{#each classOptions as option}
+								<option value={option.id}>{option.name}</option>
+							{/each}
+						{:else}
+							<option disabled>Loading classes...</option>
+						{/if}
+					</select>
+
+					{#if usingRealData}
+						<span
+							class="animate-pulse rounded-md bg-green-100 px-2 py-1 text-xs font-bold whitespace-nowrap text-green-700"
+							>LIVE</span
+						>
+					{:else}
+						<span
+							class="rounded-full bg-slate-100 px-2 py-1 text-xs font-bold whitespace-nowrap text-slate-500"
+							>DEMO</span
+						>
+					{/if}
+				</div>
+			</StudentScoreTable>
 		</div>
 	</div>
 </div>
+
+<style>
+	@keyframes fade-in-up {
+		from {
+			opacity: 0;
+			transform: translateY(20px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+	.animate-fade-in-up {
+		animation: fade-in-up 0.8s ease-out forwards;
+	}
+</style>

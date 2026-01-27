@@ -36,7 +36,7 @@
 			// docs : pending
 
 			const response = await fetch(`${apiUrl}/routes/api/schoolData`);
-			//get API from backend using express from localhost:3000/api/schoolData and this is taking a variable const on the file
+			//get API from backend using express from localhost:3000/api/schoolAdministrativeData and this is taking a variable const on the file
 
 			if (!response.ok) {
 				throw new Error(`HTTP error! status: ${response.status}`);
@@ -62,7 +62,7 @@
 			loading = false;
 
 			// Fallback data
-			// schoolData = {
+			// schoolAdministrativeData = {
 			// 	name: 'MTs. Persis 2 Bangil',
 			// 	npsn: '231698134',
 			// 	logoUrl: logo
@@ -128,11 +128,11 @@
                   <!-- <div class="flex flex-col gap-2">
                      <div>
                         <h3>NPSN :</h3>
-                        <p class="font-semibold">{schoolData.npsn}</p>
+                        <p class="font-semibold">{schoolAdministrativeData.npsn}</p>
                      </div>
                      <div>
                         <h3>NSM :</h3>
-                        <p class="font-semibold">{schoolData.nsm}</p>
+                        <p class="font-semibold">{schoolAdministrativeData.nsm}</p>
                      </div>
                   </div> -->
                </div>

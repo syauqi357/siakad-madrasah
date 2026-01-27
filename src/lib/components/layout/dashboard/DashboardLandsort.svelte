@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { activeMenu } from '$lib/stores.js';
 	import { onMount } from 'svelte';
-	import { apiFetch } from '$lib/api';
+	import { API_FETCH } from '$lib/api';
 	import StatCard from './StatCard.svelte';
 
 	// State for metrics
@@ -17,14 +17,14 @@
 		$activeMenu = 'dashboard';
 		try {
 			// 1. Fetch School Data
-			const schoolRes = await apiFetch('/routes/api/schoolData');
+			const schoolRes = await API_FETCH('/routes/api/schoolData');
 			if (schoolRes.ok) {
 				const data = await schoolRes.json();
 				schoolName = data.name;
 			}
 
 			// 2. Fetch Student Count
-			const studentRes = await apiFetch('/routes/api/studentDataSet/count');
+			const studentRes = await API_FETCH('/routes/api/studentDataSet/count');
 			if (studentRes.ok) {
 				const data = await studentRes.json();
 				studentCount = data.count;
@@ -56,14 +56,14 @@
 		'<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 32 32" height="32" width="32"><g id="bar-chart">    <path id="Union" fill="#000000" d="M9.333333333333332 12c0.7363733333333333 0 1.3333333333333333 0.5969599999999999 1.3333333333333333 1.3333333333333333v12c0 0.7363999999999999 -0.5969599999999999 1.3333333333333333 -1.3333333333333333 1.3333333333333333H6.666666666666666c-0.7363733333333333 0 -1.3333333333333333 -0.5969333333333333 -1.3333333333333333 -1.3333333333333333v-12c0 -0.7363733333333333 0.5969599999999999 -1.3333333333333333 1.3333333333333333 -1.3333333333333333zm8 -6.666666666666666c0.7363999999999999 0 1.3333333333333333 0.5969599999999999 1.3333333333333333 1.3333333333333333v18.666666666666664c0 0.7363999999999999 -0.5969333333333333 1.3333333333333333 -1.3333333333333333 1.3333333333333333h-2.6666666666666665c-0.7363999999999999 0 -1.3333333333333333 -0.5969333333333333 -1.3333333333333333 -1.3333333333333333V6.666666666666666c0 -0.7363733333333333 0.5969333333333333 -1.3333333333333333 1.3333333333333333 -1.3333333333333333zm8 12c0.7363999999999999 0 1.3333333333333333 0.5969333333333333 1.3333333333333333 1.3333333333333333v6.666666666666666c0 0.7363999999999999 -0.5969333333333333 1.3333333333333333 -1.3333333333333333 1.3333333333333333h-2.6666666666666665c-0.7363999999999999 0 -1.3333333333333333 -0.5969333333333333 -1.3333333333333333 -1.3333333333333333v-6.666666666666666c0 -0.7363999999999999 0.5969333333333333 -1.3333333333333333 1.3333333333333333 -1.3333333333333333z" stroke-width="1.3333"></path></g></svg>';
 </script>
 
-<div class="bg w-full">
-	<div class="mb-6">
+<div class=" w-full px-6 py-4">
+	<div class=" py-6">
 		<h1 class="text-3xl font-bold text-gray-900">Dashboard</h1>
 		<p class="mt-2 text-gray-600">Welcome to {schoolName} Education Platform</p>
 	</div>
 
 	<!-- Statistics Grid -->
-	<div class="grid grid-cols-1 gap-6 p-6 md:grid-cols-2 lg:grid-cols-4">
+	<div class="grid gap-4 grid-cols-2 w-full md:grid-cols-3 lg:grid-cols-4 ">
 		<!-- Card 1: Students -->
 		<StatCard
 			title="Total Students"
