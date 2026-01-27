@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { eq, and } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 import { db, schoolDataTable, schoolFacilitiesTable } from '../src/index.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -38,18 +38,18 @@ function findFacilityImages(facilityType, subFolder = null) {
 		}
 
 		const files = fs.readdirSync(uploadPath);
-		const imageFiles = files
+
+
+		return files
 			.filter((file) => /\.(svg|png|jpg|jpeg|gif|webp)$/i.test(file))
 			.map((file) => {
 				const basePathUrl = '/upload/imageSch';
-				const imagePath = subFolder
+
+				return subFolder
 					? path.posix.join(basePathUrl, facilityType, subFolder, file)
 					: path.posix.join(basePathUrl, facilityType, file);
-				return imagePath;
 			})
 			.slice(0, 4);
-
-		return imageFiles;
 	} catch (error) {
 		console.error(`Error reading ${facilityType} directory:`, error);
 		return [];

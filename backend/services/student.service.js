@@ -405,7 +405,7 @@ export const createBulkStudentsFromExcel = async (fileBuffer) => {
 	return db.transaction((tx) => {
 		const results = [];
 		for (const payload of payloads) {
-			// Reuse the logic (simplified for bulk)
+			// Insert student with ALL fields (matching createStudentData logic)
 			const newStudent = tx
 				.insert(studentTable)
 				.values({
@@ -415,8 +415,18 @@ export const createBulkStudentsFromExcel = async (fileBuffer) => {
 					gender: payload.gender,
 					religion: payload.religion,
 					birthPlace: payload.birthPlace,
-					birthDate: payload.birthDate
-					// ... map other fields
+					birthDate: payload.birthDate,
+					previousSchool: payload.previousSchool,
+					phoneNumber: payload.phoneNumber,
+					childOrder: payload.childOrder,
+					siblingsCount: payload.siblingsCount,
+					originRegion: payload.originRegion,
+					bpjs: payload.bpjs,
+					idCardNumber: payload.idCardNumber,
+					birthCertificateNumber: payload.birthCertificateNumber,
+					nationality: payload.nationality,
+					livingWith: payload.livingWith,
+					transportation: payload.transportation
 				})
 				.returning()
 				.get();
@@ -430,12 +440,36 @@ export const createBulkStudentsFromExcel = async (fileBuffer) => {
 			}
 			if (payload.father && payload.father.name) {
 				tx.insert(studentFather)
-					.values({ studentId, ...payload.father })
+					.values({
+						studentId,
+						name: payload.father.name,
+						nik: payload.father.nik,
+						occupation: payload.father.job,
+						phoneNumber: payload.father.phone,
+						birthPlace: payload.father.birthPlace,
+						birthDate: payload.father.birthDate,
+						birthYear: payload.father.birthYear,
+						education: payload.father.education,
+						monthlyIncome: payload.father.monthlyIncome,
+						isAlive: payload.father.isAlive
+					})
 					.run();
 			}
 			if (payload.mother && payload.mother.name) {
 				tx.insert(studentMother)
-					.values({ studentId, ...payload.mother })
+					.values({
+						studentId,
+						name: payload.mother.name,
+						nik: payload.mother.nik,
+						occupation: payload.mother.job,
+						phoneNumber: payload.mother.phone,
+						birthPlace: payload.mother.birthPlace,
+						birthDate: payload.mother.birthDate,
+						birthYear: payload.mother.birthYear,
+						education: payload.mother.education,
+						monthlyIncome: payload.mother.monthlyIncome,
+						isAlive: payload.mother.isAlive
+					})
 					.run();
 			}
 			results.push(newStudent);
