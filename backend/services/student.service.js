@@ -6,7 +6,7 @@ import { studentWali } from '../src/db/schema/studentWali.js';
 import { studentAddress } from '../src/db/schema/studentAddress.js';
 import { rombelStudents } from '../src/db/schema/rombelStudents.js';
 import { rombel } from '../src/db/schema/classGroup.js';
-import { eq, count, isNull } from 'drizzle-orm';
+import { eq, count, isNull, or } from 'drizzle-orm';
 import ExcelJS from 'exceljs';
 
 // --- Header Mapping Configuration ---
@@ -150,7 +150,8 @@ export const findAllStudents = async (page = 1, limit = 10) => {
 // ... existing code ...
 
 export const findAllStudentsLite = async () => {
-	// Filter out students who are already in a rombel (rombelStudents table)
+	// Filter out students who are already in a VALID rombel
+	// We explicitly check if the rombel exists. using Left Join on rombel.
 	return db
 		.select({
 			id: studentTable.id,
@@ -159,7 +160,13 @@ export const findAllStudentsLite = async () => {
 		})
 		.from(studentTable)
 		.leftJoin(rombelStudents, eq(studentTable.id, rombelStudents.studentId))
-		.where(isNull(rombelStudents.studentId));
+		.leftJoin(rombel, eq(rombelStudents.rombelId, rombel.id))
+		.where(
+			or(
+				isNull(rombelStudents.studentId), // Truly unassigned
+				isNull(rombel.id) // Assigned to a deleted/ghost rombel
+			)
+		);
 };
 
 export const searchStudents = async (searchTerm) => {

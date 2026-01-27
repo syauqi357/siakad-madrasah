@@ -8,6 +8,7 @@
 	import DownloadIcon from '$lib/components/icons/downloadIcon.svelte';
 	import Arrow_up from '$lib/components/icons/arrow_up.svelte';
 	import UploadExcel from '$lib/components/layout/upload/uploadExcel.svelte';
+	import ModalAlert from '$lib/components/modal/modalalert.svelte';
 
 	// Updated Student Type
 	type Student = {
@@ -30,6 +31,13 @@
 	let loading = false;
 	let isUploadModalOpen = false;
 	let searchQuery = '';
+
+	// Global Alert State
+	let alertModal = {
+		show: false,
+		type: 'success' as 'success' | 'error' | 'warning' | 'info',
+		message: ''
+	};
 
 	const limitOptions = [10, 20, 50, 100];
 
@@ -121,12 +129,23 @@
 				throw new Error(result.message || 'Upload failed');
 			}
 
-			alert('Upload berhasil!');
+			// Show success modal
+			alertModal = {
+				show: true,
+				type: 'success',
+				message: 'Upload berhasil!'
+			};
+
 			isUploadModalOpen = false;
 			fetchStudents(currentPage);
 		} catch (error) {
 			console.error('Upload Error:', error);
-			alert(`Gagal upload: ${error instanceof Error ? error.message : 'Unknown error'}`);
+			// Show error modal
+			alertModal = {
+				show: true,
+				type: 'error',
+				message: `Gagal upload: ${error instanceof Error ? error.message : 'Unknown error'}`
+			};
 		} finally {
 			loading = false;
 		}
@@ -141,6 +160,14 @@
 	isOpen={isUploadModalOpen}
 	on:close={() => (isUploadModalOpen = false)}
 	on:upload={handleUpload}
+/>
+
+<ModalAlert
+	show={alertModal.show}
+	type={alertModal.type}
+	message={alertModal.message}
+	on:close={() => (alertModal.show = false)}
+	on:confirm={() => (alertModal.show = false)}
 />
 
 <div class="flex flex-col gap-6 p-4 md:p-8">
@@ -229,12 +256,11 @@
 				<p>Belum ada data siswa.</p>
 			</div>
 		{:else}
-
 			<!-- existed state -->
 
 			{#each students as student (student.id)}
 				<div
-					class="grid grid-cols-1 items-center gap-4 border border-slate-200 bg-white p-3 last:border rounded-lg hover:bg-slate-50 md:grid-cols-12 md:px-6"
+					class="grid grid-cols-1 items-center gap-4 rounded-lg border border-slate-200 bg-white p-3 last:border hover:bg-slate-50 md:grid-cols-12 md:px-6"
 				>
 					<!-- Name -->
 					<div class="col-span-1 md:col-span-4">
@@ -243,7 +269,7 @@
 					</div>
 
 					<!-- NISN -->
-					<div class="col-span-2 hidden tracking-wide text-sm text-slate-600 md:block">
+					<div class="col-span-2 hidden text-sm tracking-wide text-slate-600 md:block">
 						{student.nisn}
 					</div>
 
@@ -286,13 +312,14 @@
 					</div>
 
 					<!-- Action -->
-					<div class="col-span-1 flex justify-end md:col-span-1 ">
+					<div class="col-span-1 flex justify-end md:col-span-1">
 						<button
 							on:click={() => goto(`/siswa/${student.id}`)}
-							class="flex items-center gap-1 text-sm font-medium bg-blue-500 text-blue-100 py-2 px-4 justify-center rounded-md transition-colors hover:bg-blue-800"
+							class="flex items-center justify-center gap-1 rounded-md bg-blue-500 px-4 py-2 text-sm font-medium text-blue-100 transition-colors hover:bg-blue-800"
 							title="Lihat Detail"
 						>
-							<span class="hidden sm:flex">selengkapnya</span> <Arrow_up />
+							<span class="hidden sm:flex">selengkapnya</span>
+							<Arrow_up />
 						</button>
 					</div>
 				</div>
