@@ -52,7 +52,8 @@ describe('Rombel Services - registerRombel', () => {
 
 		// Let's adjust the db.transaction mock to pass an object that looks like 'tx'
 		const mockTx = {
-			insert: jest.fn()
+			insert: jest.fn(),
+			update: jest.fn()
 		};
 
 		db.transaction.mockImplementation((callback) => {
@@ -64,6 +65,12 @@ describe('Rombel Services - registerRombel', () => {
 			.mockReturnValueOnce({ values: mockRombelValues }) // First call: Rombel
 			.mockReturnValueOnce({ values: mockStudentValues }); // Second call: Students
 
+		// Setup mockTx.update chain: update().set().where().run()
+		const mockRun = jest.fn();
+		const mockWhere = jest.fn().mockReturnValue({ run: mockRun });
+		const mockSet = jest.fn().mockReturnValue({ where: mockWhere });
+		mockTx.update.mockReturnValue({ set: mockSet });
+
 		// --- Call the service (Synchronous now) ---
 		const result = registerRombel(payload);
 
@@ -72,6 +79,7 @@ describe('Rombel Services - registerRombel', () => {
 
 		expect(db.transaction).toHaveBeenCalled();
 		expect(mockTx.insert).toHaveBeenCalledTimes(2);
+		expect(mockTx.update).toHaveBeenCalledTimes(1); // Should be called once to sync studentTable
 
 		// Verify Rombel Insert Values
 		expect(mockRombelValues).toHaveBeenCalledWith(

@@ -1,6 +1,6 @@
 import { sqliteTable, text, int, index } from 'drizzle-orm/sqlite-core';
 import { sql } from 'drizzle-orm';
-import { classSubject } from './classesSubjectTable.js'; // Import classSubject for the foreign key
+import { rombel } from './classGroup.js'; // CORRECTED IMPORT
 
 export const studentTable = sqliteTable(
 	'student',
@@ -26,8 +26,8 @@ export const studentTable = sqliteTable(
 		transportation: text('transportation'),
 		profilePhoto: text('profile_photo'),
 
-		// --- NEW: Link to Rombel (classSubject) ---
-		rombelId: int('rombel_id').references(() => classSubject.id), // Optional, can be null if not assigned yet
+		// --- FIXED: Copied from correct rombel reference ---
+		rombelId: int('rombel_id').references(() => rombel.id), // References rombel table (classGroup.js)
 
 		createdAt: text('created_at').default(sql`CURRENT_TIMESTAMP`),
 		updatedAt: text('updated_at').default(sql`CURRENT_TIMESTAMP`)

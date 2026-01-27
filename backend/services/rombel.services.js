@@ -3,7 +3,8 @@ import { rombel } from '../src/db/schema/classGroup.js';
 import { rombelStudents } from '../src/db/schema/rombelStudents.js';
 import { classes } from '../src/db/schema/classesDataTable.js';
 import { teachers } from '../src/db/schema/teacherUser.js';
-import { eq, sql } from 'drizzle-orm';
+import { eq, sql, inArray } from 'drizzle-orm';
+import { studentTable } from '../src/db/schema/studentsdataTable.js';
 
 // ... (insertRombel and registerSiswaToRombel functions remain the same) ...
 const insertRombel = (data, tx) => {
@@ -34,7 +35,16 @@ const registerSiswaToRombel = (rombelId, siswaIds, tx) => {
 		rombelId: rombelId,
 		studentId: studentId
 	}));
+	// 1. Insert into Junction Table (existing logic)
 	tx.insert(rombelStudents).values(valuesToInsert).run();
+
+	// 2. Update Student Table (Foreign Key Sync)
+	// We use `inArray` to update all students at once
+	tx.update(studentTable)
+		.set({ rombelId: rombelId })
+		.where(inArray(studentTable.id, siswaIds))
+		.run();
+
 	return true;
 };
 
