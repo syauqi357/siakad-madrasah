@@ -128,7 +128,7 @@ export const createStudentdataInputExcelBulkGenerator = async () => {
 	return workbook;
 };
 
-export const findAllStudents = async (page = 1, limit = 10) => {
+export const findAllStudents = async (page = 1, limit = 5) => {
 	const offset = (page - 1) * limit;
 
 	return db

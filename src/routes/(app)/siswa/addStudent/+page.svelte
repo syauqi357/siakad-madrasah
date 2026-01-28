@@ -394,7 +394,7 @@
 										<input
 											type="radio"
 											name="gender"
-											value="laki-laki"
+											value="L"
 											bind:group={formData.gender}
 											class="h-4 w-4 text-blue-600 focus:ring-blue-500"
 										/>
@@ -406,7 +406,7 @@
 										<input
 											type="radio"
 											name="gender"
-											value="perempuan"
+											value="P"
 											bind:group={formData.gender}
 											class="h-4 w-4 text-pink-600 focus:ring-pink-500"
 										/>
@@ -805,7 +805,14 @@
 					disabled={isLoading}
 					class="rounded-md bg-blue-500 px-5 py-2.5 text-sm font-medium text-white transition-all hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
 				>
-					{isLoading ? 'Menyimpan...' : 'Simpan Data Siswa'}
+					{#if isLoading}
+						<span> Menyimpan... </span>
+						<div
+							class="h-10 w-10 animate-spin rounded-full border-4 border-gray-300 border-t-blue-500"
+						></div>
+					{:else}
+						Simpan Data Siswa
+					{/if}
 				</button>
 			</div>
 		</form>

@@ -16,7 +16,7 @@
 		nisn: number | string;
 		nama: string;
 		kelas: string; // Now populated from backend
-		jenisKelamin: string;
+		gender: string;
 		asal: string;
 		status: 'aktif' | 'warning' | 'nonaktif';
 	};
@@ -27,7 +27,7 @@
 	let students: Student[] = [];
 	let currentPage = 1;
 	let totalPages = 1;
-	let limit = 10;
+	let limit = 5;
 	let loading = false;
 	let isUploadModalOpen = false;
 	let searchQuery = '';
@@ -39,7 +39,7 @@
 		message: ''
 	};
 
-	const limitOptions = [10, 20, 50, 100];
+	const limitOptions = [5, 10, 20, 50, 100];
 
 	async function fetchStudents(page: number) {
 		loading = true;
@@ -77,7 +77,8 @@
 				nisn: item.nisn || '-',
 				nama: item.name,
 				kelas: item.className || 'Belum Masuk Rombel', // Use className from backend
-				jenisKelamin: item.gender === 'male' || item.gender === 'Laki-laki' ? 'L' : 'P',
+				gender: item.gender === 'L' || item.gender === 'Laki-laki' ? 'L' : 'P',
+				// gender: item.gender === 'L' || item.gender === 'Laki-laki' ? 'L' : 'P',
 				asal: item.originRegion || '-',
 				status: 'aktif' // Default active for now as per schema check
 			}));
@@ -287,7 +288,7 @@
 					<!-- Gender -->
 					<div class="col-span-1 md:col-span-1 md:text-center">
 						<span class="font-bold text-slate-600">
-							{student.jenisKelamin}
+							{student.gender}
 						</span>
 					</div>
 

@@ -1,4 +1,9 @@
 <script lang="ts">
+	/**
+	 *
+	 *
+	 *
+	 * */
 </script>
 
 <div class="w-full max-w-md space-y-8 rounded-xl border border-gray-300 bg-white p-5">
@@ -52,24 +57,24 @@
 			</div>
 
 			<!-- Description / Syllabus -->
-			<div class="relative w-full">
-				<textarea
-					id="description"
-					name="description"
-					rows="3"
-					placeholder=" "
-					class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"
-				></textarea>
-				<label
-					for="description"
-					class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-100
-                        peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm
-                        peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500
-                        peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
-				>
-					Deskripsi / Silabus
-				</label>
-			</div>
+			<!--			<div class="relative w-full">-->
+			<!--				<textarea-->
+			<!--					id="description"-->
+			<!--					name="description"-->
+			<!--					rows="3"-->
+			<!--					placeholder=" "-->
+			<!--					class="peer ease w-full rounded-md border border-slate-200 bg-transparent px-3 py-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-300 focus:border-blue-500 focus:shadow focus:outline-none"-->
+			<!--				></textarea>-->
+			<!--				<label-->
+			<!--					for="description"-->
+			<!--					class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-100-->
+			<!--                        peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm-->
+			<!--                        peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500-->
+			<!--                        peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"-->
+			<!--				>-->
+			<!--					Deskripsi / Silabus-->
+			<!--				</label>-->
+			<!--			</div>-->
 
 			<!-- Assigned Teacher -->
 			<div class="relative w-full">
