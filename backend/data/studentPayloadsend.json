@@ -1,0 +1,105 @@
+[
+	{
+		"id": 1,
+		"nama-siswa": "string",
+		"NISN": "int",
+		"NIS-local": "int",
+		"jenis-kelamin": {
+			"laki-laki": true,
+			"perempuan": false
+		},
+		"orang-tua": [
+			{
+				"ayah": {
+					"nama": "",
+					"jenis-kelamin": "pria",
+					"tahun-lahir": "",
+					"pendidikan": "",
+					"pekerjaan": "",
+					"penghasilan": "",
+					"nik": "",
+					"no-kk": "",
+					"no-ktp": "",
+					"agama": "",
+					"nomor-hp": "",
+					"alamat": "",
+					"hubungan": "",
+					"tempat-kerja": "",
+					"jabatan": "",
+					"tempat-lahir": "",
+					"tanggal-lahir": "",
+					"kewarganegaraan": ""
+				},
+				"ibu": {
+					"nama": "",
+					"jenis-kelamin": "wanita",
+					"tahun-lahir": "",
+					"pendidikan": "",
+					"pekerjaan": "",
+					"penghasilan": "",
+					"nik": "",
+					"no-kk": "",
+					"no-ktp": "",
+					"agama": "",
+					"nomor-hp": "",
+					"alamat": "",
+					"hubungan": "",
+					"tempat-kerja": "",
+					"jabatan": "",
+					"tempat-lahir": "",
+					"tanggal-lahir": "",
+					"kewarganegaraan": ""
+				},
+				"wali": {
+					"nama": "",
+					"jenis-kelamin": {
+						"pria": false,
+						"wanita": false
+					},
+					"tahun-lahir": "",
+					"pendidikan": "",
+					"pekerjaan": "",
+					"penghasilan": "",
+					"nik": "",
+					"no-kk": "",
+					"no-ktp": "",
+					"agama": "",
+					"nomor-hp": "",
+					"alamat": "",
+					"hubungan": "",
+					"tempat-kerja": "",
+					"jabatan": "",
+					"tempat-lahir": "",
+					"tanggal-lahir": "",
+					"kewarganegaraan": ""
+				}
+			}
+		],
+		"agama": "",
+		"tempat-lahir": "",
+		"asal-sekolah": "",
+		"nomor-hp": "",
+		"alamat": {
+			"kabupaten": "",
+			"kecamatan": "",
+			"kelurahan": "",
+			"jalan": "",
+			"no-rumah": "",
+			"RT": "",
+			"RW": "",
+			"kode-pos": "",
+			"provinsi": "",
+			"desa": "",
+			"dusun": ""
+		},
+		"anak-ke": "",
+		"jumlah-saudara": "",
+		"asal-daerah": "",
+		"bpjs": "",
+		"nomor-ktp": "",
+		"nomor-akta": "",
+		"kewarganegaraan": "",
+		"tanggal-lahir": "",
+		"tinggal-bersama": ""
+	}
+]

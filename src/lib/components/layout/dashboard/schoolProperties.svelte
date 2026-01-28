@@ -1,10 +1,10 @@
 <script lang="ts">
-    import { apiFetch } from '$lib/api';
+    import { API_FETCH } from '$lib/api';
 	const apiUrl = import.meta.env.VITE_API_URL;
 
 	async function fetchFacilities() {
 		try {
-			const response = await apiFetch('/routes/api/schoolData');
+			const response = await API_FETCH('/routes/api/schoolData');
 
 			if (!response.ok) {
 				throw new Error(`HTTP error! status: ${response.status}`);

@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "nama": "Bill Gates",
+    "nisn": "1234567890",
+    "absen": 1
+  },
+  {
+    "id": 2,
+    "nama": "Steve Jobs",
+    "nisn": "1234567891",
+    "absen": 2
+  },
+  {
+    "id": 3,
+    "nama": "Linus Torvalds",
+    "nisn": "1234567892",
+    "absen": 3
+  },
+  {
+    "id": 4,
+    "nama": "Ada Lovelace",
+    "nisn": "1234567893",
+    "absen": 4
+  },
+  {
+    "id": 5,
+    "nama": "Alan Turing",
+    "nisn": "1234567894",
+    "absen": 5
+  }
+]

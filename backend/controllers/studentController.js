@@ -6,10 +6,10 @@ export const getAllStudents = async (req, res) => {
 	try {
 		const page = parseInt(req.query.page) || 1;
 		const limit = parseInt(req.query.limit) || 10;
-		
+
 		const students = await studentService.findAllStudents(page, limit);
 		const totalCount = await studentService.countStudents();
-		
+
 		res.status(200).json({
 			data: students,
 			pagination: {
@@ -22,6 +22,17 @@ export const getAllStudents = async (req, res) => {
 	} catch (error) {
 		console.error('Database error:', error);
 		res.status(500).json({ message: 'Error fetching student data', error: error.message });
+	}
+};
+
+// Controller to get lite student data (for dropdowns/lists)
+export const getStudentsLite = async (req, res) => {
+	try {
+		const students = await studentService.findAllStudentsLite();
+		res.status(200).json(students);
+	} catch (error) {
+		console.error('Database error:', error);
+		res.status(500).json({ message: 'Error fetching student list', error: error.message });
 	}
 };
 
@@ -46,7 +57,14 @@ export const getStudentById = async (req, res) => {
 			return res.status(404).json({ message: `No student found with id ${studentId}` });
 		}
 
-		res.status(200).json(student);
+		// Handle BigInt serialization
+		const serializedStudent = JSON.parse(
+			JSON.stringify(student, (key, value) =>
+				typeof value === 'bigint' ? value.toString() : value
+			)
+		);
+
+		res.status(200).json(serializedStudent);
 	} catch (error) {
 		console.error('Database error:', error);
 		res.status(500).json({ message: 'Error fetching student data', error: error.message });
@@ -56,22 +74,52 @@ export const getStudentById = async (req, res) => {
 export const createStudent = async (req, res) => {
 	try {
 		const newStudent = await studentService.createStudentData(req.body);
-		res.status(201).json(newStudent);
+
+		// Handle BigInt serialization (better-sqlite3 may return BigInt for IDs)
+		const serializedStudent = JSON.parse(
+			JSON.stringify(newStudent, (key, value) =>
+				typeof value === 'bigint' ? value.toString() : value
+			)
+		);
+
+		res.status(201).json(serializedStudent);
 	} catch (error) {
 		console.error('Database error:', error);
 		res.status(500).json({ message: 'Error creating student', error: error.message });
 	}
 };
 
-export const createBulkStudent = async (req,res) => {
+export const createBulkStudent = async (req, res) => {
 	try {
-		const newBulkStudent = await studentService.createStudentData(req.body);
-		res.status(201).json(newBulkStudent);
+		const file = req.file;
+		if (!file) {
+			return res.status(400).json({ message: 'No file uploaded.' });
+		}
+		const newBulkStudent = await studentService.createBulkStudentsFromExcel(file.buffer);
+		res.status(201).json({ message: 'Bulk student upload successful', data: newBulkStudent });
 	} catch (error) {
 		console.error('Database error:', error);
 		res.status(500).json({ message: 'Error uploading student', error: error.message });
 	}
-}
+};
+
+export const downloadStudentBulkTemplate = async (req, res) => {
+	try {
+		const workbook = await studentService.createStudentdataInputExcelBulkGenerator();
+
+		res.setHeader(
+			'Content-Type',
+			'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+		);
+		res.setHeader('Content-Disposition', 'attachment; filename="bulk_student_template.xlsx"');
+
+		await workbook.xlsx.write(res);
+		res.end();
+	} catch (error) {
+		console.error('Error generating student bulk template:', error);
+		res.status(500).json({ message: 'Error generating template', error: error.message });
+	}
+};
 
 export const updateStudent = async (req, res) => {
 	try {

@@ -2,14 +2,14 @@
 import { onMount } from 'svelte';
 import ChangePassword from '$lib/components/layout/credentialsLayout/changePassword.svelte';
 import ChangeUsername from '$lib/components/layout/credentialsLayout/changeUsername.svelte';
-import { apiFetch } from '$lib/api';
+import { API_FETCH } from '$lib/api';
 
 let userProfile: any = null;
 
 onMount(async () => {
     try {
         // Fetch user profile to trigger audit log "Viewed Auth Me"
-        const response = await apiFetch('/api/auth/me');
+        const response = await API_FETCH('/api/auth/me');
         if (response.ok) {
             const data = await response.json();
             userProfile = data.user;

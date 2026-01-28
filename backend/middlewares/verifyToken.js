@@ -1,12 +1,12 @@
-import { verifyTokenService } from '../services/authService.js';
+import { VERIFY_TOKEN_SERVICES } from '../services/auth.service.js';
 
 // Verify token middlewares
-export const verifyToken = (req, res, next) => {
+export const VERIFY_TOKEN_MIDDLEWARE = (req, res, next) => {
 	try {
 		const token = req.headers.authorization?.split(' ')[1];
 
 		// Call service layer to verify token
-		const result = verifyTokenService(token);
+		const result = VERIFY_TOKEN_SERVICES(token);
 
 		if (!result.success) {
 			return res.status(401).json({

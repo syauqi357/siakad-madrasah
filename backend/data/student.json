@@ -1,217 +1,166 @@
 [
 	{
 		"id": 1,
-		"nama-siswa": "string",
-		"NISN": "int",
-		"NIS-local": "int",
-		"jenis-kelamin": {
-			"laki-laki": true,
-			"perempuan": false
-		},
+		"nama-siswa": "Bill Gates",
+		"NISN": "1234567890",
+		"NIS-local": "2023001",
+		"jenis-kelamin": "Laki-laki",
 		"kelas": [
 			{
-				"nama-kelas": "7 IPA",
+				"nama-kelas": "X IPA 1",
 				"wali-kelas": {
 					"id": "WK-001",
-					"nama": "Bapak Budi"
+					"nama": "Linus Torvalds"
 				},
-				"tahun-ajaran": "string",
+				"tahun-ajaran": "2023/2024",
 				"mapel": [
 					{
 						"nama": "Matematika",
-						"guru": "string"
+						"guru": "Alan Turing"
 					}
 				]
-			},
-			{
-				"nama-kelas": "8 IPA",
-				"wali-kelas": {
-					"id": "WK-002",
-					"nama": "Ibu Siti"
-				},
-				"tahun-ajaran": "string",
-				"mapel": []
 			}
 		],
 		"status": {
 			"aktif": [
 				{
-					"tahun-ajaran": "",
-					"kelas": "outset kelas relation",
-					"tanggal-masuk": "",
-					"status-kelas": "",
-					"keterangan": "",
-					"guru-wali-kelas": ""
+					"tahun-ajaran": "2023/2024",
+					"kelas": "X IPA 1",
+					"tanggal-masuk": "2023-07-15",
+					"status-kelas": "Aktif",
+					"keterangan": "Siswa Baru",
+					"guru-wali-kelas": "Linus Torvalds"
 				}
 			],
 			"keluar": false,
 			"berhenti": false,
-			"lulus": [
-				{
-					"tahun-lulus": "",
-					"no-ijazah": "",
-					"no-skhun": "",
-					"tanggal-ijazah": "",
-					"tanggal-skhun": "",
-					"keterangan": "",
-					"surat-ijazah": "",
-					"surat-skhun": "",
-					"sekolah-asal": "",
-					"sekolah-tujuan": ""
-				}
-			],
-			"pindah": [
-				{
-					"tujuan-pindah": "",
-					"tanggal-pindah": "",
-					"alasan-pindah": "",
-					"keterangan": "",
-					"surat-pindah": "",
-					"sekolah-tujuan": ""
-				}
-			],
+			"lulus": [],
+			"pindah": [],
 			"meninggal": false
 		},
-		"agama": "",
-		"tempat-lahir": "",
-		"asal-sekolah": "",
-		"nomor-hp": "",
+		"agama": "Islam",
+		"tempat-lahir": "Seattle",
+		"asal-sekolah": "SMP Negeri 1 Seattle",
+		"nomor-hp": "081234567890",
 		"alamat": {
-			"kabupaten": "",
-			"kecamatan": "",
-			"kelurahan": "",
-			"jalan": "",
-			"no-rumah": "",
-			"RT": "",
-			"RW": "",
-			"kode-pos": "",
-			"provinsi": "",
-			"desa": "",
-			"dusun": ""
+			"kabupaten": "Sleman",
+			"kecamatan": "Depok",
+			"kelurahan": "Caturtunggal",
+			"jalan": "Jl. Kaliurang",
+			"no-rumah": "123",
+			"RT": "01",
+			"RW": "02",
+			"kode-pos": "55281",
+			"provinsi": "DI Yogyakarta",
+			"desa": "Caturtunggal",
+			"dusun": "Karangwuni"
 		},
-		"anak-ke": "",
-		"jumlah-saudara": "",
-		"asal-daerah": "",
-		"bpjs": "",
-		"nomor-ktp": "",
-		"nomor-akta": "",
-		"kewarganegaraan": "",
-		"tanggal-lahir": "",
-		"tinggal-bersama": "",
+		"anak-ke": 1,
+		"jumlah-saudara": 2,
+		"asal-daerah": "Yogyakarta",
+		"bpjs": "000123456789",
+		"nomor-ktp": "3404012345670001",
+		"nomor-akta": "1234/AKTA/2005",
+		"kewarganegaraan": "WNI",
+		"tanggal-lahir": "2005-10-28",
+		"tinggal-bersama": "Orang Tua",
 		"absensi": {
-			"sakit": "",
-			"izin": "",
-			"tanpa-keterangan": ""
+			"sakit": 0,
+			"izin": 0,
+			"tanpa-keterangan": 0
 		},
-		"transportasi": "",
+		"transportasi": "Sepeda Motor",
 		"orang-tua": [
 			{
 				"ayah": {
-					"nama": "",
-					"jenis-kelamin":"pria",
-					"tahun-lahir": "",
-					"pendidikan": "",
-					"pekerjaan": "",
-					"penghasilan": "",
-					"nik": "",
-					"no-kk": "",
-					"no-ktp": "",
-					"agama": "",
-					"nomor-hp": "",
-					"alamat": "",
-					"hubungan": "",
-					"tempat-kerja": "",
-					"jabatan": "",
-					"tempat-lahir":"",
-					"tanggal-lahir":"",
-					"kewarganegaraan":""
+					"nama": "William H. Gates Sr.",
+					"jenis-kelamin": "Laki-laki",
+					"tahun-lahir": "1975",
+					"pendidikan": "S1",
+					"pekerjaan": "Wiraswasta",
+					"penghasilan": "5000000",
+					"nik": "3404011234560001",
+					"no-kk": "3404011234560000",
+					"no-ktp": "3404011234560001",
+					"agama": "Islam",
+					"nomor-hp": "081234567891",
+					"alamat": "Jl. Kaliurang No. 123",
+					"hubungan": "Ayah Kandung",
+					"tempat-kerja": "PT. Microsoft",
+					"jabatan": "Manager",
+					"tempat-lahir": "Seattle",
+					"tanggal-lahir": "1975-01-01",
+					"kewarganegaraan": "WNI"
 				},
 				"ibu": {
-					"nama": "",
-					"jenis-kelamin":"wanita",
-					"tahun-lahir": "",
-					"pendidikan": "",
-					"pekerjaan": "",
-					"penghasilan": "",
-					"nik": "",
-					"no-kk": "",
-					"no-ktp": "",
-					"agama": "",
-					"nomor-hp": "",
-					"alamat": "",
-					"hubungan": "",
-					"tempat-kerja": "",
-					"jabatan": "",
-					"tempat-lahir":"",
-					"tanggal-lahir":"",
-					"kewarganegaraan":""
+					"nama": "Mary Maxwell Gates",
+					"jenis-kelamin": "Perempuan",
+					"tahun-lahir": "1978",
+					"pendidikan": "S1",
+					"pekerjaan": "Ibu Rumah Tangga",
+					"penghasilan": "0",
+					"nik": "3404011234560002",
+					"no-kk": "3404011234560000",
+					"no-ktp": "3404011234560002",
+					"agama": "Islam",
+					"nomor-hp": "081234567892",
+					"alamat": "Jl. Kaliurang No. 123",
+					"hubungan": "Ibu Kandung",
+					"tempat-kerja": "-",
+					"jabatan": "-",
+					"tempat-lahir": "Seattle",
+					"tanggal-lahir": "1978-05-15",
+					"kewarganegaraan": "WNI"
 				},
-				"wali": {
-					"nama": "",
-					"jenis-kelamin":{
-						"pria": false,
-						"wanita": false
-					},
-					"tahun-lahir": "",
-					"pendidikan": "",
-					"pekerjaan": "",
-					"penghasilan": "",
-					"nik": "",
-					"no-kk": "",
-					"no-ktp": "",
-					"agama": "",
-					"nomor-hp": "",
-					"alamat": "",
-					"hubungan": "",
-					"tempat-kerja": "",
-					"jabatan": "",
-					"tempat-lahir":"",
-					"tanggal-lahir":"",
-					"kewarganegaraan":""
-				}
+				"wali": null
 			}
 		],
 		"nilai": [
 			{
 				"ujian-nasional": {
-					"bahasa-indonesia": "",
-					"matematika": "",
-					"ipa": ""
+					"bahasa-indonesia": 85,
+					"matematika": 90,
+					"ipa": 88
 				},
 				"ujian-sekolah": {
-					"bahasa-indonesia": "",
-					"matematika": "",
-					"ipa": ""
+					"bahasa-indonesia": 88,
+					"matematika": 92,
+					"ipa": 90
 				},
 				"ujian-lokal": {
-					"bahasa-indonesia": "",
-					"matematika": "",
-					"ipa": ""
+					"bahasa-indonesia": 80,
+					"matematika": 85,
+					"ipa": 82
 				},
 				"raport": {
-					"semester-ganjil": "",
-					"semester-genap": ""
+					"semester-ganjil": 88.5,
+					"semester-genap": 90.0
 				},
 				"nilai-tes-masuk": {
 					"psikotes": {
-						"nilai": "",
-						"keterangan": ""
+						"nilai": 85,
+						"keterangan": "Disarankan Masuk IPA"
 					},
 					"akademik": {
-						"bahasa-indonesia": "",
-						"matematika": "",
-						"ipa": ""
+						"bahasa-indonesia": 80,
+						"matematika": 95,
+						"ipa": 90
 					},
 					"wawancara": {
-						"nilai": "",
-						"keterangan": ""
+						"nilai": 90,
+						"keterangan": "Sangat Baik"
 					}
 				},
 				"transkrip-mapel": [
 					{
 						"nama": "Matematika",
-						"nilai": "85",
-						"keterangan": "Tuntas"
+						"nilai": 95,
+						"keterangan": "Sangat Baik"
+					},
+					{
+						"nama": "Bahasa Indonesia",
+						"nilai": 88,
+						"keterangan": "Baik"
 					}
 				]
 			}
