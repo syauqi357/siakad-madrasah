@@ -48,9 +48,7 @@ logs/
 *.log
 npm-debug.log*
 
-# OS files
-.DS_Store
-Thumbs.db
+
 desktop.ini
 
 # IDE
@@ -67,3 +65,8 @@ dist/
 # Testing
 coverage/
 .nyc_output/
+
+.prettierignore
+.prettierrc
+build.bat
+start.bat
