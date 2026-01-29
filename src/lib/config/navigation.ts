@@ -49,7 +49,7 @@ export const navigationConfig: Record<UserRole, NavItem[]> = {
 				{ name: 'Alumni', href: '/siswa/alumni' },
 				{ name: 'Mutasi keluar', href: '/siswa/mutasi-keluar' },
 				{ name: 'Mutasi masuk', href: '/siswa/mutasi-masuk' },
-				{ name: 'Kenaikan Kelas', href: '/siswa/Kelas' },
+				{ name: 'manajemen Kelas', href: '/siswa/Kelas' },
 				{ name: 'Siswa Ganda', href: '/siswa/siswa-ganda' },
 				{ name: 'PIP/KIP-K/Beasiswa', href: '/siswa/beasiswa' }
 			]

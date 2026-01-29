@@ -152,11 +152,11 @@
 <svelte:window on:keydown={handleKeydown} />
 
 <div class=" bg-gray-50 p-4 sm:p-6 lg:p-8">
-	<div class="mx-auto max-w-7xl">
+	<div class="mx-10">
 		<!-- Header Section -->
 		<div class="flex flex-col gap-2">
 			<h1 class="text-2xl font-bold text-blue-600 sm:text-3xl md:text-4xl">Manajemen Kelas</h1>
-			<p class="text-gray-600">Kelola data kelas (X, XI, XII) di sini.</p>
+			<p class="text-gray-600">Kelola data kelas di sini. <a href="">butuh keterangan?</a></p>
 			<button
 				on:click={handleAddClick}
 				class="hover:-lg flex w-fit items-center justify-center gap-2 rounded-md bg-blue-600 px-5 py-3 text-blue-50 capitalize transition-all duration-75 hover:bg-blue-700"
@@ -218,7 +218,10 @@
 							/>
 						</svg>
 						<p class="mt-2">Belum ada data kelas</p>
-						<button on:click={handleAddClick} class="mt-2 text-blue-600 hover:underline">
+						<button
+							on:click={handleAddClick}
+							class="mt-2 rounded-md bg-blue-500 px-4 py-2 text-blue-50 capitalize hover:bg-blue-700"
+						>
 							Tambah kelas pertama
 						</button>
 					</div>
@@ -313,8 +316,8 @@
 <!-- Modal Popup -->
 {#if showModal}
 	<div
-		class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
-		transition:fade={{ duration: 150 }}
+		class="fixed inset-0 z-2 flex items-center shadow-md justify-center bg-black/20 p-4 backdrop-blur-xs"
+		transition:fade={{ duration: 75 }}
 		on:click={handleBackdropClick}
 		on:keydown={handleKeydown}
 		role="dialog"
@@ -357,12 +360,12 @@
 							id="className"
 							placeholder=" "
 							bind:value={currentClass.className}
-							class="peer w-full rounded border border-gray-400 bg-transparent px-4 py-4 text-base text-gray-800 transition-all duration-75 outline-none placeholder-shown:py-4 hover:border-gray-600 focus:border-2 focus:border-blue-600 focus:px-[15px] focus:py-[15px]"
+							class="peer text-md w-full rounded border border-gray-400 bg-transparent px-2 py-2 text-gray-800 transition-all duration-75 outline-none placeholder-shown:py-3 hover:border-gray-600 focus:border focus:border-blue-600 focus:px-3 focus:py-3"
 							required
 						/>
 						<label
 							for="className"
-							class="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 bg-white px-1 text-base text-gray-500 transition-all duration-75 peer-focus:top-0 peer-focus:text-xs peer-focus:text-blue-600 peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-gray-500"
+							class="text-md pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 bg-white px-1 text-gray-500 transition-all duration-75 peer-focus:top-0 peer-focus:text-xs peer-focus:text-blue-600 peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-gray-500"
 						>
 							Nama Kelas
 						</label>

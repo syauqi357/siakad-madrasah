@@ -1,11 +1,20 @@
 // backend/middlewares/middlewareAudit.js
 import { drizzle } from 'drizzle-orm/better-sqlite3';
 import Database from 'better-sqlite3';
-import { auditTable } from '../src/db/schema/auditlog.js'; 
-import jwt from 'jsonwebtoken'; 
+import { auditTable } from '../src/db/schema/auditlog.js';
+import jwt from 'jsonwebtoken';
 
 const sqlite = new Database(process.env.DATABASE_URL);
 const db = drizzle(sqlite);
+
+// Track views per session - stores "userId:target" combinations
+const viewedThisSession = new Set();
+
+// Clear the cache every 30 minutes to prevent memory bloat
+setInterval(() => {
+  viewedThisSession.clear();
+  console.log('🔄 Audit view cache cleared');
+}, 30 * 60 * 1000);
 
 export const auditLog = async (req, res, next) => {
   // 1. SKIP ROOT PATH IMMEDIATELY
@@ -69,13 +78,20 @@ async function saveAuditLog(req, res, responseData) {
     // If the target is "General" AND the user is "anonymous", DO NOT LOG IT.
     // This hides the scary "anonymous viewed General" logs.
     if (userId === 'anonymous' && (target === 'General' || !target)) {
-        return; 
+      return;
     }
 
-    // Optional: Also hide anonymous views of public school data if you want strictly user actions
-    // if (userId === 'anonymous' && target === 'SchoolData' && req.method === 'GET') {
-    //    return;
-    // }
+    // --- VIEW ONCE PER SESSION ---
+    // For GET requests, only log the first view per user per target
+    if (req.method === 'GET') {
+      const viewKey = `${userId}:${target || 'General'}`;
+      if (viewedThisSession.has(viewKey)) {
+        // Already logged this view in current session, skip
+        return;
+      }
+      // Mark as viewed for this session
+      viewedThisSession.add(viewKey);
+    }
 
     const auditEntry = {
       audit_type: auditType,
@@ -192,5 +208,19 @@ function sanitizeBody(body) {
   });
   return sanitized;
 }
+
+/**
+ * Clears view cache for a specific user (call on logout)
+ * @param {string} userId - The user ID to clear from cache
+ */
+export const clearUserViewCache = (userId) => {
+  const keysToDelete = [];
+  viewedThisSession.forEach((key) => {
+    if (key.startsWith(`${userId}:`)) {
+      keysToDelete.push(key);
+    }
+  });
+  keysToDelete.forEach((key) => viewedThisSession.delete(key));
+};
 
 export default auditLog;
