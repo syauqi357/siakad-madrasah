@@ -298,3 +298,337 @@ POST /routes/api/students/123/status
 - Consider bulk graduation feature for end of school year
 - Certificate number can be generated or manually input
 - Scores can be auto-fetched from existing score records or manually input
+
+---
+
+# Class, Subject & Scoring System Architecture
+
+## Overview - Understanding the Hierarchy
+
+This document explains the relationship between classes, rombels, subjects, and how scores are stored.
+
+## Entity Relationship Diagram (ASCII)
+
+```
+┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
+│  academic_year  │     │     classes     │     │    subjects     │
+│─────────────────│     │─────────────────│     │─────────────────│
+│ id              │     │ id              │     │ id              │
+│ name (2024/2025)│     │ className (X,   │     │ name (Matematika│
+│ startYear       │     │   XI, XII)      │     │   B.Indonesia)  │
+│ endYear         │     │                 │     │ subjectCode     │
+│ isActive        │     │                 │     │                 │
+└────────┬────────┘     └────────┬────────┘     └────────┬────────┘
+         │                       │                       │
+         │              ┌────────┴────────┐              │
+         │              │                 │              │
+         ▼              ▼                 ▼              ▼
+┌─────────────────────────┐     ┌─────────────────────────────────┐
+│        rombel           │     │         class_subject           │
+│─────────────────────────│     │─────────────────────────────────│
+│ id                      │     │ id                              │
+│ code (X-IPA-1)          │     │ classId → classes.id            │
+│ name (Kelas X IPA 1)    │     │ subjectId → subjects.id         │
+│ classId → classes.id    │◄────│ teacherId → teachers.id         │
+│ academicYearId          │     │                                 │
+│ classAdvisorId          │     │ (Defines: "Kelas X teaches      │
+│ studentCapacity         │     │  Matematika by Pak Budi")       │
+└───────────┬─────────────┘     └────────────────┬────────────────┘
+            │                                    │
+            ▼                                    │
+┌─────────────────────────┐                      │
+│    rombel_students      │                      │
+│─────────────────────────│                      │
+│ rombelId → rombel.id    │                      │
+│ studentId → students.id │                      │
+│ isActive                │                      │
+│ leftAt                  │                      │
+└───────────┬─────────────┘                      │
+            │                                    │
+            ▼                                    ▼
+┌─────────────────────────┐     ┌─────────────────────────────────┐
+│       students          │     │        student_scores           │
+│─────────────────────────│     │─────────────────────────────────│
+│ id                      │────►│ studentId → students.id         │
+│ studentName             │     │ classSubjectId → class_subject  │
+│ nisn                    │     │ assessmentTypeId → assessment   │
+│ status (ACTIVE/MUTASI/  │     │ score (0-100)                   │
+│         GRADUATE)       │     │ assessmentDate                  │
+└─────────────────────────┘     │ note                            │
+                                └─────────────────────────────────┘
+```
+
+## Key Concepts Explained
+
+### 1. `classes` - Grade Level (Tingkat Kelas)
+**Purpose**: Defines the academic grade level.
+**Examples**: `X`, `XI`, `XII` (or `7`, `8`, `9` for SMP)
+
+```
+┌────┬───────────┐
+│ id │ className │
+├────┼───────────┤
+│  1 │ X         │  ← Kelas 10
+│  2 │ XI        │  ← Kelas 11
+│  3 │ XII       │  ← Kelas 12
+└────┴───────────┘
+```
+
+### 2. `rombel` - Class Group (Rombongan Belajar)
+**Purpose**: The actual class instance where students are grouped.
+**Examples**: `X-IPA-1`, `X-IPA-2`, `XI-IPS-1`
+
+```
+┌────┬──────────┬────────────────┬─────────┬────────────────┐
+│ id │ code     │ name           │ classId │ academicYearId │
+├────┼──────────┼────────────────┼─────────┼────────────────┤
+│  1 │ X-IPA-1  │ Kelas X IPA 1  │ 1       │ 1 (2024/2025)  │
+│  2 │ X-IPA-2  │ Kelas X IPA 2  │ 1       │ 1              │
+│  3 │ XI-IPS-1 │ Kelas XI IPS 1 │ 2       │ 1              │
+└────┴──────────┴────────────────┴─────────┴────────────────┘
+```
+
+**Key Point**: Multiple rombels can belong to the same `class` (grade level).
+
+### 3. `class_subject` - Subject Assignment per Grade
+**Purpose**: Defines which subjects are taught at which grade level, and by which teacher.
+
+```
+┌────┬─────────┬───────────┬───────────┐
+│ id │ classId │ subjectId │ teacherId │
+├────┼─────────┼───────────┼───────────┤
+│  1 │ 1 (X)   │ 1 (MTK)   │ 5 (Budi)  │  ← "Matematika Kelas X oleh Pak Budi"
+│  2 │ 1 (X)   │ 2 (BIndo) │ 3 (Ani)   │  ← "B. Indonesia Kelas X oleh Bu Ani"
+│  3 │ 2 (XI)  │ 1 (MTK)   │ 5 (Budi)  │  ← "Matematika Kelas XI oleh Pak Budi"
+└────┴─────────┴───────────┴───────────┘
+```
+
+**Key Point**: Subjects are assigned to GRADE LEVEL (`classId`), NOT to specific rombels.
+
+### 4. `student_scores` - Score Records
+**Purpose**: Stores individual student scores.
+
+```
+┌────┬───────────┬────────────────┬──────────────────┬───────┐
+│ id │ studentId │ classSubjectId │ assessmentTypeId │ score │
+├────┼───────────┼────────────────┼──────────────────┼───────┤
+│  1 │ 101       │ 1 (X-MTK)      │ 1 (UH)           │ 85    │
+│  2 │ 101       │ 1 (X-MTK)      │ 2 (UTS)          │ 78    │
+│  3 │ 102       │ 1 (X-MTK)      │ 1 (UH)           │ 90    │
+└────┴───────────┴────────────────┴──────────────────┴───────┘
+```
+
+## The Confusion: Why `classSubjectId` and NOT `rombelId`?
+
+### Current Design
+Scores are linked to `class_subject`, which means:
+- Student A in **X-IPA-1** and Student B in **X-IPA-2** both have scores linked to "Matematika Kelas X" (`classSubjectId = 1`)
+- The score doesn't track WHICH specific rombel the student was in
+
+### This Works Because:
+1. All rombels in the same grade (e.g., all Kelas X) study the SAME subjects
+2. The teacher might teach multiple rombels in the same grade
+3. When generating reports, we can JOIN through: `student → rombel_students → rombel → class → class_subject`
+
+### Potential Issue:
+If you need to track "Student A's Matematika score specifically in X-IPA-1", the current design doesn't support this directly.
+
+## Data Flow for Score Input
+
+### Workflow 1: Input Scores by Rombel (Recommended)
+```
+Teacher selects:
+  1. Rombel: "X-IPA-1" (rombelId = 1)
+  2. Subject: "Matematika" (auto-filtered based on rombel's classId)
+  3. Assessment Type: "UH" (assessmentTypeId = 1)
+
+System:
+  1. Get classId from rombel (classId = 1 for "X")
+  2. Find class_subject where classId=1 AND subjectId=Matematika → classSubjectId
+  3. Get all students from rombel_students WHERE rombelId = 1
+  4. For each student, INSERT into student_scores:
+     - studentId
+     - classSubjectId (derived from class + subject)
+     - assessmentTypeId
+     - score
+```
+
+### Workflow 2: Bulk Upload via Excel Template
+```
+1. Generate template for specific rombel:
+   - Fetch students from rombel_students
+   - Fetch assessment types for columns
+
+2. Teacher fills scores in Excel
+
+3. Upload & parse:
+   - Validate student IDs
+   - Derive classSubjectId from rombel's classId + selected subject
+   - Bulk insert scores
+```
+
+## Score Service Flow Diagram
+
+```
+┌──────────────────────────────────────────────────────────────────────┐
+│                        SCORE INPUT FLOW                              │
+└──────────────────────────────────────────────────────────────────────┘
+
+User Interface (Frontend)
+         │
+         ▼
+┌─────────────────────────────────────┐
+│  1. Select Rombel                   │  → GET /api/rombel (list rombels)
+│     [Dropdown: X-IPA-1, X-IPA-2...] │
+└─────────────────┬───────────────────┘
+                  │
+                  ▼
+┌─────────────────────────────────────┐
+│  2. Select Subject                  │  → GET /api/score/subjects/:rombelId
+│     [Dropdown: Matematika, B.Indo]  │     (returns subjects for that grade)
+└─────────────────┬───────────────────┘
+                  │
+                  ▼
+┌─────────────────────────────────────┐
+│  3. Select Assessment Type          │  → GET /api/assessment-types/lite
+│     [Dropdown: UH, UTS, UAS]        │     (returns active assessment types)
+└─────────────────┬───────────────────┘
+                  │
+                  ▼
+┌─────────────────────────────────────┐
+│  4. Load Students + Input Scores    │  → GET /api/score/template/:rombelId
+│     ┌────────┬──────┬────┬────┐     │     (returns student list with
+│     │ NISN   │ Nama │ UH │UTS │     │      empty score columns)
+│     ├────────┼──────┼────┼────┤     │
+│     │ 123... │ Budi │ 85 │    │     │
+│     │ 456... │ Ani  │ 90 │    │     │
+│     └────────┴──────┴────┴────┘     │
+└─────────────────┬───────────────────┘
+                  │
+                  ▼
+┌─────────────────────────────────────┐
+│  5. Submit Scores                   │  → POST /api/score/bulk
+│                                     │     Body: {
+└─────────────────────────────────────┘       rombelId: 1,
+                                              subjectId: 1,
+                                              assessmentTypeId: 1,
+                                              scores: [
+                                                {studentId: 101, score: 85},
+                                                {studentId: 102, score: 90}
+                                              ]
+                                            }
+```
+
+## Recommended Service Functions for Score Management
+
+### `score.services.js` - Functions Needed
+
+```javascript
+// 1. Get subjects available for a rombel (based on its grade/class)
+getSubjectsForRombel(rombelId)
+  → Returns: [{id, name, code}]
+  → Logic: rombel → classId → class_subject → subjects
+
+// 2. Get students in a rombel for score input
+getStudentsForScoreInput(rombelId)
+  → Returns: [{id, nisn, name}]
+  → Logic: rombel_students WHERE rombelId AND isActive = true
+
+// 3. Get existing scores for a rombel + subject + assessment
+getExistingScores(rombelId, subjectId, assessmentTypeId)
+  → Returns: [{studentId, studentName, score}]
+  → Logic: Complex JOIN
+
+// 4. Save/Update bulk scores (TRANSACTIONAL)
+saveBulkScores(rombelId, subjectId, assessmentTypeId, scoresArray)
+  → Logic:
+     a. Derive classSubjectId from rombelId → classId + subjectId
+     b. Validate all studentIds belong to the rombel
+     c. UPSERT scores (insert or update if exists)
+  → Returns: {successCount, errors}
+
+// 5. Get score summary for a student
+getStudentScoreSummary(studentId, academicYearId?)
+  → Returns: [{subject, scores: {UH: 85, UTS: 78, UAS: 80}, average}]
+
+// 6. Get score report for a rombel (for rapor/report card)
+getRombelScoreReport(rombelId)
+  → Returns: Full matrix of students × subjects × assessments
+```
+
+## Why This Architecture?
+
+### Pros:
+1. **Flexibility**: Same subject definition across multiple rombels in same grade
+2. **Teacher Assignment**: One teacher can teach same subject to all rombels in a grade
+3. **Simpler Reporting**: Aggregate by grade level easily
+4. **Less Redundancy**: Don't need to duplicate subject assignments per rombel
+
+### Cons:
+1. **No Rombel-Specific Tracking**: Can't differentiate "X-IPA-1 Matematika" from "X-IPA-2 Matematika" at score level
+2. **Confusing JOINs**: Need multiple joins to connect student → score → subject → rombel
+
+## Alternative Architecture (If Needed)
+
+If you need rombel-specific subject assignments (e.g., different teachers per rombel for same subject):
+
+```sql
+-- Option A: Add rombelId to class_subject
+ALTER TABLE class_subject ADD COLUMN rombel_id INTEGER REFERENCES rombel(id);
+
+-- Option B: Create rombel_subject junction table
+CREATE TABLE rombel_subject (
+  id INTEGER PRIMARY KEY,
+  rombel_id INTEGER REFERENCES rombel(id),
+  subject_id INTEGER REFERENCES subjects(id),
+  teacher_id INTEGER REFERENCES teachers(id),
+  UNIQUE(rombel_id, subject_id)
+);
+
+-- Then student_scores would reference rombel_subject instead of class_subject
+```
+
+**Recommendation**: Keep current design unless you have specific requirements for rombel-level subject differentiation.
+
+## Quick Reference: Common Queries
+
+### Get all subjects for a rombel
+```javascript
+// 1. Get classId from rombel
+const rombelData = await db.select({classId: rombel.classId})
+  .from(rombel).where(eq(rombel.id, rombelId));
+
+// 2. Get subjects for that class
+const subjects = await db.select({id: Subjects.id, name: Subjects.name})
+  .from(classSubject)
+  .innerJoin(Subjects, eq(classSubject.subjectId, Subjects.id))
+  .where(eq(classSubject.classId, rombelData[0].classId));
+```
+
+### Get classSubjectId from rombelId + subjectId
+```javascript
+// 1. Get classId from rombel
+const rombelData = await db.select({classId: rombel.classId})
+  .from(rombel).where(eq(rombel.id, rombelId));
+
+// 2. Find class_subject
+const cs = await db.select({id: classSubject.id})
+  .from(classSubject)
+  .where(and(
+    eq(classSubject.classId, rombelData[0].classId),
+    eq(classSubject.subjectId, subjectId)
+  ));
+
+const classSubjectId = cs[0]?.id;
+```
+
+### Insert score with proper foreign keys
+```javascript
+await db.insert(studentScores).values({
+  studentId: studentId,
+  classSubjectId: classSubjectId, // Derived from rombel's class + subject
+  assessmentTypeId: assessmentTypeId,
+  score: 85,
+  assessmentDate: new Date().toISOString().split('T')[0]
+});
+```

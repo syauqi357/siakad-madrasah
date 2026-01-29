@@ -77,6 +77,7 @@ export const navigationConfig: Record<UserRole, NavItem[]> = {
 			href: '/score',
 			hasDropdown: true,
 			children: [
+				{ name: 'nilai', icon: '', href: '/score' },
 				{ name: 'ujian', icon: '', href: '/score/exam' },
 				{ name: 'tugas', icon: '', href: '/score/task' },
 				{ name: 'mata pelajaran', icon: '', href: '/score/subject' },

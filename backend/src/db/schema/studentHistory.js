@@ -8,9 +8,7 @@ export const studentHistory = sqliteTable('student_history', {
 	studentId: integer('student_id')
 		.notNull()
 		.references(() => studentTable.id),
-	rombelId: integer('rombel_id')
-		.notNull()
-		.references(() => rombel.id),
+	rombelId: integer('rombel_id').references(() => rombel.id),
 	// Store scores as JSON text (SQLite doesn't have native JSON type)
 	scores: text('scores'),
 	// Status type: MUTASI (dropout/transferred) or GRADUATE
