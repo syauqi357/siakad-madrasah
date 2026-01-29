@@ -4,75 +4,67 @@
 	import AddIcon from '$lib/components/icons/addIcon.svelte';
 	import { API_FETCH } from '$lib/api';
 
-	interface Subject {
+	interface ClassData {
 		id: number;
-		name: string;
-		subjectCode: string;
-		description: string;
-		kkm: number;
+		className: string;
 	}
 
-	let subjects: Subject[] = [];
+	let classes: ClassData[] = [];
 	let isLoading = false;
 	let isSubmitting = false;
 	let showModal = false;
 	let isEditing = false;
-	let currentSubject: Subject = {
+	let currentClass: ClassData = {
 		id: 0,
-		name: '',
-		subjectCode: '',
-		description: '',
-		kkm: 75
+		className: ''
 	};
 	let error = '';
 
-	const emptySubject: Subject = {
+	const emptyClass: ClassData = {
 		id: 0,
-		name: '',
-		subjectCode: '',
-		description: '',
-		kkm: 75
+		className: ''
 	};
 
 	onMount(async () => {
-		await fetchSubjects();
+		await fetchClasses();
 	});
 
-	async function fetchSubjects() {
+	async function fetchClasses() {
 		isLoading = true;
 		error = '';
 		try {
-			const response = await API_FETCH('/routes/api/subjects');
+			const response = await API_FETCH('/routes/api/class-data/classes');
 			const data = await response.json();
 			if (data.success) {
-				subjects = data.data;
+				classes = data.data;
 			} else {
 				error = data.message || 'Gagal memuat data';
 			}
 		} catch (err) {
 			error = 'Gagal terhubung ke server';
-			console.error('Error fetching subjects:', err);
+			console.error('Error fetching classes:', err);
 		} finally {
 			isLoading = false;
 		}
 	}
 
 	function handleAddClick() {
-		currentSubject = { ...emptySubject };
+		currentClass = { ...emptyClass };
 		isEditing = false;
 		showModal = true;
 	}
 
-	function handleEditClick(subject: Subject) {
-		currentSubject = { ...subject };
+	function handleEditClick(classData: ClassData) {
+		currentClass = { ...classData };
 		isEditing = true;
 		showModal = true;
 	}
 
 	function handleCloseModal() {
 		showModal = false;
-		currentSubject = { ...emptySubject };
+		currentClass = { ...emptyClass };
 		isEditing = false;
+		error = '';
 	}
 
 	function handleBackdropClick(event: MouseEvent) {
@@ -88,8 +80,8 @@
 	}
 
 	async function handleSubmit() {
-		if (!currentSubject.name.trim()) {
-			error = 'Nama mata pelajaran harus diisi';
+		if (!currentClass.className.trim()) {
+			error = 'Nama kelas harus diisi';
 			return;
 		}
 
@@ -98,45 +90,39 @@
 
 		try {
 			let response;
-			if (isEditing && currentSubject.id) {
-				response = await API_FETCH(`/routes/api/subjects/${currentSubject.id}`, {
+			if (isEditing && currentClass.id) {
+				response = await API_FETCH(`/routes/api/class-data/classes/${currentClass.id}`, {
 					method: 'PUT',
 					body: JSON.stringify({
-						name: currentSubject.name,
-						subjectCode: currentSubject.subjectCode,
-						description: currentSubject.description,
-						kkm: currentSubject.kkm
+						className: currentClass.className
 					})
 				});
 			} else {
-				response = await API_FETCH('/routes/api/subjects', {
+				response = await API_FETCH('/routes/api/class-data/classes', {
 					method: 'POST',
 					body: JSON.stringify({
-						name: currentSubject.name,
-						subjectCode: currentSubject.subjectCode,
-						description: currentSubject.description,
-						kkm: currentSubject.kkm
+						className: currentClass.className
 					})
 				});
 			}
 
 			const data = await response.json();
 			if (data.success) {
-				await fetchSubjects();
+				await fetchClasses();
 				handleCloseModal();
 			} else {
 				error = data.message || 'Gagal menyimpan data';
 			}
 		} catch (err) {
 			error = 'Gagal terhubung ke server';
-			console.error('Error saving subject:', err);
+			console.error('Error saving class:', err);
 		} finally {
 			isSubmitting = false;
 		}
 	}
 
-	async function handleDelete(subject: Subject) {
-		if (!confirm(`Apakah Anda yakin ingin menghapus "${subject.name}"?`)) {
+	async function handleDelete(classData: ClassData) {
+		if (!confirm(`Apakah Anda yakin ingin menghapus kelas "${classData.className}"?`)) {
 			return;
 		}
 
@@ -144,19 +130,19 @@
 		error = '';
 
 		try {
-			const response = await API_FETCH(`/routes/api/subjects/${subject.id}`, {
+			const response = await API_FETCH(`/routes/api/class-data/classes/${classData.id}`, {
 				method: 'DELETE'
 			});
 
 			const data = await response.json();
 			if (data.success) {
-				await fetchSubjects();
+				await fetchClasses();
 			} else {
 				error = data.message || 'Gagal menghapus data';
 			}
 		} catch (err) {
 			error = 'Gagal terhubung ke server';
-			console.error('Error deleting subject:', err);
+			console.error('Error deleting class:', err);
 		} finally {
 			isLoading = false;
 		}
@@ -165,19 +151,17 @@
 
 <svelte:window on:keydown={handleKeydown} />
 
-<div class="min-h-screen bg-gray-50 p-4 sm:p-6 lg:p-8">
+<div class=" bg-gray-50 p-4 sm:p-6 lg:p-8">
 	<div class="mx-auto max-w-7xl">
 		<!-- Header Section -->
 		<div class="flex flex-col gap-2">
-			<h1 class="text-2xl font-bold text-blue-600 sm:text-3xl md:text-4xl">
-				Manajemen Mata Pelajaran
-			</h1>
-			<p class="text-gray-600">Kelola data mata pelajaran, kode, dan KKM di sini.</p>
+			<h1 class="text-2xl font-bold text-blue-600 sm:text-3xl md:text-4xl">Manajemen Kelas</h1>
+			<p class="text-gray-600">Kelola data kelas (X, XI, XII) di sini.</p>
 			<button
 				on:click={handleAddClick}
-				class="flex w-fit items-center justify-center gap-2 rounded-md bg-blue-600 px-5 py-3 text-blue-50 capitalize transition-all duration-200 hover:bg-blue-700 hover:shadow-lg active:scale-95"
+				class="hover:-lg flex w-fit items-center justify-center gap-2 rounded-md bg-blue-600 px-5 py-3 text-blue-50 capitalize transition-all duration-75 hover:bg-blue-700"
 			>
-				<AddIcon /> tambah mata pelajaran
+				<AddIcon /> tambah kelas
 			</button>
 		</div>
 
@@ -192,13 +176,13 @@
 		{/if}
 
 		<!-- Table Section -->
-		<div class="mt-8">
-			<div class="w-full overflow-hidden rounded-xl border border-gray-300 bg-white shadow-sm">
+		<div class="mt-2">
+			<div class="w-full overflow-hidden rounded-xl border border-gray-300 bg-white">
 				<header class="border-b border-gray-200 bg-gray-50 px-6 py-4">
-					<h2 class="text-lg font-semibold text-gray-900">Daftar Mata Pelajaran</h2>
+					<h2 class="text-lg font-semibold text-gray-900">Daftar Kelas</h2>
 				</header>
 
-				{#if isLoading && subjects.length === 0}
+				{#if isLoading && classes.length === 0}
 					<div class="flex items-center justify-center py-12">
 						<svg class="h-8 w-8 animate-spin text-blue-600" viewBox="0 0 24 24">
 							<circle
@@ -218,7 +202,7 @@
 						</svg>
 						<span class="ml-2 text-gray-600">Memuat data...</span>
 					</div>
-				{:else if subjects.length === 0}
+				{:else if classes.length === 0}
 					<div class="py-12 text-center text-gray-500">
 						<svg
 							class="mx-auto h-12 w-12 text-gray-400"
@@ -230,12 +214,12 @@
 								stroke-linecap="round"
 								stroke-linejoin="round"
 								stroke-width="1.5"
-								d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+								d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
 							/>
 						</svg>
-						<p class="mt-2">Belum ada data mata pelajaran</p>
+						<p class="mt-2">Belum ada data kelas</p>
 						<button on:click={handleAddClick} class="mt-2 text-blue-600 hover:underline">
-							Tambah mata pelajaran pertama
+							Tambah kelas pertama
 						</button>
 					</div>
 				{:else}
@@ -244,47 +228,29 @@
 							<thead class="bg-gray-50 text-xs text-gray-700 uppercase">
 								<tr>
 									<th scope="col" class="px-6 py-3 font-medium">No</th>
-									<th scope="col" class="px-6 py-3 font-medium">Kode</th>
-									<th scope="col" class="px-6 py-3 font-medium">Mata Pelajaran</th>
-									<th scope="col" class="px-6 py-3 font-medium">KKM</th>
-									<th scope="col" class="px-6 py-3 font-medium">Deskripsi</th>
+									<th scope="col" class="px-6 py-3 font-medium">Nama Kelas</th>
 									<th scope="col" class="px-6 py-3 text-right font-medium">Aksi</th>
 								</tr>
 							</thead>
 							<tbody class="divide-y divide-gray-200">
-								{#each subjects as subject, index (subject.id)}
+								{#each classes as classData, index (classData.id)}
 									<tr
 										class="transition-colors duration-150 hover:bg-gray-50"
 										in:fly={{ y: 20, duration: 300, delay: index * 50 }}
 									>
 										<td class="px-6 py-4 font-medium text-gray-900">{index + 1}</td>
 										<td class="px-6 py-4">
-											{#if subject.subjectCode}
-												<span
-													class="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-blue-700/10 ring-inset"
-												>
-													{subject.subjectCode}
-												</span>
-											{:else}
-												<span class="text-gray-400">-</span>
-											{/if}
-										</td>
-										<td class="px-6 py-4 font-medium text-gray-900">{subject.name}</td>
-										<td class="px-6 py-4">
 											<span
-												class="inline-flex items-center rounded-full bg-green-50 px-2.5 py-0.5 text-xs font-semibold text-green-700"
+												class="inline-flex items-center rounded-md bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 ring-1 ring-blue-700/10 ring-inset"
 											>
-												{subject.kkm}
+												{classData.className}
 											</span>
-										</td>
-										<td class="max-w-xs truncate px-6 py-4" title={subject.description || ''}>
-											{subject.description || '-'}
 										</td>
 										<td class="px-6 py-4 text-right">
 											<div class="flex justify-end gap-2">
 												<button
-													on:click={() => handleEditClick(subject)}
-													class="rounded p-1.5 text-blue-600 transition-all duration-200 hover:scale-110 hover:bg-blue-50 active:scale-95"
+													on:click={() => handleEditClick(classData)}
+													class="rounded p-1.5 text-blue-600 transition-all duration-75 hover:scale-110 hover:bg-blue-50 active:scale-95"
 													title="Edit"
 												>
 													<svg
@@ -303,8 +269,8 @@
 													</svg>
 												</button>
 												<button
-													on:click={() => handleDelete(subject)}
-													class="rounded p-1.5 text-red-600 transition-all duration-200 hover:scale-110 hover:bg-red-50 active:scale-95"
+													on:click={() => handleDelete(classData)}
+													class="rounded p-1.5 text-red-600 transition-all duration-75 hover:scale-110 hover:bg-red-50 active:scale-95"
 													title="Hapus"
 												>
 													<svg
@@ -335,7 +301,7 @@
 						class="flex items-center justify-between border-t border-gray-200 bg-white px-6 py-3"
 					>
 						<div class="text-sm text-gray-500">
-							Total <span class="font-medium">{subjects.length}</span> mata pelajaran
+							Total <span class="font-medium">{classes.length}</span> kelas
 						</div>
 					</div>
 				{/if}
@@ -347,7 +313,7 @@
 <!-- Modal Popup -->
 {#if showModal}
 	<div
-		class="fixed inset-0 z-2 flex items-center justify-center bg-black/50 p-4"
+		class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
 		transition:fade={{ duration: 150 }}
 		on:click={handleBackdropClick}
 		on:keydown={handleKeydown}
@@ -355,16 +321,17 @@
 		tabindex="-1"
 		aria-modal="true"
 	>
-		<div
-			class="w-full max-w-md rounded-lg bg-white shadow-lg"
-			transition:fly={{ y: 20, duration: 200 }}
-		>
+		<div class="w-full max-w-md rounded-lg bg-white" transition:fly={{ y: 20, duration: 200 }}>
 			<!-- Header -->
 			<div class="flex items-center justify-between border-b px-6 py-4">
 				<h2 class="text-lg font-semibold text-gray-900">
-					{isEditing ? 'Edit Mata Pelajaran' : 'Tambah Mata Pelajaran'}
+					{isEditing ? 'Edit Kelas' : 'Tambah Kelas'}
 				</h2>
-				<button aria-label="close" on:click={handleCloseModal} class="text-gray-400 hover:text-gray-600">
+				<button
+					aria-label="close"
+					on:click={handleCloseModal}
+					class="text-gray-400 hover:text-gray-600"
+				>
 					<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 						<path
 							stroke-linecap="round"
@@ -382,59 +349,25 @@
 					<div class="mb-4 rounded bg-red-50 p-3 text-sm text-red-600">{error}</div>
 				{/if}
 
-				<div class="space-y-4">
-					<div>
-						<label for="subjectName" class="mb-1 block text-sm font-medium text-gray-700">
-							Nama Mata Pelajaran <span class="text-red-500">*</span>
-						</label>
+				<div class="space-y-6">
+					<!-- Material Design Input -->
+					<div class="relative w-full">
 						<input
 							type="text"
-							id="subjectName"
-							bind:value={currentSubject.name}
-							class="w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
-							placeholder="Contoh: Matematika"
+							id="className"
+							placeholder=" "
+							bind:value={currentClass.className}
+							class="peer w-full rounded border border-gray-400 bg-transparent px-4 py-4 text-base text-gray-800 transition-all duration-75 outline-none placeholder-shown:py-4 hover:border-gray-600 focus:border-2 focus:border-blue-600 focus:px-[15px] focus:py-[15px]"
 							required
 						/>
-					</div>
-
-					<div>
-						<label for="subjectCode" class="mb-1 block text-sm font-medium text-gray-700">
-							Kode Mata Pelajaran
+						<label
+							for="className"
+							class="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 bg-white px-1 text-base text-gray-500 transition-all duration-75 peer-focus:top-0 peer-focus:text-xs peer-focus:text-blue-600 peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-gray-500"
+						>
+							Nama Kelas
 						</label>
-						<input
-							type="text"
-							id="subjectCode"
-							bind:value={currentSubject.subjectCode}
-							class="w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
-							placeholder="Contoh: MTK-101"
-						/>
 					</div>
-
-					<div>
-						<label for="kkm" class="mb-1 block text-sm font-medium text-gray-700">KKM</label>
-						<input
-							type="number"
-							id="kkm"
-							bind:value={currentSubject.kkm}
-							min="0"
-							max="100"
-							class="w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
-							placeholder="75"
-						/>
-					</div>
-
-					<div>
-						<label for="description" class="mb-1 block text-sm font-medium text-gray-700">
-							Deskripsi
-						</label>
-						<textarea
-							id="description"
-							bind:value={currentSubject.description}
-							rows="3"
-							class="w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
-							placeholder="Deskripsi mata pelajaran..."
-						></textarea>
-					</div>
+					<p class="text-xs text-gray-500">Contoh: X, XI, XII</p>
 				</div>
 
 				<!-- Footer -->
@@ -442,16 +375,38 @@
 					<button
 						type="button"
 						on:click={handleCloseModal}
-						class="rounded px-4 py-2 text-sm text-gray-600 hover:bg-gray-100"
+						class="rounded px-4 py-2 text-sm font-medium text-gray-600 transition-all hover:bg-gray-100"
 					>
 						Batal
 					</button>
 					<button
 						type="submit"
 						disabled={isSubmitting}
-						class="rounded bg-blue-600 px-4 py-2 text-sm text-white hover:bg-blue-700 disabled:opacity-50"
+						class="rounded bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-all hover:bg-blue-700 disabled:opacity-50"
 					>
-						{isSubmitting ? 'Menyimpan...' : isEditing ? 'Perbarui' : 'Simpan'}
+						{#if isSubmitting}
+							<span class="flex items-center gap-2">
+								<svg class="h-4 w-4 animate-spin" viewBox="0 0 24 24">
+									<circle
+										class="opacity-25"
+										cx="12"
+										cy="12"
+										r="10"
+										stroke="currentColor"
+										stroke-width="4"
+										fill="none"
+									/>
+									<path
+										class="opacity-75"
+										fill="currentColor"
+										d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+									/>
+								</svg>
+								Menyimpan...
+							</span>
+						{:else}
+							{isEditing ? 'Perbarui' : 'Simpan'}
+						{/if}
 					</button>
 				</div>
 			</form>
