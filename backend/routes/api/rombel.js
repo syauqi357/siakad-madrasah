@@ -1,5 +1,5 @@
 import express from 'express';
-import { createRombel, getRombelList } from '../../controllers/rombelController.js';
+import { createRombel, getRombelList, getRombelDetail } from '../../controllers/rombelController.js';
 
 const router = express.Router();
 
@@ -11,7 +11,7 @@ router.post('/rombel', createRombel);
 router.get('/rombel', getRombelList);
 
 // GET /api/rombel/:id - Get Rombel details
-// router.get('/rombel/:id', getRombelDetail); // Placeholder for future implementation
+router.get('/rombel/:id', getRombelDetail);
 
 // PUT /api/rombel/:id - Update Rombel details
 // router.put('/rombel/:id', updateRombel); // Placeholder for future implementation

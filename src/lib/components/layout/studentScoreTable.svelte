@@ -6,15 +6,17 @@
 	export let loading: boolean = false;
 </script>
 
-<div class="w-full overflow-hidden border border-slate-200 bg-white">
+<div class="w-full overflow-hidden border rounded-lg border-slate-300 bg-white">
 	<div
 		class="flex flex-col items-start justify-between gap-4 border-b border-slate-100 p-6 sm:flex-row sm:items-center"
 	>
 		<div>
-			<h3 class="flex items-center gap-2 text-xl font-bold text-slate-800">Rekap Nilai Siswa</h3>
-			<p class="mt-1 text-sm text-slate-500">
-				Kelas: <span class="font-semibold text-slate-700">{className}</span> • Mapel:
-				<span class="font-semibold text-slate-700">{subjectName}</span>
+			<h3 class="flex items-center gap-2 text-2xl font-bold text-blue-700">Rekap Nilai Siswa</h3>
+			<p class="text-md mt-1 text-slate-500">
+				Kelas: <span class="font-semibold text-slate-700">{className}</span>
+			</p>
+			<p class="text-md mt-1 text-slate-500">
+				Mapel: <span class="font-semibold text-slate-700">{subjectName}</span>
 			</p>
 		</div>
 
@@ -53,14 +55,14 @@
 							<td class="px-6 py-4 font-medium whitespace-nowrap text-slate-800"
 								>{row.studentName}</td
 							>
-							<td class="px-6 py-4 font-mono text-xs text-slate-500">{row.nisn}</td>
+							<td class="px-6 py-4 font-semibold text-md text-slate-700 tracking-wide">{row.nisn}</td>
 
 							<!-- Dynamic Score Columns -->
 							{#each headers.slice(2) as header}
 								<td class="px-6 py-4 text-slate-600">
 									{#if row.scores && row.scores[header] !== undefined}
 										<span
-											class="inline-flex h-8 w-8 items-center justify-center rounded border border-slate-200 text-xs font-medium text-slate-700"
+											class="inline-flex px-2 py-2 items-center justify-center rounded border border-slate-200 text-md font-bold text-slate-700"
 										>
 											{row.scores[header]}
 										</span>

@@ -132,3 +132,57 @@ export const getAllRombels = () => {
 
 	return result;
 };
+
+/**
+ * Fetches a single rombel by ID with its details and students list.
+ * @param {number} rombelId - The ID of the rombel to fetch
+ */
+export const getRombelById = (rombelId) => {
+	// Fetch rombel with class and teacher info
+	const rombelData = db
+		.select({
+			id: rombel.id,
+			code: rombel.code,
+			namaRombel: rombel.name,
+			tingkat: classes.className,
+			tingkatId: rombel.classId,
+			waliKelas: teachers.fullName,
+			waliKelasId: rombel.classAdvisorId,
+			ruangan: rombel.classroom,
+			kapasitas: rombel.studentCapacity
+		})
+		.from(rombel)
+		.leftJoin(classes, eq(rombel.classId, classes.id))
+		.leftJoin(teachers, eq(rombel.classAdvisorId, teachers.id))
+		.where(eq(rombel.id, rombelId))
+		.get();
+
+	if (!rombelData) {
+		return null;
+	}
+
+	// Fetch students in this rombel
+	const students = db
+		.select({
+			id: studentTable.id,
+			name: studentTable.studentName,
+			nisn: studentTable.nisn,
+			gender: studentTable.gender,
+			status: studentTable.status,
+			isActive: rombelStudents.isActive
+		})
+		.from(rombelStudents)
+		.innerJoin(studentTable, eq(rombelStudents.studentId, studentTable.id))
+		.where(eq(rombelStudents.rombelId, rombelId))
+		.all();
+
+	// Count active students
+	const activeCount = students.filter((s) => s.isActive !== false && s.status === 'ACTIVE').length;
+
+	return {
+		...rombelData,
+		kurikulum: 'Merdeka',
+		totalSiswa: activeCount,
+		students: students
+	};
+};

@@ -6,6 +6,7 @@
 	"type": "module",
 	"scripts": {
 		"dev": "nodemon --watch app.js",
+		"seed": "",
 		"build": "tsc",
 		"test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
 		"db:generate": "drizzle-kit generate",
@@ -26,8 +27,7 @@
 		"express-rate-limit": "^8.2.1",
 		"express-slow-down": "^3.0.1",
 		"jsonwebtoken": "^9.0.3",
-		"multer": "^2.0.2",
-		"pnpm": "^10.27.0"
+		"multer": "^2.0.2"
 	},
 	"devDependencies": {
 		"@types/cors": "^2.8.19",

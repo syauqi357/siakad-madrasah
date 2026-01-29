@@ -29,6 +29,9 @@ export const studentTable = sqliteTable(
 		// --- FIXED: Copied from correct rombel reference ---
 		rombelId: int('rombel_id').references(() => rombel.id), // References rombel table (classGroup.js)
 
+		// Student status: ACTIVE (enrolled), MUTASI (dropout/transferred), GRADUATE (graduated)
+		status: text('status', { enum: ['ACTIVE', 'MUTASI', 'GRADUATE'] }).default('ACTIVE'),
+
 		createdAt: text('created_at').default(sql`CURRENT_TIMESTAMP`),
 		updatedAt: text('updated_at').default(sql`CURRENT_TIMESTAMP`)
 	},

@@ -1,4 +1,8 @@
 <script lang="ts">
+	import Success from '../icons/success.svelte';
+	import WarningIcon from '../icons/warningIcon.svelte';
+	import ErrorIcon from '../icons/errorIcon.svelte';
+
 	/**
 	 * Modal Alert Component
 	 * @prop {boolean} show - Controls visibility of the modal
@@ -83,7 +87,7 @@
 	<!-- Backdrop -->
 	<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 	<div
-		class="fixed inset-0 z-20 flex items-center justify-center bg-black/20 p-4 backdrop-blur-sm"
+		class="fixed inset-0 z-20 flex items-center justify-center p-4 backdrop-blur-sm"
 		transition:fade={{ duration: 150 }}
 		on:click={handleClose}
 		on:keydown={(e) => e.key === 'Escape' && handleClose()}
@@ -103,45 +107,14 @@
 			<main class="flex w-full items-center justify-center gap-3">
 				<div
 					id="iconAlert"
-					class="flex aspect-square w-16 flex-shrink-0 items-center justify-center rounded-full {config.bgIcon} {config.textIcon}"
+					class="flex aspect-square w-16 shrink-0 items-center justify-center rounded-full {config.bgIcon} {config.textIcon}"
 				>
 					{#if type === 'success'}
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							height="28px"
-							viewBox="0 0 24 24"
-							width="28px"
-							fill="currentColor"
-						>
-							<path d="M0 0h24v24H0V0z" fill="none" />
-							<path
-								d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM9.29 16.29 5.7 12.7c-.39-.39-.39-1.02 0-1.41.39-.39 1.02-.39 1.41 0L10 14.17l6.88-6.88c.39-.39 1.02-.39 1.41 0 .39.39.39 1.02 0 1.41l-7.59 7.59c-.38.39-1.02.39-1.41 0z"
-							/>
-						</svg>
+						<Success />
 					{:else if type === 'error'}
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							height="28px"
-							viewBox="0 0 24 24"
-							width="28px"
-							fill="currentColor"
-						>
-							<path d="M0 0h24v24H0V0z" fill="none" />
-							<path
-								d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"
-							/>
-						</svg>
+						<ErrorIcon />
 					{:else if type === 'warning'}
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							height="28px"
-							viewBox="0 0 24 24"
-							width="28px"
-							fill="currentColor"
-						>
-							<path d="M0 0h24v24H0V0z" fill="none" />
-							<path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z" />
-						</svg>
+						<WarningIcon />
 					{:else}
 						<svg
 							xmlns="http://www.w3.org/2000/svg"

@@ -122,8 +122,8 @@
 	<!-- [STYLE] Page Header Section (Title & Main Action) -->
 	<div class="mb-6 flex flex-col justify-between gap-4 md:flex-row md:items-end">
 		<div>
-			<h1 class="text-2xl font-bold text-slate-800">Manajemen Nilai</h1>
-			<p class="text-sm text-slate-500">
+			<h1 class="text-3xl font-bold text-slate-900">Manajemen Nilai</h1>
+			<p class="text-md text-slate-600">
 				Kelola nilai evaluasi siswa berdasarkan Kelas dan Mata Pelajaran.
 			</p>
 		</div>
@@ -177,12 +177,12 @@
 				<!-- [STYLE] Live/Demo Status Badge -->
 				{#if usingRealData}
 					<span
-						class="animate-pulse rounded-md bg-green-100 px-2 py-1 text-xs font-bold whitespace-nowrap text-green-700"
+						class="animate-pulse rounded-sm bg-green-100 px-2 py-1 text-xs font-bold whitespace-nowrap text-green-700"
 						>LIVE</span
 					>
 				{:else}
 					<span
-						class="rounded-full bg-slate-100 px-2 py-1 text-xs font-bold whitespace-nowrap text-slate-500"
+						class="rounded-sm bg-slate-100 px-2 py-1 text-xs font-bold whitespace-nowrap text-slate-500"
 						>DEMO</span
 					>
 				{/if}

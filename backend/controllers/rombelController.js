@@ -1,4 +1,4 @@
-import { registerRombel, getAllRombels } from '../services/rombel.services.js';
+import { registerRombel, getAllRombels, getRombelById } from '../services/rombel.services.js';
 
 /**
  * Controller to handle the creation of a new Rombel (Class Group).
@@ -45,6 +45,43 @@ export const getRombelList = (req, res) => {
 		res.status(500).json({
 			success: false,
 			message: 'Failed to fetch rombel list',
+			error: error.message
+		});
+	}
+};
+
+/**
+ * Controller to get a single rombel by ID with its students.
+ */
+export const getRombelDetail = (req, res) => {
+	try {
+		const rombelId = parseInt(req.params.id);
+
+		if (isNaN(rombelId)) {
+			return res.status(400).json({
+				success: false,
+				message: 'Invalid rombel ID'
+			});
+		}
+
+		const result = getRombelById(rombelId);
+
+		if (!result) {
+			return res.status(404).json({
+				success: false,
+				message: 'Rombel not found'
+			});
+		}
+
+		res.status(200).json({
+			success: true,
+			data: result
+		});
+	} catch (error) {
+		console.error('Error in getRombelDetail controller:', error);
+		res.status(500).json({
+			success: false,
+			message: 'Failed to fetch rombel detail',
 			error: error.message
 		});
 	}

@@ -16,10 +16,38 @@
 		nisn: number | string;
 		nama: string;
 		kelas: string; // Now populated from backend
-		jenisKelamin: string;
+		gender: string;
 		asal: string;
-		status: 'aktif' | 'warning' | 'nonaktif';
+		status: 'ACTIVE' | 'MUTASI' | 'GRADUATE';
 	};
+
+	// Status label helper
+	function getStatusLabel(status: string): string {
+		switch (status) {
+			case 'ACTIVE':
+				return 'Aktif';
+			case 'MUTASI':
+				return 'Mutasi';
+			case 'GRADUATE':
+				return 'Lulus';
+			default:
+				return status;
+		}
+	}
+
+	// Status style helper
+	function getStatusStyle(status: string): string {
+		switch (status) {
+			case 'ACTIVE':
+				return 'bg-green-100 text-green-700';
+			case 'MUTASI':
+				return 'bg-yellow-100 text-yellow-700';
+			case 'GRADUATE':
+				return 'bg-blue-100 text-blue-700';
+			default:
+				return 'bg-slate-100 text-slate-700';
+		}
+	}
 
 	const DOWNLOAD_EXCEL_TEMPLATE = import.meta.env.VITE_API_URL;
 	const DOWNLOAD_TEMPLATE_EXCEL = `${DOWNLOAD_EXCEL_TEMPLATE}/routes/api/students/download-template`;
@@ -27,10 +55,35 @@
 	let students: Student[] = [];
 	let currentPage = 1;
 	let totalPages = 1;
-	let limit = 10;
+	let limit = 5;
 	let loading = false;
 	let isUploadModalOpen = false;
 	let searchQuery = '';
+	let statusFilter: 'ALL' | 'ACTIVE' | 'MUTASI' | 'GRADUATE' = 'ALL';
+
+	// Filter options
+	const statusOptions = [
+		{ value: 'ALL', label: 'Semua Status' },
+		{ value: 'ACTIVE', label: 'Aktif' },
+		{ value: 'MUTASI', label: 'Mutasi' },
+		{ value: 'GRADUATE', label: 'Lulus' }
+	];
+
+	// Filtered students based on status and search
+	$: filteredStudents = students.filter((s) => {
+		const matchesStatus = statusFilter === 'ALL' || s.status === statusFilter;
+		const matchesSearch =
+			searchQuery === '' ||
+			s.nama.toLowerCase().includes(searchQuery.toLowerCase()) ||
+			s.nisn.toString().includes(searchQuery);
+		return matchesStatus && matchesSearch;
+	});
+
+	/**
+	 *
+	 * filter student or choose student should use backend instead of frontend sorter feature
+	 *
+	 * */
 
 	// Global Alert State
 	let alertModal = {
@@ -39,7 +92,7 @@
 		message: ''
 	};
 
-	const limitOptions = [10, 20, 50, 100];
+	const limitOptions = [5, 10, 20, 50, 100];
 
 	async function fetchStudents(page: number) {
 		loading = true;
@@ -76,10 +129,10 @@
 				id: item.id,
 				nisn: item.nisn || '-',
 				nama: item.name,
-				kelas: item.className || 'Belum Masuk Rombel', // Use className from backend
-				jenisKelamin: item.gender === 'male' || item.gender === 'Laki-laki' ? 'L' : 'P',
+				kelas: item.className || 'Belum Masuk Rombel',
+				gender: item.gender === 'L' || item.gender === 'Laki-laki' ? 'L' : 'P',
 				asal: item.originRegion || '-',
-				status: 'aktif' // Default active for now as per schema check
+				status: item.status || 'ACTIVE' // Use actual status from backend
 			}));
 		} catch (error) {
 			console.error('Failed to fetch student data:', error);
@@ -179,6 +232,16 @@
 		</div>
 
 		<div class="flex flex-wrap items-center gap-3">
+			<!-- Status Filter -->
+			<select
+				bind:value={statusFilter}
+				class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
+			>
+				{#each statusOptions as opt (opt.value)}
+					<option value={opt.value}>{opt.label}</option>
+				{/each}
+			</select>
+
 			<!-- Search -->
 			<div class="relative w-full md:w-64">
 				<input
@@ -186,7 +249,6 @@
 					bind:value={searchQuery}
 					placeholder="Cari nama atau NISN..."
 					class="w-full rounded-lg border border-slate-300 bg-white py-2 pr-4 pl-10 text-sm focus:border-blue-500 focus:outline-none"
-					on:input={() => {}}
 				/>
 				<!-- Debounce search could be added here -->
 				<svg
@@ -248,17 +310,21 @@
 			<div class="flex justify-center py-12">
 				<span class="loading loading-spinner loading-lg text-blue-600">Loading...</span>
 			</div>
-		{:else if students.length === 0}
+		{:else if filteredStudents.length === 0}
 			<!-- empty state -->
 			<div
 				class="rounded-xl border border-dashed border-slate-300 bg-slate-50 py-12 text-center text-slate-500"
 			>
-				<p>Belum ada data siswa.</p>
+				{#if students.length === 0}
+					<p>Belum ada data siswa.</p>
+				{:else}
+					<p>Tidak ada siswa yang sesuai filter.</p>
+				{/if}
 			</div>
 		{:else}
 			<!-- existed state -->
 
-			{#each students as student (student.id)}
+			{#each filteredStudents as student (student.id)}
 				<div
 					class="grid grid-cols-1 items-center gap-4 rounded-lg border border-slate-200 bg-white p-3 last:border hover:bg-slate-50 md:grid-cols-12 md:px-6"
 				>
@@ -287,21 +353,18 @@
 					<!-- Gender -->
 					<div class="col-span-1 md:col-span-1 md:text-center">
 						<span class="font-bold text-slate-600">
-							{student.jenisKelamin}
+							{student.gender}
 						</span>
 					</div>
 
 					<!-- Status -->
 					<div class="col-span-1 md:col-span-1">
 						<span
-							class="inline-flex items-center rounded-md px-3 py-1 text-xs font-medium capitalize
-                            {student.status === 'aktif'
-								? 'bg-green-100 text-green-700'
-								: student.status === 'warning'
-									? 'bg-amber-100 text-amber-700'
-									: 'bg-red-100 text-red-700'}"
+							class="inline-flex items-center rounded-md px-3 py-1 text-xs font-medium {getStatusStyle(
+								student.status
+							)}"
 						>
-							{student.status}
+							{getStatusLabel(student.status)}
 						</span>
 					</div>
 

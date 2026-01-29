@@ -3,14 +3,17 @@
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 	import { API_FETCH } from '$lib/api';
+	import ModalAlert from '$lib/components/modal/modalalert.svelte';
+	import MutasiModal from '$lib/components/modal/MutasiModal.svelte';
 
 	type Student = {
 		id: number;
 		name: string;
+		nisn: string;
 		class: string;
 		gender: string;
 		cityOfOrigin: string;
-		status: 'active' | 'warning' | 'inactive';
+		status: 'ACTIVE' | 'MUTASI' | 'GRADUATE';
 
 		// Full Profile Data
 		nisn: string;
@@ -45,6 +48,18 @@
 	let loading = true;
 	let error = '';
 
+	// Alert State
+	let alertModal = {
+		show: false,
+		type: 'warning' as 'success' | 'error' | 'warning' | 'info',
+		message: '',
+		isConfirm: false
+	};
+
+	// Mutasi Modal State
+	let showMutasiModal = false;
+	let isMutasiLoading = false;
+
 	onMount(async () => {
 		try {
 			const token = localStorage.getItem('token');
@@ -73,7 +88,7 @@
 				class: data.class || 'Belum Masuk Kelas', // Placeholder until joined with class data
 				gender: data.gender,
 				cityOfOrigin: data.originRegion || data.birthPlace || '-',
-				status: 'active', // Default or derived from data if available
+				status: data.status || 'ACTIVE', // Use actual status from DB
 				nisn: data.nisn || '-',
 				localNis: data.localNis || '-',
 				birthDate: data.birthDate || '-',
@@ -120,9 +135,14 @@
 
 	function getStatusStyle(status: string): string {
 		switch (status) {
+			case 'ACTIVE':
 			case 'active':
 			case 'aktif':
 				return 'border-green-400 bg-green-300 text-emerald-700';
+			case 'MUTASI':
+				return 'border-yellow-400 bg-yellow-300 text-yellow-700';
+			case 'GRADUATE':
+				return 'border-blue-400 bg-blue-300 text-blue-700';
 			case 'warning':
 				return 'border-amber-400 bg-amber-300 text-amber-700';
 			case 'inactive':
@@ -132,14 +152,139 @@
 				return 'border-slate-400 bg-slate-300 text-slate-700';
 		}
 	}
+
+	function getStatusLabel(status: string): string {
+		switch (status) {
+			case 'ACTIVE':
+				return 'Aktif';
+			case 'MUTASI':
+				return 'Mutasi';
+			case 'GRADUATE':
+				return 'Lulus';
+			default:
+				return status;
+		}
+	}
+
+	function confirmDelete() {
+		alertModal = {
+			show: true,
+			type: 'warning',
+			message:
+				'Apakah anda yakin ingin menghapus data siswa ini? Data yang dihapus tidak dapat dikembalikan.',
+			isConfirm: true
+		};
+	}
+
+	async function handleDelete() {
+		alertModal.show = false; // Close modal first
+		loading = true;
+
+		try {
+			const response = await API_FETCH(`/routes/api/students/${$page.params.id}`, {
+				method: 'DELETE'
+			});
+
+			if (!response.ok) {
+				throw new Error('Gagal menghapus siswa');
+			}
+
+			// Show success message briefly then redirect
+			// Since we are redirecting, maybe just go straight to list
+			goto('/siswa');
+		} catch (err) {
+			loading = false;
+			alertModal = {
+				show: true,
+				type: 'error',
+				message: err instanceof Error ? err.message : 'Terjadi kesalahan saat menghapus data',
+				isConfirm: false
+			};
+		}
+	}
+
+	async function handleMutasiSubmit(
+		event: CustomEvent<{
+			mutasiType: string;
+			reason: string;
+			destinationSchool: string | null;
+			completionDate: string;
+		}>
+	) {
+		isMutasiLoading = true;
+
+		try {
+			const response = await API_FETCH(`/routes/api/students/${$page.params.id}/status`, {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					status: 'MUTASI',
+					...event.detail
+				})
+			});
+
+			if (!response.ok) {
+				const errData = await response.json();
+				throw new Error(errData.message || 'Gagal memproses mutasi');
+			}
+
+			showMutasiModal = false;
+			alertModal = {
+				show: true,
+				type: 'success',
+				message: 'Siswa berhasil dimutasi',
+				isConfirm: false
+			};
+
+			// Refresh data - reassign to trigger Svelte reactivity
+			if (student) {
+				student = { ...student, status: 'MUTASI' };
+			}
+		} catch (err) {
+			alertModal = {
+				show: true,
+				type: 'error',
+				message: err instanceof Error ? err.message : 'Terjadi kesalahan',
+				isConfirm: false
+			};
+		} finally {
+			isMutasiLoading = false;
+		}
+	}
 </script>
+
+<ModalAlert
+	show={alertModal.show}
+	type={alertModal.type}
+	message={alertModal.message}
+	showCancel={alertModal.isConfirm}
+	on:close={() => (alertModal.show = false)}
+	on:confirm={() => {
+		if (alertModal.isConfirm) {
+			handleDelete();
+		} else {
+			alertModal.show = false;
+		}
+	}}
+/>
+
+{#if student}
+	<MutasiModal
+		show={showMutasiModal}
+		studentName={student.name}
+		studentNisn={student.nisn}
+		isLoading={isMutasiLoading}
+		on:close={() => (showMutasiModal = false)}
+		on:submit={handleMutasiSubmit}
+	/>
+{/if}
 
 <div class="min-h-screen bg-slate-50 p-4 md:p-8">
 	<div class="mx-auto max-w-4xl">
 		<!-- Back button (Always visible) -->
 		<a
 			href="/siswa"
-			class="mb-6 flex w-fit items-center gap-2 rounded-full bg-blue-100 p-2 text-blue-600 transition-colors hover:text-blue-800"
+			class="mb-6 flex w-fit items-center gap-2 rounded-md bg-blue-100 p-2 text-blue-600 transition-colors hover:text-blue-800"
 		>
 			<span>
 				<svg
@@ -172,16 +317,16 @@
 			</div>
 		{:else if student}
 			<!-- Student card parent -->
-			<div class="space-y-6">
+			<div class="space-y-4">
 				<!-- Header Card -->
-				<div class="border border-slate-100 bg-white p-6 md:rounded-xl md:shadow-sm">
+				<div class="border border-slate-400 bg-white p-6 md:rounded-md">
 					<div class="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-						<div class="flex items-center gap-6">
+						<div class="flex items-center gap-3">
 							<!-- student image -->
 							<div
-								class="flex h-24 w-24 items-center justify-center overflow-hidden rounded-full border-4 border-white bg-slate-100 shadow-sm"
+								class="flex h-24 w-24 items-center justify-center overflow-hidden rounded-lg border-2 border-slate-500 bg-slate-100"
 							>
-								{#if student.gender === 'Perempuan' || student.gender === 'female'}
+								{#if student.gender === 'Perempuan' || student.gender === 'laki-laki'}
 									<svg
 										xmlns="http://www.w3.org/2000/svg"
 										class="h-12 w-12 text-slate-400"
@@ -215,9 +360,9 @@
 								<div class="flex items-center gap-3">
 									<h1 class="text-2xl font-bold tracking-tight text-slate-800">{student.name}</h1>
 									<span
-										class={`rounded-full px-3 py-0.5 text-xs font-bold tracking-wide uppercase ${getStatusStyle(student.status)}`}
+										class={`rounded-md px-3 py-0.5 text-xs font-bold tracking-wide uppercase ${getStatusStyle(student.status)}`}
 									>
-										{student.status}
+										{getStatusLabel(student.status)}
 									</span>
 								</div>
 								<div class="mt-2 flex flex-wrap gap-x-6 gap-y-1 text-sm text-slate-500">
@@ -237,12 +382,70 @@
 							</div>
 						</div>
 					</div>
+					<div class="mt-6 flex flex-wrap gap-3">
+						<div
+							class="flex w-fit cursor-pointer items-center justify-center gap-2 rounded-md bg-blue-500 px-5 py-2 text-blue-50 capitalize transition-all duration-200 ease-in-out hover:bg-blue-700"
+						>
+							<span class="flex items-center justify-center">
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									enable-background="new 0 0 24 24"
+									height="24px"
+									viewBox="0 0 24 24"
+									width="24px"
+									fill="currentColor"
+									><g><rect fill="none" height="24" width="24" /></g><g
+										><g
+											><g
+												><path
+													d="M3,17.46l0,3.04C3,20.78,3.22,21,3.5,21h3.04c0.13,0,0.26-0.05,0.35-0.15L17.81,9.94l-3.75-3.75L3.15,17.1 C3.05,17.2,3,17.32,3,17.46z"
+												/></g
+											><g
+												><path
+													d="M20.71,5.63l-2.34-2.34c-0.39-0.39-1.02-0.39-1.41,0l-1.83,1.83l3.75,3.75l1.83-1.83C21.1,6.65,21.1,6.02,20.71,5.63z"
+												/></g
+											></g
+										></g
+									></svg
+								>
+							</span>
+							edit siswa
+						</div>
+
+						{#if student.status === 'ACTIVE'}
+							<button
+								on:click={() => (showMutasiModal = true)}
+								class="flex w-fit cursor-pointer items-center justify-center gap-2 rounded-md bg-yellow-500 px-4 py-2 text-yellow-50 transition-colors hover:bg-yellow-600"
+							>
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									class="h-5 w-5"
+									viewBox="0 0 20 20"
+									fill="currentColor"
+								>
+									<path
+										fill-rule="evenodd"
+										d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z"
+										clip-rule="evenodd"
+									/>
+								</svg>
+								Mutasi Siswa
+							</button>
+						{/if}
+
+						<button
+							on:click={confirmDelete}
+							class="flex w-fit cursor-pointer items-center justify-center rounded-md bg-red-500 px-4 py-2 text-red-100 transition-colors hover:bg-red-700"
+						>
+							Hapus Siswa
+						</button>
+					</div>
 				</div>
 
 				<!-- Content Grid -->
 				<div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
 					<!-- 1. Personal Info -->
-					<div class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+					<div class="rounded-md border border-slate-400 bg-white p-6">
 						<h3 class="mb-4 flex items-center gap-2 text-base font-semibold text-slate-800">
 							<svg
 								class="h-5 w-5 text-blue-500"
@@ -277,7 +480,7 @@
 					</div>
 
 					<!-- 2. Address -->
-					<div class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+					<div class="rounded-md border border-slate-400 bg-white p-6">
 						<h3 class="mb-4 flex items-center gap-2 text-base font-semibold text-slate-800">
 							<svg
 								class="h-5 w-5 text-orange-500"
@@ -323,9 +526,7 @@
 					</div>
 
 					<!-- 3. Family Info (Merged for compactness or separate) -->
-					<div
-						class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm md:col-span-2 lg:col-span-1"
-					>
+					<div class="rounded-md border border-slate-400 bg-white p-6 md:col-span-2 lg:col-span-1">
 						<h3 class="mb-4 flex items-center gap-2 text-base font-semibold text-slate-800">
 							<svg
 								class="h-5 w-5 text-emerald-500"
