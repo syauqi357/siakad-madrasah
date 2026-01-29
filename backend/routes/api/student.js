@@ -9,7 +9,12 @@ import {
 	deleteStudent,
 	getStudentCount,
 	createBulkStudent,
-	downloadStudentBulkTemplate
+	downloadStudentBulkTemplate,
+	// Status management
+	getActiveStudents,
+	getDropoutStudents,
+	getGraduatedStudents,
+	changeStudentStatus
 } from '../../controllers/studentController.js';
 
 const router = express.Router();
@@ -27,5 +32,11 @@ router.delete('/students/:id', deleteStudent);
 // --- Bulk Operations ---
 router.post('/students/upload-bulk', upload.single('file'), createBulkStudent);
 router.get('/students/download-template', downloadStudentBulkTemplate);
+
+// --- Status Management Routes ---
+router.get('/students/active', getActiveStudents);
+router.get('/students/dropout', getDropoutStudents);
+router.get('/students/graduated', getGraduatedStudents);
+router.post('/students/:id/status', changeStudentStatus);
 
 export default router;

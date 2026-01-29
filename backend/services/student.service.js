@@ -6,7 +6,8 @@ import { studentWali } from '../src/db/schema/studentWali.js';
 import { studentAddress } from '../src/db/schema/studentAddress.js';
 import { rombelStudents } from '../src/db/schema/rombelStudents.js';
 import { rombel } from '../src/db/schema/classGroup.js';
-import { eq, count, isNull, or } from 'drizzle-orm';
+import { studentHistory } from '../src/db/schema/studentHistory.js';
+import { eq, count, isNull, or, and, sql } from 'drizzle-orm';
 import ExcelJS from 'exceljs';
 
 // --- Header Mapping Configuration ---
@@ -138,7 +139,8 @@ export const findAllStudents = async (page = 1, limit = 5) => {
 			name: studentTable.studentName,
 			gender: studentTable.gender,
 			originRegion: studentTable.originRegion,
-			className: rombel.name // Fetch the class name
+			status: studentTable.status,
+			className: rombel.name
 		})
 		.from(studentTable)
 		.leftJoin(rombelStudents, eq(studentTable.id, rombelStudents.studentId))
@@ -498,4 +500,189 @@ export const updateStudentData = async (id, data) => {
 export const deleteStudentData = async (id) => {
 	const deleted = await db.delete(studentTable).where(eq(studentTable.id, id)).returning();
 	return deleted[0];
+};
+
+// ==================== STATUS MANAGEMENT METHODS ====================
+
+/**
+ * Get all active students (status = 'ACTIVE')
+ * @param {number} page - Page number (default: 1)
+ * @param {number} limit - Items per page (default: 10)
+ */
+export const getActiveStudents = async (page = 1, limit = 10) => {
+	const offset = (page - 1) * limit;
+
+	return db
+		.select({
+			id: studentTable.id,
+			nisn: studentTable.nisn,
+			name: studentTable.studentName,
+			gender: studentTable.gender,
+			status: studentTable.status,
+			className: rombel.name
+		})
+		.from(studentTable)
+		.leftJoin(
+			rombelStudents,
+			and(eq(studentTable.id, rombelStudents.studentId), eq(rombelStudents.isActive, true))
+		)
+		.leftJoin(rombel, eq(rombelStudents.rombelId, rombel.id))
+		.where(eq(studentTable.status, 'ACTIVE'))
+		.limit(limit)
+		.offset(offset);
+};
+
+/**
+ * Get all dropout students (status = 'MUTASI')
+ * @param {number} page - Page number (default: 1)
+ * @param {number} limit - Items per page (default: 10)
+ */
+export const getDropoutStudents = async (page = 1, limit = 10) => {
+	const offset = (page - 1) * limit;
+
+	return db
+		.select({
+			id: studentTable.id,
+			nisn: studentTable.nisn,
+			name: studentTable.studentName,
+			gender: studentTable.gender,
+			status: studentTable.status,
+			reason: studentHistory.reason,
+			mutasiType: studentHistory.mutasiType,
+			destinationSchool: studentHistory.destinationSchool,
+			completionDate: studentHistory.completionDate,
+			lastClassName: rombel.name
+		})
+		.from(studentTable)
+		.leftJoin(studentHistory, eq(studentTable.id, studentHistory.studentId))
+		.leftJoin(rombel, eq(studentHistory.rombelId, rombel.id))
+		.where(eq(studentTable.status, 'MUTASI'))
+		.limit(limit)
+		.offset(offset);
+};
+
+/**
+ * Get all graduated students (status = 'GRADUATE')
+ * @param {number} page - Page number (default: 1)
+ * @param {number} limit - Items per page (default: 10)
+ */
+export const getGraduatedStudents = async (page = 1, limit = 10) => {
+	const offset = (page - 1) * limit;
+
+	return db
+		.select({
+			id: studentTable.id,
+			nisn: studentTable.nisn,
+			name: studentTable.studentName,
+			gender: studentTable.gender,
+			status: studentTable.status,
+			scores: studentHistory.scores,
+			completionDate: studentHistory.completionDate,
+			lastClassName: rombel.name
+		})
+		.from(studentTable)
+		.leftJoin(studentHistory, eq(studentTable.id, studentHistory.studentId))
+		.leftJoin(rombel, eq(studentHistory.rombelId, rombel.id))
+		.where(eq(studentTable.status, 'GRADUATE'))
+		.limit(limit)
+		.offset(offset);
+};
+
+/**
+ * Count students by status
+ * @param {string} status - 'ACTIVE', 'MUTASI', or 'GRADUATE'
+ */
+export const countStudentsByStatus = async (status) => {
+	const [result] = await db
+		.select({ count: count() })
+		.from(studentTable)
+		.where(eq(studentTable.status, status));
+	return result;
+};
+
+/**
+ * Change student status (TRANSACTIONAL)
+ * Only allows transition from ACTIVE to MUTASI or GRADUATE
+ * @param {number} studentId - The student ID
+ * @param {string} newStatus - 'MUTASI' or 'GRADUATE'
+ * @param {Object} data - { reason, mutasiType, destinationSchool, completionDate, scores }
+ */
+export const changeStudentStatus = async (studentId, newStatus, data = {}) => {
+	// Validate newStatus
+	if (!['MUTASI', 'GRADUATE'].includes(newStatus)) {
+		throw new Error('Invalid status. Must be MUTASI or GRADUATE');
+	}
+
+	// Get current student
+	const student = await db.select().from(studentTable).where(eq(studentTable.id, studentId)).get();
+
+	if (!student) {
+		throw new Error('Student not found');
+	}
+
+	if (student.status !== 'ACTIVE') {
+		throw new Error('Only ACTIVE students can change status');
+	}
+
+	// Validate MUTASI requirements
+	if (newStatus === 'MUTASI') {
+		if (!data.reason) {
+			throw new Error('Alasan mutasi wajib diisi');
+		}
+		if (!data.mutasiType) {
+			throw new Error('Jenis mutasi wajib dipilih');
+		}
+	}
+
+	// Get current active rombel assignment (optional - student might not be in rombel)
+	const activeRombel = await db
+		.select()
+		.from(rombelStudents)
+		.where(and(eq(rombelStudents.studentId, studentId), eq(rombelStudents.isActive, true)))
+		.get();
+
+	const now = new Date().toISOString();
+
+	// Execute transaction
+	return db.transaction((tx) => {
+		// 1. Update student status
+		tx.update(studentTable)
+			.set({ status: newStatus, updatedAt: now })
+			.where(eq(studentTable.id, studentId))
+			.run();
+
+		// 2. Deactivate rombel assignment if exists
+		if (activeRombel) {
+			tx.update(rombelStudents)
+				.set({ isActive: false, leftAt: now })
+				.where(
+					and(
+						eq(rombelStudents.studentId, studentId),
+						eq(rombelStudents.rombelId, activeRombel.rombelId)
+					)
+				)
+				.run();
+		}
+
+		// 3. Create history record
+		const historyRecord = tx
+			.insert(studentHistory)
+			.values({
+				studentId: studentId,
+				rombelId: activeRombel ? activeRombel.rombelId : null,
+				scores: data.scores || null,
+				statusType: newStatus,
+				reason: data.reason || null,
+				mutasiType: data.mutasiType || null,
+				destinationSchool: data.destinationSchool || null,
+				completionDate: data.completionDate || now
+			})
+			.returning()
+			.get();
+
+		return {
+			student: { id: studentId, status: newStatus },
+			history: historyRecord
+		};
+	});
 };

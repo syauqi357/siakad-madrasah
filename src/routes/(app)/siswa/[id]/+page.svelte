@@ -4,14 +4,16 @@
 	import { goto } from '$app/navigation';
 	import { API_FETCH } from '$lib/api';
 	import ModalAlert from '$lib/components/modal/modalalert.svelte';
+	import MutasiModal from '$lib/components/modal/MutasiModal.svelte';
 
 	type Student = {
 		id: number;
 		name: string;
+		nisn: string;
 		class: string;
 		gender: string;
 		cityOfOrigin: string;
-		status: 'active' | 'warning' | 'inactive';
+		status: 'ACTIVE' | 'MUTASI' | 'GRADUATE';
 
 		// Full Profile Data
 		nisn: string;
@@ -54,6 +56,10 @@
 		isConfirm: false
 	};
 
+	// Mutasi Modal State
+	let showMutasiModal = false;
+	let isMutasiLoading = false;
+
 	onMount(async () => {
 		try {
 			const token = localStorage.getItem('token');
@@ -82,7 +88,7 @@
 				class: data.class || 'Belum Masuk Kelas', // Placeholder until joined with class data
 				gender: data.gender,
 				cityOfOrigin: data.originRegion || data.birthPlace || '-',
-				status: 'active', // Default or derived from data if available
+				status: data.status || 'ACTIVE', // Use actual status from DB
 				nisn: data.nisn || '-',
 				localNis: data.localNis || '-',
 				birthDate: data.birthDate || '-',
@@ -129,10 +135,14 @@
 
 	function getStatusStyle(status: string): string {
 		switch (status) {
+			case 'ACTIVE':
 			case 'active':
-				return 'border-green-400 bg-green-300 text-emerald-700';
 			case 'aktif':
 				return 'border-green-400 bg-green-300 text-emerald-700';
+			case 'MUTASI':
+				return 'border-yellow-400 bg-yellow-300 text-yellow-700';
+			case 'GRADUATE':
+				return 'border-blue-400 bg-blue-300 text-blue-700';
 			case 'warning':
 				return 'border-amber-400 bg-amber-300 text-amber-700';
 			case 'inactive':
@@ -140,6 +150,19 @@
 				return 'border-red-400 bg-red-300 text-red-700';
 			default:
 				return 'border-slate-400 bg-slate-300 text-slate-700';
+		}
+	}
+
+	function getStatusLabel(status: string): string {
+		switch (status) {
+			case 'ACTIVE':
+				return 'Aktif';
+			case 'MUTASI':
+				return 'Mutasi';
+			case 'GRADUATE':
+				return 'Lulus';
+			default:
+				return status;
 		}
 	}
 
@@ -179,16 +202,82 @@
 			};
 		}
 	}
+
+	async function handleMutasiSubmit(
+		event: CustomEvent<{
+			mutasiType: string;
+			reason: string;
+			destinationSchool: string | null;
+			completionDate: string;
+		}>
+	) {
+		isMutasiLoading = true;
+
+		try {
+			const response = await API_FETCH(`/routes/api/students/${$page.params.id}/status`, {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					status: 'MUTASI',
+					...event.detail
+				})
+			});
+
+			if (!response.ok) {
+				const errData = await response.json();
+				throw new Error(errData.message || 'Gagal memproses mutasi');
+			}
+
+			showMutasiModal = false;
+			alertModal = {
+				show: true,
+				type: 'success',
+				message: 'Siswa berhasil dimutasi',
+				isConfirm: false
+			};
+
+			// Refresh data - reassign to trigger Svelte reactivity
+			if (student) {
+				student = { ...student, status: 'MUTASI' };
+			}
+		} catch (err) {
+			alertModal = {
+				show: true,
+				type: 'error',
+				message: err instanceof Error ? err.message : 'Terjadi kesalahan',
+				isConfirm: false
+			};
+		} finally {
+			isMutasiLoading = false;
+		}
+	}
 </script>
 
 <ModalAlert
 	show={alertModal.show}
 	type={alertModal.type}
 	message={alertModal.message}
-	showConfirm={alertModal.isConfirm}
+	showCancel={alertModal.isConfirm}
 	on:close={() => (alertModal.show = false)}
-	on:confirm={handleDelete}
+	on:confirm={() => {
+		if (alertModal.isConfirm) {
+			handleDelete();
+		} else {
+			alertModal.show = false;
+		}
+	}}
 />
+
+{#if student}
+	<MutasiModal
+		show={showMutasiModal}
+		studentName={student.name}
+		studentNisn={student.nisn}
+		isLoading={isMutasiLoading}
+		on:close={() => (showMutasiModal = false)}
+		on:submit={handleMutasiSubmit}
+	/>
+{/if}
 
 <div class="min-h-screen bg-slate-50 p-4 md:p-8">
 	<div class="mx-auto max-w-4xl">
@@ -273,7 +362,7 @@
 									<span
 										class={`rounded-md px-3 py-0.5 text-xs font-bold tracking-wide uppercase ${getStatusStyle(student.status)}`}
 									>
-										{student.status}
+										{getStatusLabel(student.status)}
 									</span>
 								</div>
 								<div class="mt-2 flex flex-wrap gap-x-6 gap-y-1 text-sm text-slate-500">
@@ -293,7 +382,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="mt-6 flex gap-3">
+					<div class="mt-6 flex flex-wrap gap-3">
 						<div
 							class="flex w-fit cursor-pointer items-center justify-center gap-2 rounded-md bg-blue-500 px-5 py-2 text-blue-50 capitalize transition-all duration-200 ease-in-out hover:bg-blue-700"
 						>
@@ -322,11 +411,32 @@
 							</span>
 							edit siswa
 						</div>
+
+						{#if student.status === 'ACTIVE'}
+							<button
+								on:click={() => (showMutasiModal = true)}
+								class="flex w-fit cursor-pointer items-center justify-center gap-2 rounded-md bg-yellow-500 px-4 py-2 text-yellow-50 transition-colors hover:bg-yellow-600"
+							>
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									class="h-5 w-5"
+									viewBox="0 0 20 20"
+									fill="currentColor"
+								>
+									<path
+										fill-rule="evenodd"
+										d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z"
+										clip-rule="evenodd"
+									/>
+								</svg>
+								Mutasi Siswa
+							</button>
+						{/if}
+
 						<button
 							on:click={confirmDelete}
 							class="flex w-fit cursor-pointer items-center justify-center rounded-md bg-red-500 px-4 py-2 text-red-100 transition-colors hover:bg-red-700"
 						>
-
 							Hapus Siswa
 						</button>
 					</div>

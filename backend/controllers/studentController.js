@@ -152,3 +152,117 @@ export const deleteStudent = async (req, res) => {
 		res.status(500).json({ message: 'Error deleting student', error: error.message });
 	}
 };
+
+// ==================== STATUS MANAGEMENT CONTROLLERS ====================
+
+/**
+ * GET /students/active - Get all active students
+ */
+export const getActiveStudents = async (req, res) => {
+	try {
+		const page = parseInt(req.query.page) || 1;
+		const limit = parseInt(req.query.limit) || 10;
+
+		const students = await studentService.getActiveStudents(page, limit);
+		const totalCount = await studentService.countStudentsByStatus('ACTIVE');
+
+		res.status(200).json({
+			data: students,
+			pagination: {
+				total: totalCount.count,
+				page: page,
+				limit: limit,
+				totalPages: Math.ceil(totalCount.count / limit)
+			}
+		});
+	} catch (error) {
+		console.error('Database error:', error);
+		res.status(500).json({ message: 'Error fetching active students', error: error.message });
+	}
+};
+
+/**
+ * GET /students/dropout - Get all dropout (MUTASI) students
+ */
+export const getDropoutStudents = async (req, res) => {
+	try {
+		const page = parseInt(req.query.page) || 1;
+		const limit = parseInt(req.query.limit) || 10;
+
+		const students = await studentService.getDropoutStudents(page, limit);
+		const totalCount = await studentService.countStudentsByStatus('MUTASI');
+
+		res.status(200).json({
+			data: students,
+			pagination: {
+				total: totalCount.count,
+				page: page,
+				limit: limit,
+				totalPages: Math.ceil(totalCount.count / limit)
+			}
+		});
+	} catch (error) {
+		console.error('Database error:', error);
+		res.status(500).json({ message: 'Error fetching dropout students', error: error.message });
+	}
+};
+
+/**
+ * GET /students/graduated - Get all graduated students
+ */
+export const getGraduatedStudents = async (req, res) => {
+	try {
+		const page = parseInt(req.query.page) || 1;
+		const limit = parseInt(req.query.limit) || 10;
+
+		const students = await studentService.getGraduatedStudents(page, limit);
+		const totalCount = await studentService.countStudentsByStatus('GRADUATE');
+
+		res.status(200).json({
+			data: students,
+			pagination: {
+				total: totalCount.count,
+				page: page,
+				limit: limit,
+				totalPages: Math.ceil(totalCount.count / limit)
+			}
+		});
+	} catch (error) {
+		console.error('Database error:', error);
+		res.status(500).json({ message: 'Error fetching graduated students', error: error.message });
+	}
+};
+
+/**
+ * POST /students/:id/status - Change student status
+ * Body for MUTASI: { status: 'MUTASI', reason, mutasiType, destinationSchool?, completionDate }
+ * Body for GRADUATE: { status: 'GRADUATE', scores?, completionDate }
+ */
+export const changeStudentStatus = async (req, res) => {
+	try {
+		const studentId = parseInt(req.params.id);
+		const { status, scores, reason, mutasiType, destinationSchool, completionDate } = req.body;
+
+		if (!status) {
+			return res.status(400).json({ message: 'Status is required' });
+		}
+
+		const result = await studentService.changeStudentStatus(studentId, status, {
+			scores,
+			reason,
+			mutasiType,
+			destinationSchool,
+			completionDate
+		});
+
+		res.status(200).json({
+			message: `Student status changed to ${status} successfully`,
+			data: result
+		});
+	} catch (error) {
+		console.error('Database error:', error);
+		// Return appropriate status code based on error type
+		const statusCode = error.message.includes('not found') ? 404 : 400;
+		res.status(statusCode).json({ message: error.message });
+	}
+};
