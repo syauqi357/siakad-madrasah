@@ -66,7 +66,7 @@
 {#if show}
 	<!-- Backdrop -->
 	<div
-		class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+		class="fixed inset-0 z-2 flex items-center justify-center bg-black/20 p-4 backdrop-blur-sm"
 		transition:fade={{ duration: 150 }}
 		on:click={handleClose}
 		on:keydown={(e) => e.key === 'Escape' && handleClose()}
@@ -75,23 +75,25 @@
 	>
 		<!-- Modal -->
 		<div
-			class="w-full max-w-lg rounded-lg border bg-white shadow-xl"
+			class="w-full max-w-lg rounded-lg border border-slate-400 bg-white shadow-xl"
 			transition:scale={{ duration: 150, start: 0.95 }}
 			on:click|stopPropagation
 			on:keydown|stopPropagation
 			role="dialog"
+			tabindex="-1"
 			aria-modal="true"
 			aria-labelledby="modal-title"
 		>
 			<!-- Header -->
-			<div class="flex items-center justify-between border-b px-6 py-4">
+			<div class="flex items-center justify-between border-b border-gray-500 px-6 py-4">
 				<div>
 					<h2 id="modal-title" class="text-lg font-bold">Mutasi Siswa</h2>
-					<p class="text-sm opacity-70">{studentName} - {studentNisn}</p>
+					<p class="text-md opacity-70">{studentName} - {studentNisn}</p>
 				</div>
+<!--				close button    -->
 				<button
 					on:click={handleClose}
-					class="flex h-8 w-8 items-center justify-center rounded-full hover:bg-gray-100"
+					class="flex h-8 w-8 items-center justify-center rounded-md transition-all ease-in-out hover:bg-gray-100"
 					aria-label="Close"
 				>
 					&#10005;
@@ -108,7 +110,7 @@
 					<select
 						id="mutasiType"
 						bind:value={mutasiType}
-						class="w-full rounded-md border px-3 py-2 focus:border-blue-500 focus:outline-none"
+						class="w-full rounded-md border border-gray-400 px-3 py-2 transition-all ease-in-out focus:border-blue-500 focus:outline-none"
 						required
 					>
 						<option value="" disabled>Pilih jenis mutasi</option>
@@ -129,7 +131,7 @@
 							id="destinationSchool"
 							bind:value={destinationSchool}
 							placeholder="Nama sekolah tujuan"
-							class="w-full rounded-md border px-3 py-2 focus:border-blue-500 focus:outline-none"
+							class="w-full rounded-md border border-gray-400 px-3 py-2 transition-all ease-in-out focus:border-blue-500 focus:outline-none"
 						/>
 					</div>
 				{/if}
@@ -143,7 +145,7 @@
 						type="date"
 						id="completionDate"
 						bind:value={completionDate}
-						class="w-full rounded-md border px-3 py-2 focus:border-blue-500 focus:outline-none"
+						class="w-full rounded-md border border-gray-400 px-3 py-2 transition-all ease-in-out focus:border-blue-500 focus:outline-none"
 						required
 					/>
 				</div>
@@ -158,29 +160,31 @@
 						bind:value={reason}
 						rows="3"
 						placeholder="Jelaskan alasan mutasi siswa..."
-						class="w-full resize-none rounded-md border px-3 py-2 focus:border-blue-500 focus:outline-none"
+						class="w-full resize-none rounded-md border border-gray-400 px-3 py-2 transition-all ease-in-out focus:border-blue-500 focus:outline-none"
 						required
 					></textarea>
 				</div>
 
 				<!-- Actions -->
-				<div class="flex justify-end gap-3 border-t pt-4">
+				<div class="flex justify-end gap-3 border-t border-t-gray-300 pt-4">
 					<button
 						type="button"
 						on:click={handleClose}
-						class="rounded-md border px-4 py-2 text-sm font-medium hover:bg-gray-50"
+						class="rounded-md  text-red-800 bg-red-300 px-4 py-2 text-sm font-medium transition-all ease-in-out hover:bg-red-400"
 						disabled={isLoading}
 					>
 						Batal
 					</button>
 					<button
 						type="submit"
-						class="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 disabled:opacity-50"
+						class="rounded-md text-blue-600 px-4 py-2 text-sm font-medium bg-blue-200 transition-all ease-in-out hover:bg-blue-300 disabled:opacity-50"
 						disabled={isLoading}
 					>
 						{#if isLoading}
 							<span class="flex items-center gap-2">
-								<span class="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></span>
+								<span
+									class="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"
+								></span>
 								Memproses...
 							</span>
 						{:else}

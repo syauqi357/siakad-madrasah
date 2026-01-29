@@ -79,6 +79,12 @@
 		return matchesStatus && matchesSearch;
 	});
 
+	/**
+	 *
+	 * filter student or choose student should use backend instead of frontend sorter feature
+	 *
+	 * */
+
 	// Global Alert State
 	let alertModal = {
 		show: false,
