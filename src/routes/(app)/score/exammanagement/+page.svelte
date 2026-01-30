@@ -3,6 +3,7 @@
 	import { API_FETCH } from '$lib/api';
 	import ModalAlert from '$lib/components/modal/modalalert.svelte';
 	import ModalExam from '$lib/components/modal/modalexam.svelte';
+import AddIcon from '\$lib/components/icons/addIcon.svelte';
 
 	// State
 	let loading = true;
@@ -200,11 +201,11 @@
 	});
 </script>
 
-<div class="p-4 md:p-8">
+<div class="px-20">
 	<!-- Header -->
 	<div class="mb-6 flex flex-col justify-between gap-4 md:flex-row md:items-end">
 		<div>
-			<h1 class="text-3xl font-bold text-slate-900 capitalize">Jenis Penilaian</h1>
+			<h1 class="text-3xl font-bold text-blue-600 capitalize">Jenis Penilaian</h1>
 			<p class="text-md text-slate-600">Kelola jenis penilaian untuk input nilai siswa</p>
 		</div>
 
@@ -212,44 +213,33 @@
 			on:click={openAddModal}
 			class="flex items-center gap-2 rounded-md bg-blue-500 px-4 py-2 text-sm font-medium text-blue-50 transition-colors hover:bg-blue-600"
 		>
-			<svg
-				xmlns="http://www.w3.org/2000/svg"
-				class="h-5 w-5"
-				viewBox="0 0 20 20"
-				fill="currentColor"
-			>
-				<path
-					fill-rule="evenodd"
-					d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-					clip-rule="evenodd"
-				/>
-			</svg>
+			<AddIcon />
 			Tambah Jenis
 		</button>
 	</div>
 
 	<!-- Stat Cards -->
 	<div class="mb-6 grid grid-cols-2 gap-4 md:grid-cols-4">
-		<div class="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+		<div class="rounded-lg border-2 border-slate-200 bg-white p-4 ">
 			<p class="text-sm font-medium text-slate-500">Total</p>
 			<p class="text-2xl font-bold text-slate-900">{stats.total}</p>
 		</div>
-		<div class="rounded-lg border border-green-200 bg-green-50 p-4 shadow-sm">
+		<div class="rounded-lg border-2 border-green-200 bg-green-50 p-4 ">
 			<p class="text-sm font-medium text-green-600">Aktif</p>
 			<p class="text-2xl font-bold text-green-700">{stats.active}</p>
 		</div>
-		<div class="rounded-lg border border-slate-200 bg-slate-50 p-4 shadow-sm">
+		<div class="rounded-lg border-2 border-slate-200 bg-slate-50 p-4 ">
 			<p class="text-sm font-medium text-slate-500">Nonaktif</p>
 			<p class="text-2xl font-bold text-slate-600">{stats.inactive}</p>
 		</div>
-		<div class="rounded-lg border border-blue-200 bg-blue-50 p-4 shadow-sm">
+		<div class="rounded-lg border-2 border-blue-200 bg-blue-50 p-4 ">
 			<p class="text-sm font-medium text-blue-600">Digunakan</p>
 			<p class="text-2xl font-bold text-blue-700">{stats.totalScoresRecorded}</p>
 		</div>
 	</div>
 
 	<!-- Table -->
-	<div class="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
+	<div class="overflow-hidden rounded-lg border border-slate-200 bg-white ">
 		<div class="overflow-x-auto">
 			<table class="w-full">
 				<thead class="border-b border-slate-200 bg-slate-50">
@@ -281,7 +271,7 @@
 							<tr class="hover:bg-slate-50">
 								<td class="px-4 py-3">
 									<span
-										class="rounded bg-slate-100 px-2 py-1 font-mono text-sm font-medium text-slate-700"
+										class="rounded bg-slate-100 px-2 py-1 font-semibold text-md text-slate-700"
 									>
 										{item.code}
 									</span>
