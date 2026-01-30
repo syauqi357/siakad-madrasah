@@ -1,7 +1,7 @@
 import { db } from '../src/index.js';
 import { assessmentType } from '../src/db/schema/assesmentType.js';
 import { studentScores } from '../src/db/schema/studentScore.js';
-import { eq, count, desc } from 'drizzle-orm';
+import { count, desc, eq } from 'drizzle-orm';
 
 /*
  * ========================================================================
@@ -185,11 +185,7 @@ export const getTotalUsageCount = async () => {
  * @param {number} id - Assessment type ID
  */
 export const getAssessmentTypeById = async (id) => {
-	const type = await db
-		.select()
-		.from(assessmentType)
-		.where(eq(assessmentType.id, id))
-		.get();
+	const type = await db.select().from(assessmentType).where(eq(assessmentType.id, id)).get();
 
 	if (!type) return null;
 
@@ -333,11 +329,7 @@ export const updateAssessmentType = async (id, data) => {
 	const { code, name, defaultWeight } = data;
 
 	// Check if exists
-	const existing = await db
-		.select()
-		.from(assessmentType)
-		.where(eq(assessmentType.id, id))
-		.get();
+	const existing = await db.select().from(assessmentType).where(eq(assessmentType.id, id)).get();
 
 	if (!existing) {
 		throw new Error('Jenis penilaian tidak ditemukan');
@@ -361,14 +353,12 @@ export const updateAssessmentType = async (id, data) => {
 	if (name) updateData.name = name.trim();
 	if (defaultWeight !== undefined) updateData.defaultWeight = defaultWeight;
 
-	const updated = await db
+	return db
 		.update(assessmentType)
 		.set(updateData)
 		.where(eq(assessmentType.id, id))
 		.returning()
 		.get();
-
-	return updated;
 };
 
 /*
@@ -399,11 +389,7 @@ export const updateAssessmentType = async (id, data) => {
  * @param {number} id - Assessment type ID
  */
 export const toggleAssessmentTypeStatus = async (id) => {
-	const existing = await db
-		.select()
-		.from(assessmentType)
-		.where(eq(assessmentType.id, id))
-		.get();
+	const existing = await db.select().from(assessmentType).where(eq(assessmentType.id, id)).get();
 
 	if (!existing) {
 		throw new Error('Jenis penilaian tidak ditemukan');
@@ -446,11 +432,7 @@ export const toggleAssessmentTypeStatus = async (id) => {
  */
 export const deleteAssessmentType = async (id) => {
 	// Check if exists
-	const existing = await db
-		.select()
-		.from(assessmentType)
-		.where(eq(assessmentType.id, id))
-		.get();
+	const existing = await db.select().from(assessmentType).where(eq(assessmentType.id, id)).get();
 
 	if (!existing) {
 		throw new Error('Jenis penilaian tidak ditemukan');
