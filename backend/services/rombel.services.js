@@ -3,8 +3,51 @@ import { rombel } from '../src/db/schema/classGroup.js';
 import { rombelStudents } from '../src/db/schema/rombelStudents.js';
 import { classes } from '../src/db/schema/classesDataTable.js';
 import { teachers } from '../src/db/schema/teacherUser.js';
+import { academicYear } from '../src/db/schema/academicYear.js';
 import { eq, sql, inArray } from 'drizzle-orm';
 import { studentTable } from '../src/db/schema/studentsdataTable.js';
+
+/**
+ * Get the active academic year ID, or create one if none exists
+ */
+const getActiveAcademicYearId = () => {
+	// Try to find active academic year
+	const active = db
+		.select({ id: academicYear.id })
+		.from(academicYear)
+		.where(eq(academicYear.isActive, 1))
+		.get();
+
+	if (active) {
+		return active.id;
+	}
+
+	// If no active year, get the first one
+	const first = db
+		.select({ id: academicYear.id })
+		.from(academicYear)
+		.limit(1)
+		.get();
+
+	if (first) {
+		return first.id;
+	}
+
+	// If no academic year exists at all, create a default one
+	const currentYear = new Date().getFullYear();
+	const [newYear] = db
+		.insert(academicYear)
+		.values({
+			name: `${currentYear}/${currentYear + 1}`,
+			startYear: currentYear,
+			endYear: currentYear + 1,
+			isActive: 1
+		})
+		.returning({ id: academicYear.id })
+		.all();
+
+	return newYear.id;
+};
 
 // ... (insertRombel and registerSiswaToRombel functions remain the same) ...
 const insertRombel = (data, tx) => {
@@ -21,7 +64,8 @@ const insertRombel = (data, tx) => {
 			academicYearId: data.academic_year_id,
 			classAdvisorId: data.class_advisor_id,
 			classroom: data.classroom,
-			studentCapacity: data.student_capacity || 30
+			studentCapacity: data.student_capacity || 30,
+			kurikulum: data.kurikulum || null
 		})
 		.returning({ id: rombel.id })
 		.all();
@@ -50,6 +94,9 @@ const registerSiswaToRombel = (rombelId, siswaIds, tx) => {
 
 export const registerRombel = (payloadList) => {
 	try {
+		// Get active academic year before transaction
+		const academicYearId = getActiveAcademicYearId();
+
 		db.transaction((tx) => {
 			for (const rombelData of payloadList) {
 				const studentCount = rombelData.siswa ? rombelData.siswa.length : 0;
@@ -66,10 +113,11 @@ export const registerRombel = (payloadList) => {
 					{
 						name: rombelData.nama_rombel,
 						class_id: parseInt(rombelData.tingkat_kelas),
-						academic_year_id: 1,
+						academic_year_id: academicYearId,
 						class_advisor_id: parseInt(rombelData.wali_kelas),
 						classroom: rombelData.nama_ruangan,
-						student_capacity: capacity
+						student_capacity: capacity,
+						kurikulum: rombelData.kurikulum || null
 					},
 					tx
 				);
@@ -105,9 +153,8 @@ export const getAllRombels = () => {
 			tingkat: classes.className,
 			waliKelas: teachers.fullName,
 			ruangan: rombel.classroom,
-			kapasitas: rombel.studentCapacity
-			// We'll assume 'kurikulum' is not in DB yet or use a placeholder
-			// kurikulum: ...
+			kapasitas: rombel.studentCapacity,
+			kurikulum: rombel.kurikulum
 		})
 		.from(rombel)
 		.leftJoin(classes, eq(rombel.classId, classes.id))
@@ -125,8 +172,7 @@ export const getAllRombels = () => {
 
 		return {
 			...r,
-			totalSiswa: studentCount ? studentCount.count : 0,
-			kurikulum: 'Merdeka' // Placeholder as it's not in schema yet
+			totalSiswa: studentCount ? studentCount.count : 0
 		};
 	});
 
@@ -149,7 +195,8 @@ export const getRombelById = (rombelId) => {
 			waliKelas: teachers.fullName,
 			waliKelasId: rombel.classAdvisorId,
 			ruangan: rombel.classroom,
-			kapasitas: rombel.studentCapacity
+			kapasitas: rombel.studentCapacity,
+			kurikulum: rombel.kurikulum
 		})
 		.from(rombel)
 		.leftJoin(classes, eq(rombel.classId, classes.id))
@@ -181,7 +228,6 @@ export const getRombelById = (rombelId) => {
 
 	return {
 		...rombelData,
-		kurikulum: 'Merdeka',
 		totalSiswa: activeCount,
 		students: students
 	};

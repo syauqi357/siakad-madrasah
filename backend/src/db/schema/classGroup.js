@@ -20,5 +20,6 @@ export const rombel = sqliteTable('rombel', {
 	classAdvisorId: integer('class_advisor_id').references(() => teachers.id),
 
 	studentCapacity: integer('student_capacity').default(30),
-	classroom: text('classroom')
+	classroom: text('classroom'),
+	kurikulum: text('kurikulum')
 });
