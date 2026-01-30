@@ -3,7 +3,9 @@
 	import { API_FETCH } from '$lib/api';
 	import ModalAlert from '$lib/components/modal/modalalert.svelte';
 	import ModalExam from '$lib/components/modal/modalexam.svelte';
-import AddIcon from '\$lib/components/icons/addIcon.svelte';
+	import AddIcon from '\$lib/components/icons/addIcon.svelte';
+	import { goto } from '$app/navigation';
+	import ArrowLeft from '\$lib/components/icons/arrow_left.svelte';
 
 	// State
 	let loading = true;
@@ -201,7 +203,13 @@ import AddIcon from '\$lib/components/icons/addIcon.svelte';
 	});
 </script>
 
-<div class="px-20">
+<div class="md:px-20 px-0">
+	<button
+		on:click={() => goto('/score/exam')}
+		class="my-4 flex w-fit items-center justify-center gap-2 rounded-full bg-blue-500 px-5 py-2 text-sm text-blue-50 capitalize transition-all ease-in-out hover:gap-4 hover:bg-blue-600"
+	>
+		<ArrowLeft /> kembali ke halaman ujian
+	</button>
 	<!-- Header -->
 	<div class="mb-6 flex flex-col justify-between gap-4 md:flex-row md:items-end">
 		<div>
@@ -220,26 +228,26 @@ import AddIcon from '\$lib/components/icons/addIcon.svelte';
 
 	<!-- Stat Cards -->
 	<div class="mb-6 grid grid-cols-2 gap-4 md:grid-cols-4">
-		<div class="rounded-lg border-2 border-slate-200 bg-white p-4 ">
+		<div class="rounded-lg border-2 border-slate-200 bg-white p-4">
 			<p class="text-sm font-medium text-slate-500">Total</p>
 			<p class="text-2xl font-bold text-slate-900">{stats.total}</p>
 		</div>
-		<div class="rounded-lg border-2 border-green-200 bg-green-50 p-4 ">
+		<div class="rounded-lg border-2 border-green-200 bg-green-50 p-4">
 			<p class="text-sm font-medium text-green-600">Aktif</p>
 			<p class="text-2xl font-bold text-green-700">{stats.active}</p>
 		</div>
-		<div class="rounded-lg border-2 border-slate-200 bg-slate-50 p-4 ">
+		<div class="rounded-lg border-2 border-slate-200 bg-slate-50 p-4">
 			<p class="text-sm font-medium text-slate-500">Nonaktif</p>
 			<p class="text-2xl font-bold text-slate-600">{stats.inactive}</p>
 		</div>
-		<div class="rounded-lg border-2 border-blue-200 bg-blue-50 p-4 ">
+		<div class="rounded-lg border-2 border-blue-200 bg-blue-50 p-4">
 			<p class="text-sm font-medium text-blue-600">Digunakan</p>
 			<p class="text-2xl font-bold text-blue-700">{stats.totalScoresRecorded}</p>
 		</div>
 	</div>
 
 	<!-- Table -->
-	<div class="overflow-hidden rounded-lg border border-slate-200 bg-white ">
+	<div class="overflow-hidden rounded-lg border border-slate-200 bg-white">
 		<div class="overflow-x-auto">
 			<table class="w-full">
 				<thead class="border-b border-slate-200 bg-slate-50">
@@ -270,9 +278,7 @@ import AddIcon from '\$lib/components/icons/addIcon.svelte';
 						{#each assessmentTypes as item}
 							<tr class="hover:bg-slate-50">
 								<td class="px-4 py-3">
-									<span
-										class="rounded bg-slate-100 px-2 py-1 font-semibold text-md text-slate-700"
-									>
+									<span class="text-md rounded bg-slate-100 px-2 py-1 font-semibold text-slate-700">
 										{item.code}
 									</span>
 								</td>
