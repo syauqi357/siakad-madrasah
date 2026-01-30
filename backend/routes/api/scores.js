@@ -7,7 +7,9 @@ import {
 	uploadBulkPivotScores,
 	getClassSubjects,
 	getSubjects,
-	downloadScoreTemplateForRombel
+	downloadScoreTemplateForRombel,
+	getStudentScoreSummary,
+	getRombelScoreReport
 } from '../../controllers/scoreController.js';
 
 const router = express.Router();
@@ -31,5 +33,12 @@ router.post('/scores', saveScores);
 // --- Upload Routes ---
 router.post('/upload', upload.single('file'), uploadScores);
 router.post('/upload-bulk', upload.single('file'), uploadBulkPivotScores);
+
+// --- Score Summary/Report Routes ---
+// GET /routes/api/score/student/:studentId/summary - Get score summary for a student
+router.get('/student/:studentId/summary', getStudentScoreSummary);
+
+// GET /routes/api/score/rombel/:rombelId/report - Get complete score report for a rombel
+router.get('/rombel/:rombelId/report', getRombelScoreReport);
 
 export default router;

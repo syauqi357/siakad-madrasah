@@ -8,7 +8,7 @@ import { classes } from '../src/db/schema/classesDataTable.js';
 import { teachers } from '../src/db/schema/teacherUser.js';
 import { rombelStudents } from '../src/db/schema/rombelStudents.js';
 import { rombel } from '../src/db/schema/classGroup.js';
-import { eq, sql, inArray } from 'drizzle-orm';
+import { eq, sql, inArray, and } from 'drizzle-orm';
 import ExcelJS from 'exceljs';
 
 /**
@@ -183,6 +183,10 @@ export const getScoresByClassSubject = async (classSubjectId) => {
 	const className = classSubjectInfo[0]?.className || 'Unknown Class';
 	const subjectName = classSubjectInfo[0]?.subjectName || 'Unknown Subject';
 	const assessmentTypes = await db.select().from(assessmentType);
+
+	// Create a map of assessment type code to weight for calculation
+	const typeWeightMap = new Map(assessmentTypes.map((t) => [t.code, t.defaultWeight || 0]));
+
 	const rawScores = await db
 		.select({
 			studentId: studentScores.studentId,
@@ -212,8 +216,235 @@ export const getScoresByClassSubject = async (classSubjectId) => {
 		}
 	});
 
-	const data = Array.from(studentMap.values());
+	// Calculate total and average for each student
+	const data = Array.from(studentMap.values()).map((student) => {
+		const { total, average, weightedAverage } = calculateScoreTotals(student.scores, typeWeightMap);
+		return {
+			...student,
+			total,
+			average,
+			weightedAverage
+		};
+	});
+
 	return { className, subjectName, assessmentTypes, data };
+};
+
+/**
+ * Calculates total, simple average, and weighted average from a scores object.
+ * @param {Object} scores - Object with assessment codes as keys and scores as values (e.g., { UH: 85, UTS: 90 })
+ * @param {Map} typeWeightMap - Map of assessment code to weight (e.g., Map([['UH', 20], ['UTS', 30]]))
+ * @returns {{total: number, average: number, weightedAverage: number}}
+ */
+export const calculateScoreTotals = (scores, typeWeightMap) => {
+	const scoreValues = Object.values(scores).filter((s) => s !== null && s !== undefined);
+
+	if (scoreValues.length === 0) {
+		return { total: 0, average: 0, weightedAverage: 0 };
+	}
+
+	// Simple total (sum of all scores)
+	const total = scoreValues.reduce((sum, score) => sum + score, 0);
+
+	// Simple average
+	const average = Math.round((total / scoreValues.length) * 100) / 100;
+
+	// Weighted average calculation
+	let weightedSum = 0;
+	let totalWeight = 0;
+
+	for (const [code, score] of Object.entries(scores)) {
+		if (score === null || score === undefined) continue;
+		const weight = typeWeightMap.get(code) || 0;
+		if (weight > 0) {
+			weightedSum += score * weight;
+			totalWeight += weight;
+		}
+	}
+
+	const weightedAverage =
+		totalWeight > 0 ? Math.round((weightedSum / totalWeight) * 100) / 100 : average; // Fallback to simple average if no weights defined
+
+	return { total, average, weightedAverage };
+};
+
+/**
+ * Gets score summary for a specific student across all subjects.
+ * @param {number} studentId
+ * @param {number|null} academicYearId - Optional filter by academic year
+ * @returns {Promise<Array<{subjectName: string, scores: Object, total: number, average: number, weightedAverage: number}>>}
+ */
+export const getStudentScoreSummary = async (studentId, academicYearId = null) => {
+	// Fetch all assessment types for weight calculation
+	const assessmentTypes = await db
+		.select()
+		.from(assessmentType)
+		.where(eq(assessmentType.isActive, true));
+	const typeWeightMap = new Map(assessmentTypes.map((t) => [t.code, t.defaultWeight || 0]));
+
+	// Fetch all scores for this student with subject info
+	const rawScores = await db
+		.select({
+			subjectId: Subjects.id,
+			subjectName: Subjects.name,
+			assessmentCode: assessmentType.code,
+			score: studentScores.score,
+			classSubjectId: studentScores.classSubjectId
+		})
+		.from(studentScores)
+		.innerJoin(classSubject, eq(studentScores.classSubjectId, classSubject.id))
+		.innerJoin(Subjects, eq(classSubject.subjectId, Subjects.id))
+		.innerJoin(assessmentType, eq(studentScores.assessmentTypeId, assessmentType.id))
+		.where(eq(studentScores.studentId, studentId));
+
+	// Group scores by subject
+	const subjectMap = new Map();
+	rawScores.forEach((row) => {
+		if (!subjectMap.has(row.subjectId)) {
+			subjectMap.set(row.subjectId, {
+				subjectId: row.subjectId,
+				subjectName: row.subjectName,
+				scores: {}
+			});
+		}
+		if (row.assessmentCode) {
+			subjectMap.get(row.subjectId).scores[row.assessmentCode] = row.score;
+		}
+	});
+
+	// Calculate totals for each subject
+	const summary = Array.from(subjectMap.values()).map((subject) => {
+		const { total, average, weightedAverage } = calculateScoreTotals(subject.scores, typeWeightMap);
+		return {
+			...subject,
+			total,
+			average,
+			weightedAverage
+		};
+	});
+
+	return summary;
+};
+
+/**
+ * Gets complete score report for a rombel - all students x all subjects x all assessment types.
+ * @param {number} rombelId
+ * @returns {Promise<{rombelName: string, subjects: Array, assessmentTypes: Array, students: Array}>}
+ */
+export const getRombelScoreReport = async (rombelId) => {
+	// Get rombel info
+	const rombelInfo = await db
+		.select({
+			name: rombel.name,
+			classId: rombel.classId
+		})
+		.from(rombel)
+		.where(eq(rombel.id, rombelId))
+		.limit(1);
+
+	if (!rombelInfo.length) throw new Error('Rombel not found');
+
+	const rombelName = rombelInfo[0].name;
+	const classId = rombelInfo[0].classId;
+
+	// Get all students in rombel
+	const studentsInRombel = await db
+		.select({
+			studentId: studentTable.id,
+			nisn: studentTable.nisn,
+			studentName: studentTable.studentName
+		})
+		.from(rombelStudents)
+		.innerJoin(studentTable, eq(rombelStudents.studentId, studentTable.id))
+		.where(and(eq(rombelStudents.rombelId, rombelId), eq(rombelStudents.isActive, true)));
+
+	// Get subjects for this class
+	const subjects = await db
+		.select({
+			classSubjectId: classSubject.id,
+			subjectId: Subjects.id,
+			subjectName: Subjects.name
+		})
+		.from(classSubject)
+		.innerJoin(Subjects, eq(classSubject.subjectId, Subjects.id))
+		.where(eq(classSubject.classId, classId));
+
+	// Get assessment types
+	const assessmentTypes = await db
+		.select()
+		.from(assessmentType)
+		.where(eq(assessmentType.isActive, true));
+	const typeWeightMap = new Map(assessmentTypes.map((t) => [t.code, t.defaultWeight || 0]));
+
+	// Get all scores for students in this rombel
+	const studentIds = studentsInRombel.map((s) => s.studentId);
+	const classSubjectIds = subjects.map((s) => s.classSubjectId);
+
+	let allScores = [];
+	if (studentIds.length > 0 && classSubjectIds.length > 0) {
+		allScores = await db
+			.select({
+				studentId: studentScores.studentId,
+				classSubjectId: studentScores.classSubjectId,
+				assessmentCode: assessmentType.code,
+				score: studentScores.score
+			})
+			.from(studentScores)
+			.innerJoin(assessmentType, eq(studentScores.assessmentTypeId, assessmentType.id))
+			.where(
+				and(
+					inArray(studentScores.studentId, studentIds),
+					inArray(studentScores.classSubjectId, classSubjectIds)
+				)
+			);
+	}
+
+	// Build student score matrix
+	const students = studentsInRombel.map((student) => {
+		const studentScoresData = allScores.filter((s) => s.studentId === student.studentId);
+
+		// Group by subject
+		const subjectScores = subjects.map((subject) => {
+			const scoresForSubject = studentScoresData.filter(
+				(s) => s.classSubjectId === subject.classSubjectId
+			);
+			const scores = {};
+			scoresForSubject.forEach((s) => {
+				scores[s.assessmentCode] = s.score;
+			});
+			const { total, average, weightedAverage } = calculateScoreTotals(scores, typeWeightMap);
+			return {
+				subjectId: subject.subjectId,
+				subjectName: subject.subjectName,
+				scores,
+				total,
+				average,
+				weightedAverage
+			};
+		});
+
+		// Calculate overall average across all subjects
+		const allAverages = subjectScores.filter((s) => s.average > 0).map((s) => s.weightedAverage);
+		const overallAverage =
+			allAverages.length > 0
+				? Math.round((allAverages.reduce((a, b) => a + b, 0) / allAverages.length) * 100) / 100
+				: 0;
+
+		return {
+			studentId: student.studentId,
+			nisn: student.nisn,
+			studentName: student.studentName,
+			subjectScores,
+			overallAverage
+		};
+	});
+
+	return {
+		rombelName,
+		subjects: subjects.map((s) => ({ id: s.subjectId, name: s.subjectName })),
+		assessmentTypes,
+		students
+	};
 };
 
 /**

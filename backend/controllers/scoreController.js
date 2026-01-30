@@ -168,3 +168,55 @@ export const uploadBulkPivotScores = async (req, res) => {
 		res.status(500).json({ success: false, message: 'Internal server error: ' + error.message });
 	}
 };
+
+/**
+ * Gets score summary for a specific student across all subjects.
+ * GET /routes/api/score/student/:studentId/summary
+ */
+export const getStudentScoreSummary = async (req, res) => {
+	try {
+		const { studentId } = req.params;
+		const { academicYearId } = req.query;
+
+		if (!studentId) {
+			return res.status(400).json({ success: false, message: 'Student ID is required' });
+		}
+
+		const result = await scoreService.getStudentScoreSummary(
+			parseInt(studentId),
+			academicYearId ? parseInt(academicYearId) : null
+		);
+
+		res.json({
+			success: true,
+			data: result
+		});
+	} catch (error) {
+		console.error('Error fetching student score summary:', error);
+		res.status(500).json({ success: false, message: 'Internal server error: ' + error.message });
+	}
+};
+
+/**
+ * Gets complete score report for a rombel.
+ * GET /routes/api/score/rombel/:rombelId/report
+ */
+export const getRombelScoreReport = async (req, res) => {
+	try {
+		const { rombelId } = req.params;
+
+		if (!rombelId) {
+			return res.status(400).json({ success: false, message: 'Rombel ID is required' });
+		}
+
+		const result = await scoreService.getRombelScoreReport(parseInt(rombelId));
+
+		res.json({
+			success: true,
+			...result
+		});
+	} catch (error) {
+		console.error('Error fetching rombel score report:', error);
+		res.status(500).json({ success: false, message: 'Internal server error: ' + error.message });
+	}
+};

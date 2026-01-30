@@ -3,7 +3,12 @@
 	import { onMount } from 'svelte';
 	import ModalAlert from '$lib/components/modal/modalalert.svelte';
 
+	// Tab state
+	let activeTab: 'list' | 'form' = 'list';
+
 	// Form state
+	let isEditing = false;
+	let editingId: number | null = null;
 	let formData = {
 		nip: '',
 		fullName: '',
@@ -16,7 +21,6 @@
 	};
 
 	let isLoading = false;
-	let showForm = false;
 
 	// Modal state
 	let showAlert = false;
@@ -62,17 +66,29 @@
 		isLoading = true;
 
 		try {
-			const res = await API_FETCH('/routes/api/teachers', {
-				method: 'POST',
-				body: JSON.stringify(formData)
-			});
+			let res;
+			if (isEditing && editingId) {
+				// Update existing teacher
+				res = await API_FETCH(`/routes/api/teachers/${editingId}`, {
+					method: 'PUT',
+					body: JSON.stringify(formData)
+				});
+			} else {
+				// Create new teacher
+				res = await API_FETCH('/routes/api/teachers', {
+					method: 'POST',
+					body: JSON.stringify(formData)
+				});
+			}
 
 			if (res.ok) {
 				alertType = 'success';
-				alertMessage = 'Data guru berhasil disimpan!';
+				alertMessage = isEditing
+					? 'Data guru berhasil diperbarui!'
+					: 'Data guru berhasil disimpan!';
 				showAlert = true;
 				resetForm();
-				showForm = false;
+				activeTab = 'list';
 				fetchTeachers();
 			} else {
 				const result = await res.json();
@@ -101,6 +117,24 @@
 			phoneNumber: '',
 			personalEmail: ''
 		};
+		isEditing = false;
+		editingId = null;
+	}
+
+	function handleEdit(teacher: any) {
+		formData = {
+			nip: teacher.nip || '',
+			fullName: teacher.fullName || '',
+			gender: teacher.gender || '',
+			birthPlace: teacher.birthPlace || '',
+			birthDate: teacher.birthDate || '',
+			religion: teacher.religion || '',
+			phoneNumber: teacher.phoneNumber || '',
+			personalEmail: teacher.personalEmail || ''
+		};
+		isEditing = true;
+		editingId = teacher.id;
+		activeTab = 'form';
 	}
 
 	function confirmDelete(id: number, name: string) {
@@ -152,205 +186,358 @@
 	on:confirm={handleDeleteConfirm}
 />
 
-<div class="p-4 md:p-6">
-	<!-- Header -->
-	<div class="mb-6 flex items-center justify-between">
-		<div>
-			<h1 class="text-2xl font-bold text-slate-800">Daftar GTK</h1>
-			<p class="text-sm text-slate-500">Guru dan Tenaga Kependidikan</p>
+<div class="min-h-screen bg-gray-50 p-4 sm:p-6 lg:p-8">
+	<div class="mx-auto max-w-7xl">
+		<!-- Header -->
+		<div class="flex flex-col gap-2">
+			<h1 class="text-2xl font-bold text-blue-600 sm:text-3xl">Daftar GTK</h1>
+			<p class="text-gray-600">Guru dan Tenaga Kependidikan</p>
 		</div>
-		<button
-			on:click={() => (showForm = !showForm)}
-			class="rounded-md bg-blue-600 px-4 py-2 text-sm text-white hover:bg-blue-700"
-		>
-			{showForm ? 'Tutup Form' : '+ Tambah Guru'}
-		</button>
-	</div>
 
+		<!-- Tabs -->
+		<div class="mt-6 border-b border-gray-200">
+			<nav class="-mb-px flex gap-4">
+				<button
+					on:click={() => (activeTab = 'list')}
+					class="border-b-2 px-1 py-3 text-sm font-medium transition-colors {activeTab === 'list'
+						? 'border-blue-600 text-blue-600'
+						: 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'}"
+				>
+					Daftar Guru
+				</button>
+				<button
+					on:click={() => {
+						if (isEditing) resetForm();
+						activeTab = 'form';
+					}}
+					class="border-b-2 px-1 py-3 text-sm font-medium transition-colors {activeTab === 'form'
+						? 'border-blue-600 text-blue-600'
+						: 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'}"
+				>
+					{isEditing ? 'Edit Guru' : 'Tambah Guru Baru'}
+				</button>
+			</nav>
+		</div>
 
-	<!-- Form -->
-	{#if showForm}
-		<div class="mb-6 rounded-lg border bg-white p-4">
-			<h2 class="mb-4 font-semibold text-slate-700">Tambah Guru Baru</h2>
-			<form on:submit|preventDefault={handleSubmit} class="space-y-4">
-				<div class="grid gap-4 md:grid-cols-2">
-					<!-- NIP -->
-					<div>
-						<label for="nip" class="mb-1 block text-sm text-slate-600">NIP</label>
-						<input
-							type="text"
-							id="nip"
-							bind:value={formData.nip}
-							placeholder="198507152010011001"
-							class="w-full rounded-md border px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
-						/>
-					</div>
+		<!-- Tab Content -->
+		{#if activeTab === 'list'}
+			<!-- Teacher List -->
+			<div class="mt-6">
+				<div class="w-full overflow-hidden rounded-xl border border-gray-300 bg-white shadow-sm">
+					<header class="border-b border-gray-200 bg-gray-50 px-6 py-4">
+						<h2 class="text-lg font-semibold text-gray-900">Daftar Guru</h2>
+						<p class="text-sm text-gray-500">Total {teachers.length} guru terdaftar</p>
+					</header>
 
-					<!-- Nama Lengkap -->
-					<div>
-						<label for="fullName" class="mb-1 block text-sm text-slate-600"
-							>Nama Lengkap <span class="text-red-500">*</span></label
-						>
-						<input
-							type="text"
-							id="fullName"
-							bind:value={formData.fullName}
-							placeholder="Ahmad Fauzi, S.Pd"
-							required
-							class="w-full rounded-md border px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
-						/>
-					</div>
-
-					<!-- Jenis Kelamin -->
-					<div>
-						<label class="mb-1 block text-sm text-slate-600">Jenis Kelamin</label>
-						<div class="flex gap-4">
-							<label class="flex items-center gap-2">
-								<input type="radio" name="gender" value="male" bind:group={formData.gender} />
-								<span class="text-sm">Laki-laki</span>
-							</label>
-							<label class="flex items-center gap-2">
-								<input type="radio" name="gender" value="female" bind:group={formData.gender} />
-								<span class="text-sm">Perempuan</span>
-							</label>
+					{#if loadingTeachers}
+						<div class="flex items-center justify-center py-12">
+							<svg class="h-8 w-8 animate-spin text-blue-600" viewBox="0 0 24 24">
+								<circle
+									class="opacity-25"
+									cx="12"
+									cy="12"
+									r="10"
+									stroke="currentColor"
+									stroke-width="4"
+									fill="none"
+								/>
+								<path
+									class="opacity-75"
+									fill="currentColor"
+									d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+								/>
+							</svg>
+							<span class="ml-2 text-gray-600">Memuat data...</span>
 						</div>
-					</div>
-
-					<!-- Agama -->
-					<div>
-						<label for="religion" class="mb-1 block text-sm text-slate-600">Agama</label>
-						<select
-							id="religion"
-							bind:value={formData.religion}
-							class="w-full rounded-md border px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
-						>
-							<option value="">Pilih Agama</option>
-							<option value="Islam">Islam</option>
-							<option value="Kristen">Kristen</option>
-							<option value="Katolik">Katolik</option>
-							<option value="Hindu">Hindu</option>
-							<option value="Buddha">Buddha</option>
-							<option value="Khonghucu">Khonghucu</option>
-						</select>
-					</div>
-
-					<!-- Tempat Lahir -->
-					<div>
-						<label for="birthPlace" class="mb-1 block text-sm text-slate-600">Tempat Lahir</label>
-						<input
-							type="text"
-							id="birthPlace"
-							bind:value={formData.birthPlace}
-							placeholder="Jakarta"
-							class="w-full rounded-md border px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
-						/>
-					</div>
-
-					<!-- Tanggal Lahir -->
-					<div>
-						<label for="birthDate" class="mb-1 block text-sm text-slate-600">Tanggal Lahir</label>
-						<input
-							type="date"
-							id="birthDate"
-							bind:value={formData.birthDate}
-							class="w-full rounded-md border px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
-						/>
-					</div>
-
-					<!-- No. Telepon -->
-					<div>
-						<label for="phoneNumber" class="mb-1 block text-sm text-slate-600">No. Telepon</label>
-						<input
-							type="text"
-							id="phoneNumber"
-							bind:value={formData.phoneNumber}
-							placeholder="081234567890"
-							class="w-full rounded-md border px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
-						/>
-					</div>
-
-					<!-- Email -->
-					<div>
-						<label for="personalEmail" class="mb-1 block text-sm text-slate-600">Email</label>
-						<input
-							type="email"
-							id="personalEmail"
-							bind:value={formData.personalEmail}
-							placeholder="guru@email.com"
-							class="w-full rounded-md border px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
-						/>
-					</div>
+					{:else if teachers.length === 0}
+						<div class="py-12 text-center text-gray-500">
+							<svg
+								class="mx-auto h-12 w-12 text-gray-400"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="1.5"
+									d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+								/>
+							</svg>
+							<p class="mt-2">Belum ada data guru</p>
+							<button
+								on:click={() => (activeTab = 'form')}
+								class="mt-2 text-blue-600 hover:underline"
+							>
+								Tambah guru pertama
+							</button>
+						</div>
+					{:else}
+						<div class="overflow-x-auto">
+							<table class="w-full text-left text-sm text-gray-600">
+								<thead class="bg-gray-50 text-xs text-gray-700 uppercase">
+									<tr>
+										<th scope="col" class="px-6 py-3 font-medium">No</th>
+										<th scope="col" class="px-6 py-3 font-medium">NIP</th>
+										<th scope="col" class="px-6 py-3 font-medium">Nama</th>
+										<th scope="col" class="px-6 py-3 font-medium">L/P</th>
+										<th scope="col" class="px-6 py-3 font-medium">No. Telepon</th>
+										<th scope="col" class="px-6 py-3 font-medium">Email</th>
+										<th scope="col" class="px-6 py-3 text-right font-medium">Aksi</th>
+									</tr>
+								</thead>
+								<tbody class="divide-y divide-gray-200">
+									{#each teachers as teacher, i}
+										<tr class="transition-colors duration-150 hover:bg-gray-50">
+											<td class="px-6 py-4 font-medium text-gray-900">{i + 1}</td>
+											<td class="px-6 py-4">
+												{#if teacher.nip}
+													<span
+														class="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-blue-700/10 ring-inset"
+													>
+														{teacher.nip}
+													</span>
+												{:else}
+													<span class="text-gray-400">-</span>
+												{/if}
+											</td>
+											<td class="px-6 py-4 font-medium text-gray-900">{teacher.fullName}</td>
+											<td class="px-6 py-4">
+												{#if teacher.gender === 'male'}
+													<span
+														class="inline-flex items-center rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-semibold text-blue-700"
+													>
+														L
+													</span>
+												{:else if teacher.gender === 'female'}
+													<span
+														class="inline-flex items-center rounded-full bg-pink-50 px-2.5 py-0.5 text-xs font-semibold text-pink-700"
+													>
+														P
+													</span>
+												{:else}
+													<span class="text-gray-400">-</span>
+												{/if}
+											</td>
+											<td class="px-6 py-4">{teacher.phoneNumber || '-'}</td>
+											<td class="px-6 py-4">{teacher.personalEmail || '-'}</td>
+											<td class="px-6 py-4 text-right">
+												<div class="flex justify-end gap-2">
+													<button
+														on:click={() => handleEdit(teacher)}
+														class="rounded p-1.5 text-blue-600 transition-all duration-200 hover:scale-110 hover:bg-blue-50 active:scale-95"
+														title="Edit"
+													>
+														<svg
+															xmlns="http://www.w3.org/2000/svg"
+															fill="none"
+															viewBox="0 0 24 24"
+															stroke-width="1.5"
+															stroke="currentColor"
+															class="h-5 w-5"
+														>
+															<path
+																stroke-linecap="round"
+																stroke-linejoin="round"
+																d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
+															/>
+														</svg>
+													</button>
+													<button
+														on:click={() => confirmDelete(teacher.id, teacher.fullName)}
+														class="rounded p-1.5 text-red-600 transition-all duration-200 hover:scale-110 hover:bg-red-50 active:scale-95"
+														title="Hapus"
+													>
+														<svg
+															xmlns="http://www.w3.org/2000/svg"
+															fill="none"
+															viewBox="0 0 24 24"
+															stroke-width="1.5"
+															stroke="currentColor"
+															class="h-5 w-5"
+														>
+															<path
+																stroke-linecap="round"
+																stroke-linejoin="round"
+																d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
+															/>
+														</svg>
+													</button>
+												</div>
+											</td>
+										</tr>
+									{/each}
+								</tbody>
+							</table>
+						</div>
+					{/if}
 				</div>
-
-				<!-- Submit -->
-				<div class="flex gap-2 pt-2">
-					<button
-						type="submit"
-						disabled={isLoading}
-						class="rounded-md bg-blue-600 px-4 py-2 text-sm text-white hover:bg-blue-700 disabled:opacity-50"
-					>
-						{isLoading ? 'Menyimpan...' : 'Simpan'}
-					</button>
-					<button
-						type="button"
-						on:click={() => {
-							resetForm();
-							showForm = false;
-						}}
-						class="rounded-md bg-slate-200 px-4 py-2 text-sm text-slate-700 hover:bg-slate-300"
-					>
-						Batal
-					</button>
-				</div>
-			</form>
-		</div>
-	{/if}
-
-	<!-- Teacher List -->
-	<div class="rounded-lg border bg-white">
-		<div class="border-b px-4 py-3">
-			<h2 class="font-semibold text-slate-700">Daftar Guru ({teachers.length})</h2>
-		</div>
-
-		{#if loadingTeachers}
-			<div class="p-8 text-center text-slate-500">Loading...</div>
-		{:else if teachers.length === 0}
-			<div class="p-8 text-center text-slate-500">Belum ada data guru</div>
+			</div>
 		{:else}
-			<div class="overflow-x-auto">
-				<table class="w-full text-sm">
-					<thead class="bg-slate-50 text-left text-slate-600">
-						<tr>
-							<th class="px-4 py-3">No</th>
-							<th class="px-4 py-3">NIP</th>
-							<th class="px-4 py-3">Nama</th>
-							<th class="px-4 py-3">L/P</th>
-							<th class="px-4 py-3">No. Telepon</th>
-							<th class="px-4 py-3">Email</th>
-							<th class="px-4 py-3">Aksi</th>
-						</tr>
-					</thead>
-					<tbody>
-						{#each teachers as teacher, i}
-							<tr class="border-t hover:bg-slate-50">
-								<td class="px-4 py-3">{i + 1}</td>
-								<td class="px-4 py-3">{teacher.nip || '-'}</td>
-								<td class="px-4 py-3 font-medium">{teacher.fullName}</td>
-								<td class="px-4 py-3">{teacher.gender === 'male' ? 'L' : teacher.gender === 'female' ? 'P' : '-'}</td>
-								<td class="px-4 py-3">{teacher.phoneNumber || '-'}</td>
-								<td class="px-4 py-3">{teacher.personalEmail || '-'}</td>
-								<td class="px-4 py-3">
-									<button
-										on:click={() => confirmDelete(teacher.id, teacher.fullName)}
-										class="text-red-600 hover:underline"
-									>
-										Hapus
-									</button>
-								</td>
-							</tr>
-						{/each}
-					</tbody>
-				</table>
+			<!-- Add Teacher Form -->
+			<div class="mt-6">
+				<div class="w-full overflow-hidden rounded-xl border border-gray-300 bg-white shadow-sm">
+					<header class="border-b border-gray-200 bg-gray-50 px-6 py-4">
+						<h2 class="text-lg font-semibold text-gray-900">
+							{isEditing ? 'Edit Data Guru' : 'Tambah Guru Baru'}
+						</h2>
+					</header>
+
+					<form on:submit|preventDefault={handleSubmit} class="p-6">
+						<div class="grid gap-4 md:grid-cols-2">
+							<!-- NIP -->
+							<div>
+								<label for="nip" class="mb-1 block text-sm font-medium text-gray-700">NIP</label>
+								<input
+									type="text"
+									id="nip"
+									bind:value={formData.nip}
+									placeholder="198507152010011001"
+									class="w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
+								/>
+							</div>
+
+							<!-- Nama Lengkap -->
+							<div>
+								<label for="fullName" class="mb-1 block text-sm font-medium text-gray-700">
+									Nama Lengkap <span class="text-red-500">*</span>
+								</label>
+								<input
+									type="text"
+									id="fullName"
+									bind:value={formData.fullName}
+									placeholder="Ahmad Fauzi, S.Pd"
+									required
+									class="w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
+								/>
+							</div>
+
+							<!-- Jenis Kelamin -->
+							<div>
+								<label class="mb-1 block text-sm font-medium text-gray-700">Jenis Kelamin</label>
+								<div class="flex gap-6 pt-1">
+									<label class="flex cursor-pointer items-center gap-2">
+										<input
+											type="radio"
+											name="gender"
+											value="male"
+											bind:group={formData.gender}
+											class="h-4 w-4 text-blue-600"
+										/>
+										<span class="text-sm text-gray-600">Laki-laki</span>
+									</label>
+									<label class="flex cursor-pointer items-center gap-2">
+										<input
+											type="radio"
+											name="gender"
+											value="female"
+											bind:group={formData.gender}
+											class="h-4 w-4 text-blue-600"
+										/>
+										<span class="text-sm text-gray-600">Perempuan</span>
+									</label>
+								</div>
+							</div>
+
+							<!-- Agama -->
+							<div>
+								<label for="religion" class="mb-1 block text-sm font-medium text-gray-700"
+									>Agama</label
+								>
+								<select
+									id="religion"
+									bind:value={formData.religion}
+									class="w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
+								>
+									<option value="">Pilih Agama</option>
+									<option value="Islam">Islam</option>
+									<option value="Kristen">Kristen</option>
+									<option value="Katolik">Katolik</option>
+									<option value="Hindu">Hindu</option>
+									<option value="Buddha">Buddha</option>
+									<option value="Khonghucu">Khonghucu</option>
+								</select>
+							</div>
+
+							<!-- Tempat Lahir -->
+							<div>
+								<label for="birthPlace" class="mb-1 block text-sm font-medium text-gray-700"
+									>Tempat Lahir</label
+								>
+								<input
+									type="text"
+									id="birthPlace"
+									bind:value={formData.birthPlace}
+									placeholder="Jakarta"
+									class="w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
+								/>
+							</div>
+
+							<!-- Tanggal Lahir -->
+							<div>
+								<label for="birthDate" class="mb-1 block text-sm font-medium text-gray-700"
+									>Tanggal Lahir</label
+								>
+								<input
+									type="date"
+									id="birthDate"
+									bind:value={formData.birthDate}
+									class="w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
+								/>
+							</div>
+
+							<!-- No. Telepon -->
+							<div>
+								<label for="phoneNumber" class="mb-1 block text-sm font-medium text-gray-700"
+									>No. Telepon</label
+								>
+								<input
+									type="text"
+									id="phoneNumber"
+									bind:value={formData.phoneNumber}
+									placeholder="081234567890"
+									class="w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
+								/>
+							</div>
+
+							<!-- Email -->
+							<div>
+								<label for="personalEmail" class="mb-1 block text-sm font-medium text-gray-700"
+									>Email</label
+								>
+								<input
+									type="email"
+									id="personalEmail"
+									bind:value={formData.personalEmail}
+									placeholder="guru@email.com"
+									class="w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
+								/>
+							</div>
+						</div>
+
+						<!-- Submit -->
+						<div class="mt-6 flex justify-end gap-3">
+							<button
+								type="button"
+								on:click={() => {
+									const wasEditing = isEditing;
+									resetForm();
+									if (wasEditing) activeTab = 'list';
+								}}
+								class="rounded px-4 py-2 text-sm text-gray-600 hover:bg-gray-100"
+							>
+								Batal
+							</button>
+							<button
+								type="submit"
+								disabled={isLoading}
+								class="rounded bg-blue-600 px-4 py-2 text-sm text-white hover:bg-blue-700 disabled:opacity-50"
+							>
+								{isLoading ? 'Menyimpan...' : isEditing ? 'Perbarui' : 'Simpan'}
+							</button>
+						</div>
+					</form>
+				</div>
 			</div>
 		{/if}
 	</div>

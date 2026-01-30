@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { API_FETCH } from '$lib/api';
+	import ModalAlert from '$lib/components/modal/modalalert.svelte';
 
 	const BACKEND_URL = import.meta.env.VITE_API_URL;
 
@@ -44,10 +45,16 @@
 	let uploadFile: File | null = null;
 	let isLoading = false;
 	let isUploading = false;
+	let isDownloading = false;
 
 	let message = '';
 	let messageType: 'success' | 'error' | '' = '';
 	let uploadErrors: { row: number; nisn: string; error: string }[] = [];
+
+	// Modal alert state
+	let showModal = false;
+	let modalType: 'success' | 'error' | 'warning' | 'info' = 'error';
+	let modalMessage = '';
 
 	// Fetch rombels on mount
 	onMount(async () => {
@@ -112,18 +119,61 @@
 		}
 	}
 
-	function downloadTemplate() {
+	async function downloadTemplate() {
 		if (!selectedRombelId) {
-			showMessage('Pilih rombel terlebih dahulu', 'error');
+			modalType = 'warning';
+			modalMessage = 'Pilih rombel terlebih dahulu';
+			showModal = true;
 			return;
 		}
+
+		isDownloading = true;
 
 		let url = `${BACKEND_URL}/routes/api/score/template/${selectedRombelId}`;
 		if (selectedSubjectId) {
 			url += `?subjectId=${selectedSubjectId}`;
 		}
 
-		window.location.href = url;
+		try {
+			const res = await fetch(url, {
+				headers: {
+					Authorization: `Bearer ${localStorage.getItem('token')}`
+				}
+			});
+
+			// Check if response is JSON (error) or file (success)
+			const contentType = res.headers.get('content-type');
+
+			if (contentType?.includes('application/json')) {
+				// It's an error response
+				const data = await res.json();
+				modalType = 'error';
+				modalMessage = data.message || 'Gagal mengunduh template';
+				showModal = true;
+			} else {
+				// It's a file, trigger download
+				const blob = await res.blob();
+				const downloadUrl = window.URL.createObjectURL(blob);
+				const a = document.createElement('a');
+				a.href = downloadUrl;
+				a.download = `template_nilai_rombel_${selectedRombelId}.xlsx`;
+				document.body.appendChild(a);
+				a.click();
+				document.body.removeChild(a);
+				window.URL.revokeObjectURL(downloadUrl);
+
+				modalType = 'success';
+				modalMessage = 'Template berhasil diunduh';
+				showModal = true;
+			}
+		} catch (err) {
+			console.error('Download error:', err);
+			modalType = 'error';
+			modalMessage = 'Terjadi kesalahan saat mengunduh template';
+			showModal = true;
+		} finally {
+			isDownloading = false;
+		}
 	}
 
 	function handleFileChange(e: Event) {
@@ -248,10 +298,14 @@
 
 		<button
 			on:click={downloadTemplate}
-			disabled={!selectedRombelId}
+			disabled={!selectedRombelId || isDownloading}
 			class="mt-4 rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-gray-400"
 		>
-			Download Template
+			{#if isDownloading}
+				Mengunduh...
+			{:else}
+				Download Template
+			{/if}
 		</button>
 	</div>
 
@@ -292,9 +346,7 @@
 					{/each}
 				</select>
 				{#if selectedAssessmentTypeId === 0}
-					<p class="mt-1 text-xs text-blue-600">
-						Upload semua kolom nilai dari template sekaligus
-					</p>
+					<p class="mt-1 text-xs text-blue-600">Upload semua kolom nilai dari template sekaligus</p>
 				{/if}
 			</div>
 		</div>
@@ -365,3 +417,6 @@
 		</div>
 	</div>
 </div>
+
+<!-- Modal Alert -->
+<ModalAlert bind:show={showModal} type={modalType} message={modalMessage} />

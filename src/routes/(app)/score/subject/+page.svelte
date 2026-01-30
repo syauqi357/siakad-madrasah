@@ -404,7 +404,8 @@
 			<nav class="-mb-px flex gap-4">
 				<button
 					on:click={() => (activeTab = 'subjects')}
-					class="border-b-2 px-1 py-3 text-sm font-medium transition-colors {activeTab === 'subjects'
+					class="border-b-2 px-1 py-3 text-sm font-medium transition-colors {activeTab ===
+					'subjects'
 						? 'border-blue-600 text-blue-600'
 						: 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'}"
 				>
@@ -582,7 +583,9 @@
 							</table>
 						</div>
 
-						<div class="flex items-center justify-between border-t border-gray-200 bg-white px-6 py-3">
+						<div
+							class="flex items-center justify-between border-t border-gray-200 bg-white px-6 py-3"
+						>
 							<div class="text-sm text-gray-500">
 								Total <span class="font-medium">{subjects.length}</span> mata pelajaran
 							</div>
@@ -768,7 +771,9 @@
 							</table>
 						</div>
 
-						<div class="flex items-center justify-between border-t border-gray-200 bg-white px-6 py-3">
+						<div
+							class="flex items-center justify-between border-t border-gray-200 bg-white px-6 py-3"
+						>
 							<div class="text-sm text-gray-500">
 								Total <span class="font-medium">{classSubjects.length}</span> mata pelajaran
 							</div>
