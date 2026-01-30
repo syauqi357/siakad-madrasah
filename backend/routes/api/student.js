@@ -8,6 +8,7 @@ import {
 	updateStudent,
 	deleteStudent,
 	getStudentCount,
+	searchStudents,
 	createBulkStudent,
 	downloadStudentBulkTemplate,
 	// Status management
@@ -24,6 +25,7 @@ const upload = multer({ storage: multer.memoryStorage() });
 router.get('/studentDataSet', getAllStudents);
 router.get('/studentDataSet/lite', getStudentsLite);
 router.get('/studentDataSet/count', getStudentCount);
+router.get('/studentDataSet/search', searchStudents); // Search by name, NISN, or local NIS
 router.get('/studentDataSet/:id', getStudentById);
 
 // --- Status Management Routes (MUST be before /students/:id) ---

@@ -11,6 +11,8 @@ import scoreRouter from './routes/api/scores.js'; // Import scoreRouter
 import classDataRouter from './routes/api/classData.js'; // Import classDataRouter
 import teacherRouter from './routes/api/teacher.js'; // Import teacherRouter
 import assessmentTypeRouter from './routes/api/assessmentType.js'; // Import assessmentTypeRouter
+import subjectRouter from './routes/api/subject.js'; // Import subjectRouter
+import classSubjectRouter from './routes/api/classSubject.js'; // Import classSubjectRouter
 import { auditLog } from './middlewares/middlewareAudit.js';
 import { GLOBAL_RATE_LIMIT } from './middlewares/globalRatelimit/rateLimiter.js';
 import { speedLimit } from './middlewares/throttleFeat/throttleLimit.js'; // MIDDLEWARE RATE LIMIT, THROTTLE and AUDIT LOGS
@@ -80,6 +82,12 @@ app.use('/routes/api/teachers', teacherRouter);
 
 // 9. Assessment Types: /routes/api/assessment-types
 app.use('/routes/api/assessment-types', assessmentTypeRouter);
+
+// 10. Subjects: /routes/api/subjects
+app.use('/routes/api/subjects', subjectRouter);
+
+// 11. Class-Subject Assignment: /routes/api/class-subjects
+app.use('/routes/api/class-subjects', classSubjectRouter);
 
 // Root endpoint
 app.get('/', (req, res) => {

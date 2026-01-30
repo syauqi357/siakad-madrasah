@@ -632,3 +632,216 @@ await db.insert(studentScores).values({
   assessmentDate: new Date().toISOString().split('T')[0]
 });
 ```
+
+---
+
+# Assessment Type System
+
+## Overview
+
+Assessment types define the categories of evaluations used to grade students (e.g., daily tasks, midterm exams, final exams). They are **GLOBAL** - meaning the same assessment types apply across all subjects and classes.
+
+## Entity Relationship
+
+```
+┌─────────────────────────┐
+│     assessment_type     │
+│─────────────────────────│
+│ id                      │
+│ code (UH, UTS, UAS)     │
+│ name (Ulangan Harian)   │
+│ defaultWeight (optional)│
+│ isActive                │
+└───────────┬─────────────┘
+            │
+            │ (1 : Many)
+            │
+            ▼
+┌─────────────────────────────────┐
+│        student_scores           │
+│─────────────────────────────────│
+│ id                              │
+│ studentId → students.id         │
+│ classSubjectId → class_subject  │◄─── Links to Subject + Class
+│ assessmentTypeId → assessment   │◄─── Links to Assessment Type
+│ score (0-100)                   │
+│ assessmentDate                  │
+│ note                            │
+└─────────────────────────────────┘
+```
+
+## Database Schema
+
+### `assessment_type` Table
+```sql
+┌────┬───────┬─────────────────────────┬───────────────┬──────────┐
+│ id │ code  │ name                    │ defaultWeight │ isActive │
+├────┼───────┼─────────────────────────┼───────────────┼──────────┤
+│  1 │ TUGAS │ Tugas Harian            │ 20            │ 1        │
+│  2 │ UH    │ Ulangan Harian          │ 20            │ 1        │
+│  3 │ UTS   │ Ujian Tengah Semester   │ 30            │ 1        │
+│  4 │ UAS   │ Ujian Akhir Semester    │ 30            │ 1        │
+└────┴───────┴─────────────────────────┴───────────────┴──────────┘
+```
+
+### Key Fields:
+- **code**: Short identifier (TUGAS, UH, UTS, UAS)
+- **name**: Human-readable name
+- **defaultWeight**: Optional percentage weight for final grade calculation
+- **isActive**: Enable/disable assessment type
+
+## Relationship Explanation
+
+### Assessment Types are GLOBAL
+Unlike subjects which are assigned per class (`class_subject`), assessment types are **universal**:
+- UH (Ulangan Harian) applies to ALL subjects in ALL classes
+- UTS applies to Math Class X, Science Class XI, etc. - same assessment type
+
+### The Score Triangle
+A student score is identified by THREE foreign keys:
+
+```
+student_scores
+├── studentId        → WHO is being graded
+├── classSubjectId   → WHAT subject (in which class)
+└── assessmentTypeId → WHEN/TYPE of assessment
+```
+
+**Example**: "Ahmad's UTS score for Math in Class X"
+```
+studentId: 101 (Ahmad)
+classSubjectId: 5 (Math-Class X)
+assessmentTypeId: 3 (UTS)
+score: 85
+```
+
+### Unique Constraint
+A student can only have ONE score per subject per assessment type:
+```sql
+UNIQUE(studentId, classSubjectId, assessmentTypeId)
+```
+This prevents duplicate entries like "two UTS scores for Math".
+
+## Weight Calculation (Grade Formula)
+
+### Option 1: Global Weights (Current Design)
+All subjects use the same weight distribution:
+```
+Final Grade = (TUGAS × 20%) + (UH × 20%) + (UTS × 30%) + (UAS × 30%)
+```
+
+### Option 2: Per-Subject Weights (Future Enhancement)
+If different subjects need different weights, create a junction table:
+
+```sql
+CREATE TABLE subject_assessment_weight (
+  id INTEGER PRIMARY KEY,
+  classSubjectId INTEGER REFERENCES class_subject(id),
+  assessmentTypeId INTEGER REFERENCES assessment_type(id),
+  weight INTEGER NOT NULL,  -- Percentage (0-100)
+  UNIQUE(classSubjectId, assessmentTypeId)
+);
+```
+
+**Example**: Math might weight exams higher, Art might weight tasks higher:
+```
+┌────┬────────────────┬──────────────────┬────────┐
+│ id │ classSubjectId │ assessmentTypeId │ weight │
+├────┼────────────────┼──────────────────┼────────┤
+│  1 │ 1 (Math-X)     │ 1 (TUGAS)        │ 10     │
+│  2 │ 1 (Math-X)     │ 4 (UAS)          │ 40     │
+│  3 │ 5 (Art-X)      │ 1 (TUGAS)        │ 50     │
+│  4 │ 5 (Art-X)      │ 4 (UAS)          │ 10     │
+└────┴────────────────┴──────────────────┴────────┘
+```
+
+## API Endpoints
+
+| Method | Endpoint | Purpose |
+|--------|----------|---------|
+| GET | `/assessment-types` | List all assessment types (with pagination) |
+| GET | `/assessment-types/lite` | List active types only (for dropdowns) |
+| GET | `/assessment-types/:id` | Get single assessment type |
+| POST | `/assessment-types` | Create new assessment type |
+| PUT | `/assessment-types/:id` | Update assessment type |
+| DELETE | `/assessment-types/:id` | Delete assessment type |
+
+## Score Input Workflow with Assessment Types
+
+```
+1. Teacher selects:
+   - Rombel: "X-IPA-1"
+   - Subject: "Matematika"
+   - Assessment Type: "UTS"  ◄── From dropdown (GET /assessment-types/lite)
+
+2. System loads:
+   - Students in that rombel
+   - Existing scores for that assessment (if any)
+
+3. Teacher inputs scores:
+   ┌────────┬──────────┬───────┐
+   │ NISN   │ Nama     │ Score │
+   ├────────┼──────────┼───────┤
+   │ 123... │ Ahmad    │ 85    │
+   │ 456... │ Budi     │ 78    │
+   └────────┴──────────┴───────┘
+
+4. System saves:
+   - Derives classSubjectId from rombel + subject
+   - Uses selected assessmentTypeId
+   - UPSERT scores (insert or update existing)
+```
+
+## Common Queries
+
+### Get all assessment types (active only)
+```javascript
+const types = await db.select()
+  .from(assessmentType)
+  .where(eq(assessmentType.isActive, true));
+```
+
+### Get scores grouped by assessment type for a student
+```javascript
+const scores = await db.select({
+    assessmentCode: assessmentType.code,
+    assessmentName: assessmentType.name,
+    subjectName: Subjects.name,
+    score: studentScores.score
+  })
+  .from(studentScores)
+  .innerJoin(assessmentType, eq(studentScores.assessmentTypeId, assessmentType.id))
+  .innerJoin(classSubject, eq(studentScores.classSubjectId, classSubject.id))
+  .innerJoin(Subjects, eq(classSubject.subjectId, Subjects.id))
+  .where(eq(studentScores.studentId, studentId));
+```
+
+### Calculate weighted average for a student in a subject
+```javascript
+// Assuming defaultWeight exists on assessment_type
+const weightedScores = await db.select({
+    score: studentScores.score,
+    weight: assessmentType.defaultWeight
+  })
+  .from(studentScores)
+  .innerJoin(assessmentType, eq(studentScores.assessmentTypeId, assessmentType.id))
+  .where(and(
+    eq(studentScores.studentId, studentId),
+    eq(studentScores.classSubjectId, classSubjectId)
+  ));
+
+// Calculate: Σ(score × weight) / Σ(weight)
+const totalWeight = weightedScores.reduce((sum, s) => sum + (s.weight || 0), 0);
+const weightedSum = weightedScores.reduce((sum, s) => sum + (s.score * (s.weight || 0)), 0);
+const finalGrade = totalWeight > 0 ? weightedSum / totalWeight : 0;
+```
+
+## Summary
+
+| Aspect | Description |
+|--------|-------------|
+| **Scope** | GLOBAL - same types for all subjects/classes |
+| **Examples** | TUGAS, UH, UTS, UAS, Praktikum, Proyek |
+| **Weights** | Optional, stored in `defaultWeight` field |
+| **Per-Subject Weights** | Not supported (requires junction table) |
+| **Unique Score** | One score per student+subject+assessmentType |

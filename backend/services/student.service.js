@@ -7,7 +7,7 @@ import { studentAddress } from '../src/db/schema/studentAddress.js';
 import { rombelStudents } from '../src/db/schema/rombelStudents.js';
 import { rombel } from '../src/db/schema/classGroup.js';
 import { studentHistory } from '../src/db/schema/studentHistory.js';
-import { eq, count, isNull, or, and, sql } from 'drizzle-orm';
+import { eq, count, isNull, or, and, sql, like } from 'drizzle-orm';
 import ExcelJS from 'exceljs';
 
 // --- Header Mapping Configuration ---
@@ -171,8 +171,51 @@ export const findAllStudentsLite = async () => {
 		);
 };
 
-export const searchStudents = async (searchTerm) => {
-	// using debounce methods
+/**
+ * Search students by name, NISN, or local NIS
+ * Note: Debounce should be implemented on the frontend side
+ * @param {string} searchTerm - The search query
+ * @param {number} page - Page number (default: 1)
+ * @param {number} limit - Items per page (default: 10)
+ * @param {string} status - Optional status filter ('ACTIVE', 'MUTASI', 'GRADUATE')
+ */
+export const searchStudents = async (searchTerm, page = 1, limit = 10, status = null) => {
+	if (!searchTerm || searchTerm.trim() === '') {
+		return [];
+	}
+
+	const offset = (page - 1) * limit;
+	const searchPattern = `%${searchTerm.trim()}%`;
+
+	// Build search conditions
+	const searchConditions = or(
+		like(studentTable.studentName, searchPattern),
+		like(sql`CAST(${studentTable.nisn} AS TEXT)`, searchPattern),
+		like(sql`CAST(${studentTable.localNis} AS TEXT)`, searchPattern)
+	);
+
+	// Combine with status filter if provided
+	const whereCondition =
+		status && ['ACTIVE', 'MUTASI', 'GRADUATE'].includes(status)
+			? and(searchConditions, eq(studentTable.status, status))
+			: searchConditions;
+
+	return db
+		.select({
+			id: studentTable.id,
+			nisn: studentTable.nisn,
+			localNis: studentTable.localNis,
+			name: studentTable.studentName,
+			gender: studentTable.gender,
+			status: studentTable.status,
+			className: rombel.name
+		})
+		.from(studentTable)
+		.leftJoin(rombelStudents, eq(studentTable.id, rombelStudents.studentId))
+		.leftJoin(rombel, eq(rombelStudents.rombelId, rombel.id))
+		.where(whereCondition)
+		.limit(limit)
+		.offset(offset);
 };
 
 export const countStudents = async () => {

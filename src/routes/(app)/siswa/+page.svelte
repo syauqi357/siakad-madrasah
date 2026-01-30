@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, onDestroy } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { API_FETCH } from '$lib/api';
 	// import Sort from '$lib/components/icons/sort.svelte';
@@ -69,21 +69,38 @@
 		{ value: 'GRADUATE', label: 'Lulus' }
 	];
 
-	// Filtered students based on status and search
-	$: filteredStudents = students.filter((s) => {
-		const matchesStatus = statusFilter === 'ALL' || s.status === statusFilter;
-		const matchesSearch =
-			searchQuery === '' ||
-			s.nama.toLowerCase().includes(searchQuery.toLowerCase()) ||
-			s.nisn.toString().includes(searchQuery);
-		return matchesStatus && matchesSearch;
-	});
+	// Debounce timer for search
+	let searchTimeout: ReturnType<typeof setTimeout>;
+	const DEBOUNCE_MS = 300;
 
-	/**
-	 *
-	 * filter student or choose student should use backend instead of frontend sorter feature
-	 *
-	 * */
+	// Debounced search handler
+	function handleSearchInput(event: Event) {
+		const target = event.target as HTMLInputElement;
+		const value = target.value;
+
+		// Clear previous timeout
+		clearTimeout(searchTimeout);
+
+		// Set new timeout for debounced search
+		searchTimeout = setTimeout(() => {
+			searchQuery = value;
+			currentPage = 1; // Reset to first page on new search
+			fetchStudents(currentPage);
+		}, DEBOUNCE_MS);
+	}
+
+	// Handle status filter change - triggers backend fetch
+	function handleStatusChange(event: Event) {
+		const target = event.target as HTMLSelectElement;
+		statusFilter = target.value as typeof statusFilter;
+		currentPage = 1; // Reset to first page on filter change
+		fetchStudents(currentPage);
+	}
+
+	// Cleanup timeout on component destroy
+	onDestroy(() => {
+		clearTimeout(searchTimeout);
+	});
 
 	// Global Alert State
 	let alertModal = {
@@ -103,8 +120,28 @@
 				return;
 			}
 
-			// Add search param if needed (backend support required later)
-			const url = `/routes/api/studentDataSet?page=${page}&limit=${limit}`;
+			let url: string;
+			let useSearchEndpoint = searchQuery.trim() !== '';
+
+			if (useSearchEndpoint) {
+				// Use search endpoint with debounced query
+				url = `/routes/api/studentDataSet/search?q=${encodeURIComponent(searchQuery.trim())}&page=${page}&limit=${limit}`;
+				if (statusFilter !== 'ALL') {
+					url += `&status=${statusFilter}`;
+				}
+			} else if (statusFilter !== 'ALL') {
+				// Use status-specific endpoints
+				const statusEndpoints: Record<string, string> = {
+					ACTIVE: '/routes/api/students/active',
+					MUTASI: '/routes/api/students/dropout',
+					GRADUATE: '/routes/api/students/graduated'
+				};
+				url = `${statusEndpoints[statusFilter]}?page=${page}&limit=${limit}`;
+			} else {
+				// Default: fetch all students
+				url = `/routes/api/studentDataSet?page=${page}&limit=${limit}`;
+			}
+
 			const response = await API_FETCH(url);
 
 			if (!response.ok) {
@@ -121,7 +158,10 @@
 
 			if (pagination) {
 				currentPage = pagination.page;
-				totalPages = pagination.totalPages;
+				totalPages = pagination.totalPages || 1;
+			} else {
+				// Search endpoint may not return pagination
+				totalPages = 1;
 			}
 
 			// Transform data
@@ -129,10 +169,10 @@
 				id: item.id,
 				nisn: item.nisn || '-',
 				nama: item.name,
-				kelas: item.className || 'Belum Masuk Rombel',
+				kelas: item.className || item.lastClassName || 'Belum Masuk Rombel',
 				gender: item.gender === 'L' || item.gender === 'Laki-laki' ? 'L' : 'P',
 				asal: item.originRegion || '-',
-				status: item.status || 'ACTIVE' // Use actual status from backend
+				status: item.status || 'ACTIVE'
 			}));
 		} catch (error) {
 			console.error('Failed to fetch student data:', error);
@@ -234,7 +274,8 @@
 		<div class="flex flex-wrap items-center gap-3">
 			<!-- Status Filter -->
 			<select
-				bind:value={statusFilter}
+				value={statusFilter}
+				on:change={handleStatusChange}
 				class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
 			>
 				{#each statusOptions as opt (opt.value)}
@@ -242,15 +283,15 @@
 				{/each}
 			</select>
 
-			<!-- Search -->
+			<!-- Search with Debounce -->
 			<div class="relative w-full md:w-64">
 				<input
 					type="text"
-					bind:value={searchQuery}
+					value={searchQuery}
+					on:input={handleSearchInput}
 					placeholder="Cari nama atau NISN..."
 					class="w-full rounded-lg border border-slate-300 bg-white py-2 pr-4 pl-10 text-sm focus:border-blue-500 focus:outline-none"
 				/>
-				<!-- Debounce search could be added here -->
 				<svg
 					class="absolute top-2.5 left-3 h-4 w-4 text-slate-400"
 					fill="none"
@@ -310,21 +351,21 @@
 			<div class="flex justify-center py-12">
 				<span class="loading loading-spinner loading-lg text-blue-600">Loading...</span>
 			</div>
-		{:else if filteredStudents.length === 0}
+		{:else if students.length === 0}
 			<!-- empty state -->
 			<div
 				class="rounded-xl border border-dashed border-slate-300 bg-slate-50 py-12 text-center text-slate-500"
 			>
-				{#if students.length === 0}
-					<p>Belum ada data siswa.</p>
-				{:else}
+				{#if searchQuery.trim() !== '' || statusFilter !== 'ALL'}
 					<p>Tidak ada siswa yang sesuai filter.</p>
+				{:else}
+					<p>Belum ada data siswa.</p>
 				{/if}
 			</div>
 		{:else}
 			<!-- existed state -->
 
-			{#each filteredStudents as student (student.id)}
+			{#each students as student (student.id)}
 				<div
 					class="grid grid-cols-1 items-center gap-4 rounded-lg border border-slate-200 bg-white p-3 last:border hover:bg-slate-50 md:grid-cols-12 md:px-6"
 				>

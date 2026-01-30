@@ -47,6 +47,36 @@ export const getStudentCount = async (req, res) => {
 	}
 };
 
+// Search students by name, NISN, or local NIS
+export const searchStudents = async (req, res) => {
+	try {
+		const { q, page, limit, status } = req.query;
+
+		if (!q || q.trim() === '') {
+			return res.status(400).json({ message: 'Search query (q) is required' });
+		}
+
+		const pageNum = parseInt(page) || 1;
+		const limitNum = parseInt(limit) || 10;
+		const statusFilter = status || null;
+
+		const students = await studentService.searchStudents(q, pageNum, limitNum, statusFilter);
+
+		res.status(200).json({
+			data: students,
+			query: q,
+			status: statusFilter,
+			pagination: {
+				page: pageNum,
+				limit: limitNum
+			}
+		});
+	} catch (error) {
+		console.error('Search error:', error);
+		res.status(500).json({ message: 'Error searching students', error: error.message });
+	}
+};
+
 // controller to get student by id
 export const getStudentById = async (req, res) => {
 	try {
