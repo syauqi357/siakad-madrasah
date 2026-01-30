@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { API_FETCH } from '$lib/api';
 	import StudentScoreTable from '$lib/components/layout/studentScoreTable.svelte';
+	import { goto } from '$app/navigation';
 
 	// Default demo data (fallback)
 	const demoHeaders = ['Nama Siswa', 'NISN', 'UH1', 'UTS', 'UAS', 'Total'];
@@ -128,28 +129,12 @@
 			</p>
 		</div>
 
-		<!-- [STYLE] Download Template Button -->
+		<!-- [STYLE] Exam Management Button -->
 		<button
-			on:click={downloadTemplate}
-			class="flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 hover:text-blue-600"
+			on:click={() => goto('/score/exammanagement')}
+			class="flex items-center gap-2 rounded-md bg-blue-500 px-4 py-2 text-sm font-medium  transition-colors hover:bg-blue-600 text-blue-50  hover:text-blue-50"
 		>
-			<svg
-				xmlns="http://www.w3.org/2000/svg"
-				width="16"
-				height="16"
-				viewBox="0 0 24 24"
-				fill="none"
-				stroke="currentColor"
-				stroke-width="2"
-				stroke-linecap="round"
-				stroke-linejoin="round"
-				class="lucide lucide-download"
-			>
-				<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-				<polyline points="7 10 12 15 17 10" />
-				<line x1="12" x2="12" y1="15" y2="3" />
-			</svg>
-			Template Nilai
+			manajemen ujian
 		</button>
 	</div>
 
