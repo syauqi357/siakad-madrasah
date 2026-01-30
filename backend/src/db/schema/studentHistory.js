@@ -18,6 +18,10 @@ export const studentHistory = sqliteTable('student_history', {
 	// MUTASI specific fields
 	mutasiType: text('mutasi_type'), // pindah_sekolah, keluar, dikeluarkan, etc.
 	destinationSchool: text('destination_school'), // Next school name for transfers
+	// GRADUATE specific fields
+	graduationYear: text('graduation_year'), // e.g., "2024/2025"
+	certificateNumber: text('certificate_number'), // Nomor Ijazah, e.g., "DN-01 Ma 0123456"
+	finalGrade: text('final_grade'), // Predikat: "Sangat Baik", "Baik", "Cukup"
 	// Date when student completed/left
 	completionDate: text('completion_date').notNull(),
 	createdAt: text('created_at').default(sql`CURRENT_TIMESTAMP`)

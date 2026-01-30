@@ -5,6 +5,7 @@
 	import { API_FETCH } from '$lib/api';
 	import ModalAlert from '$lib/components/modal/modalalert.svelte';
 	import MutasiModal from '$lib/components/modal/MutasiModal.svelte';
+	import GraduateModal from '$lib/components/modal/GraduateModal.svelte';
 
 	type Student = {
 		id: number;
@@ -59,6 +60,10 @@
 	// Mutasi Modal State
 	let showMutasiModal = false;
 	let isMutasiLoading = false;
+
+	// Graduate Modal State
+	let showGraduateModal = false;
+	let isGraduateLoading = false;
 
 	onMount(async () => {
 		try {
@@ -251,6 +256,52 @@
 			isMutasiLoading = false;
 		}
 	}
+
+	async function handleGraduateSubmit(
+		event: CustomEvent<{
+			graduationYear: string;
+			completionDate: string;
+			certificateNumber: string | null;
+			finalGrade: string | null;
+		}>
+	) {
+		isGraduateLoading = true;
+
+		try {
+			const response = await API_FETCH(`/routes/api/graduates/${$page.params.id}`, {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(event.detail)
+			});
+
+			if (!response.ok) {
+				const errData = await response.json();
+				throw new Error(errData.message || 'Gagal memproses kelulusan');
+			}
+
+			showGraduateModal = false;
+			alertModal = {
+				show: true,
+				type: 'success',
+				message: 'Siswa berhasil diluluskan',
+				isConfirm: false
+			};
+
+			// Refresh data - reassign to trigger Svelte reactivity
+			if (student) {
+				student = { ...student, status: 'GRADUATE' };
+			}
+		} catch (err) {
+			alertModal = {
+				show: true,
+				type: 'error',
+				message: err instanceof Error ? err.message : 'Terjadi kesalahan',
+				isConfirm: false
+			};
+		} finally {
+			isGraduateLoading = false;
+		}
+	}
 </script>
 
 <ModalAlert
@@ -276,6 +327,15 @@
 		isLoading={isMutasiLoading}
 		on:close={() => (showMutasiModal = false)}
 		on:submit={handleMutasiSubmit}
+	/>
+
+	<GraduateModal
+		show={showGraduateModal}
+		studentName={student.name}
+		studentNisn={student.nisn}
+		isLoading={isGraduateLoading}
+		on:close={() => (showGraduateModal = false)}
+		on:submit={handleGraduateSubmit}
 	/>
 {/if}
 
@@ -413,6 +473,21 @@
 						</div>
 
 						{#if student.status === 'ACTIVE'}
+							<button
+								on:click={() => (showGraduateModal = true)}
+								class="flex w-fit cursor-pointer items-center justify-center gap-2 rounded-md bg-green-500 px-4 py-2 text-green-50 transition-colors hover:bg-green-600"
+							>
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									class="h-5 w-5"
+									viewBox="0 0 20 20"
+									fill="currentColor"
+								>
+									<path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z" />
+								</svg>
+								Luluskan Siswa
+							</button>
+
 							<button
 								on:click={() => (showMutasiModal = true)}
 								class="flex w-fit cursor-pointer items-center justify-center gap-2 rounded-md bg-yellow-500 px-4 py-2 text-yellow-50 transition-colors hover:bg-yellow-600"
