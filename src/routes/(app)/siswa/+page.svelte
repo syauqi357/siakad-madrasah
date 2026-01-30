@@ -71,7 +71,7 @@
 
 	// Debounce timer for search
 	let searchTimeout: ReturnType<typeof setTimeout>;
-	const DEBOUNCE_MS = 300;
+	const DEBOUNCE_MS = 600;
 
 	// Debounced search handler
 	function handleSearchInput(event: Event) {

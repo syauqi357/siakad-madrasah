@@ -377,8 +377,12 @@
 		await fetchDropdowns();
 	});
 
+	// Track if assignments tab has been loaded
+	let assignmentsLoaded = false;
+
 	// Watch for tab changes
-	$: if (activeTab === 'assignments' && classSubjects.length === 0) {
+	$: if (activeTab === 'assignments' && !assignmentsLoaded && !isLoading) {
+		assignmentsLoaded = true;
 		fetchClassSubjects();
 	}
 </script>

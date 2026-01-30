@@ -19,7 +19,7 @@ export const getAllClassSubjects = async (classId = null) => {
 			subjectName: Subjects.name,
 			subjectCode: Subjects.subjectCode,
 			teacherId: classSubject.teacherId,
-			teacherName: teachers.name
+			teacherName: teachers.fullName
 		})
 		.from(classSubject)
 		.innerJoin(classes, eq(classSubject.classId, classes.id))
@@ -45,7 +45,7 @@ export const getClassSubjectById = async (id) => {
 			subjectId: classSubject.subjectId,
 			subjectName: Subjects.name,
 			teacherId: classSubject.teacherId,
-			teacherName: teachers.name
+			teacherName: teachers.fullName
 		})
 		.from(classSubject)
 		.innerJoin(classes, eq(classSubject.classId, classes.id))
@@ -148,7 +148,7 @@ export const getTeachersLite = async () => {
 	return db
 		.select({
 			id: teachers.id,
-			name: teachers.name
+			name: teachers.fullName
 		})
 		.from(teachers);
 };
