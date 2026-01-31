@@ -327,6 +327,31 @@
 			>
 				<DownloadIcon /> Template
 			</a>
+
+			<!-- Divider -->
+			<div class="hidden h-6 w-px bg-slate-300 md:block"></div>
+
+			<!-- Student Lifecycle Links -->
+			<a
+				href="/siswa/graduate-bulk"
+				class="flex items-center gap-2 rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700"
+			>
+				Kelulusan
+			</a>
+
+			<a
+				href="/siswa/alumni"
+				class="flex items-center gap-2 rounded-lg border border-green-500 bg-white px-4 py-2 text-sm font-medium text-green-700 hover:bg-green-50"
+			>
+				Alumni
+			</a>
+
+			<a
+				href="/siswa/mutasi"
+				class="flex items-center gap-2 rounded-lg border border-yellow-500 bg-white px-4 py-2 text-sm font-medium text-yellow-700 hover:bg-yellow-50"
+			>
+				Mutasi
+			</a>
 		</div>
 	</div>
 

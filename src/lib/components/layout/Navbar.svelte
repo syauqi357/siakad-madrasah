@@ -1,23 +1,27 @@
 <script lang="ts">
 	/*
-	
+
 Summary of Changes:
-	1. Import the Logo: I added import logo from '$lib/assets/favicon.svg'; at the top of the script. 
+	1. Import the Logo: I added import logo from '$lib/assets/favicon.svg'; at the top of the script.
         This makes the SVG available as a variable named logo which holds the correct (public) path to the image.
 	2. Update Initial Data: I changed logoUrl: '$lib/assets/favicon.svg' to logoUrl: logo.
    	   This ensures that even before your API call finishes, the component will display the imported logo.
-	3. Handle Fetched Data: In the onMount function, I've updated the logic slightly. 
-	   When you get data from your API, it will use the logoUrl from the API if it exists. If the API doesn't return a logoUrl, 
+	3. Handle Fetched Data: In the onMount function, I've updated the logic slightly.
+	   When you get data from your API, it will use the logoUrl from the API if it exists. If the API doesn't return a logoUrl,
         it will fall back to using the logo you imported. This makes your component more robust.
 
 		// generate by gemini
-	
+
 	*/
 	import { onMount } from 'svelte';
-    import { API_FETCH } from '$lib/api';
+	import { API_FETCH } from '$lib/api';
+	import NavigationScreen from './navigationScreen.svelte';
 
 	// importing logo by default
 	import logo from '$lib/assets/favicon.svg';
+
+	// Navigation screen state
+	let showNavScreen = false;
 
 	// sidebar function to trigger sidebar
 	export let sidebarOpen: boolean;
@@ -148,8 +152,28 @@ Summary of Changes:
 				</a>
 			</div>
 
-			<!-- user profile -->
-			<div class="relative flex items-center">
+			<!-- Quick Navigation & User Profile -->
+			<div class="relative flex items-center gap-2">
+				<!-- Quick Navigation Button -->
+				<button
+					on:click={() => (showNavScreen = true)}
+					class="flex items-center gap-2 rounded-lg p-2 text-slate-600 transition-colors hover:bg-slate-200"
+					aria-label="Navigasi Cepat"
+					title="Navigasi Cepat"
+				>
+					<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
+						/>
+					</svg>
+					<span class="hidden text-sm font-medium md:block">Menu</span>
+				</button>
+
+				<!-- Divider -->
+				<div class="hidden h-6 w-px bg-slate-300 md:block"></div>
 				<!-- aria label menurut svelte harus ada : line 41 -->
 				<!-- title harus ada menurut svelte : line 42 -->
 				<!-- transition hover  duration-50 ease-in docs : https://tailwindcss.com/docs/transition-duration -->
@@ -267,3 +291,6 @@ Summary of Changes:
 		</div>
 	</div>
 </nav>
+
+<!-- Navigation Screen Modal -->
+<NavigationScreen bind:show={showNavScreen} on:close={() => (showNavScreen = false)} />
