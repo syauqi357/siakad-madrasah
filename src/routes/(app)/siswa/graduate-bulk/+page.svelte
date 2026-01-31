@@ -3,6 +3,18 @@
 	import { goto } from '$app/navigation';
 	import { API_FETCH } from '$lib/api';
 	import ArrowLeft from '$lib/components/icons/arrow_left.svelte';
+	import ModalAlert from '$lib/components/modal/modalalert.svelte';
+
+	// Alert state
+	let alertModal = {
+		show: false,
+		type: 'success' as 'success' | 'error' | 'warning' | 'info',
+		message: ''
+	};
+
+	function showAlert(type: 'success' | 'error' | 'warning' | 'info', message: string) {
+		alertModal = { show: true, type, message };
+	}
 
 	// Types
 	interface Student {
@@ -139,7 +151,7 @@
 	// Proceed to confirmation
 	function proceedToConfirm() {
 		if (selectedStudentIds.length === 0) {
-			alert('Pilih minimal satu siswa');
+			showAlert('warning', 'Pilih minimal satu siswa');
 			return;
 		}
 		activeTab = 'confirm';
@@ -148,11 +160,11 @@
 	// Execute bulk graduation
 	async function executeBulkGraduation() {
 		if (!graduationYear) {
-			alert('Pilih tahun kelulusan');
+			showAlert('warning', 'Pilih tahun kelulusan');
 			return;
 		}
 		if (!completionDate) {
-			alert('Pilih tanggal kelulusan');
+			showAlert('warning', 'Pilih tanggal kelulusan');
 			return;
 		}
 
@@ -182,9 +194,12 @@
 			}
 
 			graduationResult = {
-				success: result.data.success || [],
-				failed: result.data.failed || []
+				success: result.data?.success || [],
+				failed: result.data?.failed || []
 			};
+
+			const successCount = result.data?.successCount || graduationResult.success.length;
+			const failedCount = result.data?.failedCount || graduationResult.failed.length;
 
 			// Refresh data
 			await fetchRombels();
@@ -193,9 +208,13 @@
 			}
 			selectedStudentIds = [];
 
-			alert(`Berhasil meluluskan ${result.data.successCount} siswa`);
+			if (failedCount > 0) {
+				showAlert('warning', `${successCount} siswa berhasil diluluskan, ${failedCount} gagal`);
+			} else {
+				showAlert('success', `Berhasil meluluskan ${successCount} siswa`);
+			}
 		} catch (err) {
-			alert(err instanceof Error ? err.message : 'Terjadi kesalahan');
+			showAlert('error', err instanceof Error ? err.message : 'Terjadi kesalahan');
 		} finally {
 			isGraduating = false;
 		}
@@ -504,3 +523,11 @@
 		{/if}
 	</div>
 </div>
+
+<ModalAlert
+	show={alertModal.show}
+	type={alertModal.type}
+	message={alertModal.message}
+	on:close={() => (alertModal.show = false)}
+	on:confirm={() => (alertModal.show = false)}
+/>

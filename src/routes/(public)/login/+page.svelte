@@ -38,7 +38,7 @@
 
 		try {
 			const authUrl = import.meta.env.VITE_API_URL;
-			const response = await fetch(`${authUrl}/api/auth/login`, {
+			const response = await fetch(`${authUrl}/routes/api/auth/login`, {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({ username, password })

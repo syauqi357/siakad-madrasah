@@ -36,7 +36,7 @@ export const navigationConfig: Record<UserRole, NavItem[]> = {
 				{ name: 'aset tetap', icon: '', href: '/sarpras/assettetap' },
 				{ name: 'aset lancar', icon: '', href: '/sarpras/asetlancar' },
 				{ name: 'perpustakaan', icon: '', href: '/sarpras/perpustakaan' },
-				{ name: 'rekapitulasi', icon: '', href: '/lembaga' }
+				{ name: 'profil lembaga', icon: '', href: '/lembaga' }
 			]
 		},
 		{

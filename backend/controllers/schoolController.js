@@ -112,3 +112,23 @@ export const createSchoolData = async (req, res) => {
 	}
 };
 
+// Upload school logo
+export const uploadSchoolLogo = async (req, res) => {
+	try {
+		if (!req.file) {
+			return res.status(400).json({ error: 'No file uploaded' });
+		}
+
+		// Get the new logo URL
+		const logoUrl = findLogoFile();
+
+		res.json({
+			message: 'Logo uploaded successfully',
+			logoUrl: logoUrl
+		});
+	} catch (error) {
+		console.error('Error uploading logo:', error);
+		res.status(500).json({ error: 'Failed to upload logo' });
+	}
+};
+

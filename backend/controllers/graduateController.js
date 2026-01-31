@@ -112,7 +112,7 @@ export const graduateStudent = async (req, res) => {
  * POST /graduates/bulk - Bulk graduate multiple students
  * Body: { students: [{ studentId, certificateNumber?, finalGrade?, scores? }], commonData: { completionDate, graduationYear } }
  */
-export const bulkGraduateStudents = async (req, res) => {
+export const bulkGraduateStudents = (req, res) => {
 	try {
 		const { students, commonData } = req.body;
 
@@ -124,7 +124,7 @@ export const bulkGraduateStudents = async (req, res) => {
 			return res.status(400).json({ message: 'Data kelulusan (completionDate, graduationYear) wajib diisi' });
 		}
 
-		const result = await graduateService.bulkGraduateStudents(students, commonData);
+		const result = graduateService.bulkGraduateStudents(students, commonData);
 
 		res.status(200).json({
 			message: `${result.successCount} siswa berhasil diluluskan, ${result.failedCount} gagal`,

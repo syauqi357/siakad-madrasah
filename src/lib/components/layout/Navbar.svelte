@@ -18,7 +18,7 @@ Summary of Changes:
 	import NavigationScreen from './navigationScreen.svelte';
 
 	// importing logo by default
-	import logo from '$lib/assets/favicon.svg';
+	import logo from '$lib/assets/siakadLogo.svg';
 
 	// Navigation screen state
 	let showNavScreen = false;
@@ -45,8 +45,8 @@ Summary of Changes:
 
 	// placeholder loading set json control
 	let schoolData: SchoolData = {
-		name: '<div class="w-55 h-7 rounded-lg bg-slate-300 animate-pulse"></div>',
-		npsn: '<div class="w-40 h-5 rounded-sm bg-slate-300 animate-pulse"></div>',
+		name: '<div class="w-55 h-7 rounded-lg bg-slate-300 animate-pulse">SIKAMAD 1.0</div>',
+		npsn: '<div class="w-40 h-5 rounded-sm bg-slate-300 animate-pulse">2550405004</div>',
 		logoUrl: logo
 	};
 

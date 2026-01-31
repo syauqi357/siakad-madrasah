@@ -246,7 +246,7 @@ export const graduateStudent = async (studentId, data) => {
  * @param {Array} students - [{ studentId, certificateNumber, finalGrade, scores }]
  * @param {Object} commonData - { completionDate, graduationYear }
  */
-export const bulkGraduateStudents = async (students, commonData) => {
+export const bulkGraduateStudents = (students, commonData) => {
 	if (!commonData.completionDate || !commonData.graduationYear) {
 		throw new Error('Tanggal dan tahun kelulusan wajib diisi');
 	}
@@ -262,14 +262,14 @@ export const bulkGraduateStudents = async (students, commonData) => {
 
 	const now = new Date().toISOString();
 
-	// Process each student in a single transaction
-	await db.transaction(async (tx) => {
+	// Process each student in a single synchronous transaction
+	db.transaction((tx) => {
 		for (const studentData of students) {
 			try {
 				const { studentId, certificateNumber, finalGrade, scores } = studentData;
 
-				// Get student
-				const student = await tx
+				// Get student (synchronous)
+				const student = tx
 					.select()
 					.from(studentTable)
 					.where(eq(studentTable.id, studentId))
@@ -292,8 +292,8 @@ export const bulkGraduateStudents = async (students, commonData) => {
 					continue;
 				}
 
-				// Get active rombel
-				const activeRombel = await tx
+				// Get active rombel (synchronous)
+				const activeRombel = tx
 					.select({ rombelId: rombelStudents.rombelId })
 					.from(rombelStudents)
 					.where(and(eq(rombelStudents.studentId, studentId), eq(rombelStudents.isActive, true)))

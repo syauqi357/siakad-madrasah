@@ -156,7 +156,7 @@ export const getFacilitiesFromDB = async () => {
  * Get all facilities as flat array (for admin/management)
  */
 export const getAllFacilitiesFromDB = async () => {
-	return await db.select().from(schoolFacilitiesTable);
+	return db.select().from(schoolFacilitiesTable);
 };
 
 /**
