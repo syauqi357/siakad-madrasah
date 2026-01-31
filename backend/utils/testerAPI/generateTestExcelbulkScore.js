@@ -18,7 +18,7 @@ const sqlite = new Database(dbPath);
 const db = drizzle(sqlite);
 
 // --- Import schema after db connection is established ---
-import { Subjects } from '../src/db/schema/subjectTable.js';
+import { Subjects } from '../../src/db/schema/subjectTable.js';
 
 async function generateBulkScoreTemplate() {
 	console.log('📝 Generating bulk score upload template...');

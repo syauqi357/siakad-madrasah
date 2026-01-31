@@ -23,7 +23,7 @@ import { speedLimit } from './middlewares/throttleFeat/throttleLimit.js'; // MID
 // This line loads the environment variables from a .env file into process.env
 dotenv.config();
 const app = express();
-const FE_PORT = process.env.FRONTEND_URL_DEV;
+// const FE_PORT = process.env.FRONTEND_URL_DEV;
 // const FE_port_prod = process.env.FRONTEND_URL_;
 const PORT = process.env.PORT;
 

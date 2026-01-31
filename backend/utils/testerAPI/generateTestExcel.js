@@ -19,8 +19,8 @@ const sqlite = new Database(dbPath);
 const db = drizzle(sqlite);
 
 // --- Import schema after db connection is established ---
-import { classes } from '../src/db/schema/classesDataTable.js';
-import { Subjects } from '../src/db/schema/subjectTable.js';
+import { classes } from '../../src/db/schema/classesDataTable.js';
+import { Subjects } from '../../src/db/schema/subjectTable.js';
 
 async function generateAllTemplates() {
 	console.log('📝 Generating dynamic Excel templates for all class/subject combinations...');

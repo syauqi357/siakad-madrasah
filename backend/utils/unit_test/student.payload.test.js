@@ -18,7 +18,7 @@ jest.unstable_mockModule('../src/index.js', () => ({
 
 // Dynamic import after mocking
 const { createStudentData, createStudentdataInputExcelBulkGenerator, createBulkStudentsFromExcel } =
-	await import('../services/student.service.js');
+	await import('../../services/student.service.js');
 import ExcelJS from 'exceljs';
 
 // Helper: Create a mock Excel buffer with full student data

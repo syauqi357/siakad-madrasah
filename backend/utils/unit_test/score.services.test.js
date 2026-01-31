@@ -12,7 +12,7 @@ jest.unstable_mockModule('../src/index.js', () => ({
 }));
 
 // 2. Dynamic import of the module under test
-const { generateBulkScoreTemplate } = await import('../services/score.services.js');
+const { generateBulkScoreTemplate } = await import('../../services/score.services.js');
 
 describe('Score Services - Unit Tests', () => {
 

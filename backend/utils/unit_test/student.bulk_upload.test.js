@@ -64,7 +64,7 @@ jest.unstable_mockModule('../src/db/schema/rombelStudents.js', () => ({
 jest.unstable_mockModule('../src/db/schema/classGroup.js', () => ({ rombel: 'rombel_mock' }));
 
 // Import the service AFTER mocking
-const { createBulkStudentsFromExcel } = await import('../services/student.service.js');
+const { createBulkStudentsFromExcel } = await import('../../services/student.service.js');
 
 describe('Student Service - Bulk Upload (Excel)', () => {
 	beforeEach(() => {

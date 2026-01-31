@@ -1,6 +1,6 @@
 @import 'tailwindcss';
 
- @plugin '@tailwindcss/forms';
+@plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
 
 /* --- Stack Sans (Body Font) --- */
@@ -62,5 +62,5 @@ body {
 /* Custom Typography Overrides */
 .prose code,
 .prose pre {
-    font-family: 'JetBrains Mono', monospace !important;
+	font-family: 'JetBrains Mono', monospace !important;
 }
