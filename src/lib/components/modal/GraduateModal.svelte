@@ -1,6 +1,7 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, onMount } from 'svelte';
 	import { fade, scale } from 'svelte/transition';
+	import { API_FETCH } from '$lib/api';
 
 	export let show = false;
 	export let studentName = '';
@@ -15,18 +16,61 @@
 	let certificateNumber = '';
 	let finalGrade = '';
 
-	// Graduation year options (current year and previous years)
-	function generateYearOptions(): string[] {
+	// Academic years from API
+	interface AcademicYear {
+		id: number;
+		name: string;
+		isActive: number;
+	}
+	let yearOptions: AcademicYear[] = [];
+	let loadingYears = false;
+
+	// Fetch academic years from API
+	async function fetchAcademicYears() {
+		loadingYears = true;
+		try {
+			const response = await API_FETCH('/routes/api/academic-years/lite');
+			if (response.ok) {
+				const result = await response.json();
+				yearOptions = result.data || [];
+				// Set default to active year if available
+				const activeYear = yearOptions.find((y) => y.isActive === 1);
+				if (activeYear && !graduationYear) {
+					graduationYear = activeYear.name;
+				}
+			}
+		} catch (err) {
+			console.error('Error fetching academic years:', err);
+			// Fallback to generated years if API fails
+			yearOptions = generateFallbackYears();
+		} finally {
+			loadingYears = false;
+		}
+	}
+
+	// Fallback year generator if API fails
+	function generateFallbackYears(): AcademicYear[] {
 		const currentYear = new Date().getFullYear();
-		const years: string[] = [];
+		const years: AcademicYear[] = [];
 		for (let i = 0; i < 5; i++) {
 			const startYear = currentYear - i;
-			years.push(`${startYear - 1}/${startYear}`);
+			years.push({
+				id: i,
+				name: `${startYear - 1}/${startYear}`,
+				isActive: i === 0 ? 1 : 0
+			});
 		}
 		return years;
 	}
 
-	const yearOptions = generateYearOptions();
+	onMount(() => {
+		fetchAcademicYears();
+	});
+
+	// Refetch when modal opens
+	$: if (show) {
+		fetchAcademicYears();
+	}
 
 	// Final grade options
 	const gradeOptions = [
@@ -117,10 +161,16 @@
 						bind:value={graduationYear}
 						class="w-full rounded-md border border-gray-400 px-3 py-2 transition-all ease-in-out focus:border-green-500 focus:outline-none"
 						required
+						disabled={loadingYears}
 					>
-						<option value="" disabled>Pilih tahun kelulusan</option>
+						<option value="" disabled>
+							{loadingYears ? 'Memuat...' : 'Pilih tahun kelulusan'}
+						</option>
 						{#each yearOptions as year}
-							<option value={year}>{year}</option>
+							<option value={year.name}>
+								{year.name}
+								{year.isActive === 1 ? '(Aktif)' : ''}
+							</option>
 						{/each}
 					</select>
 				</div>
