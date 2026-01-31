@@ -183,6 +183,38 @@ export const deleteStudent = async (req, res) => {
 	}
 };
 
+// ==================== PHOTO UPLOAD CONTROLLER ====================
+
+/**
+ * POST /students/:id/photo - Upload student profile photo
+ */
+export const uploadStudentPhoto = async (req, res) => {
+	try {
+		const studentId = parseInt(req.params.id);
+
+		if (!req.file) {
+			return res.status(400).json({ message: 'No file uploaded' });
+		}
+
+		// Relative path for database storage (accessible via static middleware)
+		const photoPath = `/upload/Profile/studentProfile/${req.file.filename}`;
+
+		const updated = await studentService.updateStudentPhoto(studentId, photoPath);
+
+		res.status(200).json({
+			message: 'Photo uploaded successfully',
+			data: {
+				studentId: updated.id,
+				profilePhoto: updated.profilePhoto
+			}
+		});
+	} catch (error) {
+		console.error('Photo upload error:', error);
+		const statusCode = error.message.includes('not found') ? 404 : 500;
+		res.status(statusCode).json({ message: error.message });
+	}
+};
+
 // ==================== STATUS MANAGEMENT CONTROLLERS ====================
 
 /**

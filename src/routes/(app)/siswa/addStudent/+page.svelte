@@ -83,6 +83,60 @@
 	let isLoading = false;
 	let errorMessage = '';
 
+	// Photo upload state
+	let selectedPhoto: File | null = null;
+	let photoPreview: string | null = null;
+
+	// Handle photo file selection
+	function handlePhotoSelect(event: Event) {
+		const input = event.target as HTMLInputElement;
+		const file = input.files?.[0];
+
+		if (file) {
+			// Validate file size (2MB max)
+			if (file.size > 2 * 1024 * 1024) {
+				alertType = 'error';
+				alertMessage = 'Ukuran file maksimal 2MB';
+				showAlert = true;
+				input.value = '';
+				return;
+			}
+
+			// Validate file type
+			if (!['image/jpeg', 'image/jpg', 'image/png', 'image/webp'].includes(file.type)) {
+				alertType = 'error';
+				alertMessage = 'Hanya file gambar (JPG, PNG, WEBP) yang diizinkan';
+				showAlert = true;
+				input.value = '';
+				return;
+			}
+
+			selectedPhoto = file;
+			// Create preview URL
+			photoPreview = URL.createObjectURL(file);
+		}
+	}
+
+	// Upload photo after student is created
+	async function uploadPhotoToServer(studentId: number): Promise<boolean> {
+		if (!selectedPhoto) return true; // No photo to upload
+
+		try {
+			const formDataPhoto = new FormData();
+			formDataPhoto.append('photo', selectedPhoto);
+
+			const response = await API_FETCH(`/routes/api/students/${studentId}/photo`, {
+				method: 'POST',
+				body: formDataPhoto
+			});
+
+			return response.ok;
+		} catch (error) {
+			console.error('Error uploading photo:', error);
+			return false;
+		}
+	}
+
 	// Modal Alert State
 	let showAlert = false;
 	let alertType: 'success' | 'error' | 'warning' | 'info' = 'success';
@@ -128,6 +182,20 @@
 			});
 
 			if (response.ok) {
+				const result = await response.json();
+				const studentId = result.id;
+
+				// Upload photo if selected
+				if (selectedPhoto && studentId) {
+					const photoUploaded = await uploadPhotoToServer(studentId);
+					if (!photoUploaded) {
+						alertType = 'warning';
+						alertMessage = 'Data siswa berhasil disimpan, tetapi foto gagal diupload.';
+						showAlert = true;
+						return;
+					}
+				}
+
 				alertType = 'success';
 				alertMessage = 'Data siswa berhasil disimpan!';
 				showAlert = true;
@@ -224,36 +292,58 @@
 					<!-- ... existing code ... -->
 					<!-- Section 0: Foto Profil -->
 					<div class="rounded-xl border border-slate-100 bg-white p-6">
-						<!-- Note: Photo upload requires separate handling as endpoint expects /upload multipart or similar, but current endpoint is JSON only for data. Leaving purely as UI related for now or until service updated. -->
 						<h2 class="mb-4 text-lg font-semibold text-slate-800">Foto Profil</h2>
-						<!-- ... -->
 
 						<div class="flex items-center gap-6">
-							<div
-								class="flex h-28 w-24 items-center justify-center rounded-lg border-2 border-dashed border-slate-300 bg-slate-100 text-slate-400"
-							>
-								<svg
-									xmlns="http://www.w3.org/2000/svg"
-									class="h-8 w-8"
-									fill="none"
-									viewBox="0 0 24 24"
-									stroke="currentColor"
-								>
-									<path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										stroke-width="2"
-										d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+							{#if photoPreview}
+								<div class="relative">
+									<img
+										src={photoPreview}
+										alt="Preview"
+										class="h-28 w-24 rounded-lg border-2 border-blue-300 object-cover"
 									/>
-								</svg>
-							</div>
+									<button
+										type="button"
+										aria-label="foto"
+										on:click={() => {
+											selectedPhoto = null;
+											photoPreview = null;
+										}}
+										class="absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-red-500 text-white hover:bg-red-600"
+									>
+										<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+										</svg>
+									</button>
+								</div>
+							{:else}
+								<div
+									class="flex h-28 w-24 items-center justify-center rounded-lg border-2 border-dashed border-slate-300 bg-slate-100 text-slate-400"
+								>
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										class="h-8 w-8"
+										fill="none"
+										viewBox="0 0 24 24"
+										stroke="currentColor"
+									>
+										<path
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											stroke-width="2"
+											d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+										/>
+									</svg>
+								</div>
+							{/if}
 							<div class="flex-1">
 								<input
 									type="file"
-									accept="image/*"
+									accept="image/jpeg,image/jpg,image/png,image/webp"
+									on:change={handlePhotoSelect}
 									class="block w-full text-sm text-slate-500 file:mr-4 file:rounded-full file:border-0 file:bg-blue-50 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-blue-700 hover:file:bg-blue-100"
 								/>
-								<p class="mt-1 text-xs text-slate-500">Format: JPG, PNG. Maksimal 2MB.</p>
+								<p class="mt-1 text-xs text-slate-500">Format: JPG, PNG, WEBP. Maksimal 2MB.</p>
 							</div>
 						</div>
 					</div>

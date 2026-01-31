@@ -15,6 +15,7 @@
 		gender: string;
 		cityOfOrigin: string;
 		status: 'ACTIVE' | 'MUTASI' | 'GRADUATE';
+		profilePhoto: string | null;
 
 		// Full Profile Data
 		nisn: string;
@@ -94,6 +95,7 @@
 				gender: data.gender,
 				cityOfOrigin: data.originRegion || data.birthPlace || '-',
 				status: data.status || 'ACTIVE', // Use actual status from DB
+				profilePhoto: data.profilePhoto || null,
 				nisn: data.nisn || '-',
 				localNis: data.localNis || '-',
 				birthDate: data.birthDate || '-',
@@ -386,19 +388,12 @@
 							<div
 								class="flex h-24 w-24 items-center justify-center overflow-hidden rounded-lg border-2 border-slate-500 bg-slate-100"
 							>
-								{#if student.gender === 'Perempuan' || student.gender === 'laki-laki'}
-									<svg
-										xmlns="http://www.w3.org/2000/svg"
-										class="h-12 w-12 text-slate-400"
-										viewBox="0 0 20 20"
-										fill="currentColor"
-									>
-										<path
-											fill-rule="evenodd"
-											d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-											clip-rule="evenodd"
-										/>
-									</svg>
+								{#if student.profilePhoto}
+									<img
+										src="{import.meta.env.VITE_API_URL}{student.profilePhoto}"
+										alt="Foto {student.name}"
+										class="h-full w-full object-cover"
+									/>
 								{:else}
 									<svg
 										xmlns="http://www.w3.org/2000/svg"
@@ -443,7 +438,8 @@
 						</div>
 					</div>
 					<div class="mt-6 flex flex-wrap gap-3">
-						<div
+						<a
+							href="/siswa/{student.id}/edit"
 							class="flex w-fit cursor-pointer items-center justify-center gap-2 rounded-md bg-blue-500 px-5 py-2 text-blue-50 capitalize transition-all duration-200 ease-in-out hover:bg-blue-700"
 						>
 							<span class="flex items-center justify-center">
@@ -470,7 +466,7 @@
 								>
 							</span>
 							edit siswa
-						</div>
+						</a>
 
 						{#if student.status === 'ACTIVE'}
 							<button

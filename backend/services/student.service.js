@@ -650,6 +650,28 @@ export const countStudentsByStatus = async (status) => {
  * @param {string} newStatus - 'MUTASI' or 'GRADUATE'
  * @param {Object} data - { reason, mutasiType, destinationSchool, completionDate, scores }
  */
+
+/**
+ * Update student profile photo
+ * @param {number} studentId - The student ID
+ * @param {string} photoPath - The relative path to the photo file
+ */
+export const updateStudentPhoto = async (studentId, photoPath) => {
+	const student = await db.select().from(studentTable).where(eq(studentTable.id, studentId)).get();
+
+	if (!student) {
+		throw new Error('Student not found');
+	}
+
+	const updated = await db
+		.update(studentTable)
+		.set({ profilePhoto: photoPath, updatedAt: new Date().toISOString() })
+		.where(eq(studentTable.id, studentId))
+		.returning();
+
+	return updated[0];
+};
+
 export const changeStudentStatus = async (studentId, newStatus, data = {}) => {
 	// Validate newStatus
 	if (!['MUTASI', 'GRADUATE'].includes(newStatus)) {

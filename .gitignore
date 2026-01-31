@@ -15,6 +15,11 @@ Thumbs.db
 # Env
 backend/.env
 
+backend/public/Profile/studentProfile/.jpg
+backend/public/Profile/studentProfile/.png
+backend/public/Profile/studentProfile/.webp
+backend/public/Profile/studentProfile/.gif
+
 #backend/testerAPI
 
 backend/*.xlsx
@@ -71,3 +76,4 @@ coverage/
 .nyc_output/
 
 .npmrc
+
