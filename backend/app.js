@@ -29,7 +29,7 @@ const PORT = process.env.PORT;
 
 const ADDRESS = process.env.ADDRESS_SERVER;
 const corsOptions = {
-	origin: FE_PORT,
+	// origin: FE_PORT,
 	credentials: true,
 	optionsSuccessStatus: 200
 };

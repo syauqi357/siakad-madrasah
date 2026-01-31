@@ -32,7 +32,7 @@ export const getClassLevels = () => {
  * Check if a class level is the final grade (XII or IX)
  */
 export const isFinalGrade = (className) => {
-	const finalGrades = ['XII', 'IX', '12', '9', '6', 'VI'];
+	const finalGrades = ['XII', 'IX', '12', '9', '6', '3', 'VI'];
 	return finalGrades.includes(className);
 };
 
@@ -164,9 +164,7 @@ export const getTargetRombels = (sourceClassId) => {
 		})
 		.from(rombel)
 		.innerJoin(classes, eq(rombel.classId, classes.id))
-		.where(
-			and(eq(rombel.classId, nextClass.id), eq(rombel.academicYearId, activeYear.id))
-		)
+		.where(and(eq(rombel.classId, nextClass.id), eq(rombel.academicYearId, activeYear.id)))
 		.all();
 
 	// Get current student count for each target rombel
@@ -238,7 +236,11 @@ export const promoteStudents = (studentIds, targetRombelId) => {
 			try {
 				// 1. Validate student is ACTIVE
 				const student = tx
-					.select({ id: studentTable.id, name: studentTable.studentName, status: studentTable.status })
+					.select({
+						id: studentTable.id,
+						name: studentTable.studentName,
+						status: studentTable.status
+					})
 					.from(studentTable)
 					.where(eq(studentTable.id, studentId))
 					.get();
