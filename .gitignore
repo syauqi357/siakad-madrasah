@@ -13,8 +13,13 @@ node_modules
 Thumbs.db
 
 # Env
-#.env
-.env.*
+backend/.env
+
+#backend/testerAPI
+
+backend/*.xlsx
+
+.env
 !.env.example
 !.env.test
 
@@ -23,7 +28,6 @@ vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 
 # SQLite
-*.db
 
 # from claudeAi
 # Dependencies
@@ -48,7 +52,7 @@ logs/
 *.log
 npm-debug.log*
 
-
+# OS files
 desktop.ini
 
 # IDE
@@ -66,7 +70,4 @@ dist/
 coverage/
 .nyc_output/
 
-.prettierignore
-.prettierrc
-build.bat
-start.bat
+.npmrc

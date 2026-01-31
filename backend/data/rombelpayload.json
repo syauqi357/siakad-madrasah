@@ -1,0 +1,13 @@
+[
+	{
+		"id": 1,
+		"tahun_ajaran": "2025/2026 Genap",
+		"tingkat_kelas": "10",
+		"nama_rombel": "X-IPA-1",
+		"wali_kelas": "12345",
+		"nama_ruangan": "R01",
+		"kurikulum": "Kurikulum Merdeka",
+		"jenis_rombel": "kelas",
+		"siswa": [1, 2, 3, 4, 5]
+	}
+]

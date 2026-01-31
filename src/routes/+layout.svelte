@@ -6,7 +6,7 @@
 	<title>sistem Akademik </title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </svelte:head>
-<div class="bg-slate-100">
+<div class="bg-white">
 	<slot />
 </div>
 

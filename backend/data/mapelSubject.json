@@ -1,0 +1,11 @@
+[
+   {
+      "id": 1,
+      "nama-mapel": "Matematika",
+      "kode-mapel": "MTK",
+      "deskripsi": "Mata pelajaran yang mempelajari konsep-konsep matematika dasar hingga lanjutan.",
+      "kkm": 75,
+      "guru-pengampu": "Budi Santoso",
+      "kelas": ["10 IPA", "11 IPA", "12 IPA"]
+   }
+]

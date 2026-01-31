@@ -1,158 +1,169 @@
 [
-  {
-    "id": 25020001,
-    "name": "Ahmad Rizki",
-    "class": "XII RPL 1",
-    "gender": "Laki-laki",
-    "cityOfOrigin": "Jakarta",
-    "status": "active",
-    "parents": {
-      "father": "Farid",
-      "mother": "Faridah"
-    },
-    "address": "Jalan Merdeka No. 123"
-  },
-  {
-    "id": 25020002,
-    "name": "Siti Nurhaliza",
-    "class": "XII RPL 1",
-    "gender": "Perempuan",
-    "cityOfOrigin": "Bandung",
-    "status": "active",
-    "parents": {
-      "father": "Budi Santoso",
-      "mother": "Dewi Lestari"
-    },
-    "address": "Jalan Asia Afrika No. 45"
-  },
-  {
-    "id": 25020003,
-    "name": "Kevin Pratama",
-    "class": "XII RPL 1",
-    "gender": "Laki-laki",
-    "cityOfOrigin": "Surabaya",
-    "status": "active",
-    "parents": {
-      "father": "Joko Widodo",
-      "mother": "Sari Indah"
-    },
-    "address": "Jalan Tunjungan No. 78"
-  },
-  {
-    "id": 25020004,
-    "name": "Maya Sari",
-    "class": "XII RPL 2",
-    "gender": "Perempuan",
-    "cityOfOrigin": "Yogyakarta",
-    "status": "active",
-    "parents": {
-      "father": "Rudi Hermawan",
-      "mother": "Linda Wati"
-    },
-    "address": "Jalan Malioboro No. 56"
-  },
-  {
-    "id": 25020005,
-    "name": "Rizky Fadilah",
-    "class": "XII RPL 2",
-    "gender": "Laki-laki",
-    "cityOfOrigin": "Medan",
-    "status": "inactive",
-    "parents": {
-      "father": "Ahmad Yani",
-      "mother": "Siti Aminah"
-    },
-    "address": "Jalan Sudirman No. 89"
-  },
-  {
-    "id": 25020006,
-    "name": "Dewi Anggraini",
-    "class": "XII RPL 2",
-    "gender": "Perempuan",
-    "cityOfOrigin": "Semarang",
-    "status": "active",
-    "parents": {
-      "father": "Hendra Gunawan",
-      "mother": "Ratna Sari"
-    },
-    "address": "Jalan Pemuda No. 34"
-  },
-  {
-    "id": 25020007,
-    "name": "Fajar Hidayat",
-    "class": "XII RPL 3",
-    "gender": "Laki-laki",
-    "cityOfOrigin": "Makassar",
-    "status": "active",
-    "parents": {
-      "father": "Syamsul Arifin",
-      "mother": "Murni Wati"
-    },
-    "address": "Jalan Pattimura No. 67"
-  },
-  {
-    "id": 25020008,
-    "name": "Nina Permata",
-    "class": "XII RPL 3",
-    "gender": "Perempuan",
-    "cityOfOrigin": "Denpasar",
-    "status": "active",
-    "parents": {
-      "father": "Wayan Sutarna",
-      "mother": "Ketut Sari"
-    },
-    "address": "Jalan Raya Kuta No. 12"
-  },
-  {
-    "id": 25020009,
-    "name": "Budi Setiawan",
-    "class": "XII RPL 3",
-    "gender": "Laki-laki",
-    "cityOfOrigin": "Malang",
-    "status": "inactive",
-    "parents": {
-      "father": "Slamet Riyadi",
-      "mother": "Susi Susanti"
-    },
-    "address": "Jalan Ijen No. 23"
-  },
-  {
-    "id": 25020010,
-    "name": "Cindy Putri",
-    "class": "XII RPL 4",
-    "gender": "Perempuan",
-    "cityOfOrigin": "Bogor",
-    "status": "active",
-    "parents": {
-      "father": "Eko Prasetyo",
-      "mother": "Maria Ulfa"
-    },
-    "address": "Jalan Pajajaran No. 90"
-  },
-  {
-    "id": 25020011,
-    "name": "Rendi Saputra",
-    "class": "XII RPL 4",
-    "gender": "Laki-laki",
-    "cityOfOrigin": "Palembang",
-    "status": "active",
-    "parents": {
-      "father": "Ari Wibowo",
-      "mother": "Rina Marlina"
-    },
-    "address": "Jalan Jenderal Sudirman No. 45"
-  },
-  {
-    "id": 25020012,
-    "name": "Lina Marlina",
-    "class": "XII RPL 4",
-    "gender": "Perempuan",
-    "cityOfOrigin": "Bekasi",
-    "status": "active",
-    "parents": {
-      "father": "Tono Sugianto",
-      "mother": "Sari Dewi"
-    },
-    "address": "Jalan Kemang No. 78"
-  }
+	{
+		"id": 1,
+		"nama-siswa": "Bill Gates",
+		"NISN": "1234567890",
+		"NIS-local": "2023001",
+		"jenis-kelamin": "Laki-laki",
+		"kelas": [
+			{
+				"nama-kelas": "X IPA 1",
+				"wali-kelas": {
+					"id": "WK-001",
+					"nama": "Linus Torvalds"
+				},
+				"tahun-ajaran": "2023/2024",
+				"mapel": [
+					{
+						"nama": "Matematika",
+						"guru": "Alan Turing"
+					}
+				]
+			}
+		],
+		"status": {
+			"aktif": [
+				{
+					"tahun-ajaran": "2023/2024",
+					"kelas": "X IPA 1",
+					"tanggal-masuk": "2023-07-15",
+					"status-kelas": "Aktif",
+					"keterangan": "Siswa Baru",
+					"guru-wali-kelas": "Linus Torvalds"
+				}
+			],
+			"keluar": false,
+			"berhenti": false,
+			"lulus": [],
+			"pindah": [],
+			"meninggal": false
+		},
+		"agama": "Islam",
+		"tempat-lahir": "Seattle",
+		"asal-sekolah": "SMP Negeri 1 Seattle",
+		"nomor-hp": "081234567890",
+		"alamat": {
+			"kabupaten": "Sleman",
+			"kecamatan": "Depok",
+			"kelurahan": "Caturtunggal",
+			"jalan": "Jl. Kaliurang",
+			"no-rumah": "123",
+			"RT": "01",
+			"RW": "02",
+			"kode-pos": "55281",
+			"provinsi": "DI Yogyakarta",
+			"desa": "Caturtunggal",
+			"dusun": "Karangwuni"
+		},
+		"anak-ke": 1,
+		"jumlah-saudara": 2,
+		"asal-daerah": "Yogyakarta",
+		"bpjs": "000123456789",
+		"nomor-ktp": "3404012345670001",
+		"nomor-akta": "1234/AKTA/2005",
+		"kewarganegaraan": "WNI",
+		"tanggal-lahir": "2005-10-28",
+		"tinggal-bersama": "Orang Tua",
+		"absensi": {
+			"sakit": 0,
+			"izin": 0,
+			"tanpa-keterangan": 0
+		},
+		"transportasi": "Sepeda Motor",
+		"orang-tua": [
+			{
+				"ayah": {
+					"nama": "William H. Gates Sr.",
+					"jenis-kelamin": "Laki-laki",
+					"tahun-lahir": "1975",
+					"pendidikan": "S1",
+					"pekerjaan": "Wiraswasta",
+					"penghasilan": "5000000",
+					"nik": "3404011234560001",
+					"no-kk": "3404011234560000",
+					"no-ktp": "3404011234560001",
+					"agama": "Islam",
+					"nomor-hp": "081234567891",
+					"alamat": "Jl. Kaliurang No. 123",
+					"hubungan": "Ayah Kandung",
+					"tempat-kerja": "PT. Microsoft",
+					"jabatan": "Manager",
+					"tempat-lahir": "Seattle",
+					"tanggal-lahir": "1975-01-01",
+					"kewarganegaraan": "WNI"
+				},
+				"ibu": {
+					"nama": "Mary Maxwell Gates",
+					"jenis-kelamin": "Perempuan",
+					"tahun-lahir": "1978",
+					"pendidikan": "S1",
+					"pekerjaan": "Ibu Rumah Tangga",
+					"penghasilan": "0",
+					"nik": "3404011234560002",
+					"no-kk": "3404011234560000",
+					"no-ktp": "3404011234560002",
+					"agama": "Islam",
+					"nomor-hp": "081234567892",
+					"alamat": "Jl. Kaliurang No. 123",
+					"hubungan": "Ibu Kandung",
+					"tempat-kerja": "-",
+					"jabatan": "-",
+					"tempat-lahir": "Seattle",
+					"tanggal-lahir": "1978-05-15",
+					"kewarganegaraan": "WNI"
+				},
+				"wali": null
+			}
+		],
+		"nilai": [
+			{
+				"ujian-nasional": {
+					"bahasa-indonesia": 85,
+					"matematika": 90,
+					"ipa": 88
+				},
+				"ujian-sekolah": {
+					"bahasa-indonesia": 88,
+					"matematika": 92,
+					"ipa": 90
+				},
+				"ujian-lokal": {
+					"bahasa-indonesia": 80,
+					"matematika": 85,
+					"ipa": 82
+				},
+				"raport": {
+					"semester-ganjil": 88.5,
+					"semester-genap": 90.0
+				},
+				"nilai-tes-masuk": {
+					"psikotes": {
+						"nilai": 85,
+						"keterangan": "Disarankan Masuk IPA"
+					},
+					"akademik": {
+						"bahasa-indonesia": 80,
+						"matematika": 95,
+						"ipa": 90
+					},
+					"wawancara": {
+						"nilai": 90,
+						"keterangan": "Sangat Baik"
+					}
+				},
+				"transkrip-mapel": [
+					{
+						"nama": "Matematika",
+						"nilai": 95,
+						"keterangan": "Sangat Baik"
+					},
+					{
+						"nama": "Bahasa Indonesia",
+						"nilai": 88,
+						"keterangan": "Baik"
+					}
+				]
+			}
+		]
+	}
 ]

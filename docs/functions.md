@@ -1,7 +1,7 @@
 # Backend Functions Documentation
 
 ## 🔐 Authentication Services
-**File**: `backend/services/authService.js`
+**File**: `backend/services/auth.service.js`
 
 ### `getAccounts()`
 - **Description**: Reads and parses teacher accounts from `guru.json`
@@ -91,7 +91,7 @@
 ---
 
 ## 👨‍🎓 Student Data Controller
-**File**: `backend/controllers/studentDatacontroller.js`
+**File**: `backend/controllers/studentController.js`
 
 ### `getAllStudents(req, res)`
 - **Route**: `GET /api/studentData`
@@ -136,7 +136,7 @@ GET    /api/studentData/:id  → getStudentById()
 
 | Layer | Files | Purpose |
 |-------|-------|---------|
-| **Service** | `authService.js` | Business logic (auth, JWT) |
+| **Service** | `auth.service.js` | Business logic (auth, JWT) |
 | **Controller** | 3 files | HTTP request/response handling |
 | **Route** | 3 files | Route definitions & mounting |
 
@@ -169,6 +169,6 @@ Client receives { success, token, user }
 **Current State**: All data from JSON files (guru.json, student.json, lembaga.json)
 
 **To migrate to SQLite/Drizzle**:
-1. Update `authService.js` to query database instead of reading JSON
+1. Update `auth.service.js` to query database instead of reading JSON
 2. Update other controllers similarly
 3. Routes & controllers stay mostly the same (MVC separation maintained)

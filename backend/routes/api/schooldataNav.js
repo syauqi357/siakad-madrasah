@@ -1,9 +1,10 @@
 import express from 'express';
-import { getSchoolData, updateSchoolData } from '../../controllers/schoolController.js';
+import { getSchoolData, createSchoolData, updateSchoolData } from '../../controllers/schoolController.js';
 
 const router = express.Router();
 
-router.get('/schoolData', getSchoolData);
-router.put('/schoolData', updateSchoolData);
+router.get('/', getSchoolData);
+router.post('/', createSchoolData);
+router.put('/', updateSchoolData);
 
 export default router;

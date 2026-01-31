@@ -1,9 +1,9 @@
 [
   {
     "id": 1,
-    "username": "abdulbahar",
+    "username": "admin",
     "email": "admin@siakad.com",
-    "password": "admin123",
+    "password": "admin224",
     "role": "admin",
     "nama_lengkap": "Admin Sekolah",
     "nip": "198005011234567",
@@ -23,10 +23,21 @@
     "id": 3,
     "username": "rizal",
     "email": "guru2@siakad.com",
-    "password": "kontol",
+    "password": "hehe1123",
     "role": "teacher",
     "nama_lengkap": "rizal rover",
     "nip": "198605031234569",
     "jabatan": "Guru Mata Pelajaran chisa"
+  },
+  {
+    "id": 4,
+    "username": "guru3",
+    "email": "guru3@siakad.com",
+    "password": "guru321",
+    "role": "teacher",
+    "nama_lengkap": "Siti Rahayu",
+    "nip": "198705041234570",
+    "jabatan": "Guru Mata Pelajaran"
   }
+
 ]

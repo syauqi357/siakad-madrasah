@@ -1,79 +1,114 @@
 import express from 'express';
 import cors from 'cors';
+import path from 'path';
+import dotenv from 'dotenv'; // MAIN DEPENDENCIES
 import authRouter from './routes/api/auth.js';
 import schoolDataRouter from './routes/api/schooldataNav.js';
 import studentDataRouter from './routes/api/student.js';
-import dotenv from 'dotenv';
+import auditLogsRouter from './routes/auditLog/APILogs/audit_logs.js'; // ROUTES API
+import rombelRouter from './routes/api/rombel.js';
+import scoreRouter from './routes/api/scores.js'; // Import scoreRouter
+import classDataRouter from './routes/api/classData.js'; // Import classDataRouter
+import teacherRouter from './routes/api/teacher.js'; // Import teacherRouter
+import assessmentTypeRouter from './routes/api/assessmentType.js'; // Import assessmentTypeRouter
+import subjectRouter from './routes/api/subject.js'; // Import subjectRouter
+import classSubjectRouter from './routes/api/classSubject.js'; // Import classSubjectRouter
+import graduateRouter from './routes/api/graduate.js'; // Import graduateRouter
+import promotionRouter from './routes/api/promotion.js'; // Import promotionRouter
+import academicYearRouter from './routes/api/academicYear.js'; // Import academicYearRouter
+import { auditLog } from './middlewares/middlewareAudit.js';
+import { GLOBAL_RATE_LIMIT } from './middlewares/globalRatelimit/rateLimiter.js';
+import { speedLimit } from './middlewares/throttleFeat/throttleLimit.js'; // MIDDLEWARE RATE LIMIT, THROTTLE and AUDIT LOGS
 
 // This line loads the environment variables from a .env file into process.env
-dotenv.config()
+dotenv.config();
 const app = express();
+const FE_PORT = process.env.FRONTEND_URL_DEV;
+// const FE_port_prod = process.env.FRONTEND_URL_;
+const PORT = process.env.PORT;
 
-import path from 'path'; // Import path module
-app.use(cors());
+const ADDRESS = process.env.ADDRESS_SERVER;
+const corsOptions = {
+	origin: FE_PORT,
+	credentials: true,
+	optionsSuccessStatus: 200
+};
 
-// --- Explanation of Environment Variables ---
-//
-// `process.env` vs `import.meta.env`:
-//
-// 1. `process.env`:
-//    - This is the standard, built-in object in Node.js for accessing environment variables.
-//    - It's used for BACKEND code, like in this Express server.
-//    - The `dotenv.config()` call above reads your `.env` file and loads its contents
-//      (e.g., PORT=5000) into this `process.env` object.
-//
-// 2. `import.meta.env`:
-//    - This is a feature provided by the Vite build tool, which SvelteKit uses.
-//    - It is used to expose environment variables to FRONTEND (client-side) code.
-//    - It will NOT work in a standard Node.js backend file like this one, which is why
-//      using it here caused the "Cannot read properties of undefined" error.
-//
-// `.PORT`:
-//    - This is the specific variable we are accessing from the environment.
-//    - You define this variable in your `.env` file (e.g., PORT=5000).
-//    - `process.env.PORT` reads that value, which is then assigned to the `port` constant.
-//
+// header line
+app.use(cors(corsOptions));
+// restAPI
 
-const port = process.env.PORT;
-// Enable CORS for all routes use middleware system
-
-// middleware as reset token
-// app.use()
-// Parse JSON bodies
 app.use(express.json());
 
-// Serve static files from the '(public)' directory
-// In ES modules, __dirname is not directly available. We construct it.
+// Apply Audit Log Middleware globally
+// This ensures all API requests are logged
 import { fileURLToPath } from 'url';
-// import { getAllStudents } from './controllers/studentDatacontroller.js';
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// middleware statis
+// static middleware for upload data or images
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/upload', express.static(path.join(__dirname, 'upload')));
+app.use(auditLog);
+app.use(GLOBAL_RATE_LIMIT);
+// Serve static files from the '(public)' directory
 
-// app.use('/upload', express.static(path.join(__dirname, 'upload')));
+// 2. Use a more standard API route
+// app.use('/routes/api', speedLimit);
 
-// 1. Uncomment the schoolData object
-//const schoolData = {
-//	name: 'MTs. Persis 2 Bangil',
-//	npsn: '2316989832',
-	// prerequisites : harus di reload dulu server nya biar ngambil data, ini nanti di ganti sama query backend
-//	logoUrl: 'upload/' // Frontend will use default logo if empty
-//};
+// --- ROUTE CONFIGURATION ---
+// 1. School Data: /routes/api/schoolData
+app.use('/routes/api/schoolData', schoolDataRouter);
 
-// 2. Use a more standard API route 
-// - changing route using data from API for school data navbar set
-app.use('/routes/api', schoolDataRouter)
-app.use('/routes/api', studentDataRouter)
-app.use('/api/auth', authRouter)
+// 2. Student Data: /routes/api/studentDataSet... (handled inside studentDataRouter)
+// Note: studentDataRouter has routes like '/studentDataSet', so we mount it at '/routes/api'
+app.use('/routes/api', studentDataRouter);
 
+// 3. Auth: /routes/api/auth/login, /routes/api/auth/logout
+app.use('/routes/api/auth', authRouter);
+
+// 4. Audit Logs: /routes/api/audit-logs
+app.use('/routes/api/audit-logs', auditLogsRouter);
+
+// 5. Scores: /routes/api/score/scorebyclass, /routes/api/score/scores
+app.use('/routes/api/score', scoreRouter);
+
+// 6. Rombel: /routes/api/rombel
+app.use('/routes/api', rombelRouter);
+
+// 7. Class Data: /routes/api/class-data
+app.use('/routes/api/class-data', classDataRouter);
+
+// 8. Teacher Data: /routes/api/teachers
+app.use('/routes/api/teachers', teacherRouter);
+
+// 9. Assessment Types: /routes/api/assessment-types
+app.use('/routes/api/assessment-types', assessmentTypeRouter);
+
+// 10. Subjects: /routes/api/subjects
+app.use('/routes/api/subjects', subjectRouter);
+
+// 11. Class-Subject Assignment: /routes/api/class-subjects
+app.use('/routes/api/class-subjects', classSubjectRouter);
+
+// 12. Graduates/Alumni: /routes/api/graduates
+app.use('/routes/api/graduates', graduateRouter);
+
+// 13. Grade Promotion: /routes/api/promotion
+app.use('/routes/api/promotion', promotionRouter);
+
+// 14. Academic Year: /routes/api/academic-years
+app.use('/routes/api/academic-years', academicYearRouter);
 
 // Root endpoint
 app.get('/', (req, res) => {
-	res.send('Backend API is running!');
+	res.send(`Backend Express API is running on port : ${PORT}`);
 });
 
-app.listen(port, () => {
-	console.log(`✅ Server running at http://localhost:${port}`);
+app.listen(PORT, () => {
+	console.log(`✅ Server running at ${ADDRESS}:${PORT}`);
+	console.log('✅ database running at:', process.env.DATABASE_URL);
+	// 	jwt secret check
+	// 	console.log('✅ jwt secret:', process.env.JWT_SECRET);
 });

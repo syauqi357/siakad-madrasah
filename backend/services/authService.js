@@ -1,10 +1,14 @@
-import fs from 'fs';
-import path from 'path';
+// import fs from 'fs';
+// import path from 'path';
 import jwt from 'jsonwebtoken';
-import { fileURLToPath } from 'url';
+import bcrypt from 'bcrypt'; // ← ADD THIS
+import { eq } from 'drizzle-orm'; // ← Remove 'and' since we only check username
+import { users } from '../src/db/schema/user.js';
+import { db } from '../src/index.js';
+// import { fileURLToPath } from 'url';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = path.dirname(__filename);
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_key_change_this';
 
@@ -15,17 +19,18 @@ const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_key_change_this';
 /**
  * Read accounts from guru.json file
  * @returns {Array} List of accounts
- */
-export const getAccounts = () => {
-	try {
-		const guruPath = path.join(__dirname, '../data/guru.json');
-		const data = fs.readFileSync(guruPath, 'utf-8');
-		return JSON.parse(data);
-	} catch (error) {
-		console.error('Error reading guru.json:', error);
-		return [];
-	}
-};
+disabled code 
+*/
+// export const getAccounts = () => {
+// 	try {
+// 		const guruPath = path.join(__dirname, '../data/guru.json');
+// 		const data = fs.readFileSync(guruPath, 'utf-8');
+// 		return JSON.parse(data);
+// 	} catch (error) {
+// 		console.error('Error reading guru.json:', error);
+// 		return [];
+// 	}
+// };
 
 /**
  * Authenticate user with username and password
@@ -33,51 +38,51 @@ export const getAccounts = () => {
  * @param {string} password - User's password
  * @returns {Object} User object with token, or null if authentication fails
  */
-export const authenticateUser = (username, password) => {
+export const authenticateUser = async (username, password) => {
 	try {
-		// Validate input
-		if (!username || !password) {
-			return {
-				success: false,
-				message: 'Username and password are required'
-			};
-		}
+		// 1. Find user by username only
+		const user = await db
+			.select()
+			.from(users)
+			.where(eq(users.username, username)) // ← Only check username
+			.limit(1);
 
-		// Get accounts from guru.json
-		const accounts = getAccounts();
-
-		// Find user by username and password
-		const user = accounts.find(
-			account => account.username === username && account.password === password
-		);
-
-		if (!user) {
+		if (!user || user.length === 0) {
 			return {
 				success: false,
 				message: 'Invalid username or password'
 			};
 		}
 
-		// Create JWT token
+		const foundUser = user[0];
+
+		// 2. Compare password with bcrypt
+		const isPasswordValid = await bcrypt.compare(password, foundUser.password);
+
+		if (!isPasswordValid) {
+			return {
+				success: false,
+				message: 'Invalid username or password'
+			};
+		}
+
+		// 3. Create JWT token with user data
 		const token = jwt.sign(
 			{
-				id: user.id,
-				username: user.username,
-				email: user.email,
-				role: user.role
+				id: foundUser.id,
+				username: foundUser.username,
+				role: foundUser.role
 			},
 			JWT_SECRET,
 			{ expiresIn: '24h' }
 		);
 
-		// Return user data without password
+		// 4. Remove password from response
 		const userResponse = {
-			id: user.id,
-			username: user.username,
-			email: user.email,
-			role: user.role,
-			nama_lengkap: user.nama_lengkap,
-			jabatan: user.jabatan
+			id: foundUser.id,
+			username: foundUser.username,
+			role: foundUser.role,
+			email: foundUser.email // if you have email field
 		};
 
 		return {
@@ -88,6 +93,60 @@ export const authenticateUser = (username, password) => {
 		};
 	} catch (error) {
 		console.error('Authentication error:', error);
+		return { success: false, message: 'Internal server error' };
+	}
+};
+
+/**
+ * Change user password
+ * @param {number} userId - User's ID
+ * @param {string} currentPassword - Current password (plain text)
+ * @param {string} newPassword - New password (plain text)
+ * @returns {Object} Result object
+ */
+export const changePasswordService = async (userId, currentPassword, newPassword) => {
+	try {
+		// 1. Get user from database
+		const user = await db
+			.select()
+			.from(users)
+			.where(eq(users.id, userId))
+			.limit(1);
+
+		if (!user || user.length === 0) {
+			return {
+				success: false,
+				message: 'User not found'
+			};
+		}
+
+		const foundUser = user[0];
+
+		// 2. Verify current password
+		const isPasswordValid = await bcrypt.compare(currentPassword, foundUser.password);
+
+		if (!isPasswordValid) {
+			return {
+				success: false,
+				message: 'Current password is incorrect'
+			};
+		}
+
+		// 3. Hash new password
+		const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+
+		// 4. Update password in database
+		await db
+			.update(users)
+			.set({ password: hashedNewPassword })
+			.where(eq(users.id, userId));
+
+		return {
+			success: true,
+			message: 'Password changed successfully'
+		};
+	} catch (error) {
+		console.error('Change password service error:', error);
 		return {
 			success: false,
 			message: 'Internal server error'

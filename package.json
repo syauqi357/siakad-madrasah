@@ -5,7 +5,7 @@
 	"type": "module",
 	"scripts": {
 		"start": "concurrently -n \"SVELTE,EXPRESS\" -c \"blue,green\" \"npm run dev\" \"cd backend && npm run dev\" \"npm run open\"",
-		"open": "start http://localhost:1243",
+		"open": "start http://localhost:1245",
 		"dev": "vite dev",
 		"build": "vite build",
 		"preview": "vite preview",
@@ -22,9 +22,9 @@
 	"devDependencies": {
 		"@eslint/compat": "^1.4.0",
 		"@eslint/js": "^9.38.0",
-		"@sveltejs/adapter-auto": "^7.0.0",
-		"@sveltejs/adapter-node": "^5.4.0",
-		"@sveltejs/kit": "^2.47.1",
+		"@sveltejs/adapter-node": "^5.5.2",
+		"@sveltejs/adapter-static": "^0.0.17",
+		"@sveltejs/kit": "^2.50.1",
 		"@sveltejs/vite-plugin-svelte": "^6.2.1",
 		"@tailwindcss/forms": "^0.5.10",
 		"@tailwindcss/typography": "^0.5.19",
@@ -47,8 +47,6 @@
 		"vite": "^7.1.10"
 	},
 	"dependencies": {
-		"better-sqlite3": "^12.4.1",
-		"express": "^5.1.0",
-		"jsonwebtoken": "^9.0.3"
+		"marked": "^17.0.1"
 	}
 }
