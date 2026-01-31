@@ -54,6 +54,10 @@ app.use(auditLog);
 app.use(GLOBAL_RATE_LIMIT);
 // Serve static files from the '(public)' directory
 
+// Serve static files from the build directory (Svelte SPA)
+const buildPath = path.join(__dirname, '../build');
+app.use(express.static(buildPath));
+
 // 2. Use a more standard API route
 // app.use('/routes/api', speedLimit);
 
@@ -100,6 +104,12 @@ app.use('/routes/api/promotion', promotionRouter);
 
 // 14. Academic Year: /routes/api/academic-years
 app.use('/routes/api/academic-years', academicYearRouter);
+
+// For Single Page Applications (SPAs) with client-side routing,
+// serve index.html for all non-API routes
+app.get('*', (req, res) => {
+	res.sendFile(path.join(buildPath, 'index.html'));
+});
 
 // Root endpoint
 app.get('/', (req, res) => {
