@@ -35,8 +35,8 @@
 	let isLoading = true;
 	let error: string | null = null;
 
-	// Filter state
-	let statusFilter: 'ALL' | 'ACTIVE' | 'MUTASI' | 'GRADUATE' = 'ALL';
+	// Filter state - Default to ACTIVE (exclude MUTASI from main view)
+	let statusFilter: 'ALL' | 'ACTIVE' | 'MUTASI' | 'GRADUATE' = 'ACTIVE';
 	let searchQuery = '';
 
 	// Get rombel ID from URL params
@@ -192,10 +192,9 @@
 			<div class="flex items-center gap-2">
 				<label for="statusFilter" class="text-sm">Filter Status:</label>
 				<select id="statusFilter" bind:value={statusFilter} class="rounded-md border px-3 py-2">
-					<option value="ALL">Semua</option>
 					<option value="ACTIVE">Aktif</option>
-					<option value="MUTASI">Mutasi</option>
 					<option value="GRADUATE">Lulus</option>
+					<option value="ALL">Semua (termasuk Mutasi)</option>
 				</select>
 			</div>
 		</div>

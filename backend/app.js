@@ -14,6 +14,7 @@ import assessmentTypeRouter from './routes/api/assessmentType.js'; // Import ass
 import subjectRouter from './routes/api/subject.js'; // Import subjectRouter
 import classSubjectRouter from './routes/api/classSubject.js'; // Import classSubjectRouter
 import graduateRouter from './routes/api/graduate.js'; // Import graduateRouter
+import promotionRouter from './routes/api/promotion.js'; // Import promotionRouter
 import { auditLog } from './middlewares/middlewareAudit.js';
 import { GLOBAL_RATE_LIMIT } from './middlewares/globalRatelimit/rateLimiter.js';
 import { speedLimit } from './middlewares/throttleFeat/throttleLimit.js'; // MIDDLEWARE RATE LIMIT, THROTTLE and AUDIT LOGS
@@ -92,6 +93,9 @@ app.use('/routes/api/class-subjects', classSubjectRouter);
 
 // 12. Graduates/Alumni: /routes/api/graduates
 app.use('/routes/api/graduates', graduateRouter);
+
+// 13. Grade Promotion: /routes/api/promotion
+app.use('/routes/api/promotion', promotionRouter);
 
 // Root endpoint
 app.get('/', (req, res) => {

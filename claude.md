@@ -1,19 +1,24 @@
 # Student Status Management Feature
 
 ## Overview
+
 Implement a student status management system where students can transition from ACTIVE to either MUTASI (dropout) or GRADUATE status. When status changes, students are removed from active ROMBEL and moved to respective filtered views.
 
 ## Database Schema Changes
 
 ### 1. Update `students` table
+
 Add status field if not exists:
+
 ```sql
-ALTER TABLE students 
+ALTER TABLE students
 ADD COLUMN status ENUM('ACTIVE', 'MUTASI', 'GRADUATE') DEFAULT 'ACTIVE';
 ```
 
 ### 2. Update `rombel_students` table
+
 Add tracking fields:
+
 ```sql
 ALTER TABLE rombel_students
 ADD COLUMN is_active BOOLEAN DEFAULT 1,
@@ -21,7 +26,9 @@ ADD COLUMN left_at TIMESTAMP NULL;
 ```
 
 ### 3. Create `student_history` table
+
 Store historical data when students leave ROMBEL:
+
 ```sql
 CREATE TABLE student_history (
   id INT PRIMARY KEY AUTO_INCREMENT,
@@ -44,6 +51,7 @@ CREATE TABLE student_history (
 Create the following methods:
 
 #### 1. Get Active Students
+
 ```javascript
 async getActiveStudents(filters = {}) {
   // Query students with status = 'ACTIVE'
@@ -53,6 +61,7 @@ async getActiveStudents(filters = {}) {
 ```
 
 #### 2. Get Dropout Students (Mutasi)
+
 ```javascript
 async getDropoutStudents(filters = {}) {
   // Query students with status = 'MUTASI'
@@ -62,6 +71,7 @@ async getDropoutStudents(filters = {}) {
 ```
 
 #### 3. Get Graduated Students
+
 ```javascript
 async getGraduatedStudents(filters = {}) {
   // Query students with status = 'GRADUATE'
@@ -71,17 +81,18 @@ async getGraduatedStudents(filters = {}) {
 ```
 
 #### 4. Change Student Status (TRANSACTIONAL)
+
 ```javascript
 async changeStudentStatus(studentId, newStatus, data) {
   // newStatus: 'MUTASI' or 'GRADUATE'
   // data: { scores: {...}, reason: 'optional for MUTASI' }
-  
+
   // Use database transaction:
   // 1. Get current ROMBEL from rombel_students where is_active = 1
   // 2. UPDATE students SET status = newStatus WHERE id = studentId
   // 3. UPDATE rombel_students SET is_active = 0, left_at = NOW() WHERE student_id = studentId
   // 4. INSERT INTO student_history (student_id, rombel_id, scores, status_type, reason, completion_date)
-  
+
   // If any step fails, rollback entire transaction
   // Return success/error response
 }
@@ -97,13 +108,14 @@ Create endpoints:
 2. `GET /students/dropout` - calls `getDropoutStudents()`
 3. `GET /students/graduated` - calls `getGraduatedStudents()`
 4. `POST /students/:id/status` - calls `changeStudentStatus()`
-    - Body: `{ status: 'MUTASI' | 'GRADUATE', scores: {...}, reason?: '...' }`
-    - Validate that status is either MUTASI or GRADUATE
-    - Validate student is currently ACTIVE before allowing change
+   - Body: `{ status: 'MUTASI' | 'GRADUATE', scores: {...}, reason?: '...' }`
+   - Validate that status is either MUTASI or GRADUATE
+   - Validate student is currently ACTIVE before allowing change
 
 ## Routes
 
 ### File: `routes/studentRoutes.js`
+
 ```javascript
 router.get('/students/active', studentController.getActiveStudents);
 router.get('/students/dropout', studentController.getDropoutStudents);
@@ -116,9 +128,9 @@ router.post('/students/:id/status', studentController.changeStudentStatus);
 1. Only ACTIVE students can transition to MUTASI or GRADUATE
 2. MUTASI and GRADUATE are final statuses (no going back to ACTIVE)
 3. When status changes:
-    - Student must be removed from active ROMBEL (is_active = 0)
-    - History record must be created
-    - Both operations must succeed atomically (use transaction)
+   - Student must be removed from active ROMBEL (is_active = 0)
+   - History record must be created
+   - Both operations must succeed atomically (use transaction)
 4. MUTASI requires a reason field
 5. GRADUATE requires final scores
 6. Both statuses store last ROMBEL and scores in student_history
@@ -142,9 +154,11 @@ router.post('/students/:id/status', studentController.changeStudentStatus);
 # GRADUATE / Alumni Feature Plan
 
 ## Overview
+
 Implement graduation workflow where ACTIVE students can be graduated with their final scores recorded. Alumni data should display graduation year, final scores, and last class info.
 
 ## What's Already Done (from MUTASI implementation)
+
 - ✅ `student_history` table exists with: `scores`, `statusType`, `completionDate`
 - ✅ `changeStudentStatus()` service supports GRADUATE status
 - ✅ `getGraduatedStudents()` service exists
@@ -154,7 +168,9 @@ Implement graduation workflow where ACTIVE students can be graduated with their 
 ## What Needs to Be Added
 
 ### 1. Database Schema (Optional Enhancement)
+
 Consider adding to `student_history` for GRADUATE-specific data:
+
 ```sql
 ALTER TABLE student_history ADD COLUMN graduation_year TEXT;
 ALTER TABLE student_history ADD COLUMN certificate_number TEXT;  -- Nomor Ijazah
@@ -164,7 +180,9 @@ ALTER TABLE student_history ADD COLUMN final_grade TEXT;  -- Nilai Akhir / Predi
 ### 2. Backend Updates
 
 #### File: `src/db/schema/studentHistory.js`
+
 Add optional fields:
+
 ```javascript
 graduationYear: text('graduation_year'),
 certificateNumber: text('certificate_number'),
@@ -172,7 +190,9 @@ finalGrade: text('final_grade')  // A/B/C or Sangat Baik/Baik/Cukup
 ```
 
 #### File: `services/student.service.js`
+
 Update `changeStudentStatus()` to accept GRADUATE-specific data:
+
 ```javascript
 // data for GRADUATE:
 {
@@ -189,7 +209,9 @@ Update `getGraduatedStudents()` to return all alumni fields.
 ### 3. Frontend Components
 
 #### A. Graduate Modal (`lib/components/modal/GraduateModal.svelte`)
+
 Form fields:
+
 - Tahun Kelulusan (dropdown: 2024/2025, 2025/2026, etc.)
 - Tanggal Kelulusan (date picker)
 - Nomor Ijazah (text input, optional)
@@ -197,7 +219,9 @@ Form fields:
 - Nilai Akhir (JSON input or auto-fetch from scores table)
 
 #### B. Alumni Page (`routes/(app)/siswa/alumni/+page.svelte`)
+
 Layout sections:
+
 1. **Header**: Title, search, filter by year
 2. **Stats Cards**: Total alumni, per-year count
 3. **Alumni Table**:
@@ -211,6 +235,7 @@ Layout sections:
    - Aksi (View Detail)
 
 #### C. Alumni Detail Page (optional)
+
 - Student info
 - Final scores breakdown by subject
 - Certificate info
@@ -257,6 +282,7 @@ Student Detail Page (/siswa/[id])
 ### 6. Implementation Checklist
 
 #### Backend:
+
 - [ ] Add graduation fields to studentHistory schema
 - [ ] Run migration to add new columns
 - [ ] Update changeStudentStatus to save graduation data
@@ -264,6 +290,7 @@ Student Detail Page (/siswa/[id])
 - [ ] Add countGraduatesByYear() for stats
 
 #### Frontend:
+
 - [ ] Create GraduateModal.svelte component
 - [ ] Add "Luluskan Siswa" button to siswa/[id] page
 - [ ] Build siswa/alumni/+page.svelte layout
@@ -273,11 +300,11 @@ Student Detail Page (/siswa/[id])
 
 ### 7. API Endpoints Summary
 
-| Method | Endpoint | Purpose |
-|--------|----------|---------|
-| GET | `/students/graduated` | List all alumni (paginated) |
-| GET | `/students/graduated?year=2025` | Filter by graduation year |
-| POST | `/students/:id/status` | Graduate a student |
+| Method | Endpoint                        | Purpose                     |
+| ------ | ------------------------------- | --------------------------- |
+| GET    | `/students/graduated`           | List all alumni (paginated) |
+| GET    | `/students/graduated?year=2025` | Filter by graduation year   |
+| POST   | `/students/:id/status`          | Graduate a student          |
 
 ### 8. Sample Request Body for Graduation
 
@@ -294,6 +321,7 @@ POST /routes/api/students/123/status
 ```
 
 ### 9. Notes
+
 - Graduation should only be possible for final year students (optional validation)
 - Consider bulk graduation feature for end of school year
 - Certificate number can be generated or manually input
@@ -361,6 +389,7 @@ This document explains the relationship between classes, rombels, subjects, and 
 ## Key Concepts Explained
 
 ### 1. `classes` - Grade Level (Tingkat Kelas)
+
 **Purpose**: Defines the academic grade level.
 **Examples**: `X`, `XI`, `XII` (or `7`, `8`, `9` for SMP)
 
@@ -375,6 +404,7 @@ This document explains the relationship between classes, rombels, subjects, and 
 ```
 
 ### 2. `rombel` - Class Group (Rombongan Belajar)
+
 **Purpose**: The actual class instance where students are grouped.
 **Examples**: `X-IPA-1`, `X-IPA-2`, `XI-IPS-1`
 
@@ -391,6 +421,7 @@ This document explains the relationship between classes, rombels, subjects, and 
 **Key Point**: Multiple rombels can belong to the same `class` (grade level).
 
 ### 3. `class_subject` - Subject Assignment per Grade
+
 **Purpose**: Defines which subjects are taught at which grade level, and by which teacher.
 
 ```
@@ -406,6 +437,7 @@ This document explains the relationship between classes, rombels, subjects, and 
 **Key Point**: Subjects are assigned to GRADE LEVEL (`classId`), NOT to specific rombels.
 
 ### 4. `student_scores` - Score Records
+
 **Purpose**: Stores individual student scores.
 
 ```
@@ -421,21 +453,26 @@ This document explains the relationship between classes, rombels, subjects, and 
 ## The Confusion: Why `classSubjectId` and NOT `rombelId`?
 
 ### Current Design
+
 Scores are linked to `class_subject`, which means:
+
 - Student A in **X-IPA-1** and Student B in **X-IPA-2** both have scores linked to "Matematika Kelas X" (`classSubjectId = 1`)
 - The score doesn't track WHICH specific rombel the student was in
 
 ### This Works Because:
+
 1. All rombels in the same grade (e.g., all Kelas X) study the SAME subjects
 2. The teacher might teach multiple rombels in the same grade
 3. When generating reports, we can JOIN through: `student → rombel_students → rombel → class → class_subject`
 
 ### Potential Issue:
+
 If you need to track "Student A's Matematika score specifically in X-IPA-1", the current design doesn't support this directly.
 
 ## Data Flow for Score Input
 
 ### Workflow 1: Input Scores by Rombel (Recommended)
+
 ```
 Teacher selects:
   1. Rombel: "X-IPA-1" (rombelId = 1)
@@ -454,6 +491,7 @@ System:
 ```
 
 ### Workflow 2: Bulk Upload via Excel Template
+
 ```
 1. Generate template for specific rombel:
    - Fetch students from rombel_students
@@ -559,12 +597,14 @@ getRombelScoreReport(rombelId)
 ## Why This Architecture?
 
 ### Pros:
+
 1. **Flexibility**: Same subject definition across multiple rombels in same grade
 2. **Teacher Assignment**: One teacher can teach same subject to all rombels in a grade
 3. **Simpler Reporting**: Aggregate by grade level easily
 4. **Less Redundancy**: Don't need to duplicate subject assignments per rombel
 
 ### Cons:
+
 1. **No Rombel-Specific Tracking**: Can't differentiate "X-IPA-1 Matematika" from "X-IPA-2 Matematika" at score level
 2. **Confusing JOINs**: Need multiple joins to connect student → score → subject → rombel
 
@@ -593,43 +633,51 @@ CREATE TABLE rombel_subject (
 ## Quick Reference: Common Queries
 
 ### Get all subjects for a rombel
+
 ```javascript
 // 1. Get classId from rombel
-const rombelData = await db.select({classId: rombel.classId})
-  .from(rombel).where(eq(rombel.id, rombelId));
+const rombelData = await db
+	.select({ classId: rombel.classId })
+	.from(rombel)
+	.where(eq(rombel.id, rombelId));
 
 // 2. Get subjects for that class
-const subjects = await db.select({id: Subjects.id, name: Subjects.name})
-  .from(classSubject)
-  .innerJoin(Subjects, eq(classSubject.subjectId, Subjects.id))
-  .where(eq(classSubject.classId, rombelData[0].classId));
+const subjects = await db
+	.select({ id: Subjects.id, name: Subjects.name })
+	.from(classSubject)
+	.innerJoin(Subjects, eq(classSubject.subjectId, Subjects.id))
+	.where(eq(classSubject.classId, rombelData[0].classId));
 ```
 
 ### Get classSubjectId from rombelId + subjectId
+
 ```javascript
 // 1. Get classId from rombel
-const rombelData = await db.select({classId: rombel.classId})
-  .from(rombel).where(eq(rombel.id, rombelId));
+const rombelData = await db
+	.select({ classId: rombel.classId })
+	.from(rombel)
+	.where(eq(rombel.id, rombelId));
 
 // 2. Find class_subject
-const cs = await db.select({id: classSubject.id})
-  .from(classSubject)
-  .where(and(
-    eq(classSubject.classId, rombelData[0].classId),
-    eq(classSubject.subjectId, subjectId)
-  ));
+const cs = await db
+	.select({ id: classSubject.id })
+	.from(classSubject)
+	.where(
+		and(eq(classSubject.classId, rombelData[0].classId), eq(classSubject.subjectId, subjectId))
+	);
 
 const classSubjectId = cs[0]?.id;
 ```
 
 ### Insert score with proper foreign keys
+
 ```javascript
 await db.insert(studentScores).values({
-  studentId: studentId,
-  classSubjectId: classSubjectId, // Derived from rombel's class + subject
-  assessmentTypeId: assessmentTypeId,
-  score: 85,
-  assessmentDate: new Date().toISOString().split('T')[0]
+	studentId: studentId,
+	classSubjectId: classSubjectId, // Derived from rombel's class + subject
+	assessmentTypeId: assessmentTypeId,
+	score: 85,
+	assessmentDate: new Date().toISOString().split('T')[0]
 });
 ```
 
@@ -673,6 +721,7 @@ Assessment types define the categories of evaluations used to grade students (e.
 ## Database Schema
 
 ### `assessment_type` Table
+
 ```sql
 ┌────┬───────┬─────────────────────────┬───────────────┬──────────┐
 │ id │ code  │ name                    │ defaultWeight │ isActive │
@@ -685,6 +734,7 @@ Assessment types define the categories of evaluations used to grade students (e.
 ```
 
 ### Key Fields:
+
 - **code**: Short identifier (TUGAS, UH, UTS, UAS)
 - **name**: Human-readable name
 - **defaultWeight**: Optional percentage weight for final grade calculation
@@ -693,11 +743,14 @@ Assessment types define the categories of evaluations used to grade students (e.
 ## Relationship Explanation
 
 ### Assessment Types are GLOBAL
+
 Unlike subjects which are assigned per class (`class_subject`), assessment types are **universal**:
+
 - UH (Ulangan Harian) applies to ALL subjects in ALL classes
 - UTS applies to Math Class X, Science Class XI, etc. - same assessment type
 
 ### The Score Triangle
+
 A student score is identified by THREE foreign keys:
 
 ```
@@ -708,6 +761,7 @@ student_scores
 ```
 
 **Example**: "Ahmad's UTS score for Math in Class X"
+
 ```
 studentId: 101 (Ahmad)
 classSubjectId: 5 (Math-Class X)
@@ -716,21 +770,27 @@ score: 85
 ```
 
 ### Unique Constraint
+
 A student can only have ONE score per subject per assessment type:
+
 ```sql
 UNIQUE(studentId, classSubjectId, assessmentTypeId)
 ```
+
 This prevents duplicate entries like "two UTS scores for Math".
 
 ## Weight Calculation (Grade Formula)
 
 ### Option 1: Global Weights (Current Design)
+
 All subjects use the same weight distribution:
+
 ```
 Final Grade = (TUGAS × 20%) + (UH × 20%) + (UTS × 30%) + (UAS × 30%)
 ```
 
 ### Option 2: Per-Subject Weights (Future Enhancement)
+
 If different subjects need different weights, create a junction table:
 
 ```sql
@@ -744,6 +804,7 @@ CREATE TABLE subject_assessment_weight (
 ```
 
 **Example**: Math might weight exams higher, Art might weight tasks higher:
+
 ```
 ┌────┬────────────────┬──────────────────┬────────┐
 │ id │ classSubjectId │ assessmentTypeId │ weight │
@@ -757,14 +818,14 @@ CREATE TABLE subject_assessment_weight (
 
 ## API Endpoints
 
-| Method | Endpoint | Purpose |
-|--------|----------|---------|
-| GET | `/assessment-types` | List all assessment types (with pagination) |
-| GET | `/assessment-types/lite` | List active types only (for dropdowns) |
-| GET | `/assessment-types/:id` | Get single assessment type |
-| POST | `/assessment-types` | Create new assessment type |
-| PUT | `/assessment-types/:id` | Update assessment type |
-| DELETE | `/assessment-types/:id` | Delete assessment type |
+| Method | Endpoint                 | Purpose                                     |
+| ------ | ------------------------ | ------------------------------------------- |
+| GET    | `/assessment-types`      | List all assessment types (with pagination) |
+| GET    | `/assessment-types/lite` | List active types only (for dropdowns)      |
+| GET    | `/assessment-types/:id`  | Get single assessment type                  |
+| POST   | `/assessment-types`      | Create new assessment type                  |
+| PUT    | `/assessment-types/:id`  | Update assessment type                      |
+| DELETE | `/assessment-types/:id`  | Delete assessment type                      |
 
 ## Score Input Workflow with Assessment Types
 
@@ -795,53 +856,226 @@ CREATE TABLE subject_assessment_weight (
 ## Common Queries
 
 ### Get all assessment types (active only)
+
 ```javascript
-const types = await db.select()
-  .from(assessmentType)
-  .where(eq(assessmentType.isActive, true));
+const types = await db.select().from(assessmentType).where(eq(assessmentType.isActive, true));
 ```
 
 ### Get scores grouped by assessment type for a student
+
 ```javascript
-const scores = await db.select({
-    assessmentCode: assessmentType.code,
-    assessmentName: assessmentType.name,
-    subjectName: Subjects.name,
-    score: studentScores.score
-  })
-  .from(studentScores)
-  .innerJoin(assessmentType, eq(studentScores.assessmentTypeId, assessmentType.id))
-  .innerJoin(classSubject, eq(studentScores.classSubjectId, classSubject.id))
-  .innerJoin(Subjects, eq(classSubject.subjectId, Subjects.id))
-  .where(eq(studentScores.studentId, studentId));
+const scores = await db
+	.select({
+		assessmentCode: assessmentType.code,
+		assessmentName: assessmentType.name,
+		subjectName: Subjects.name,
+		score: studentScores.score
+	})
+	.from(studentScores)
+	.innerJoin(assessmentType, eq(studentScores.assessmentTypeId, assessmentType.id))
+	.innerJoin(classSubject, eq(studentScores.classSubjectId, classSubject.id))
+	.innerJoin(Subjects, eq(classSubject.subjectId, Subjects.id))
+	.where(eq(studentScores.studentId, studentId));
 ```
 
 ### Calculate weighted average for a student in a subject
+
 ```javascript
 // Assuming defaultWeight exists on assessment_type
-const weightedScores = await db.select({
-    score: studentScores.score,
-    weight: assessmentType.defaultWeight
-  })
-  .from(studentScores)
-  .innerJoin(assessmentType, eq(studentScores.assessmentTypeId, assessmentType.id))
-  .where(and(
-    eq(studentScores.studentId, studentId),
-    eq(studentScores.classSubjectId, classSubjectId)
-  ));
+const weightedScores = await db
+	.select({
+		score: studentScores.score,
+		weight: assessmentType.defaultWeight
+	})
+	.from(studentScores)
+	.innerJoin(assessmentType, eq(studentScores.assessmentTypeId, assessmentType.id))
+	.where(
+		and(eq(studentScores.studentId, studentId), eq(studentScores.classSubjectId, classSubjectId))
+	);
 
 // Calculate: Σ(score × weight) / Σ(weight)
 const totalWeight = weightedScores.reduce((sum, s) => sum + (s.weight || 0), 0);
-const weightedSum = weightedScores.reduce((sum, s) => sum + (s.score * (s.weight || 0)), 0);
+const weightedSum = weightedScores.reduce((sum, s) => sum + s.score * (s.weight || 0), 0);
 const finalGrade = totalWeight > 0 ? weightedSum / totalWeight : 0;
 ```
 
 ## Summary
 
-| Aspect | Description |
-|--------|-------------|
-| **Scope** | GLOBAL - same types for all subjects/classes |
-| **Examples** | TUGAS, UH, UTS, UAS, Praktikum, Proyek |
-| **Weights** | Optional, stored in `defaultWeight` field |
-| **Per-Subject Weights** | Not supported (requires junction table) |
-| **Unique Score** | One score per student+subject+assessmentType |
+| Aspect                  | Description                                  |
+| ----------------------- | -------------------------------------------- |
+| **Scope**               | GLOBAL - same types for all subjects/classes |
+| **Examples**            | TUGAS, UH, UTS, UAS, Praktikum, Proyek       |
+| **Weights**             | Optional, stored in `defaultWeight` field    |
+| **Per-Subject Weights** | Not supported (requires junction table)      |
+| **Unique Score**        | One score per student+subject+assessmentType |
+
+---
+
+# Student Lifecycle Management (IMPLEMENTED)
+
+## Why Not Just DELETE?
+
+Simple SIAKAD systems delete students when they leave. Our system keeps them because:
+
+1. **Alumni Records** - Schools need graduation data for years (transcripts, verification)
+2. **Score History** - Preserved for reporting and archives
+3. **Audit Trail** - Know who was in which class, when they left, why
+
+If you don't need this, you CAN just delete. But most real schools need history.
+
+---
+
+## The Simple Mental Model
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    STUDENT LIFECYCLE                            │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│   ┌──────────┐      ┌──────────┐      ┌──────────┐              │
+│   │  ENROLL  │ ───► │  ACTIVE  │ ───► │   END    │              │
+│   └──────────┘      └──────────┘      └──────────┘              │
+│                          │                  │                   │
+│                          │            ┌─────┴─────┐             │
+│                          │            │           │             │
+│                     Each Year:    GRADUATE    MUTASI            │
+│                     PROMOTE       (lulus)    (keluar)           │
+│                     to next                                     │
+│                     class                                       │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Three Operations Only
+
+### 1. PROMOTE (Kenaikan Kelas)
+
+**When:** End of school year, student moves to next grade
+**What Happens:**
+
+```
+students table      → status stays 'ACTIVE' (no change)
+rombel_students     → old record: isActive=false, leftAt=now
+                    → new record: isActive=true (new rombel)
+```
+
+**API:** `POST /routes/api/promotion/promote`
+**Page:** `/score/upgrade`
+
+### 2. GRADUATE (Kelulusan)
+
+**When:** Final year student completes school
+**What Happens:**
+
+```
+students table      → status changes to 'GRADUATE'
+rombel_students     → isActive=false, leftAt=now
+student_history     → new record with graduation data
+```
+
+**API:** `POST /routes/api/graduates/:id`
+**Page:** Click "Luluskan Siswa" button on `/siswa/[id]`
+
+### 3. MUTASI (Keluar/Pindah)
+
+**When:** Student leaves school (transfer, dropout, etc.)
+**What Happens:**
+
+```
+students table      → status changes to 'MUTASI'
+rombel_students     → isActive=false, leftAt=now
+student_history     → new record with reason
+```
+
+**API:** `POST /routes/api/students/:id/status`
+**Page:** Click "Mutasi Siswa" button on `/siswa/[id]`
+
+---
+
+## Database Tables Involved
+
+```
+┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
+│    students     │     │ rombel_students │     │ student_history │
+├─────────────────┤     ├─────────────────┤     ├─────────────────┤
+│ id              │     │ rombelId        │     │ studentId       │
+│ studentName     │     │ studentId       │     │ rombelId        │
+│ nisn            │     │ isActive ◄──────┼─────│ statusType      │
+│ status ◄────────┼─────│ leftAt          │     │ scores (JSON)   │
+│   ACTIVE        │     └─────────────────┘     │ reason          │
+│   MUTASI        │                             │ graduationYear  │
+│   GRADUATE      │                             │ certificateNum  │
+└─────────────────┘                             │ completionDate  │
+                                                └─────────────────┘
+```
+
+**Key Points:**
+
+- `students.status` = Current state of student
+- `rombel_students.isActive` = Is student currently in THIS rombel?
+- `student_history` = Archive when student leaves (MUTASI or GRADUATE)
+
+---
+
+## Where Students Appear
+
+| Status   | `/siswa`    | `/siswa/alumni` | `/siswa/mutasi` | Rombel Detail         |
+| -------- | ----------- | --------------- | --------------- | --------------------- |
+| ACTIVE   | ✅          | ❌              | ❌              | ✅ (if isActive=true) |
+| GRADUATE | ❌ (hidden) | ✅              | ❌              | ❌                    |
+| MUTASI   | ❌ (hidden) | ❌              | ✅              | ❌                    |
+
+---
+
+## End-of-Year Workflow
+
+```
+Step 1: GRADUATE final year students (Kelas XII)
+        └── Use bulk graduate or individual graduation
+        └── They move to Alumni page
+
+Step 2: PROMOTE other students (Kelas X, XI)
+        └── Use /score/upgrade page
+        └── Select source rombel → target rombel → promote
+        └── They stay ACTIVE, just different rombel
+
+Step 3: Create new rombels for incoming students
+        └── New Kelas X rombels for next year
+```
+
+---
+
+## Files Reference
+
+| Purpose  | Backend                              | Frontend               |
+| -------- | ------------------------------------ | ---------------------- |
+| Graduate | `services/graduate.services.js`      | `/siswa/[id]` (button) |
+|          | `controllers/graduateController.js`  | `/siswa/alumni` (list) |
+|          | `routes/api/graduate.js`             |                        |
+| Promote  | `services/promotion.services.js`     | `/score/upgrade`       |
+|          | `controllers/promotionController.js` |                        |
+|          | `routes/api/promotion.js`            |                        |
+| Mutasi   | `services/student.service.js`        | `/siswa/[id]` (button) |
+
+---
+
+## If You Want Simpler (DELETE approach)
+
+You can simplify by:
+
+1. Remove `student_history` table
+2. Just DELETE from `students` and `rombel_students`
+3. No alumni/mutasi pages needed
+
+But you lose:
+
+- Graduation records
+- Historical data
+- Audit trail
+
+**Recommendation:** Keep the current system. It's not overengineered - it's what real schools need.
+
+---
+

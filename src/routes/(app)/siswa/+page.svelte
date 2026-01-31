@@ -59,14 +59,13 @@
 	let loading = false;
 	let isUploadModalOpen = false;
 	let searchQuery = '';
-	let statusFilter: 'ALL' | 'ACTIVE' | 'MUTASI' | 'GRADUATE' = 'ALL';
+	let statusFilter: 'ALL' | 'ACTIVE' | 'MUTASI' | 'GRADUATE' = 'ACTIVE';
 
-	// Filter options
+	// Filter options - MUTASI hidden from default, accessible via dedicated page
 	const statusOptions = [
-		{ value: 'ALL', label: 'Semua Status' },
 		{ value: 'ACTIVE', label: 'Aktif' },
-		{ value: 'MUTASI', label: 'Mutasi' },
-		{ value: 'GRADUATE', label: 'Lulus' }
+		{ value: 'GRADUATE', label: 'Lulus' },
+		{ value: 'ALL', label: 'Semua (termasuk Mutasi)' }
 	];
 
 	// Debounce timer for search

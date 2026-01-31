@@ -4,7 +4,7 @@ import { rombelStudents } from '../src/db/schema/rombelStudents.js';
 import { classes } from '../src/db/schema/classesDataTable.js';
 import { teachers } from '../src/db/schema/teacherUser.js';
 import { academicYear } from '../src/db/schema/academicYear.js';
-import { eq, sql, inArray } from 'drizzle-orm';
+import { eq, sql, inArray, and } from 'drizzle-orm';
 import { studentTable } from '../src/db/schema/studentsdataTable.js';
 
 /**
@@ -161,13 +161,12 @@ export const getAllRombels = () => {
 		.leftJoin(teachers, eq(rombel.classAdvisorId, teachers.id))
 		.all();
 
-	// Now fetch student counts for each rombel
-	// This is N+1 but safe for SQLite's speed for now, or we can optimize later
+	// Now fetch student counts for each rombel (only active members)
 	const result = rombels.map((r) => {
 		const studentCount = db
 			.select({ count: sql`count(*)` })
 			.from(rombelStudents)
-			.where(eq(rombelStudents.rombelId, r.id))
+			.where(and(eq(rombelStudents.rombelId, r.id), eq(rombelStudents.isActive, true)))
 			.get();
 
 		return {
@@ -208,7 +207,7 @@ export const getRombelById = (rombelId) => {
 		return null;
 	}
 
-	// Fetch students in this rombel
+	// Fetch only ACTIVE students in this rombel (isActive = true means currently in this rombel)
 	const students = db
 		.select({
 			id: studentTable.id,
@@ -220,11 +219,11 @@ export const getRombelById = (rombelId) => {
 		})
 		.from(rombelStudents)
 		.innerJoin(studentTable, eq(rombelStudents.studentId, studentTable.id))
-		.where(eq(rombelStudents.rombelId, rombelId))
+		.where(and(eq(rombelStudents.rombelId, rombelId), eq(rombelStudents.isActive, true)))
 		.all();
 
-	// Count active students
-	const activeCount = students.filter((s) => s.isActive !== false && s.status === 'ACTIVE').length;
+	// Count active students (status = ACTIVE, not MUTASI/GRADUATE)
+	const activeCount = students.filter((s) => s.status === 'ACTIVE').length;
 
 	return {
 		...rombelData,
