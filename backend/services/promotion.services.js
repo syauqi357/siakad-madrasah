@@ -32,7 +32,7 @@ export const getClassLevels = () => {
  * Check if a class level is the final grade (XII or IX)
  */
 export const isFinalGrade = (className) => {
-	const finalGrades = ['XII', 'IX', '12', '9', '6', '3', 'VI'];
+	const finalGrades = ['XII', 'IX', '12', '9', '6', '3', 'VI', 'III'];
 	return finalGrades.includes(className);
 };
 
