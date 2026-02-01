@@ -49,7 +49,7 @@ function findFacilityImages(facilityType, subFolder = null) {
 					? path.posix.join(basePathUrl, facilityType, subFolder, file)
 					: path.posix.join(basePathUrl, facilityType, file);
 			})
-			.slice(0, 4);
+			.slice(0, 3); // Max 3 images per facility type
 	} catch (error) {
 		console.error(`Error reading ${facilityType} directory:`, error);
 		return [];

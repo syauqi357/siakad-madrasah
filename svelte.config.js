@@ -16,9 +16,9 @@ const config = {
 		adapter: adapter({
 			pages: 'build',
 			assets: 'build',
-			fallback: 'index.html',
+			fallback: 'index.html', // html fallback
 			precompress: false,
-			strict: false
+			strict: false // strictless mode
 		})
 	}
 };

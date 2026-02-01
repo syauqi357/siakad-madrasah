@@ -1079,3 +1079,92 @@ But you lose:
 
 ---
 
+# Project Cleanup - Files to Delete
+
+Last reviewed: 2026-02-01
+
+## DELETE IMMEDIATELY (No dependencies)
+
+### Duplicate/Unused Backend Services
+
+- [ ] `backend/services/authService.js` - Duplicate of `auth.service.js` (unused)
+
+### Unused Svelte Components
+
+- [ ] `src/lib/components/input/inputMapel.svelte` - No imports anywhere
+- [ ] `src/lib/components/layout/tableMapel.svelte` - No imports anywhere
+- [ ] `src/lib/components/layout/classRegist.svelte` - No imports anywhere
+- [ ] `src/lib/components/layout/waliBiodata.svelte` - No imports anywhere
+
+### Orphaned Test Files (No test runner configured)
+
+- [ ] `backend/utils/unit_test/rombel.services.test.js`
+- [ ] `backend/utils/unit_test/score.services.test.js`
+- [ ] `backend/utils/unit_test/student.bulk_upload.test.js`
+- [ ] `backend/utils/unit_test/student.payload.test.js`
+
+### Test Data/Utilities
+
+- [ ] `backend/utils/testerAPI/test_scores.xlsx`
+- [ ] `backend/utils/testerAPI/test_scores_upload.xlsx`
+- [ ] `backend/utils/testerAPI/testscore.http`
+- [ ] `backend/utils/testerAPI/generateTestExcel.js`
+- [ ] `backend/utils/testerAPI/generateTestExcelbulkScore.js`
+
+### IDE Cache (add to .gitignore)
+
+- [ ] `.idea/httpRequests/` - Entire directory (49 files, IDE-generated)
+
+### Empty/Redundant Files
+
+- [ ] `siakad.db` - Empty SQLite file (0 bytes)
+
+## CHOOSE ONE PACKAGE MANAGER
+
+You have both npm and pnpm lock files. Pick one:
+
+**Option A - Use pnpm (recommended, faster):**
+
+- [ ] Delete `package-lock.json`
+
+**Option B - Use npm:**
+
+- [ ] Delete `pnpm-lock.yaml`
+- [ ] Delete `pnpm-workspace.yaml`
+
+## OPTIONAL CLEANUP
+
+### Batch Scripts (Windows)
+
+- [ ] `build.bat` - Has syntax error (`npm i run build` should be `npm run build`)
+- [ ] `start.bat` - Outdated, delete if using IDE/terminal
+
+### Documentation to Review/Consolidate
+
+These feel like scattered notes - consider consolidating into README:
+
+- `docs/TODO.md` - Minimal content
+- `docs/claudeOpusexec.md` - Execution notes
+- `docs/excelbulkInputplan.md` - Planning doc
+- `docs/inputboxwhy.md` - Design notes
+- `docs/modal.md`, `docs/modalpopupalert.md` - Duplicated
+
+---
+
+## Summary
+
+| Category              | Count | Risk  |
+| --------------------- | ----- | ----- |
+| Duplicate Services    | 1     | LOW   |
+| Unused Components     | 4     | LOW   |
+| Orphaned Tests        | 4     | LOW   |
+| Test Data/Utils       | 5     | LOW   |
+| IDE Cache             | 49    | NONE  |
+| Empty Files           | 1     | NONE  |
+| Lock File Duplicates  | 1-2   | LOW   |
+| Batch Scripts         | 2     | LOW   |
+
+**Total: ~67 files safe to delete**
+
+---
+
