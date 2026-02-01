@@ -9,7 +9,7 @@
 	$: hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
 </script>
 
-<ul class="text-sm flex flex-col gap-2">
+<ul class="flex flex-col gap-2 text-sm">
 	<li class="flex items-center gap-2">
 		{#if hasMinLength}
 			<svg

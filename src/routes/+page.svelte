@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { API_FETCH } from '$lib/api';
 	import StudentScoreTable from '$lib/components/layout/studentScoreTable.svelte';
+	import { goto } from '$app/navigation';
 
 	let tableHeaders: string[] = [];
 	let tableData: Array<{ studentName: string; nisn: string; scores: Record<string, number> }> = [];
@@ -78,23 +79,29 @@
 	}
 
 	onMount(fetchClassSubjects);
+
+	function loginPageNavigate() {
+		goto('/login');
+
+		return loginPageNavigate;
+	}
 </script>
 
 <div class="flex min-h-screen flex-col items-center justify-center bg-slate-50 px-4 py-12">
 	<!-- Header -->
 	<div class="mb-12 max-w-2xl text-center">
-		<h1 class="text-3xl font-bold text-slate-800 sm:text-4xl">Platform Akademik Madrasah</h1>
-		<p class="mt-2 text-slate-500">Sistem informasi akademik terpadu</p>
+		<h1 class="text-4xl font-bold text-slate-800 sm:text-4xl">Platform Akademik Madrasah</h1>
+		<p class="mt-2 text-slate-600">Sistem informasi akademik terpadu</p>
 		<div class="mt-6 flex flex-wrap justify-center gap-3">
-			<a
-				href="/login"
+			<button
+				on:click={loginPageNavigate()}
 				class="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-blue-700"
 			>
 				Masuk
 				<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
 				</svg>
-			</a>
+			</button>
 			<a
 				href="https://github.com/syauqi357"
 				class="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50"

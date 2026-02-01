@@ -9,6 +9,12 @@
 	let isLoading: boolean = true;
 	let error: string | null = null;
 
+	// Sorting state
+	type SortField = 'user_id' | 'action' | 'target' | 'status' | 'timestamp';
+	type SortDirection = 'asc' | 'desc';
+	let sortField: SortField = 'timestamp';
+	let sortDirection: SortDirection = 'desc';
+
 	// Types
 	type Filter = { id: string; label: string };
 
@@ -76,18 +82,46 @@
 		}
 	}
 
-	// Filter logs based on search
-	$: filteredLogs = auditLogs.filter((log: AuditLog) => {
-		if (searchQuery === '') return true;
+	// Filter and sort logs
+	$: filteredLogs = auditLogs
+		.filter((log: AuditLog) => {
+			if (searchQuery === '') return true;
 
-		const query = searchQuery.toLowerCase();
-		return (
-			log.user_id.toLowerCase().includes(query) ||
-			log.action.toLowerCase().includes(query) ||
-			log.target?.toLowerCase().includes(query) ||
-			log.status.toLowerCase().includes(query)
-		);
-	});
+			const query = searchQuery.toLowerCase();
+			return (
+				log.user_id.toLowerCase().includes(query) ||
+				log.action.toLowerCase().includes(query) ||
+				log.target?.toLowerCase().includes(query) ||
+				log.status.toLowerCase().includes(query)
+			);
+		})
+		.sort((a, b) => {
+			let aVal = a[sortField] || '';
+			let bVal = b[sortField] || '';
+
+			// Handle timestamp sorting
+			if (sortField === 'timestamp') {
+				aVal = new Date(aVal).getTime();
+				bVal = new Date(bVal).getTime();
+			} else {
+				aVal = String(aVal).toLowerCase();
+				bVal = String(bVal).toLowerCase();
+			}
+
+			if (aVal < bVal) return sortDirection === 'asc' ? -1 : 1;
+			if (aVal > bVal) return sortDirection === 'asc' ? 1 : -1;
+			return 0;
+		});
+
+	// Handle column sort
+	function handleSort(field: SortField) {
+		if (sortField === field) {
+			sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+		} else {
+			sortField = field;
+			sortDirection = 'asc';
+		}
+	}
 
 	// Refetch when filters change
 	function handleFilterChange() {
@@ -98,9 +132,12 @@
 	function getStatusColor(status: string): string {
 		const s = status.toLowerCase();
 		if (s.includes('created')) return 'bg-blue-100 text-blue-800 border-blue-200';
-		if (s.includes('success') || s.includes('completed')) return 'bg-green-100 text-green-800 border-green-200';
-		if (s.includes('changed') || s.includes('updated')) return 'bg-yellow-100 text-yellow-800 border-yellow-200';
-		if (s.includes('deleted') || s.includes('failed') || s.includes('error')) return 'bg-red-100 text-red-800 border-red-200';
+		if (s.includes('success') || s.includes('completed'))
+			return 'bg-green-100 text-green-800 border-green-200';
+		if (s.includes('changed') || s.includes('updated'))
+			return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+		if (s.includes('deleted') || s.includes('failed') || s.includes('error'))
+			return 'bg-red-100 text-red-800 border-red-200';
 		if (s.includes('viewed')) return 'bg-cyan-100 text-cyan-800 border-cyan-400';
 
 		return 'bg-gray-100 text-gray-800 border-gray-200'; // Default
@@ -170,11 +207,61 @@
 		<table class="w-full text-left text-sm">
 			<thead class="border-b border-gray-300 bg-gray-50">
 				<tr>
-					<th class="w-[15%] px-4 py-3 font-semibold">User</th>
-					<th class="w-[30%] px-4 py-3 font-semibold">Action</th>
-					<th class="w-[20%] px-4 py-3 font-semibold">Target</th>
-					<th class="w-[10%] px-4 py-3 font-semibold">Status</th>
-					<th class="w-[25%] px-4 py-3 font-semibold">Timestamp</th>
+					<th class="w-[15%] px-4 py-3">
+						<button
+							on:click={() => handleSort('user_id')}
+							class="flex w-full items-center gap-1 font-semibold hover:text-gray-600"
+						>
+							User
+							<span class="text-xs {sortField === 'user_id' ? 'text-black' : 'text-gray-400'}">
+								{sortField === 'user_id' ? (sortDirection === 'asc' ? '▲' : '▼') : '⇅'}
+							</span>
+						</button>
+					</th>
+					<th class="w-[30%] px-4 py-3">
+						<button
+							on:click={() => handleSort('action')}
+							class="flex w-full items-center gap-1 font-semibold hover:text-gray-600"
+						>
+							Action
+							<span class="text-xs {sortField === 'action' ? 'text-black' : 'text-gray-400'}">
+								{sortField === 'action' ? (sortDirection === 'asc' ? '▲' : '▼') : '⇅'}
+							</span>
+						</button>
+					</th>
+					<th class="w-[20%] px-4 py-3">
+						<button
+							on:click={() => handleSort('target')}
+							class="flex w-full items-center gap-1 font-semibold hover:text-gray-600"
+						>
+							Target
+							<span class="text-xs {sortField === 'target' ? 'text-black' : 'text-gray-400'}">
+								{sortField === 'target' ? (sortDirection === 'asc' ? '▲' : '▼') : '⇅'}
+							</span>
+						</button>
+					</th>
+					<th class="w-[10%] px-4 py-3">
+						<button
+							on:click={() => handleSort('status')}
+							class="flex w-full items-center gap-1 font-semibold hover:text-gray-600"
+						>
+							Status
+							<span class="text-xs {sortField === 'status' ? 'text-black' : 'text-gray-400'}">
+								{sortField === 'status' ? (sortDirection === 'asc' ? '▲' : '▼') : '⇅'}
+							</span>
+						</button>
+					</th>
+					<th class="w-[25%] px-4 py-3">
+						<button
+							on:click={() => handleSort('timestamp')}
+							class="flex w-full items-center gap-1 font-semibold hover:text-gray-600"
+						>
+							Timestamp
+							<span class="text-xs {sortField === 'timestamp' ? 'text-black' : 'text-gray-400'}">
+								{sortField === 'timestamp' ? (sortDirection === 'asc' ? '▲' : '▼') : '⇅'}
+							</span>
+						</button>
+					</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -199,7 +286,11 @@
 							<td class="truncate px-4 py-3">{log.action}</td>
 							<td class="truncate px-4 py-3">{log.target || '-'}</td>
 							<td class="px-4 py-3">
-								<span class="inline-block rounded border px-2 py-1 text-xs capitalize {getStatusColor(log.status)}">
+								<span
+									class="inline-block rounded border px-2 py-1 text-xs capitalize {getStatusColor(
+										log.status
+									)}"
+								>
 									{log.status}
 								</span>
 							</td>

@@ -71,7 +71,7 @@
 		<div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
 			<div class="flex items-center gap-3">
 				<div
-					class="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 text-white shadow-sm"
+					class="flex h-9 w-9 items-center justify-center rounded-lg bg-linear-to-br from-blue-500 to-blue-600 text-white shadow-sm"
 				>
 					<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 						<path
@@ -134,6 +134,7 @@
 				<div class="mb-3 flex items-center justify-between">
 					<p class="text-sm font-semibold text-slate-800">Pilih Dokumen</p>
 					<button
+						aria-label="dropdown"
 						on:click={() => (isMobileMenuOpen = false)}
 						class="rounded-lg p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-600"
 					>
@@ -157,7 +158,7 @@
 								: 'text-slate-600 hover:bg-slate-50'}"
 						>
 							<svg
-								class="h-4 w-4 flex-shrink-0 {selectedDoc?.filename === doc.filename
+								class="h-4 w-4 shrink-0 {selectedDoc?.filename === doc.filename
 									? 'text-blue-500'
 									: 'text-slate-400'}"
 								fill="none"
@@ -200,7 +201,7 @@
 										: 'text-slate-600 hover:bg-slate-100'}"
 								>
 									<svg
-										class="h-4 w-4 flex-shrink-0 {selectedDoc?.filename === doc.filename
+										class="h-4 w-4 shrink-0 {selectedDoc?.filename === doc.filename
 											? 'text-blue-200'
 											: 'text-slate-400'}"
 										fill="none"

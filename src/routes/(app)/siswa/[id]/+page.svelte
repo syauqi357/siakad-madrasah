@@ -6,6 +6,7 @@
 	import ModalAlert from '$lib/components/modal/modalalert.svelte';
 	import MutasiModal from '$lib/components/modal/MutasiModal.svelte';
 	import GraduateModal from '$lib/components/modal/GraduateModal.svelte';
+	// import ParentBiodata from '$lib/components/layout/parentBiodata.svelte';
 
 	type Student = {
 		id: number;
