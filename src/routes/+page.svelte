@@ -4,6 +4,12 @@
 	import StudentScoreTable from '$lib/components/layout/studentScoreTable.svelte';
 	import { goto } from '$app/navigation';
 
+	type studentTypes = {
+		studentName: string;
+		nisn: string;
+		scores: number;
+	};
+
 	let tableHeaders: string[] = [];
 	let tableData: Array<{ studentName: string; nisn: string; scores: Record<string, number> }> = [];
 	let loading = true;
@@ -53,13 +59,13 @@
 
 			// Build headers
 			if (result.assessmentTypes?.length > 0) {
-				tableHeaders = ['Nama Siswa', 'NISN', ...result.assessmentTypes.map((t: any) => t.code)];
+				tableHeaders = ['Nama Siswa', 'NISN', ...result.assessmentTypes.map((tablesType: any) => tablesType.code)];
 			} else {
 				tableHeaders = ['Nama Siswa', 'NISN'];
 			}
 
 			// Map data
-			tableData = (result.data || []).map((student: any) => ({
+			tableData = (result.data || []).map((student: studentTypes) => ({
 				studentName: student.studentName,
 				nisn: student.nisn,
 				scores: student.scores || {}
@@ -98,9 +104,6 @@
 				class="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-blue-700"
 			>
 				Masuk
-				<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-				</svg>
 			</button>
 			<a
 				href="https://github.com/syauqi357"

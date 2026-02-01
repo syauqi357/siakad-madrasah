@@ -97,7 +97,7 @@
 		<!-- Back button -->
 		<button
 			on:click={() => goto('/siswa')}
-			class="flex w-fit items-center gap-2 rounded-full border bg-yellow-500 px-4 py-2 text-sm text-yellow-50 capitalize transition-all ease-in-out hover:gap-4 hover:bg-yellow-600"
+			class="flex w-fit items-center gap-2 rounded-full border bg-amber-500 px-4 py-2 text-sm text-yellow-50 capitalize transition-all ease-in-out hover:gap-4 hover:bg-amber-600"
 		>
 			<ArrowLeft />kembali
 		</button>
@@ -139,9 +139,9 @@
 
 		<!-- Stats Card -->
 		<div class="grid grid-cols-1 gap-4 md:grid-cols-3">
-			<div class="rounded-lg border border-yellow-300 bg-yellow-50 p-4">
-				<p class="text-sm text-yellow-600">Total Siswa Mutasi</p>
-				<p class="text-2xl font-bold text-yellow-700">{totalCount}</p>
+			<div class="rounded-lg border border-amber-300 bg-amber-50 p-4">
+				<p class="text-sm text-amber-600 capitalize">Total Siswa Mutasi</p>
+				<p class="text-2xl font-bold text-amber-700">{totalCount}</p>
 			</div>
 		</div>
 
@@ -149,7 +149,7 @@
 		{#if isLoading}
 			<div class="flex items-center justify-center py-20">
 				<div
-					class="h-8 w-8 animate-spin rounded-full border-4 border-yellow-500 border-t-transparent"
+					class="h-8 w-8 animate-spin rounded-full border-4 border-amber-500 border-t-transparent"
 				></div>
 				<span class="ml-3">Memuat data...</span>
 			</div>
