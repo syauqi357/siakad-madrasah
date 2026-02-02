@@ -1,9 +1,9 @@
 import { db } from '../src/index.js';
 import { rombel } from '../src/db/schema/classGroup.js';
-import { rombelStudents } from '../src/db/schema/rombelStudents.js';
+import { studentTable, rombelStudents } from '../src/index.js';
 import { classes } from '../src/db/schema/classesDataTable.js';
 import { academicYear } from '../src/db/schema/academicYear.js';
-import { studentTable } from '../src/db/schema/studentsdataTable.js';
+// import {  } from '../src/index.js';
 import { eq, and, sql, ne } from 'drizzle-orm';
 
 /**

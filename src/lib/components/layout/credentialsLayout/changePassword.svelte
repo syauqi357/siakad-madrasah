@@ -1,7 +1,7 @@
 <script lang="ts">
 	import EyeIcon from '$lib/components/icons/EyeIcon.svelte';
 	import { API_FETCH } from '$lib/api.ts';
-	import PassIndicatorStrength from '$lib/components/layout/passIndicatorStrength.svelte';
+	import PassIndicatorStrength from '$lib/components/layout/credentialsLayout/passIndicatorStrength.svelte';
 
 	let currentPassword = '';
 	let newPassword = '';

@@ -19,6 +19,7 @@ Summary of Changes:
 
 	// importing logo by default
 	import logo from '$lib/assets/siakadLogo.svg';
+	import { goto } from '$app/navigation';
 
 	// Navigation screen state
 	let showNavScreen = false;
@@ -93,6 +94,10 @@ Summary of Changes:
 		logout();
 	}
 
+	function handleAccount() {
+		goto('/admin/profile');
+	}
+
 	// Close menu when clicking outside
 	function closeUserMenu() {
 		showUserMenu = false;
@@ -153,7 +158,7 @@ Summary of Changes:
 			</div>
 
 			<!-- Quick Navigation & User Profile -->
-			<div class="relative flex items-center gap-2">
+			<div class="relative flex items-center  gap-2">
 				<!-- Quick Navigation Button -->
 				<button
 					on:click={() => (showNavScreen = true)}
@@ -208,28 +213,31 @@ Summary of Changes:
 
 				<!-- User Menu Dropdown -->
 				{#if showUserMenu}
+					<!-- Invisible backdrop to close menu when clicking outside -->
 					<div
 						aria-label="pop up user menu"
 						on:click={closeUserMenu}
 						on:keydown={(e) => e.key === 'Escape' && closeUserMenu()}
 						role="button"
 						tabindex="0"
-						class="fixed inset-0 z-30 sm:hidden"
+						class="fixed inset-0 z-30"
 					></div>
 
 					<div
-						class="absolute right-0 z-50 mt-30 w-48 rounded-lg border border-neutral-300 bg-white shadow-lg"
+						class="absolute top-full right-0 z-50 mt-2 w-52 overflow-hidden rounded-lg border border-neutral-200 bg-white shadow-lg"
 					>
-						<!-- Close Button Header -->
-						<div class="flex items-center justify-between border-b border-neutral-200 px-4 py-2">
-							<p class="text-sm font-semibold text-neutral-900">Menu</p>
+						<!-- Header -->
+						<div
+							class="flex items-center justify-between border-b border-neutral-100 bg-neutral-50 px-4 py-2.5"
+						>
+							<p class="text-sm font-semibold text-neutral-800">Menu</p>
 							<button
 								on:click={closeUserMenu}
-								class="text-neutral-500 transition-colors hover:text-neutral-700"
+								class="rounded p-1 text-neutral-400 transition-colors hover:bg-neutral-200 hover:text-neutral-600"
 								aria-label="Close menu"
 								title="Close menu"
 							>
-								<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 									<path
 										stroke-linecap="round"
 										stroke-linejoin="round"
@@ -240,34 +248,42 @@ Summary of Changes:
 							</button>
 						</div>
 
-						<!-- User Info Header -->
+						<!-- User Info -->
 						{#if user}
-							<div class="border-b border-neutral-200 px-4 py-3">
+							<div class="border-b border-neutral-100 px-4 py-3">
 								<p class="text-sm font-semibold text-neutral-900">
 									{user.username || 'User'}
 								</p>
-								<p class="mt-1 text-xs text-neutral-600">
+								<p class="mt-0.5 text-xs text-neutral-500">
 									{user.email || 'N/A'}
 								</p>
-								<p class="mt-1 text-xs text-neutral-500 capitalize">
-									sebagai: <span class="font-medium text-neutral-700">{user.role}</span>
+								<p class="mt-1.5 text-xs text-neutral-500">
+									Sebagai: <span class="font-medium text-neutral-700 capitalize">{user.role}</span>
 								</p>
 							</div>
 						{/if}
 
 						<!-- Menu Items -->
-						<div class="flex items-center justify-center py-2">
+						<div class="flex flex-col py-1">
+							<button
+								on:click={handleAccount}
+								class="flex w-full items-center gap-3 px-4 py-2.5 text-left text-sm text-neutral-700 transition-colors hover:bg-neutral-100"
+							>
+								<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										stroke-width="2"
+										d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+									/>
+								</svg>
+								Akun Saya
+							</button>
 							<button
 								on:click={handleLogout}
-								class="flex w-full items-center gap-2 px-4 py-2 text-left text-sm text-red-600 transition-colors hover:bg-red-50"
+								class="flex w-full items-center gap-3 px-4 py-2.5 text-left text-sm text-red-600 transition-colors hover:bg-red-50"
 							>
-								<svg
-									class="h-4 w-4"
-									xmlns="http://www.w3.org/2000/svg"
-									fill="none"
-									viewBox="0 0 24 24"
-									stroke="currentColor"
-								>
+								<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 									<path
 										stroke-linecap="round"
 										stroke-linejoin="round"
@@ -277,13 +293,6 @@ Summary of Changes:
 								</svg>
 								Logout
 							</button>
-							<a href="/admin/profile">
-								<button
-									class="flex w-full px-4 py-2 text-blue-500 capitalize transition-all ease-in-out hover:bg-blue-200"
-								>
-									akun
-								</button>
-							</a>
 						</div>
 					</div>
 				{/if}

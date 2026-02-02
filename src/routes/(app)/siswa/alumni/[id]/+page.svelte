@@ -4,6 +4,7 @@
 	import { goto } from '$app/navigation';
 	import { API_FETCH } from '$lib/api';
 	import ArrowLeft from '$lib/components/icons/arrow_left.svelte';
+	import ModalAlert from '$lib/components/modal/modalalert.svelte';
 
 	// Type definition
 	interface AlumniDetail {
@@ -31,13 +32,42 @@
 		lastClassLevel: string | null;
 	}
 
+	// Alert state
+	let alertModal = {
+		show: false,
+		type: 'success' as 'success' | 'error' | 'warning' | 'info',
+		message: ''
+	};
+
+	function showAlert(type: 'success' | 'error' | 'warning' | 'info', message: string) {
+		alertModal = { show: true, type, message };
+	}
+
 	// State
 	let alumni: AlumniDetail | null = null;
 	let isLoading = true;
 	let error: string | null = null;
 	let parsedScores: Record<string, number> | null = null;
 
+	// Editable fields
+	let editCertificateNumber = '';
+	let editFinalGrade = '';
+	let editGraduationYear = '';
+	let isSaving = false;
+	let hasChanges = false;
+
+	// Grade options
+	const gradeOptions = ['Sangat Baik', 'Baik', 'Cukup', 'Kurang'];
+
 	$: studentId = $page.params.id;
+
+	// Track changes
+	$: if (alumni) {
+		hasChanges =
+			editCertificateNumber !== (alumni.certificateNumber || '') ||
+			editFinalGrade !== (alumni.finalGrade || '') ||
+			editGraduationYear !== (alumni.graduationYear || '');
+	}
 
 	async function fetchAlumniDetail() {
 		isLoading = true;
@@ -55,6 +85,11 @@
 
 			alumni = await response.json();
 
+			// Set editable fields
+			editCertificateNumber = alumni?.certificateNumber || '';
+			editFinalGrade = alumni?.finalGrade || '';
+			editGraduationYear = alumni?.graduationYear || '';
+
 			// Parse scores if exists
 			if (alumni?.scores) {
 				try {
@@ -68,6 +103,43 @@
 			error = err instanceof Error ? err.message : 'Terjadi kesalahan';
 		} finally {
 			isLoading = false;
+		}
+	}
+
+	async function saveChanges() {
+		if (!alumni || !hasChanges) return;
+
+		isSaving = true;
+
+		try {
+			const response = await API_FETCH(`/routes/api/graduates/${studentId}`, {
+				method: 'PUT',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					certificateNumber: editCertificateNumber || null,
+					finalGrade: editFinalGrade || null,
+					graduationYear: editGraduationYear || null
+				})
+			});
+
+			if (!response.ok) {
+				const result = await response.json();
+				throw new Error(result.message || 'Gagal menyimpan data');
+			}
+
+			// Update local data
+			alumni = {
+				...alumni,
+				certificateNumber: editCertificateNumber || null,
+				finalGrade: editFinalGrade || null,
+				graduationYear: editGraduationYear || null
+			};
+
+			showAlert('success', 'Data berhasil disimpan');
+		} catch (err) {
+			showAlert('error', err instanceof Error ? err.message : 'Gagal menyimpan data');
+		} finally {
+			isSaving = false;
 		}
 	}
 
@@ -87,15 +159,15 @@
 	function getGradeBadgeClass(grade: string | null): string {
 		switch (grade) {
 			case 'Sangat Baik':
-				return 'bg-green-100 text-green-800 border-green-300';
+				return 'bg-emerald-100 text-emerald-800';
 			case 'Baik':
-				return 'bg-blue-100 text-blue-800 border-blue-300';
+				return 'bg-sky-100 text-sky-800';
 			case 'Cukup':
-				return 'bg-yellow-100 text-yellow-800 border-yellow-300';
+				return 'bg-amber-100 text-amber-800';
 			case 'Kurang':
-				return 'bg-red-100 text-red-800 border-red-300';
+				return 'bg-red-100 text-red-800';
 			default:
-				return 'bg-gray-100 text-gray-800 border-gray-300';
+				return 'bg-slate-100 text-slate-600';
 		}
 	}
 
@@ -116,52 +188,86 @@
 </svelte:head>
 
 <!-- Parent container -->
-<div class="mx-0 md:mx-30">
-	<div class="flex flex-col gap-6 p-4 md:p-8">
+<div class="min-h-screen bg-gradient-to-br from-slate-50 to-emerald-50/30 print:bg-white">
+	<div class="mx-auto max-w-5xl px-4 py-8 md:px-8">
 		<!-- Back button -->
 		<button
 			on:click={() => goto('/siswa/alumni')}
-			class="flex w-fit items-center gap-2 rounded-full border bg-green-500 px-4 py-2 text-sm text-green-50 capitalize transition-all ease-in-out hover:gap-4 hover:bg-green-700"
+			class="group mb-6 flex w-fit items-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 transition-all hover:border-emerald-300 hover:bg-emerald-50 print:hidden"
 		>
-			<ArrowLeft />kembali ke daftar alumni
+			<span class="transition-transform group-hover:-translate-x-1"><ArrowLeft /></span>
+			Kembali ke Daftar Alumni
 		</button>
 
 		{#if isLoading}
-			<div class="flex items-center justify-center py-20">
-				<div
-					class="h-8 w-8 animate-spin rounded-full border-4 border-green-500 border-t-transparent"
-				></div>
-				<span class="ml-3">Memuat data...</span>
+			<div class="flex flex-col items-center justify-center py-24">
+				<div class="relative h-12 w-12">
+					<div
+						class="absolute inset-0 animate-spin rounded-full border-4 border-slate-200 border-t-emerald-500"
+					></div>
+				</div>
+				<span class="mt-4 text-sm font-medium text-slate-500">Memuat data...</span>
 			</div>
 		{:else if error}
-			<div class="flex flex-col items-center justify-center py-20 text-center">
-				<p class="mb-4 text-red-600">{error}</p>
-				<button on:click={() => goto('/siswa/alumni')} class="rounded-md border px-4 py-2">
+			<div class="flex flex-col items-center justify-center py-24 text-center">
+				<div class="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-red-100">
+					<!-- error icon placeholder -->
+				</div>
+				<p class="mb-2 text-lg font-semibold text-slate-800">Terjadi Kesalahan</p>
+				<p class="mb-6 text-sm text-slate-500">{error}</p>
+				<button
+					on:click={() => goto('/siswa/alumni')}
+					class="rounded-md bg-emerald-500 px-5 py-2.5 text-sm font-medium text-white transition-all hover:bg-emerald-600"
+				>
 					Kembali ke Daftar Alumni
 				</button>
 			</div>
 		{:else if alumni}
 			<!-- Header -->
-			<div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-				<div>
-					<div class="flex items-center gap-3">
-						<h1 class="text-3xl font-bold text-green-700 capitalize">{alumni.name}</h1>
-						<span class="rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-800">
-							Alumni
-						</span>
+			<div class="mb-8 flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+				<div class="flex items-center gap-4">
+					<!-- Avatar placeholder -->
+					<div
+						class="flex h-16 w-16 items-center justify-center rounded-md bg-gradient-to-br from-emerald-500 to-teal-600 text-2xl font-bold text-white print:from-emerald-600 print:to-emerald-600"
+					>
+						{alumni.name.charAt(0).toUpperCase()}
 					</div>
-					<p class="mt-1 text-gray-600">NISN: {alumni.nisn}</p>
+					<div>
+						<div class="flex flex-wrap items-center gap-3">
+							<h1 class="text-2xl font-bold text-slate-800 capitalize md:text-3xl">
+								{alumni.name}
+							</h1>
+							<span
+								class="inline-flex items-center gap-1.5 rounded-full bg-emerald-100 px-3 py-1 text-sm font-semibold text-emerald-700"
+							>
+								<span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+								Alumni
+							</span>
+						</div>
+						<p class="mt-1 font-mono text-sm text-slate-500">NISN: {alumni.nisn}</p>
+					</div>
 				</div>
 
-				{#if alumni.finalGrade}
-					<div class="flex flex-col items-end">
-						<p class="text-sm text-gray-500">Predikat Kelulusan</p>
+				<!-- Print value display -->
+				<div class="hidden print:block print:text-right">
+					{#if editFinalGrade || alumni.finalGrade}
+						<p class="text-xs text-slate-500">Predikat Kelulusan</p>
+						<p class="text-lg font-bold text-emerald-700">{editFinalGrade || alumni.finalGrade}</p>
+					{/if}
+				</div>
+
+				<!-- Screen display with edit -->
+				{#if editFinalGrade || alumni.finalGrade}
+					<div class="flex flex-col items-end print:hidden">
+						<p class="text-xs font-medium tracking-wide text-slate-400 uppercase">
+							Predikat Kelulusan
+						</p>
 						<span
-							class="mt-1 rounded-lg border-2 px-4 py-2 text-lg font-bold {getGradeBadgeClass(
-								alumni.finalGrade
+							class="mt-1 rounded-md px-5 py-2 text-lg font-bold {getGradeBadgeClass(
+								editFinalGrade || alumni.finalGrade
 							)}"
 						>
-							{alumni.finalGrade}
+							{editFinalGrade || alumni.finalGrade}
 						</span>
 					</div>
 				{/if}
@@ -170,84 +276,124 @@
 			<!-- Main Content Grid -->
 			<div class="grid gap-6 lg:grid-cols-2">
 				<!-- Personal Info Card -->
-				<div class="rounded-lg border border-gray-300 bg-white p-6 shadow-sm">
-					<h2 class="mb-4 text-lg font-semibold text-gray-800">Data Pribadi</h2>
-					<div class="space-y-3">
-						<div class="flex justify-between border-b border-gray-100 pb-2">
-							<span class="text-gray-600">Nama Lengkap</span>
-							<span class="font-medium capitalize">{alumni.name}</span>
+				<div
+					class="overflow-hidden rounded-md border border-slate-200 bg-white print:border-slate-300"
+				>
+					<div class="border-b border-slate-100 bg-slate-50 px-6 py-4 print:bg-slate-100">
+						<h2 class="font-semibold text-slate-800">Data Pribadi</h2>
+					</div>
+					<div class="divide-y divide-slate-100 px-6">
+						<div class="flex justify-between py-3">
+							<span class="text-sm text-slate-500">Nama Lengkap</span>
+							<span class="font-semibold text-slate-800 capitalize">{alumni.name}</span>
 						</div>
-						<div class="flex justify-between border-b border-gray-100 pb-2">
-							<span class="text-gray-600">NISN</span>
-							<span class="font-medium">{alumni.nisn}</span>
+						<div class="flex justify-between py-3">
+							<span class="text-sm text-slate-500">NISN</span>
+							<span class="rounded-lg bg-slate-100 px-2 py-0.5 font-mono text-sm text-slate-700"
+								>{alumni.nisn}</span
+							>
 						</div>
 						{#if alumni.localNis}
-							<div class="flex justify-between border-b border-gray-100 pb-2">
-								<span class="text-gray-600">NIS Lokal</span>
-								<span class="font-medium">{alumni.localNis}</span>
+							<div class="flex justify-between py-3">
+								<span class="text-sm text-slate-500">NIS Lokal</span>
+								<span class="font-medium text-slate-700">{alumni.localNis}</span>
 							</div>
 						{/if}
-						<div class="flex justify-between border-b border-gray-100 pb-2">
-							<span class="text-gray-600">Jenis Kelamin</span>
-							<span class="font-medium">{getGenderLabel(alumni.gender)}</span>
+						<div class="flex justify-between py-3">
+							<span class="text-sm text-slate-500">Jenis Kelamin</span>
+							<span class="font-medium text-slate-700">{getGenderLabel(alumni.gender)}</span>
 						</div>
 						{#if alumni.birthPlace || alumni.birthDate}
-							<div class="flex justify-between border-b border-gray-100 pb-2">
-								<span class="text-gray-600">Tempat, Tanggal Lahir</span>
-								<span class="font-medium">
+							<div class="flex justify-between py-3">
+								<span class="text-sm text-slate-500">TTL</span>
+								<span class="font-medium text-slate-700">
 									{alumni.birthPlace || '-'}, {formatDate(alumni.birthDate)}
 								</span>
 							</div>
 						{/if}
 						{#if alumni.religion}
-							<div class="flex justify-between">
-								<span class="text-gray-600">Agama</span>
-								<span class="font-medium capitalize">{alumni.religion}</span>
+							<div class="flex justify-between py-3">
+								<span class="text-sm text-slate-500">Agama</span>
+								<span class="font-medium text-slate-700 capitalize">{alumni.religion}</span>
 							</div>
 						{/if}
 					</div>
 				</div>
 
 				<!-- Graduation Info Card -->
-				<div class="rounded-lg border border-green-300 bg-green-50 p-6 shadow-sm">
-					<h2 class="mb-4 text-lg font-semibold text-green-800">Data Kelulusan</h2>
-					<div class="space-y-3">
-						<div class="flex justify-between border-b border-green-200 pb-2">
-							<span class="text-green-700">Tahun Kelulusan</span>
-							<span class="font-bold text-green-800">{alumni.graduationYear || '-'}</span>
+				<div
+					class="overflow-hidden rounded-md border border-emerald-200 bg-gradient-to-br from-emerald-50 to-teal-50 print:border-slate-300 print:from-white print:to-white"
+				>
+					<div class="border-b border-emerald-100 bg-emerald-100/50 px-6 py-4 print:bg-slate-100">
+						<h2 class="font-semibold text-emerald-800 print:text-slate-800">Data Kelulusan</h2>
+					</div>
+					<div class="divide-y divide-emerald-100 px-6 print:divide-slate-100">
+						<!-- Tahun Kelulusan - Editable -->
+						<div class="flex items-center justify-between py-3">
+							<span class="text-sm text-emerald-700 print:text-slate-500">Tahun Kelulusan</span>
+							<!-- Print value -->
+							<span class="hidden font-bold text-emerald-800 print:inline print:text-slate-800">
+								{editGraduationYear || '-'}
+							</span>
+							<!-- Edit input -->
+							<input
+								type="text"
+								bind:value={editGraduationYear}
+								placeholder="2024/2025"
+								class="w-32 rounded-lg border border-emerald-200 bg-white px-3 py-1.5 text-right text-sm font-semibold text-emerald-800 transition-colors focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 focus:outline-none print:hidden"
+							/>
 						</div>
-						<div class="flex justify-between border-b border-green-200 pb-2">
-							<span class="text-green-700">Tanggal Kelulusan</span>
-							<span class="font-medium text-green-800">{formatDate(alumni.completionDate)}</span>
+						<div class="flex items-center justify-between py-3">
+							<span class="text-sm text-emerald-700 print:text-slate-500">Tanggal Kelulusan</span>
+							<span class="font-medium text-emerald-800 print:text-slate-700"
+								>{formatDate(alumni.completionDate)}</span
+							>
 						</div>
-						<div class="flex justify-between border-b border-green-200 pb-2">
-							<span class="text-green-700">Kelas Terakhir</span>
-							<span class="font-medium text-green-800">
+						<div class="flex items-center justify-between py-3">
+							<span class="text-sm text-emerald-700 print:text-slate-500">Kelas Terakhir</span>
+							<span class="font-medium text-emerald-800 print:text-slate-700">
 								{alumni.lastClassName || alumni.lastClassCode || '-'}
 								{#if alumni.lastClassLevel}
-									({alumni.lastClassLevel})
+									<span class="text-emerald-600 print:text-slate-500"
+										>({alumni.lastClassLevel})</span
+									>
 								{/if}
 							</span>
 						</div>
-						<div class="flex justify-between border-b border-green-200 pb-2">
-							<span class="text-green-700">Nomor Ijazah</span>
-							<span class="font-mono text-sm font-medium text-green-800">
-								{alumni.certificateNumber || '-'}
+						<!-- Nomor Ijazah - Editable -->
+						<div class="flex items-center justify-between py-3">
+							<span class="text-sm text-emerald-700 print:text-slate-500">Nomor Ijazah</span>
+							<!-- Print value -->
+							<span
+								class="hidden font-mono text-sm font-semibold text-emerald-800 print:inline print:text-slate-800"
+							>
+								{editCertificateNumber || '-'}
 							</span>
+							<!-- Edit input -->
+							<input
+								type="text"
+								bind:value={editCertificateNumber}
+								placeholder="DN-01 Ma 0123456"
+								class="w-44 rounded-lg border border-emerald-200 bg-white px-3 py-1.5 text-right font-mono text-sm text-emerald-800 transition-colors focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 focus:outline-none print:hidden"
+							/>
 						</div>
-						<div class="flex justify-between">
-							<span class="text-green-700">Predikat</span>
-							{#if alumni.finalGrade}
-								<span
-									class="rounded border px-2 py-0.5 text-sm font-medium {getGradeBadgeClass(
-										alumni.finalGrade
-									)}"
-								>
-									{alumni.finalGrade}
-								</span>
-							{:else}
-								<span class="text-green-800">-</span>
-							{/if}
+						<!-- Predikat - Editable -->
+						<div class="flex items-center justify-between py-3">
+							<span class="text-sm text-emerald-700 print:text-slate-500">Predikat</span>
+							<!-- Print value -->
+							<span class="hidden font-semibold text-emerald-800 print:inline print:text-slate-800">
+								{editFinalGrade || '-'}
+							</span>
+							<!-- Edit select -->
+							<select
+								bind:value={editFinalGrade}
+								class="rounded-lg border border-emerald-200 bg-white px-3 py-1.5 text-sm font-semibold text-emerald-800 transition-colors focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 focus:outline-none print:hidden"
+							>
+								<option value="">Pilih predikat</option>
+								{#each gradeOptions as grade}
+									<option value={grade}>{grade}</option>
+								{/each}
+							</select>
 						</div>
 					</div>
 				</div>
@@ -255,15 +401,23 @@
 
 			<!-- Scores Section (if available) -->
 			{#if parsedScores && Object.keys(parsedScores).length > 0}
-				<div class="rounded-lg border border-gray-300 bg-white p-6 shadow-sm">
-					<h2 class="mb-4 text-lg font-semibold text-gray-800">Nilai Akhir</h2>
-					<div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+				<div
+					class="mt-6 overflow-hidden rounded-md border border-slate-200 bg-white print:border-slate-300"
+				>
+					<div class="border-b border-slate-100 bg-slate-50 px-6 py-4 print:bg-slate-100">
+						<h2 class="font-semibold text-slate-800">Nilai Akhir</h2>
+					</div>
+					<div class="grid gap-3 p-6 md:grid-cols-2 lg:grid-cols-3">
 						{#each Object.entries(parsedScores) as [subject, score]}
-							<div class="flex items-center justify-between rounded-md border bg-gray-50 p-3">
-								<span class="text-gray-700 capitalize">
+							<div
+								class="flex items-center justify-between rounded-md border border-slate-100 bg-slate-50 p-3 print:border-slate-200"
+							>
+								<span class="text-sm text-slate-600 capitalize">
 									{subject.replace(/_/g, ' ')}
 								</span>
-								<span class="rounded bg-green-100 px-3 py-1 font-bold text-green-800">
+								<span
+									class="rounded-lg bg-emerald-100 px-3 py-1 font-bold text-emerald-700 print:bg-slate-100 print:text-slate-800"
+								>
 									{score}
 								</span>
 							</div>
@@ -274,17 +428,39 @@
 
 			<!-- Additional Notes -->
 			{#if alumni.reason}
-				<div class="rounded-lg border border-gray-300 bg-white p-6 shadow-sm">
-					<h2 class="mb-4 text-lg font-semibold text-gray-800">Catatan</h2>
-					<p class="text-gray-700">{alumni.reason}</p>
+				<div
+					class="mt-6 overflow-hidden rounded-md border border-slate-200 bg-white print:border-slate-300"
+				>
+					<div class="border-b border-slate-100 bg-slate-50 px-6 py-4 print:bg-slate-100">
+						<h2 class="font-semibold text-slate-800">Catatan</h2>
+					</div>
+					<div class="p-6">
+						<p class="text-slate-700">{alumni.reason}</p>
+					</div>
 				</div>
 			{/if}
 
 			<!-- Action Buttons -->
-			<div class="flex gap-3">
+			<div class="mt-8 flex flex-wrap items-center gap-3 print:hidden">
+				{#if hasChanges}
+					<button
+						on:click={saveChanges}
+						disabled={isSaving}
+						class="flex items-center gap-2 rounded-md bg-gradient-to-r from-emerald-500 to-teal-500 px-5 py-2.5 text-sm font-semibold text-white transition-all hover:from-emerald-600 hover:to-teal-600 disabled:opacity-50"
+					>
+						{#if isSaving}
+							<div
+								class="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"
+							></div>
+							Menyimpan...
+						{:else}
+							Simpan Perubahan
+						{/if}
+					</button>
+				{/if}
 				<button
 					on:click={() => window.print()}
-					class="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition-all hover:bg-gray-50"
+					class="flex items-center gap-2 rounded-md border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 transition-all hover:bg-slate-50"
 				>
 					Cetak
 				</button>
@@ -351,10 +527,11 @@ Done! Here's a summary of the complete Graduate/Alumni feature implementation:
   Run these 3 statements to add the new columns to your database.
 
 -->
-<style>
-	@media print {
-		button {
-			display: none !important;
-		}
-	}
-</style>
+
+<ModalAlert
+	show={alertModal.show}
+	type={alertModal.type}
+	message={alertModal.message}
+	on:close={() => (alertModal.show = false)}
+	on:confirm={() => (alertModal.show = false)}
+/>

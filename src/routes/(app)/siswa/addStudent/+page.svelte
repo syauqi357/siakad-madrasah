@@ -239,7 +239,7 @@
 
 		<a
 			href="/siswa"
-			class="my-4 flex w-fit cursor-pointer items-center justify-center gap-3 rounded-md bg-blue-600 px-4 py-1 text-xs text-blue-100 capitalize hover:bg-blue-700 md:text-sm"
+			class="my-4 flex w-fit cursor-pointer items-center justify-center gap-2 rounded-full bg-blue-600 px-4 py-2 text-sm hover:gap-4 transition-all ease-in-out text-blue-100 capitalize hover:bg-blue-700 md:text-sm"
 		>
 			<Arrow_Left /> kembali
 		</a>

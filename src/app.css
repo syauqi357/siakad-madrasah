@@ -3,6 +3,12 @@
 /*@plugin '@tailwindcss/forms';*/
 @plugin '@tailwindcss/typography';
 
+/* Override Tailwind's default font families */
+@theme {
+	--font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+	--font-sans: 'StackSansText-Regular', ui-sans-serif, system-ui, sans-serif;
+}
+
 /* --- Stack Sans (Body Font) --- */
 @font-face {
 	font-family: 'StackSansText-Regular';

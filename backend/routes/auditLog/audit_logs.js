@@ -2,7 +2,7 @@
 import express from 'express';
 import { drizzle } from 'drizzle-orm/better-sqlite3';
 import Database from 'better-sqlite3';
-import { auditTable } from '../../../src/db/schema/auditlog.js'; // adjust path as needed
+import { auditTable } from '../../src/db/schema/auditlog.js'; // adjust path as needed
 import { desc, eq, like, and, or, gte, lte } from 'drizzle-orm';
 
 const router = express.Router();

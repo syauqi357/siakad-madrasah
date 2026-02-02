@@ -5,7 +5,7 @@ import dotenv from 'dotenv'; // MAIN DEPENDENCIES
 import authRouter from './routes/api/auth.js';
 import schoolDataRouter from './routes/api/schooldataNav.js';
 import studentDataRouter from './routes/api/student.js';
-import auditLogsRouter from './routes/auditLog/APILogs/audit_logs.js'; // ROUTES API
+import auditLogsRouter from './routes/auditLog/audit_logs.js'; // ROUTES API
 import rombelRouter from './routes/api/rombel.js';
 import scoreRouter from './routes/api/scores.js'; // Import scoreRouter
 import classDataRouter from './routes/api/classData.js'; // Import classDataRouter

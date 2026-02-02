@@ -114,15 +114,15 @@
 	function getGradeBadgeClass(grade: string | null): string {
 		switch (grade) {
 			case 'Sangat Baik':
-				return 'bg-green-100 text-green-800 border-green-300';
+				return 'bg-emerald-100 text-emerald-800';
 			case 'Baik':
-				return 'bg-blue-100 text-blue-800 border-blue-300';
+				return 'bg-sky-100 text-sky-800';
 			case 'Cukup':
-				return 'bg-yellow-100 text-yellow-800 border-yellow-300';
+				return 'bg-amber-100 text-amber-800';
 			case 'Kurang':
-				return 'bg-red-100 text-red-800 border-red-300';
+				return 'bg-red-100 text-red-800';
 			default:
-				return 'bg-gray-100 text-gray-800 border-gray-300';
+				return 'bg-slate-100 text-slate-600';
 		}
 	}
 
@@ -144,32 +144,39 @@
 </script>
 
 <!-- Parent container -->
-<div class="mx-0 md:mx-30">
-	<div class="flex flex-col gap-6 p-4 md:p-8">
+<div class="min-h-screen bg-gradient-to-br from-slate-50 to-emerald-50/30">
+	<div class="mx-auto max-w-7xl px-4 py-8 md:px-8">
 		<!-- Back button -->
 		<button
 			on:click={() => goto('/siswa')}
-			class="flex w-fit items-center gap-2 rounded-full border bg-green-500 px-4 py-2 text-sm text-green-50 capitalize transition-all ease-in-out hover:gap-4 hover:bg-green-700"
+			class="group mb-6 flex w-fit items-center gap-2 rounded-md border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 transition-all hover:border-emerald-300 hover:bg-emerald-50"
 		>
-			<ArrowLeft />kembali
+			<span class="transition-transform group-hover:-translate-x-1"><ArrowLeft /></span>
+			Kembali
 		</button>
 
 		<!-- Header -->
-		<div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+		<div class="mb-8 flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
 			<div class="flex items-center gap-4">
+				<!-- icon placeholder -->
+				<div
+					class="flex h-14 w-14 items-center justify-center rounded-md bg-gradient-to-br from-emerald-500 to-teal-600"
+				>
+					<!-- svg icon here -->
+				</div>
 				<div>
-					<p class="text-3xl font-bold text-green-700">Alumni / Lulusan</p>
-					<p class="text-sm text-gray-600">Daftar siswa yang telah lulus</p>
+					<h1 class="text-2xl font-bold text-slate-800 md:text-3xl">Alumni / Lulusan</h1>
+					<p class="text-sm text-slate-500">Daftar siswa yang telah lulus dari sekolah</p>
 				</div>
 			</div>
 
 			<!-- Search & Filter -->
-			<div class="flex flex-col gap-2 md:flex-row md:items-center">
+			<div class="flex flex-col gap-3 sm:flex-row sm:items-center">
 				<!-- Year Filter -->
 				<select
 					bind:value={selectedYear}
 					on:change={handleYearFilter}
-					class="rounded-md border px-3 py-2 text-sm focus:border-green-500 focus:outline-none"
+					class="rounded-md border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 transition-colors focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 focus:outline-none"
 				>
 					<option value="">Semua Tahun</option>
 					{#each availableYears as year}
@@ -178,44 +185,40 @@
 				</select>
 
 				<!-- Search -->
-				<div class="relative w-full md:w-64">
+				<div class="relative">
 					<input
 						type="text"
 						bind:value={searchQuery}
 						placeholder="Cari nama, NISN, atau ijazah..."
-						class="w-full rounded-md border px-4 py-2 pr-10 text-sm focus:border-green-500 focus:outline-none"
+						class="w-full rounded-md border border-slate-200 bg-white py-2.5 pr-4 pl-10 text-sm text-slate-700 placeholder-slate-400 transition-colors focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 focus:outline-none sm:w-72"
 					/>
-					<svg
-						class="absolute top-2.5 right-3 h-4 w-4 opacity-50"
-						fill="none"
-						viewBox="0 0 24 24"
-						stroke="currentColor"
-					>
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-						/>
-					</svg>
+					<!-- search icon placeholder -->
+					<div class="absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2 text-slate-400">
+						<!-- svg icon here -->
+					</div>
 				</div>
 			</div>
 		</div>
 
 		<!-- Stats Cards -->
-		<div class="grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-6">
+		<div class="mb-8 grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-6">
 			<!-- Total -->
-			<div class="rounded-lg border border-green-300 bg-green-50 p-4">
-				<p class="text-sm text-green-600">Total Alumni</p>
-				<p class="text-2xl font-bold text-green-700">{totalCount}</p>
+			<div
+				class="relative overflow-hidden rounded-md border-2 border-emerald-200 bg-gradient-to-br from-emerald-50 to-teal-50 p-5"
+			>
+				<div class="absolute -top-4 -right-4 h-20 w-20 rounded-full bg-emerald-500/10"></div>
+				<p class="text-xs font-semibold tracking-wide text-emerald-600 uppercase">Total Alumni</p>
+				<p class="mt-1 text-3xl font-bold text-emerald-700">{totalCount}</p>
 			</div>
 
 			<!-- Per Year Stats -->
 			{#each yearStats.slice(0, 5) as stat}
 				{#if stat.year}
-					<div class="rounded-lg border border-gray-300 bg-gray-50 p-4">
-						<p class="text-sm text-gray-600">{stat.year}</p>
-						<p class="text-2xl font-bold text-gray-700">{stat.count}</p>
+					<div
+						class="rounded-md border border-slate-200 bg-white p-5 transition-all hover:border-slate-300"
+					>
+						<p class="text-xs font-semibold tracking-wide text-slate-400 uppercase">{stat.year}</p>
+						<p class="mt-1 text-3xl font-bold text-slate-800">{stat.count}</p>
 					</div>
 				{/if}
 			{/each}
@@ -223,80 +226,129 @@
 
 		<!-- Content -->
 		{#if isLoading}
-			<div class="flex items-center justify-center py-20">
-				<div
-					class="h-8 w-8 animate-spin rounded-full border-4 border-green-500 border-t-transparent"
-				></div>
-				<span class="ml-3">Memuat data...</span>
+			<div class="flex flex-col items-center justify-center py-24">
+				<div class="relative h-12 w-12">
+					<div
+						class="absolute inset-0 animate-spin rounded-full border-4 border-slate-200 border-t-emerald-500"
+					></div>
+				</div>
+				<span class="mt-4 text-sm font-medium text-slate-500">Memuat data...</span>
 			</div>
 		{:else if error}
-			<div class="flex flex-col items-center justify-center py-20 text-center">
-				<p class="mb-4 text-red-600">{error}</p>
-				<button on:click={() => fetchAlumni()} class="rounded-md border px-4 py-2">
+			<div class="flex flex-col items-center justify-center py-24 text-center">
+				<!-- error icon placeholder -->
+				<div class="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-red-100">
+					<!-- svg icon here -->
+				</div>
+				<p class="mb-2 text-lg font-semibold text-slate-800">Terjadi Kesalahan</p>
+				<p class="mb-6 text-sm text-slate-500">{error}</p>
+				<button
+					on:click={() => fetchAlumni()}
+					class="rounded-md bg-emerald-500 px-5 py-2.5 text-sm font-medium text-white transition-all hover:bg-emerald-600"
+				>
 					Coba Lagi
 				</button>
 			</div>
 		{:else if filteredStudents.length === 0}
-			<div class="rounded-lg border border-dashed py-20 text-center">
+			<div
+				class="flex flex-col items-center justify-center rounded-md border-2 border-dashed border-slate-200 bg-white py-20"
+			>
+				<!-- empty icon placeholder -->
+				<div class="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-slate-100">
+					<!-- svg icon here -->
+				</div>
 				{#if searchQuery}
-					<p class="opacity-70">Tidak ada alumni yang sesuai pencarian</p>
+					<p class="text-sm font-medium text-slate-600">Tidak ada alumni yang sesuai pencarian</p>
+					<p class="mt-1 text-xs text-slate-400">Coba kata kunci lain</p>
 				{:else}
-					<p class="opacity-70">Belum ada data alumni</p>
+					<p class="text-sm font-medium text-slate-600">Belum ada data alumni</p>
+					<p class="mt-1 text-xs text-slate-400">Alumni akan muncul setelah siswa diluluskan</p>
 				{/if}
 			</div>
 		{:else}
 			<!-- Table -->
-			<div class="overflow-hidden rounded-lg border border-gray-400">
+			<div class="overflow-hidden rounded-md border border-slate-200 bg-white">
 				<div class="overflow-x-auto">
 					<table class="w-full text-left text-sm">
-						<thead class="border-b border-b-gray-400 bg-green-50 font-medium uppercase">
-							<tr>
-								<th class="px-4 py-5">No</th>
-								<th class="px-4 py-5">Nama Siswa</th>
-								<th class="px-4 py-5">NISN</th>
-								<th class="px-4 py-5">Kelas Terakhir</th>
-								<th class="px-4 py-5">Tahun Lulus</th>
-								<th class="px-4 py-5">No. Ijazah</th>
-								<th class="px-4 py-5">Predikat</th>
-								<th class="px-4 py-5">Aksi</th>
+						<thead>
+							<tr class="border-b border-slate-100 bg-slate-50">
+								<th class="px-5 py-4 text-xs font-semibold tracking-wide text-slate-500 uppercase"
+									>No</th
+								>
+								<th class="px-5 py-4 text-xs font-semibold tracking-wide text-slate-500 uppercase"
+									>Nama Siswa</th
+								>
+								<th class="px-5 py-4 text-xs font-semibold tracking-wide text-slate-500 uppercase"
+									>NISN</th
+								>
+								<th class="px-5 py-4 text-xs font-semibold tracking-wide text-slate-500 uppercase"
+									>Kelas Terakhir</th
+								>
+								<th class="px-5 py-4 text-xs font-semibold tracking-wide text-slate-500 uppercase"
+									>Tahun Lulus</th
+								>
+								<th class="px-5 py-4 text-xs font-semibold tracking-wide text-slate-500 uppercase"
+									>No. Ijazah</th
+								>
+								<th class="px-5 py-4 text-xs font-semibold tracking-wide text-slate-500 uppercase"
+									>Predikat</th
+								>
+								<th class="px-5 py-4 text-xs font-semibold tracking-wide text-slate-500 uppercase"
+									>Aksi</th
+								>
 							</tr>
 						</thead>
-						<tbody class="divide-y divide-gray-400">
+						<tbody class="divide-y divide-slate-100">
 							{#each filteredStudents as student, i (student.id)}
-								<tr class="transition-colors hover:bg-green-50">
-									<td class="px-4 py-5">{(currentPage - 1) * limit + i + 1}</td>
-									<td class="px-4 py-5 font-medium capitalize">{student.name}</td>
-									<td class="px-4 py-5">{student.nisn}</td>
-									<td class="px-4 py-5">{student.lastClassName || '-'}</td>
-									<td class="px-4 py-5">
+								<tr class="transition-colors hover:bg-slate-50">
+									<td class="px-5 py-4 text-slate-500">{(currentPage - 1) * limit + i + 1}</td>
+									<td class="px-5 py-4">
+										<span class="font-semibold text-slate-800 capitalize">{student.name}</span>
+									</td>
+									<td class="px-5 py-4">
+										<span class="rounded-md bg-slate-100 px-2 py-1 font-mono text-xs text-slate-600"
+											>{student.nisn}</span
+										>
+									</td>
+									<td class="px-5 py-4 text-slate-600">{student.lastClassName || '-'}</td>
+									<td class="px-5 py-4">
 										{#if student.graduationYear}
 											<span
-												class="rounded-md bg-green-100 px-2 py-1 text-xs font-medium text-green-800"
+												class="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700"
 											>
+												<span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
 												{student.graduationYear}
 											</span>
 										{:else}
-											-
+											<span class="text-slate-300">—</span>
 										{/if}
 									</td>
-									<td class="px-4 py-5 font-mono text-xs">{student.certificateNumber || '-'}</td>
-									<td class="px-4 py-5">
+									<td class="px-5 py-4">
+										{#if student.certificateNumber}
+											<span class="font-mono text-xs text-slate-600"
+												>{student.certificateNumber}</span
+											>
+										{:else}
+											<span class="text-slate-300">—</span>
+										{/if}
+									</td>
+									<td class="px-5 py-4">
 										{#if student.finalGrade}
 											<span
-												class="rounded-md border px-2 py-1 text-xs font-medium {getGradeBadgeClass(
+												class="rounded-full px-3 py-1 text-xs font-semibold {getGradeBadgeClass(
 													student.finalGrade
 												)}"
 											>
 												{student.finalGrade}
 											</span>
 										{:else}
-											-
+											<span class="text-slate-300">—</span>
 										{/if}
 									</td>
-									<td class="px-4 py-5">
+									<td class="px-5 py-4">
 										<button
 											on:click={() => goto(`/siswa/alumni/${student.id}`)}
-											class="rounded-md bg-green-100 px-3 py-1 text-xs font-medium text-green-700 transition-all hover:bg-green-200"
+											class="rounded-md border border-slate-200 bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 transition-all hover:border-emerald-300 hover:bg-emerald-50 hover:text-emerald-700"
 										>
 											Detail
 										</button>
@@ -310,27 +362,56 @@
 
 			<!-- Pagination -->
 			{#if totalPages > 1}
-				<div class="flex items-center justify-between border-t pt-4">
-					<p class="text-sm opacity-70">
-						Menampilkan {filteredStudents.length} dari {totalCount} alumni
+				<div
+					class="mt-6 flex flex-col items-center justify-between gap-4 rounded-md bg-white/50 px-4 py-3 sm:flex-row"
+				>
+					<p class="text-sm text-slate-500">
+						Menampilkan <span class="font-semibold text-slate-700">{filteredStudents.length}</span>
+						dari
+						<span class="font-semibold text-slate-700">{totalCount}</span> alumni
 					</p>
 					<div class="flex items-center gap-2">
 						<button
 							on:click={() => handlePageChange(currentPage - 1)}
 							disabled={currentPage === 1}
-							class="rounded border px-3 py-1 text-sm disabled:opacity-50"
+							class="flex items-center gap-1 rounded-md border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition-all hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40"
 						>
+							<!-- arrow left placeholder -->
 							Prev
 						</button>
-						<span class="text-sm">
-							{currentPage} / {totalPages}
-						</span>
+						<div class="flex items-center gap-1">
+							{#each Array(Math.min(totalPages, 5)) as _, idx}
+								{@const pageNum = idx + 1}
+								<button
+									on:click={() => handlePageChange(pageNum)}
+									class="flex h-9 w-9 items-center justify-center rounded-md text-sm font-medium transition-all {currentPage ===
+									pageNum
+										? 'bg-emerald-500 text-white'
+										: 'text-slate-600 hover:bg-slate-100'}"
+								>
+									{pageNum}
+								</button>
+							{/each}
+							{#if totalPages > 5}
+								<span class="px-2 text-slate-400">...</span>
+								<button
+									on:click={() => handlePageChange(totalPages)}
+									class="flex h-9 w-9 items-center justify-center rounded-md text-sm font-medium transition-all {currentPage ===
+									totalPages
+										? 'bg-emerald-500 text-white'
+										: 'text-slate-600 hover:bg-slate-100'}"
+								>
+									{totalPages}
+								</button>
+							{/if}
+						</div>
 						<button
 							on:click={() => handlePageChange(currentPage + 1)}
 							disabled={currentPage === totalPages}
-							class="rounded border px-3 py-1 text-sm disabled:opacity-50"
+							class="flex items-center gap-1 rounded-md border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition-all hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40"
 						>
 							Next
+							<!-- arrow right placeholder -->
 						</button>
 					</div>
 				</div>
