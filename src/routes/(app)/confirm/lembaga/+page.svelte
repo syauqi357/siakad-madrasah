@@ -358,7 +358,7 @@
 						>
 							<div class="absolute -top-4 -right-4 h-16 w-16 rounded-full bg-sky-500/10"></div>
 							<p class="text-xs font-semibold tracking-wider text-sky-600 uppercase">Jenjang</p>
-							<p class="mt-1 text-lg font-bold text-sky-700">MTs</p>
+							<p class="mt-1 text-lg font-bold text-sky-700">-</p>
 						</div>
 						<div
 							class="relative overflow-hidden rounded-xl border border-amber-100 bg-gradient-to-br from-amber-50 to-orange-50 p-4"

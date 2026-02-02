@@ -103,6 +103,7 @@ export const navigationConfig: Record<UserRole, NavItem[]> = {
 			hasDropdown: true,
 			children: [
 				{ name: 'daftar kurikulum', icon: '', href: '/info/curriculum' },
+				{ name: 'tahun ajaran', icon: '', href: '/info/academicyear' },
 				{ name: 'hari sekolah', icon: '', href: '/info/daysch' }
 			]
 		},
@@ -163,6 +164,7 @@ export const navigationConfig: Record<UserRole, NavItem[]> = {
 			hasDropdown: true,
 			children: [
 				{ name: 'daftar kurikulum', icon: '', href: '/info/curriculum' },
+
 				{ name: 'hari sekolah', icon: '', href: '/info/daysch' }
 			]
 		}
