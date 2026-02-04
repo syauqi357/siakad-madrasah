@@ -12,7 +12,7 @@ import { db } from '../src/index.js'; // database connection
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
-/*
+/**
  *
  * SERVICE LAYER - Business Logic Only
  *
@@ -26,13 +26,15 @@ const JWT_SECRET = process.env.JWT_SECRET;
  * @returns {Object} User object with token, or null if authentication fails
  *
  * */
+
+
 export const AUTHENTICATE_USERS = async (username, password) => {
 	try {
 		// 1. Find user by username only
 		const user = await db
 			.select()
 			.from(users)
-			.where(eq(users.username, username)) // ← Only check username
+			.where(eq(users.username, username)) // Only check username
 			.limit(1);
 
 		if (!user || user.length === 0) {
@@ -85,13 +87,16 @@ export const AUTHENTICATE_USERS = async (username, password) => {
 	}
 };
 
-/*
+/**
+ *
  * Change user password
  * @param {number} userId - User's ID
  * @param {string} currentPassword - Current password (plain text)
  * @param {string} newPassword - New password (plain text)
  * @returns {Object} Result object
- */
+ *
+ **/
+
 export const CHANGE_PASSWORD_SERVICES = async (userId, currentPassword, newPassword) => {
 	try {
 		// 1. Get user from database
@@ -135,11 +140,13 @@ export const CHANGE_PASSWORD_SERVICES = async (userId, currentPassword, newPassw
 	}
 };
 
-/*
+/**
+ *
  * Verify JWT token
  * @param {string} token - JWT token to verify
  * @returns {Object} Decoded token data or null if invalid
- */
+ *
+ **/
 export const VERIFY_TOKEN_SERVICES = (token) => {
 	try {
 		if (!token) {

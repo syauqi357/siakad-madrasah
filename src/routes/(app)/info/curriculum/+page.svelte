@@ -36,7 +36,7 @@
 
 	async function fetchAcademicYears() {
 		try {
-			const response = await API_FETCH('/routes/api/academic-year');
+			const response = await API_FETCH('/routes/api/academic-years');
 			if (!response.ok) throw new Error('Failed to load');
 			const result = await response.json();
 			academicYears = result.data || [];

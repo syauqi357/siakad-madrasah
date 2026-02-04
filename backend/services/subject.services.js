@@ -28,7 +28,7 @@ export const getSubjectById = (id) => {
 export const createSubject = (data) => {
 	const { name, subjectCode, description, kkm } = data;
 
-	const result = db
+	return db
 		.insert(Subjects)
 		.values({
 			name,
@@ -38,8 +38,6 @@ export const createSubject = (data) => {
 		})
 		.returning()
 		.get();
-
-	return result;
 };
 
 /**
@@ -51,7 +49,7 @@ export const createSubject = (data) => {
 export const updateSubject = (id, data) => {
 	const { name, subjectCode, description, kkm } = data;
 
-	const result = db
+	return db
 		.update(Subjects)
 		.set({
 			name,
@@ -62,8 +60,6 @@ export const updateSubject = (id, data) => {
 		.where(eq(Subjects.id, id))
 		.returning()
 		.get();
-
-	return result;
 };
 
 /**
@@ -72,13 +68,7 @@ export const updateSubject = (id, data) => {
  * @returns {Object} Deleted subject
  */
 export const deleteSubject = (id) => {
-	const result = db
-		.delete(Subjects)
-		.where(eq(Subjects.id, id))
-		.returning()
-		.get();
-
-	return result;
+	return db.delete(Subjects).where(eq(Subjects.id, id)).returning().get();
 };
 
 /**

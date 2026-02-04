@@ -39,7 +39,6 @@ function findFacilityImages(facilityType, subFolder = null) {
 
 		const files = fs.readdirSync(uploadPath);
 
-
 		return files
 			.filter((file) => /\.(svg|png|jpg|jpeg|gif|webp)$/i.test(file))
 			.map((file) => {

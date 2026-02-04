@@ -1,11 +1,9 @@
-import { db } from '../src/index.js';
+import { db, rombelStudents, studentTable } from '../src/index.js';
 import { rombel } from '../src/db/schema/classGroup.js';
-import { rombelStudents } from '../src/db/schema/rombelStudents.js';
 import { classes } from '../src/db/schema/classesDataTable.js';
 import { teachers } from '../src/db/schema/teacherUser.js';
 import { academicYear } from '../src/db/schema/academicYear.js';
-import { eq, sql, inArray, and } from 'drizzle-orm';
-import { studentTable } from '../src/db/schema/studentsdataTable.js';
+import { and, eq, inArray, sql } from 'drizzle-orm';
 
 /**
  * Get the active academic year ID, or create one if none exists
@@ -23,11 +21,7 @@ const getActiveAcademicYearId = () => {
 	}
 
 	// If no active year, get the first one
-	const first = db
-		.select({ id: academicYear.id })
-		.from(academicYear)
-		.limit(1)
-		.get();
+	const first = db.select({ id: academicYear.id }).from(academicYear).limit(1).get();
 
 	if (first) {
 		return first.id;
@@ -162,7 +156,8 @@ export const getAllRombels = () => {
 		.all();
 
 	// Now fetch student counts for each rombel (only active members)
-	const result = rombels.map((r) => {
+
+	return rombels.map((r) => {
 		const studentCount = db
 			.select({ count: sql`count(*)` })
 			.from(rombelStudents)
@@ -174,8 +169,6 @@ export const getAllRombels = () => {
 			totalSiswa: studentCount ? studentCount.count : 0
 		};
 	});
-
-	return result;
 };
 
 /**

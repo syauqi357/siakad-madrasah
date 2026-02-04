@@ -1,10 +1,10 @@
 import { db } from '../src/index.js';
-import { studentTable } from '../src/db/schema/studentsdataTable.js';
+import { studentTable } from '../src/index.js';
 import { studentFather } from '../src/db/schema/studentFather.js';
 import { studentMother } from '../src/db/schema/studentMother.js';
 import { studentWali } from '../src/db/schema/studentWali.js';
 import { studentAddress } from '../src/db/schema/studentAddress.js';
-import { rombelStudents } from '../src/db/schema/rombelStudents.js';
+import { rombelStudents } from '../src/index.js';
 import { rombel } from '../src/db/schema/classGroup.js';
 import { studentHistory } from '../src/db/schema/studentHistory.js';
 import { eq, count, isNull, or, and, sql, like } from 'drizzle-orm';
@@ -207,6 +207,7 @@ export const searchStudents = async (searchTerm, page = 1, limit = 10, status = 
 			localNis: studentTable.localNis,
 			name: studentTable.studentName,
 			gender: studentTable.gender,
+			originRegion: studentTable.originRegion,
 			status: studentTable.status,
 			className: rombel.name
 		})
@@ -561,6 +562,7 @@ export const getActiveStudents = async (page = 1, limit = 10) => {
 			nisn: studentTable.nisn,
 			name: studentTable.studentName,
 			gender: studentTable.gender,
+			originRegion: studentTable.originRegion,
 			status: studentTable.status,
 			className: rombel.name
 		})
@@ -589,6 +591,7 @@ export const getDropoutStudents = async (page = 1, limit = 10) => {
 			nisn: studentTable.nisn,
 			name: studentTable.studentName,
 			gender: studentTable.gender,
+			originRegion: studentTable.originRegion,
 			status: studentTable.status,
 			reason: studentHistory.reason,
 			mutasiType: studentHistory.mutasiType,
@@ -618,6 +621,7 @@ export const getGraduatedStudents = async (page = 1, limit = 10) => {
 			nisn: studentTable.nisn,
 			name: studentTable.studentName,
 			gender: studentTable.gender,
+			originRegion: studentTable.originRegion,
 			status: studentTable.status,
 			scores: studentHistory.scores,
 			completionDate: studentHistory.completionDate,

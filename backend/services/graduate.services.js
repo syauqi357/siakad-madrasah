@@ -1,10 +1,9 @@
-import { db } from '../src/index.js';
-import { studentTable } from '../src/db/schema/studentsdataTable.js';
+import { db, rombelStudents, studentTable } from '../src/index.js';
 import { studentHistory } from '../src/db/schema/studentHistory.js';
-import { rombelStudents } from '../src/db/schema/rombelStudents.js';
+// import {  } from '../src/db/schema/rombelStudents.js';
 import { rombel } from '../src/db/schema/classGroup.js';
 import { classes } from '../src/db/schema/classesDataTable.js';
-import { eq, and, count, sql, desc } from 'drizzle-orm';
+import { and, count, desc, eq, sql } from 'drizzle-orm';
 
 /**
  * Get all graduated students (alumni) with pagination and optional year filter
@@ -50,9 +49,7 @@ export const getGraduatedStudents = async ({ page = 1, limit = 10, year = null }
 		);
 	}
 
-	const data = await query.limit(limit).offset(offset);
-
-	return data;
+	return await query.limit(limit).offset(offset);
 };
 
 /**
@@ -115,7 +112,7 @@ export const countGraduates = async () => {
  * Returns: [{ year: '2024/2025', count: 45 }, ...]
  */
 export const countGraduatesByYear = async () => {
-	const result = await db
+	return db
 		.select({
 			year: studentHistory.graduationYear,
 			count: count()
@@ -124,8 +121,6 @@ export const countGraduatesByYear = async () => {
 		.where(eq(studentHistory.statusType, 'GRADUATE'))
 		.groupBy(studentHistory.graduationYear)
 		.orderBy(desc(studentHistory.graduationYear));
-
-	return result;
 };
 
 /**
@@ -269,11 +264,7 @@ export const bulkGraduateStudents = (students, commonData) => {
 				const { studentId, certificateNumber, finalGrade, scores } = studentData;
 
 				// Get student (synchronous)
-				const student = tx
-					.select()
-					.from(studentTable)
-					.where(eq(studentTable.id, studentId))
-					.get();
+				const student = tx.select().from(studentTable).where(eq(studentTable.id, studentId)).get();
 
 				if (!student) {
 					results.failed.push({

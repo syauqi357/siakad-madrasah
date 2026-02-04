@@ -10,6 +10,7 @@ import { eq, and, sql, ne } from 'drizzle-orm';
  * Get all class levels ordered by grade
  * Returns classes with their order (X=1, XI=2, XII=3, etc.)
  */
+
 export const getClassLevels = () => {
 	const classLevels = db
 		.select({

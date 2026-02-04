@@ -15,7 +15,7 @@
 	"author": "Syauqi Husin",
 	"license": "MIT",
 	"dependencies": {
-		"@libsql/client": "^0.15.15",
+		"@libsql/client": "^0.17.0",
 		"bcrypt": "^6.0.0",
 		"better-sqlite3": "^12.4.1",
 		"cookie-parser": "^1.4.7",
@@ -23,7 +23,7 @@
 		"dotenv": "^17.2.3",
 		"drizzle-orm": "^0.45.1",
 		"exceljs": "^4.4.0",
-		"express": "^4.21.2",
+		"express": "^5.2.1",
 		"express-rate-limit": "^8.2.1",
 		"express-slow-down": "^3.0.1",
 		"jsonwebtoken": "^9.0.3",

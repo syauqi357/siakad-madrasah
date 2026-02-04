@@ -1,14 +1,12 @@
-import { db } from '../src/index.js';
+import { db, rombelStudents, studentTable } from '../src/index.js';
 import { studentScores } from '../src/db/schema/studentScore.js';
-import { studentTable } from '../src/db/schema/studentsdataTable.js';
 import { assessmentType } from '../src/db/schema/assesmentType.js';
 import { Subjects } from '../src/db/schema/subjectTable.js';
 import { classSubject } from '../src/db/schema/classesSubjectTable.js';
 import { classes } from '../src/db/schema/classesDataTable.js';
 import { teachers } from '../src/db/schema/teacherUser.js';
-import { rombelStudents } from '../src/db/schema/rombelStudents.js';
 import { rombel } from '../src/db/schema/classGroup.js';
-import { eq, sql, inArray, and } from 'drizzle-orm';
+import { and, eq, inArray, sql } from 'drizzle-orm';
 import ExcelJS from 'exceljs';
 
 /**
@@ -313,7 +311,8 @@ export const getStudentScoreSummary = async (studentId, academicYearId = null) =
 	});
 
 	// Calculate totals for each subject
-	const summary = Array.from(subjectMap.values()).map((subject) => {
+
+	return Array.from(subjectMap.values()).map((subject) => {
 		const { total, average, weightedAverage } = calculateScoreTotals(subject.scores, typeWeightMap);
 		return {
 			...subject,
@@ -322,8 +321,6 @@ export const getStudentScoreSummary = async (studentId, academicYearId = null) =
 			weightedAverage
 		};
 	});
-
-	return summary;
 };
 
 /**
@@ -453,7 +450,8 @@ export const getRombelScoreReport = async (rombelId) => {
  * @param {number} classId
  * @param {number} assessmentTypeId
  * @returns {Promise<{successCount: number, errors: Array<{row: number, nisn: string, error: string}>}>}
- */
+ **/
+
 export const uploadBulkScoresFromPivotExcel = async (fileBuffer, classId, assessmentTypeId) => {
 	const workbook = new ExcelJS.Workbook();
 	await workbook.xlsx.load(fileBuffer);
