@@ -11,8 +11,6 @@ import {
 
 const router = express.Router();
 
-// --- Alumni/Graduate Routes ---
-
 // GET /graduates - List all alumni with pagination
 // Query params: page, limit, year
 router.get('/', getGraduates);

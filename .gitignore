@@ -15,6 +15,10 @@ Thumbs.db
 # Env
 backend/.env
 
+# build
+backend/build
+backend/dist
+
 backend/public/Profile/studentProfile/.jpg
 backend/public/Profile/studentProfile/.png
 backend/public/Profile/studentProfile/.webp

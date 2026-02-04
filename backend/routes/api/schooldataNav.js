@@ -3,7 +3,12 @@ import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
-import { getSchoolData, createSchoolData, updateSchoolData, uploadSchoolLogo } from '../../controllers/schoolController.js';
+import {
+	getSchoolData,
+	createSchoolData,
+	updateSchoolData,
+	uploadSchoolLogo
+} from '../../controllers/schoolController.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -25,7 +30,7 @@ const logoStorage = multer.diskStorage({
 		const uploadPath = path.join(__dirname, '../../public/upload/profilesch');
 		if (fs.existsSync(uploadPath)) {
 			const files = fs.readdirSync(uploadPath);
-			files.forEach(f => {
+			files.forEach((f) => {
 				if (/\.(svg|png|jpg|jpeg|gif|webp)$/i.test(f)) {
 					fs.unlinkSync(path.join(uploadPath, f));
 				}

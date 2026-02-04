@@ -13,13 +13,13 @@ import {
 
 const router = express.Router();
 
-// --- Dropdown endpoints (must be before /:id routes) ---
+// Dropdown endpoints (must be before /:id routes)
 router.get('/dropdown/classes', getClassesDropdown);
 router.get('/dropdown/subjects', getSubjectsDropdown);
 router.get('/dropdown/teachers', getTeachersDropdown);
 router.get('/unassigned/:classId', getUnassignedSubjects);
 
-// --- CRUD endpoints ---
+// CRUD endpoints
 // GET /class-subjects - List all (optional: ?classId=1)
 router.get('/', getAllClassSubjects);
 

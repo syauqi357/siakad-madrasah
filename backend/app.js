@@ -19,7 +19,7 @@ import academicYearRouter from './routes/api/academicYear.js'; // Import academi
 import curriculumRouter from './routes/api/curriculum.js'; // Import curriculumRouter
 import { auditLog } from './middlewares/middlewareAudit.js';
 import { GLOBAL_RATE_LIMIT } from './middlewares/globalRatelimit/rateLimiter.js';
-import { speedLimit } from './middlewares/throttleFeat/throttleLimit.js'; // MIDDLEWARE RATE LIMIT, THROTTLE and AUDIT LOGS
+// import { speedLimit } from './middlewares/throttleFeat/throttleLimit.js'; // MIDDLEWARE RATE LIMIT, THROTTLE and AUDIT LOGS
 
 // This line loads the environment variables from a .env file into process.env
 dotenv.config();
@@ -53,10 +53,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/upload', express.static(path.join(__dirname, 'upload')));
 app.use(auditLog);
 app.use(GLOBAL_RATE_LIMIT);
-// Serve static files from the '(public)' directory
 
+// Serve static files from the '(public)' directory
 // Serve static files from the build directory (Svelte SPA)
-const buildPath = path.join(__dirname, '../build');
+const buildPath = path.join(__dirname, 'build');
 app.use(express.static(buildPath));
 
 // 2. Use a more standard API route

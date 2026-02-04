@@ -9,11 +9,9 @@ import {
 
 const router = express.Router();
 
-// --- Academic Year Routes ---
 // POST /api/class-data/academic-year
 router.post('/academic-year', createAcademicYear);
 
-// --- Class Routes ---
 // GET /api/class-data/classes
 router.get('/classes', getClasses);
 
