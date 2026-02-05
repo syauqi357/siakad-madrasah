@@ -1,0 +1,60 @@
+{
+	"$schema": "https://raw.githubusercontent.com/electron-userland/electron-builder/master/packages/app-builder-lib/scheme.json",
+	"appId": "com.siakad.madrasah",
+	"productName": "SIAKAD Madrasah",
+	"directories": {
+		"output": "dist-electron",
+		"buildResources": "build-resources"
+	},
+	"files": [
+		"app.js",
+		"package.json",
+		".env",
+		"electron/**/*",
+		"build/**/*",
+		"src/**/*",
+		"services/**/*",
+		"controllers/**/*",
+		"routes/**/*",
+		"middlewares/**/*",
+		"utils/**/*",
+		"data/**/*",
+		"public/**/*",
+		"node_modules/**/*",
+		"!node_modules/.cache",
+		"!node_modules/.package-lock.json",
+		"siakad.db"
+	],
+	"win": {
+		"target": [
+			{
+				"target": "nsis",
+				"arch": ["x64"]
+			}
+		],
+		"icon": "public/favicon.ico",
+		"signAndEditExecutable": false
+	},
+	"forceCodeSigning": false,
+	"nsis": {
+		"oneClick": false,
+		"allowToChangeInstallationDirectory": true,
+		"createDesktopShortcut": true,
+		"createStartMenuShortcut": true,
+		"installerIcon": "build-resources/icon.ico",
+		"uninstallerIcon": "build-resources/icon.ico",
+		"installerHeader": "build-resources/installerHeader.bmp",
+		"installerSidebar": "build-resources/installerSidebar.bmp",
+		"shortcutName": "SIAKAD Madrasah"
+	},
+	"mac": {
+		"target": ["dmg", "zip"],
+		"category": "public.app-category.education"
+	},
+	"linux": {
+		"target": ["AppImage", "deb"],
+		"category": "Education"
+	},
+	"asar": false,
+	"npmRebuild": true
+}
