@@ -5,7 +5,8 @@
 	"main": "app.js",
 	"type": "module",
 	"scripts": {
-		"dev": "nodemon --watch app.js",
+		"dev": "nodemon app.js",
+		"start": "node app.js",
 		"seed": "",
 		"build": "tsc",
 		"test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
