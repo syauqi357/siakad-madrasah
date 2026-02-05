@@ -21,10 +21,10 @@ backend/build-resources
 backend/dist
 backend/dist-electron
 
-backend/public/Profile/studentProfile/.jpg
-backend/public/Profile/studentProfile/.png
-backend/public/Profile/studentProfile/.webp
-backend/public/Profile/studentProfile/.gif
+backend/public/Profile/studentProfile/*.jpg
+backend/public/Profile/studentProfile/*.png
+backend/public/Profile/studentProfile/*.webp
+backend/public/Profile/studentProfile/*.gif
 
 #backend/testerAPI
 
