@@ -1,8 +1,8 @@
 {
-	"name": "backend",
+	"name": "siakad-madrasah",
 	"version": "1.0.0",
-	"description": "",
-	"main": "app.js",
+	"description": "Sistem Informasi Akademik Madrasah",
+	"main": "electron/main.js",
 	"type": "module",
 	"scripts": {
 		"dev": "nodemon app.js",
@@ -11,13 +11,19 @@
 		"build": "tsc",
 		"test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
 		"db:generate": "drizzle-kit generate",
-		"db:reset": "rm -f sqlite.db && npm run db:migrate && npm run db:seed"
+		"db:reset": "rm -f sqlite.db && npm run db:migrate && npm run db:seed",
+		"electron:dev": "electron .",
+		"electron:rebuild": "electron-builder install-app-deps",
+		"electron:build": "electron-builder --config electron-builder.json",
+		"electron:build:win": "electron-builder --win --config electron-builder.json",
+		"electron:build:portable": "electron-builder --win portable --config electron-builder.json",
+		"postinstall": "electron-builder install-app-deps || echo 'rebuild skipped'"
 	},
 	"author": "Syauqi Husin",
 	"license": "MIT",
 	"dependencies": {
 		"@libsql/client": "^0.17.0",
-		"bcrypt": "^6.0.0",
+		"bcryptjs": "^3.0.3",
 		"better-sqlite3": "^12.4.1",
 		"cookie-parser": "^1.4.7",
 		"cors": "^2.8.5",
@@ -31,11 +37,13 @@
 		"multer": "^2.0.2"
 	},
 	"devDependencies": {
+		"@electron/rebuild": "^3.7.1",
 		"@types/cors": "^2.8.19",
 		"@types/express": "^5.0.5",
 		"@types/node": "^24.10.1",
 		"drizzle-kit": "^0.31.8",
 		"electron": "^40.1.0",
+		"electron-builder": "^25.1.8",
 		"jest": "^30.2.0",
 		"nodemon": "^3.1.11",
 		"tsx": "^4.21.0"
