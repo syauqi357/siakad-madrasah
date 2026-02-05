@@ -169,7 +169,7 @@
 				nisn: item.nisn || '-',
 				nama: item.name,
 				kelas: item.className || item.lastClassName || 'Belum Masuk Rombel',
-				gender: item.gender === 'L' || item.gender === 'Laki-laki' ? 'L' : 'P',
+				gender: item.gender === 'L' || item.gender === 'laki-laki' ? 'L' : 'P',
 				asal: item.originRegion || '-',
 				status: item.status || 'ACTIVE'
 			}));
