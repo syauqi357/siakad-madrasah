@@ -22,14 +22,16 @@ function getAppPaths() {
 			build: path.join(__dirname, '..', 'build')
 		};
 	} else {
-		// In production: files are in resources/app/, user data in AppData
+		// In production (asar: false): files are in resources/app/
 		const userDataPath = app.getPath('userData');
 		const appPath = path.join(process.resourcesPath, 'app');
 		return {
 			backend: appPath,
 			database: path.join(userDataPath, 'siakad.db'),
 			uploads: path.join(userDataPath, 'upload'),
-			build: path.join(appPath, 'build')
+			build: path.join(appPath, 'build'),
+			sourceDb: path.join(appPath, 'siakad.db'),
+			sourceUploads: path.join(appPath, 'public', 'upload')
 		};
 	}
 }
@@ -69,18 +71,22 @@ function initializeUserData() {
 
 		// Copy database if it doesn't exist in userData
 		if (!fs.existsSync(paths.database)) {
-			const sourceDb = path.join(process.resourcesPath, 'backend', 'siakad.db');
-			if (fs.existsSync(sourceDb)) {
-				fs.copyFileSync(sourceDb, paths.database);
+			console.log('Looking for database at:', paths.sourceDb);
+			if (fs.existsSync(paths.sourceDb)) {
+				fs.copyFileSync(paths.sourceDb, paths.database);
 				console.log('Database copied to:', paths.database);
+			} else {
+				console.error('Source database not found at:', paths.sourceDb);
 			}
 		}
 
 		// Create upload directories if they don't exist
 		if (!fs.existsSync(paths.uploads)) {
-			const sourceUploads = path.join(process.resourcesPath, 'backend', 'public', 'upload');
-			copyFolderSync(sourceUploads, paths.uploads);
-			console.log('Uploads copied to:', paths.uploads);
+			console.log('Looking for uploads at:', paths.sourceUploads);
+			if (fs.existsSync(paths.sourceUploads)) {
+				copyFolderSync(paths.sourceUploads, paths.uploads);
+				console.log('Uploads copied to:', paths.uploads);
+			}
 		}
 	}
 
@@ -113,10 +119,10 @@ async function startServer() {
 		// Dynamically import the Express app
 		const appPath = isDev
 			? path.join(__dirname, '..', 'app.js')
-			: path.join(process.resourcesPath, 'app.js');
+			: path.join(process.resourcesPath, 'app', 'app.js');
 
 		// Change working directory to backend folder
-		const workingDir = isDev ? path.join(__dirname, '..') : process.resourcesPath;
+		const workingDir = isDev ? path.join(__dirname, '..') : path.join(process.resourcesPath, 'app');
 		process.chdir(workingDir);
 
 		console.log('App path:', appPath);
@@ -151,7 +157,7 @@ function createWindow() {
 		},
 		icon: isDev
 			? path.join(__dirname, '..', 'public', 'favicon.ico')
-			: path.join(process.resourcesPath, 'backend', 'public', 'favicon.ico'),
+			: path.join(process.resourcesPath, 'app', 'public', 'favicon.ico'),
 		title: 'SIAKAD Madrasah',
 		show: false,
 		autoHideMenuBar: true

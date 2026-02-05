@@ -38,3 +38,74 @@ Ultimately, this project is now live and functional, helping others who face sim
 
 That is all I have to share here. I wanted to include this in the planning documentation. Hope you have a great day! :)
 
+---
+
+# Electron Desktop App Bundling
+
+This project supports building as a standalone Windows desktop application using Electron.
+
+## Quick Commands
+
+```bash
+cd backend
+
+# Test in development mode
+npm run electron:dev
+
+# Build Windows installer
+npm run electron:build:win
+```
+
+Output files will be in `backend/dist-electron/`.
+
+## Key Configuration Files
+
+| File | Purpose |
+|------|---------|
+| `electron/main.js` | Electron main process - starts Express server and creates window |
+| `electron/preload.cjs` | Secure IPC bridge for renderer (CommonJS) |
+| `electron-builder.json` | Build configuration for packaging |
+
+## Native Module Notes
+
+- **bcryptjs** is used instead of `bcrypt` (pure JS, no compilation needed)
+- **better-sqlite3** requires prebuilt binaries (electron-builder handles this)
+- Avoid paths with spaces when building (node-gyp issues)
+
+## NSIS Installer Customization
+
+### Required Images
+
+| Image | Size | Format | Purpose |
+|-------|------|--------|---------|
+| `icon.ico` | 256x256 (multi-size) | ICO | App icon & installer icon |
+| `installerHeader.bmp` | 150x57 px | BMP 24-bit | Top-right banner during install |
+| `installerSidebar.bmp` | 164x314 px | BMP 24-bit | Left sidebar on welcome/finish |
+
+### File Locations
+
+```
+backend/
+  build-resources/
+    icon.ico              # App & installer icon
+    installerHeader.bmp   # Top-right banner
+    installerSidebar.bmp  # Left sidebar
+```
+
+### Design Tips
+
+- **Header (150x57)**: Logo + app name, keep simple
+- **Sidebar (164x314)**: Vertical banner, logo at top, gradient or solid background
+- **Icon**: Include multiple sizes (16, 32, 48, 64, 128, 256) in the .ico file
+- Convert PNG to BMP using Paint, Photoshop, or online tools (save as 24-bit, no transparency)
+
+## Build Types Comparison
+
+| Type | Command | Output | Speed |
+|------|---------|--------|-------|
+| NSIS Installer | `npm run electron:build:win` | Setup .exe (installs once) | Fast after install |
+| Portable | `npm run electron:build:portable` | Single .exe | Slow (extracts every launch) |
+| Unpacked | (auto-generated) | `win-unpacked/` folder | Fastest (for testing) |
+
+**Recommendation**: Use NSIS installer for distribution - users install once and the app runs fast.
+
