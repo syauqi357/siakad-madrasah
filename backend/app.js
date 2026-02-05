@@ -126,3 +126,33 @@ app.listen(PORT, () => {
 	// 	jwt secret check
 	// 	console.log('✅ jwt secret:', process.env.JWT_SECRET);
 });
+
+/**
+ *
+ * # 1. Install new dependencies
+ *   npm install
+ *
+ *   # 2. Rebuild native modules for Electron
+ *   npm run electron:rebuild
+ *
+ *   # 3. Test in development mode
+ *   npm run electron:dev
+ *
+ *   If step 2 fails, you may need to install build tools:
+ *
+ *   # Windows - run as Administrator
+ *   npm install -g windows-build-tools
+ *
+ *   # Or install Visual Studio Build Tools manually
+ *
+ *   To Build Distributable
+ *
+ *   # Build Windows installer + portable
+ *   npm run electron:build:win
+ *
+ *   # Or just portable version
+ *   npm run electron:build:portable
+ *
+ *   Output will be in dist-electron/ folder.
+ *
+ * */

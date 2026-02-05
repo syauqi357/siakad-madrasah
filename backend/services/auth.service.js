@@ -1,7 +1,7 @@
 // import fs from 'fs';
 // import path from 'path';
 import jwt from 'jsonwebtoken';
-import bcrypt from 'bcrypt'; // bcrypt for password hashing
+import bcrypt from 'bcryptjs'; // bcryptjs for password hashing (pure JS, no native compilation)
 import { eq } from 'drizzle-orm'; // drizzle-orm for database queries
 import { users } from '../src/db/schema/user.js'; //schema user
 import { db } from '../src/index.js'; // database connection
