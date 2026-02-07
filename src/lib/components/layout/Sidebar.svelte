@@ -1,11 +1,12 @@
 <script lang="ts">
-	// Define the structure of a navigation item
+	import { slide, fade } from 'svelte/transition';
+	import { fly } from 'svelte/transition';
+	import { quintOut } from 'svelte/easing';
+
 	interface NavItem {
 		name: string;
 		icon?: string;
 		href: string;
-
-		// statement to declare the dropdown
 		hasDropdown?: boolean;
 		children?: Array<{
 			name: string;
@@ -14,7 +15,6 @@
 		}>;
 	}
 
-	// Props received from parent component
 	export let sidebarOpen: boolean;
 	export let navItems: NavItem[];
 	export let openDropdowns: Record<string, boolean> = {};
@@ -26,30 +26,32 @@
 
 <!-- Backdrop for mobile -->
 {#if sidebarOpen}
-	<div role="button" tabindex="0" aria-label="Close sidebar"
+	<div
+		role="button" tabindex="0" aria-label="Close sidebar"
 		class="fixed inset-0 z-30 bg-black/75 backdrop-blur-sm sm:hidden"
+		transition:fade={{ duration: 200 }}
 		on:click={() => (sidebarOpen = false)}
 		on:keydown={(e) => e.key === 'Escape' && (sidebarOpen = false)}
 	></div>
 {/if}
 
 <aside
-	class="fixed top-0 left-0 z-40 h-screen w-64 border-r border-neutral-500 bg-slate-100 pt-22 transition-transform {sidebarOpen
+	class="fixed top-0 left-0 z-40 h-screen w-64 border-r border-slate-200 bg-slate-50 pt-22 shadow-lg transition-transform {sidebarOpen
 		? 'translate-x-0'
 		: '-translate-x-full'} sm:translate-x-0"
 >
-	<div class="h-full overflow-y-auto bg-slate-100 px-3 pb-5">
-		<ul class="space-y-1 font-medium">
+	<div class="flex h-full flex-col overflow-y-auto px-3 pb-5">
+		<ul class="flex-1 space-y-1 font-medium">
 			{#each navItems as item (item.name)}
 				<li>
 					{#if item.hasDropdown && item.children}
 						<!-- Parent item with dropdown -->
 						<button
 							on:click={() => toggleDropdown(item.name)}
-							class="group flex w-full items-center justify-between rounded-lg p-2 text-sm text-slate-900 transition-all duration-200 hover:bg-slate-200 {openDropdowns[
+							class="group flex w-full items-center justify-between rounded-lg p-2 text-sm text-slate-600 transition-all duration-200 hover:bg-slate-100 hover:text-slate-900 {openDropdowns[
 								item.name
 							]
-								? 'bg-slate-200'
+								? 'bg-slate-100 text-slate-900 font-semibold'
 								: ''}"
 						>
 							<div class="flex items-center justify-center">
@@ -80,38 +82,37 @@
 							</span>
 						</button>
 
-						<!-- Dropdown menu with slide animation -->
-						<div
-							class="overflow-hidden transition-all duration-300 ease-in-out {openDropdowns[
-								item.name
-							]
-								? 'max-h-96 opacity-100'
-								: 'max-h-0 opacity-0'}"
-						>
-							<ul class="mt-2 ml-3 space-y-1 border-l-2 border-slate-300 pl-3">
-								{#each item.children as child (child.name)}
-									<li class="transform transition-all duration-200 hover:translate-x-1">
-										<a
-											href={child.href}
-											class="capitalize block rounded-lg p-2 text-sm text-slate-700 transition-all duration-200 hover:bg-slate-200 hover:font-medium hover:text-slate-900"
+						<!-- Dropdown menu -->
+						{#if openDropdowns[item.name]}
+							<div transition:slide={{ duration: 250, easing: quintOut }}>
+								<ul class="mt-1 ml-4 space-y-0.5 border-l border-slate-300 pl-3">
+									{#each item.children as child, i (child.name)}
+										<li
+											in:fly={{ x: -8, duration: 200, delay: 40 * i, easing: quintOut }}
+											class="transition-all duration-200 hover:translate-x-1"
 										>
-											<span>
-												{child.icon || ''}
-											</span>
-											{child.name}
-										</a>
-									</li>
-								{/each}
-							</ul>
-						</div>
+											<a
+												href={child.href}
+												class="capitalize block rounded-lg p-2 text-sm text-slate-500 transition-all duration-200 hover:bg-slate-100 hover:text-slate-900"
+											>
+												<span>
+													{child.icon || ''}
+												</span>
+												{child.name}
+											</a>
+										</li>
+									{/each}
+								</ul>
+							</div>
+						{/if}
 					{:else}
 						<!-- Regular menu item without dropdown -->
 						<a
 							href={item.href}
-							class="group flex items-center justify-between rounded-lg p-2 text-sm text-slate-900 transition-all duration-200 hover:translate-x-1 hover:bg-slate-200"
+							class="group flex items-center justify-between rounded-lg p-2 text-sm text-slate-600 transition-all duration-200 hover:bg-slate-100 hover:text-slate-900"
 						>
 							<div class="flex items-center justify-center">
-								<span class="h-6 w-6  transition-transform duration-200 group-hover:scale-110">
+								<span class="h-6 w-6 transition-transform duration-200 group-hover:scale-110">
 									{@html item.icon || ''}
 								</span>
 								<span class="ml-3">{item.name}</span>
@@ -123,10 +124,10 @@
 		</ul>
 
 		<!-- Additional Sidebar Section -->
-		<div class="mt-4 space-y-2 border-t border-neutral-500 pt-4">
+		<div class="mt-auto space-y-1 border-t border-slate-200 pt-4">
 			<a
 				href="/Documentations"
-				class="flex items-center rounded-lg p-2 text-sm text-neutral-400 transition-colors hover:bg-neutral-800"
+				class="flex items-center rounded-lg p-2 text-sm text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-900"
 			>
 				<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 					<path
@@ -140,7 +141,7 @@
 			</a>
 			<a
 				href="/support"
-				class="flex items-center rounded-lg p-2 text-sm text-neutral-400 transition-colors hover:bg-neutral-800"
+				class="flex items-center rounded-lg p-2 text-sm text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-900"
 			>
 				<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 					<path

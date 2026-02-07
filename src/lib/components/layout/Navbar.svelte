@@ -1,53 +1,29 @@
 <script lang="ts">
-	/*
-
-Summary of Changes:
-	1. Import the Logo: I added import logo from '$lib/assets/favicon.svg'; at the top of the script.
-        This makes the SVG available as a variable named logo which holds the correct (public) path to the image.
-	2. Update Initial Data: I changed logoUrl: '$lib/assets/favicon.svg' to logoUrl: logo.
-   	   This ensures that even before your API call finishes, the component will display the imported logo.
-	3. Handle Fetched Data: In the onMount function, I've updated the logic slightly.
-	   When you get data from your API, it will use the logoUrl from the API if it exists. If the API doesn't return a logoUrl,
-        it will fall back to using the logo you imported. This makes your component more robust.
-
-		// generate by gemini
-
-	*/
 	import { onMount } from 'svelte';
 	import { API_FETCH } from '$lib/api';
 	import NavigationScreen from './navigationScreen.svelte';
-
-	// importing logo by default
 	import logo from '$lib/assets/siakadLogo.svg';
 	import { goto } from '$app/navigation';
 
-	// Navigation screen state
 	let showNavScreen = false;
 
-	// sidebar function to trigger sidebar
 	export let sidebarOpen: boolean;
-
-	// User and logout function
 	export let user: any;
 	export let logout: () => void;
 
-	// api variable
 	const apiUrl = import.meta.env.VITE_API_URL;
 
-	// Define a type for our school data for better type-safety.
 	type SchoolData = {
 		name: string;
 		npsn: string;
 		logoUrl: string;
 	};
 
-	// Local state for user menu dropdown
 	let showUserMenu = false;
 
-	// placeholder loading set json control
 	let schoolData: SchoolData = {
-		name: '<div class="w-55 h-7 rounded-lg bg-slate-300 animate-pulse">SIKAMAD 1.0</div>',
-		npsn: '<div class="w-40 h-5 rounded-sm bg-slate-300 animate-pulse">2550405004</div>',
+		name: '',
+		npsn: '',
 		logoUrl: logo
 	};
 
@@ -56,20 +32,14 @@ Summary of Changes:
 
 	onMount(async () => {
 		try {
-			// endpoint app.js
-			// docs : pending
-
 			const response = await API_FETCH('/routes/api/schoolData');
-			//get API from backend using express from localhost:3000/api/schoolAdministrativeData and this is taking a variable const on the file
 
 			if (!response.ok) {
 				throw new Error(`HTTP error! status: ${response.status}`);
 			}
 
-			// fetch data dari appjs endpoint server
 			const fetchedData = await response.json();
 
-			// sukses ambil data dari appjs endpoint server
 			schoolData = {
 				name: fetchedData.name,
 				npsn: fetchedData.npsn,
@@ -84,12 +54,10 @@ Summary of Changes:
 		}
 	});
 
-	// Toggle user menu visibility
 	function toggleUserMenu() {
 		showUserMenu = !showUserMenu;
 	}
 
-	// Handle logout
 	function handleLogout() {
 		logout();
 	}
@@ -98,20 +66,19 @@ Summary of Changes:
 		goto('/admin/profile');
 	}
 
-	// Close menu when clicking outside
 	function closeUserMenu() {
 		showUserMenu = false;
 	}
 </script>
 
-<nav class="fixed top-0 z-50 w-full border-b border-neutral-400 bg-slate-100 sm:pr-12 sm:pl-12">
+<nav class="fixed top-0 z-50 w-full border-b border-slate-200 bg-slate-50 shadow-sm sm:px-12">
 	<div class="px-3 py-3 lg:px-5 lg:pl-3">
 		<div class="flex items-center justify-between">
-			<div class="flex items-center justify-start">
-				<!-- Toggle sidebar button-->
+			<div class="flex items-center gap-2">
+				<!-- Toggle sidebar (mobile) -->
 				<button
 					on:click={() => (sidebarOpen = !sidebarOpen)}
-					class="inline-flex items-center rounded-lg p-2 text-sm text-neutral-400 hover:bg-neutral-200 focus:ring-2 focus:ring-neutral-300 focus:outline-none sm:hidden"
+					class="inline-flex items-center rounded-lg p-2 text-sm text-slate-500 hover:bg-slate-200 focus:ring-2 focus:ring-slate-300 focus:outline-none sm:hidden"
 				>
 					<span class="sr-only">Toggle sidebar</span>
 					<svg class="h-6 w-6" fill="currentColor" viewBox="0 0 20 20">
@@ -123,42 +90,35 @@ Summary of Changes:
 					</svg>
 				</button>
 
-				<!-- nama sekolah dan logo -->
-				<a href="/" class="ml-2 flex items-center gap-4 md:mr-24">
-					<!-- profile school data -->
-					<div class=" flex h-12 w-12 shrink-0 items-center justify-center rounded-sm">
-						<!-- logic and layout to put the data fetch up -->
+				<!-- School branding -->
+				<a href="/" class="flex items-center gap-3">
+					<div class="flex h-10 w-10 shrink-0 items-center justify-center sm:h-12 sm:w-12">
 						{#if schoolData.logoUrl}
 							<img src={schoolData.logoUrl} alt="School Logo" class="h-full w-full object-cover" />
-						{:else}
-							<!-- Placeholder if no logo -->
-							<!-- use svg :) -->
 						{/if}
 					</div>
 
-					<!-- nama sekolah and npsn number -->
-					<div class="flex flex-col justify-center">
-						<!-- school name -->
-						<span class="mb-0.3 text-md font-semibold text-black sm:text-xl">
-							{@html schoolData.name}
-							<!-- <div class="w-55 h-7 rounded-lg bg-slate-300 animate-pulse"></div> -->
-						</span>
-						<span class="text-sm text-black">
-							<!-- npsn layout positioning -->
-							<div class="flex flex-row items-center gap-2 p-0.5 text-xs uppercase sm:text-sm">
+					<div class="flex flex-col">
+						{#if loading}
+							<div class="h-5 w-36 animate-pulse rounded bg-slate-200 sm:h-6 sm:w-52"></div>
+							<div class="mt-1.5 h-4 w-24 animate-pulse rounded bg-slate-200 sm:w-32"></div>
+						{:else}
+							<span class="text-sm font-semibold text-slate-900 sm:text-lg leading-tight">
+								{schoolData.name}
+							</span>
+							<div class="mt-0.5 flex items-center gap-1.5 text-xs uppercase text-slate-500">
 								npsn :
-								<!-- school npsn number -->
-								<div class="rounded-md border border-slate-400 bg-slate-300 p-0.5 pr-2 pl-2">
-									{@html schoolData.npsn}
-								</div>
+								<span class="rounded border border-slate-300 bg-slate-100 px-1.5 py-0.5 text-xs font-medium text-slate-600">
+									{schoolData.npsn}
+								</span>
 							</div>
-						</span>
+						{/if}
 					</div>
 				</a>
 			</div>
 
 			<!-- Quick Navigation & User Profile -->
-			<div class="relative flex items-center  gap-2">
+			<div class="relative flex items-center gap-2">
 				<!-- Quick Navigation Button -->
 				<button
 					on:click={() => (showNavScreen = true)}
@@ -177,14 +137,12 @@ Summary of Changes:
 					<span class="hidden text-sm font-medium md:block">Menu</span>
 				</button>
 
-				<!-- Divider -->
 				<div class="hidden h-6 w-px bg-slate-300 md:block"></div>
-				<!-- aria label menurut svelte harus ada : line 41 -->
-				<!-- title harus ada menurut svelte : line 42 -->
-				<!-- transition hover  duration-50 ease-in docs : https://tailwindcss.com/docs/transition-duration -->
+
+				<!-- User profile button -->
 				<button
 					on:click={toggleUserMenu}
-					class="flex items-center gap-3 rounded-lg p-2 text-neutral-600 transition-colors duration-50 ease-in hover:bg-slate-200"
+					class="flex items-center gap-3 rounded-lg p-2 text-slate-600 transition-colors hover:bg-slate-200"
 					aria-label="Open user menu"
 					title="Open user menu"
 				>
@@ -205,17 +163,16 @@ Summary of Changes:
 					</svg>
 					{#if user}
 						<div class="hidden flex-col text-left text-sm leading-tight sm:flex">
-							<span class="font-medium text-black">{user.username || 'User'}</span>
-							<span class="text-xs text-neutral-600">{user.role || 'Role'}</span>
+							<span class="font-medium text-slate-900">{user.username || 'User'}</span>
+							<span class="text-xs text-slate-500">{user.role || 'Role'}</span>
 						</div>
 					{/if}
 				</button>
 
 				<!-- User Menu Dropdown -->
 				{#if showUserMenu}
-					<!-- Invisible backdrop to close menu when clicking outside -->
 					<div
-						aria-label="pop up user menu"
+						aria-label="Close user menu"
 						on:click={closeUserMenu}
 						on:keydown={(e) => e.key === 'Escape' && closeUserMenu()}
 						role="button"
@@ -224,16 +181,14 @@ Summary of Changes:
 					></div>
 
 					<div
-						class="absolute top-full right-0 z-50 mt-2 w-52 overflow-hidden rounded-lg border border-neutral-200 bg-white shadow-lg"
+						class="absolute top-full right-0 z-50 mt-2 w-52 overflow-hidden rounded-lg border border-slate-200 bg-white shadow-lg"
 					>
 						<!-- Header -->
-						<div
-							class="flex items-center justify-between border-b border-neutral-100 bg-neutral-50 px-4 py-2.5"
-						>
-							<p class="text-sm font-semibold text-neutral-800">Menu</p>
+						<div class="flex items-center justify-between border-b border-slate-100 bg-slate-50 px-4 py-2.5">
+							<p class="text-sm font-semibold text-slate-800">Menu</p>
 							<button
 								on:click={closeUserMenu}
-								class="rounded p-1 text-neutral-400 transition-colors hover:bg-neutral-200 hover:text-neutral-600"
+								class="rounded p-1 text-slate-400 transition-colors hover:bg-slate-200 hover:text-slate-600"
 								aria-label="Close menu"
 								title="Close menu"
 							>
@@ -250,15 +205,15 @@ Summary of Changes:
 
 						<!-- User Info -->
 						{#if user}
-							<div class="border-b border-neutral-100 px-4 py-3">
-								<p class="text-sm font-semibold text-neutral-900">
+							<div class="border-b border-slate-100 px-4 py-3">
+								<p class="text-sm font-semibold text-slate-900">
 									{user.username || 'User'}
 								</p>
-								<p class="mt-0.5 text-xs text-neutral-500">
+								<p class="mt-0.5 text-xs text-slate-500">
 									{user.email || 'N/A'}
 								</p>
-								<p class="mt-1.5 text-xs text-neutral-500">
-									Sebagai: <span class="font-medium text-neutral-700 capitalize">{user.role}</span>
+								<p class="mt-1.5 text-xs text-slate-500">
+									Sebagai: <span class="font-medium capitalize text-slate-700">{user.role}</span>
 								</p>
 							</div>
 						{/if}
@@ -267,7 +222,7 @@ Summary of Changes:
 						<div class="flex flex-col py-1">
 							<button
 								on:click={handleAccount}
-								class="flex w-full items-center gap-3 px-4 py-2.5 text-left text-sm text-neutral-700 transition-colors hover:bg-neutral-100"
+								class="flex w-full items-center gap-3 px-4 py-2.5 text-left text-sm text-slate-700 transition-colors hover:bg-slate-100"
 							>
 								<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 									<path
@@ -301,5 +256,4 @@ Summary of Changes:
 	</div>
 </nav>
 
-<!-- Navigation Screen Modal -->
 <NavigationScreen bind:show={showNavScreen} on:close={() => (showNavScreen = false)} />

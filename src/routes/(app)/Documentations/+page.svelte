@@ -15,7 +15,6 @@
 		setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 100);
 	}
 
-	// Extract table of contents from HTML content
 	function extractTOC() {
 		if (!selectedDoc?.content) {
 			tableOfContents = [];
@@ -37,7 +36,6 @@
 		});
 	}
 
-	// Add IDs to headings in rendered content
 	function processContent(html: string): string {
 		const parser = new DOMParser();
 		const doc = parser.parseFromString(html, 'text/html');
@@ -65,15 +63,15 @@
 	$: processedContent = selectedDoc ? processContent(selectedDoc.content) : '';
 </script>
 
-<div class="min-h-screen bg-slate-50">
+<div class="min-h-screen bg-slate-50 font-inter">
 	<!-- Top Bar -->
-	<div class="sticky top-20 z-40 border-b border-slate-200 bg-white/80 backdrop-blur-lg">
-		<div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
+	<div class="sticky top-20 z-40 border-b border-slate-200 bg-white/90 backdrop-blur-md">
+		<div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6">
 			<div class="flex items-center gap-3">
 				<div
-					class="flex h-9 w-9 items-center justify-center rounded-lg bg-linear-to-br from-blue-500 to-blue-600 text-white shadow-sm"
+					class="flex h-8 w-8 items-center justify-center rounded-md bg-blue-600 text-white"
 				>
-					<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+					<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 						<path
 							stroke-linecap="round"
 							stroke-linejoin="round"
@@ -83,7 +81,7 @@
 					</svg>
 				</div>
 				<div>
-					<h1 class="text-lg font-bold text-slate-800">Dokumentasi</h1>
+					<h1 class="text-base font-semibold text-slate-900">Dokumentasi</h1>
 					<p class="text-xs text-slate-500">SIAKAD Madrasah</p>
 				</div>
 			</div>
@@ -91,7 +89,7 @@
 			<!-- Mobile Menu Toggle -->
 			<button
 				on:click={() => (isMobileMenuOpen = !isMobileMenuOpen)}
-				class="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-600 shadow-sm transition-all hover:bg-slate-50 md:hidden"
+				class="flex items-center gap-2 rounded-md border border-slate-200 px-3 py-1.5 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-50 md:hidden"
 			>
 				<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 					<path
@@ -106,7 +104,7 @@
 
 			<!-- Doc count badge -->
 			<div class="hidden items-center gap-2 md:flex">
-				<span class="rounded-full bg-blue-100 px-3 py-1 text-xs font-medium text-blue-700">
+				<span class="rounded-md bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-600">
 					{data.docs.length} Dokumen
 				</span>
 			</div>
@@ -116,7 +114,7 @@
 	<!-- Mobile Menu Dropdown -->
 	{#if isMobileMenuOpen}
 		<div
-			class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm md:hidden"
+			class="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm md:hidden"
 			transition:fade={{ duration: 150 }}
 			on:click={() => (isMobileMenuOpen = false)}
 			on:keydown={(e) => e.key === 'Escape' && (isMobileMenuOpen = false)}
@@ -124,7 +122,7 @@
 			tabindex="-1"
 		>
 			<div
-				class="absolute top-24 right-4 left-4 max-h-[70vh] overflow-y-auto rounded-xl border border-slate-200 bg-white p-4 shadow-2xl"
+				class="absolute top-24 right-4 left-4 max-h-[70vh] overflow-y-auto rounded-lg border border-slate-200 bg-white p-4 shadow-xl"
 				transition:slide={{ duration: 200 }}
 				on:click|stopPropagation
 				on:keydown|stopPropagation
@@ -134,9 +132,9 @@
 				<div class="mb-3 flex items-center justify-between">
 					<p class="text-sm font-semibold text-slate-800">Pilih Dokumen</p>
 					<button
-						aria-label="dropdown"
+						aria-label="Close menu"
 						on:click={() => (isMobileMenuOpen = false)}
-						class="rounded-lg p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-600"
+						class="rounded-md p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-600"
 					>
 						<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 							<path
@@ -148,11 +146,11 @@
 						</svg>
 					</button>
 				</div>
-				<div class="space-y-1">
+				<div class="space-y-0.5">
 					{#each data.docs as doc}
 						<button
 							on:click={() => selectDoc(doc)}
-							class="flex w-full items-center gap-3 rounded-lg px-3 py-3 text-left transition-all
+							class="flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-left transition-colors
 							{selectedDoc?.filename === doc.filename
 								? 'bg-blue-50 text-blue-700'
 								: 'text-slate-600 hover:bg-slate-50'}"
@@ -181,28 +179,28 @@
 	{/if}
 
 	<!-- Main Layout -->
-	<div class="mx-auto max-w-7xl px-4 py-6">
-		<div class="flex gap-8">
+	<div class="mx-auto max-w-7xl px-4 py-6 sm:px-6">
+		<div class="flex gap-6 lg:gap-8">
 			<!-- Sidebar - Desktop -->
-			<aside class="hidden w-64 shrink-0 md:block">
-				<div class="sticky top-36">
+			<aside class="hidden w-56 shrink-0 md:block lg:w-64">
+				<div class="sticky top-36 space-y-6">
 					<!-- Document List -->
-					<div class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-						<p class="mb-3 text-xs font-semibold tracking-wider text-slate-400 uppercase">
+					<div>
+						<p class="mb-2 px-2 text-xs font-semibold tracking-wider text-slate-400 uppercase">
 							Dokumen
 						</p>
-						<nav class="space-y-1">
+						<nav class="space-y-0.5">
 							{#each data.docs as doc}
 								<button
 									on:click={() => selectDoc(doc)}
-									class="group flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm transition-all
+									class="group flex w-full items-center gap-2 rounded-md px-2.5 py-2 text-left text-sm transition-colors
 									{selectedDoc?.filename === doc.filename
-										? 'bg-blue-500 text-white shadow-sm'
-										: 'text-slate-600 hover:bg-slate-100'}"
+										? 'bg-blue-50 font-semibold text-blue-700'
+										: 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'}"
 								>
 									<svg
 										class="h-4 w-4 shrink-0 {selectedDoc?.filename === doc.filename
-											? 'text-blue-200'
+											? 'text-blue-500'
 											: 'text-slate-400'}"
 										fill="none"
 										viewBox="0 0 24 24"
@@ -215,7 +213,7 @@
 											d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
 										/>
 									</svg>
-									<span class="truncate font-medium">{doc.title}</span>
+									<span class="truncate">{doc.title}</span>
 								</button>
 							{/each}
 						</nav>
@@ -223,18 +221,18 @@
 
 					<!-- Table of Contents -->
 					{#if tableOfContents.length > 0}
-						<div class="mt-4 rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-							<p class="mb-3 text-xs font-semibold tracking-wider text-slate-400 uppercase">
+						<div class="border-t border-slate-200 pt-4">
+							<p class="mb-2 px-2 text-xs font-semibold tracking-wider text-slate-400 uppercase">
 								Daftar Isi
 							</p>
-							<nav class="space-y-1">
+							<nav class="space-y-0.5">
 								{#each tableOfContents as item}
 									<button
 										on:click={() => scrollToHeading(item.id)}
-										class="block w-full truncate rounded px-2 py-1 text-left text-sm transition-all hover:bg-slate-100
+										class="block w-full truncate rounded-md px-2.5 py-1.5 text-left text-sm transition-colors hover:bg-slate-100
 										{item.level === 1 ? 'font-medium text-slate-700' : ''}
-										{item.level === 2 ? 'pl-4 text-slate-600' : ''}
-										{item.level === 3 ? 'pl-6 text-xs text-slate-500' : ''}
+										{item.level === 2 ? 'pl-5 text-slate-500' : ''}
+										{item.level === 3 ? 'pl-8 text-xs text-slate-400' : ''}
 										{activeHeading === item.id ? 'bg-blue-50 text-blue-600' : ''}"
 									>
 										{item.text}
@@ -249,9 +247,9 @@
 			<!-- Main Content -->
 			<main class="min-w-0 flex-1">
 				{#if selectedDoc}
-					<article class="rounded-xl border border-slate-200 bg-white shadow-sm">
+					<article class="rounded-lg border border-slate-200 bg-white">
 						<!-- Document Header -->
-						<div class="border-b border-slate-100 px-6 py-5 md:px-8">
+						<div class="border-b border-slate-100 px-6 py-5 sm:px-8">
 							<div class="flex items-center gap-2 text-sm text-slate-400">
 								<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 									<path
@@ -263,13 +261,13 @@
 								</svg>
 								<span>{selectedDoc.filename}</span>
 							</div>
-							<h1 class="mt-2 text-2xl font-bold text-slate-800 md:text-3xl">
+							<h1 class="mt-2 text-xl font-bold text-slate-900 sm:text-2xl">
 								{selectedDoc.title}
 							</h1>
 						</div>
 
 						<!-- Document Content -->
-						<div class="px-6 py-6 md:px-8 md:py-8">
+						<div class="px-6 py-6 sm:px-8 sm:py-8">
 							<div
 								class="prose max-w-none prose-slate
 								prose-headings:scroll-mt-24
@@ -279,71 +277,70 @@
 								prose-h1:border-b
 								prose-h1:border-slate-200
 								prose-h1:pb-3
-								prose-h1:text-2xl
+								prose-h1:text-xl
 								prose-h2:mt-8
-								prose-h2:mb-4
-								prose-h2:text-xl
+								prose-h2:mb-3
+								prose-h2:text-lg
 								prose-h3:mt-6
-								prose-h3:text-lg
+								prose-h3:text-base
 								prose-p:leading-relaxed
 								prose-p:text-slate-600
 								prose-a:font-medium
 								prose-a:text-blue-600
 								prose-a:no-underline
 								hover:prose-a:underline
-								prose-blockquote:rounded-r-lg
 								prose-blockquote:border-l-blue-500
-
+								prose-blockquote:rounded-r-md
 								prose-blockquote:py-1
 								prose-blockquote:text-slate-600
 								prose-strong:text-slate-700
 								prose-code:rounded
-
 								prose-code:px-1.5
 								prose-code:py-0.5
 								prose-code:text-sm
 								prose-code:font-medium
-								prose-code:text-slate-900
+								prose-code:text-slate-800
 								prose-code:before:content-none
 								prose-code:after:content-none
-								prose-pre:rounded-xl
+								prose-pre:rounded-lg
 								prose-pre:border
-								prose-pre:border-slate-700
-								prose-pre:bg-slate-100
-								prose-pre:shadow-lg
+								prose-pre:border-slate-200
+								prose-pre:bg-slate-50
+								prose-pre:shadow-none
 								prose-ol:text-slate-600
 								prose-ul:text-slate-600
 								prose-li:marker:text-slate-400
 								prose-table:overflow-hidden
-								prose-table:rounded-lg
+								prose-table:rounded-md
 								prose-table:border
 								prose-table:border-slate-200
 								prose-th:border-b
 								prose-th:border-slate-200
 								prose-th:bg-slate-50
 								prose-th:px-4
-								prose-th:py-3
+								prose-th:py-2.5
 								prose-th:text-left
+								prose-th:text-sm
 								prose-th:font-semibold
 								prose-th:text-slate-700
 								prose-td:border-b
 								prose-td:border-slate-100
 								prose-td:px-4
-								prose-td:py-3
-								prose-hr:border-slate-200
-							"
+								prose-td:py-2.5
+								prose-td:text-sm
+								prose-hr:border-slate-200"
 							>
 								{@html processedContent}
 							</div>
 						</div>
 
 						<!-- Document Footer -->
-						<div class="border-t border-slate-100 px-6 py-4 md:px-8">
+						<div class="border-t border-slate-100 px-6 py-3 sm:px-8">
 							<div class="flex items-center justify-between text-sm text-slate-400">
 								<span>SIAKAD Madrasah Documentation</span>
 								<button
 									on:click={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-									class="flex items-center gap-1 rounded-lg px-3 py-1 transition-all hover:bg-slate-100 hover:text-slate-600"
+									class="flex items-center gap-1 rounded-md px-2 py-1 transition-colors hover:bg-slate-100 hover:text-slate-600"
 								>
 									<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 										<path
@@ -361,11 +358,11 @@
 				{:else}
 					<!-- Empty State -->
 					<div
-						class="flex flex-col items-center justify-center rounded-xl border border-dashed border-slate-300 bg-white py-20 text-center"
+						class="flex flex-col items-center justify-center rounded-lg border border-dashed border-slate-300 py-20 text-center"
 					>
-						<div class="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-slate-100">
+						<div class="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-slate-100">
 							<svg
-								class="h-8 w-8 text-slate-400"
+								class="h-7 w-7 text-slate-400"
 								fill="none"
 								viewBox="0 0 24 24"
 								stroke="currentColor"
@@ -378,7 +375,7 @@
 								/>
 							</svg>
 						</div>
-						<h3 class="text-lg font-semibold text-slate-700">Tidak ada dokumen</h3>
+						<h3 class="text-base font-semibold text-slate-700">Tidak ada dokumen</h3>
 						<p class="mt-1 text-sm text-slate-500">Pilih dokumen dari menu untuk mulai membaca</p>
 					</div>
 				{/if}

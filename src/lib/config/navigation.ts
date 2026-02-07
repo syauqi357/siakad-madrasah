@@ -47,7 +47,7 @@ export const navigationConfig: Record<UserRole, NavItem[]> = {
 			children: [
 				{ name: 'daftar siswa', icon: '', href: '/siswa' },
 				{ name: 'Alumni', href: '/siswa/alumni' },
-				{ name: 'Mutasi keluar', href: '/siswa/mutasi-keluar' },
+				{ name: 'Mutasi keluar', href: '/siswa/mutasi' },
 				{ name: 'Mutasi masuk', href: '/siswa/mutasi-masuk' },
 				{ name: 'manajemen Kelas', href: '/siswa/Kelas' },
 				{ name: 'Siswa Ganda', href: '/siswa/siswa-ganda' },
