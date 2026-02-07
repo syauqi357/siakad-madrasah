@@ -1,11 +1,8 @@
 <script lang="ts">
-	import AddIcon from '$lib/components/icons/addIcon.svelte';
-	import ArrowLeft from '$lib/components/icons/arrow_left.svelte';
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
-	import { API_FETCH } from '$lib/api'; // Use the correct API fetcher
+	import { API_FETCH } from '$lib/api';
 
-	// --- Interfaces ---
 	interface Student {
 		id: number;
 		name: string;
@@ -21,14 +18,12 @@
 		fullName: string;
 	}
 
-	// --- Component State ---
 	let students: Student[] = [];
 	let classes: ClassData[] = [];
 	let teachers: Teacher[] = [];
 	let selectedStudents: number[] = [];
 	let isLoading = true;
 
-	// --- Form Data State ---
 	let formData = {
 		tahun_ajaran: '2025/2026 Genap',
 		tingkat_kelas: '',
@@ -40,10 +35,8 @@
 		student_capacity: 30
 	};
 
-	// --- Lifecycle & Data Fetching ---
 	onMount(async () => {
 		try {
-			// Use API_FETCH with relative paths.
 			const [studentRes, classRes, teacherRes] = await Promise.all([
 				API_FETCH('/routes/api/studentDataSet/lite'),
 				API_FETCH('/routes/api/class-data/classes'),
@@ -59,7 +52,7 @@
 
 			if (classRes.ok) {
 				const data = await classRes.json();
-				classes = data.data || data; // Handle { success: true, data: [...] } or direct array
+				classes = data.data || data;
 			} else {
 				console.error('Failed to fetch classes:', classRes.statusText);
 			}
@@ -78,7 +71,6 @@
 		}
 	});
 
-	// --- Event Handlers ---
 	function toggleAll(event: Event) {
 		const target = event.target as HTMLInputElement;
 		if (target.checked) {
@@ -86,10 +78,6 @@
 		} else {
 			selectedStudents = [];
 		}
-	}
-
-	function backtomain() {
-		goto('/rombel');
 	}
 
 	async function handleSubmit() {
@@ -127,238 +115,235 @@
 		}
 	}
 
-	// --- Reactive Statements ---
 	$: allSelected = students.length > 0 && selectedStudents.length === students.length;
 	$: isCapacityFull = selectedStudents.length >= formData.student_capacity;
 </script>
 
-<div class="mx-8">
-	<button
-		on:click={backtomain}
-		class="text-md mb-6 flex items-center justify-center gap-2 rounded-sm bg-blue-500 px-5 py-2 text-blue-50 capitalize"
-	>
-		<ArrowLeft /> back
-	</button>
-</div>
-
-<div class="mb-20 grid min-h-screen w-full grid-cols-1 gap-3 px-1 md:grid-cols-2 md:px-7">
-	<!-- Form Section -->
-	<div class="h-fit rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-		<h2 class="mb-6 border-b pb-2 text-xl font-bold text-gray-800">Tambah Rombongan Belajar</h2>
-
-		<div class="grid grid-cols-1 gap-6 md:grid-cols-2">
-			<!-- Tahun Ajaran -->
-			<div class="relative">
-				<input
-					type="text"
-					id="tahun_ajaran"
-					bind:value={formData.tahun_ajaran}
-					class="peer block w-full rounded-md border border-gray-300 bg-transparent px-3 pt-4 pb-2.5 text-sm text-gray-900 focus:border-blue-600 focus:ring-0 focus:outline-none"
-					placeholder=" "
-				/>
-				<label
-					for="tahun_ajaran"
-					class="absolute top-2 left-1 z-10 origin-left -translate-y-4 scale-75 transform bg-white px-2 text-sm text-gray-500 duration-75 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-blue-600"
-					>Tahun Ajaran</label
+<div class="min-h-screen px-4 py-8 md:px-8">
+	<div class="mx-auto max-w-6xl">
+		<!-- Header -->
+		<div class="mb-6 flex items-center justify-between">
+			<div>
+				<button
+					on:click={() => goto('/rombel')}
+					class="mb-4 inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3.5 py-2 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-50 hover:text-slate-800"
 				>
+					<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+					</svg>
+					Kembali
+				</button>
+				<h1 class="text-2xl font-bold text-slate-900">Tambah Rombel</h1>
+				<p class="mt-0.5 text-sm text-slate-500">Buat rombongan belajar baru dan pilih siswa</p>
 			</div>
-
-			<!-- Tingkat Kelas -->
-			<div class="relative">
-				<select
-					id="tingkat_kelas"
-					bind:value={formData.tingkat_kelas}
-					class="peer block w-full rounded-md border border-gray-300 bg-transparent px-3 pt-4 pb-2.5 text-sm text-gray-900 focus:border-blue-600 focus:ring-0 focus:outline-none"
-				>
-					<option value="" disabled selected>Pilih Tingkat</option>
-					{#each classes as cls}
-						<option value={cls.id}>{cls.className}</option>
-					{/each}
-				</select>
-				<label
-					for="tingkat_kelas"
-					class="absolute top-2 left-1 z-10 origin-left -translate-y-4 scale-75 transform bg-white px-2 text-sm text-gray-500 duration-75 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-blue-600"
-					>Tingkat Kelas</label
-				>
-			</div>
-
-			<!-- Nama Rombel -->
-			<div class="relative">
-				<input
-					type="text"
-					id="nama_rombel"
-					bind:value={formData.nama_rombel}
-					class="peer block w-full rounded-md border border-gray-300 bg-transparent px-3 pt-4 pb-2.5 text-sm text-gray-900 focus:border-blue-600 focus:ring-0 focus:outline-none"
-					placeholder=" "
-				/>
-				<label
-					for="nama_rombel"
-					class="absolute top-2 left-1 z-10 origin-left -translate-y-4 scale-75 transform bg-white px-2 text-sm text-gray-500 duration-75 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-blue-600 after:ml-0.5 after:text-red-500 after:content-['*']"
-					>Nama Rombel</label
-				>
-			</div>
-
-			<!-- Wali Kelas -->
-			<div class="relative">
-				<select
-					id="wali_kelas"
-					bind:value={formData.wali_kelas}
-					class="peer block w-full rounded-md border border-gray-300 bg-transparent px-3 pt-4 pb-2.5 text-sm text-gray-900 focus:border-blue-600 focus:ring-0 focus:outline-none"
-				>
-					<option value="" disabled selected>Pilih Wali Kelas</option>
-					{#each teachers as teacher}
-						<option value={teacher.id}>{teacher.fullName}</option>
-					{/each}
-				</select>
-				<label
-					for="wali_kelas"
-					class="absolute top-2 left-1 z-10 origin-left -translate-y-4 scale-75 transform bg-white px-2 text-sm text-gray-500 duration-75 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-blue-600"
-					>Wali Kelas</label
-				>
-			</div>
-
-			<!-- Nama Ruangan -->
-			<div class="relative">
-				<select
-					id="nama_ruangan"
-					bind:value={formData.nama_ruangan}
-					class="peer block w-full rounded-md border border-gray-300 bg-transparent px-3 pt-4 pb-2.5 text-sm text-gray-900 focus:border-blue-600 focus:ring-0 focus:outline-none"
-				>
-					<option value="" disabled selected>Pilih Ruangan</option>
-					<option value="R01">Ruang 01</option>
-					<option value="R02">Ruang 02</option>
-				</select>
-				<label
-					for="nama_ruangan"
-					class="absolute top-2 left-1 z-10 origin-left -translate-y-4 scale-75 transform bg-white px-2 text-sm text-gray-500 duration-75 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-blue-600"
-					>Nama Ruangan</label
-				>
-			</div>
-
-			<!-- Kurikulum -->
-			<div class="relative">
-				<input
-					type="text"
-					id="kurikulum"
-					bind:value={formData.kurikulum}
-					class="peer block w-full rounded-md border border-gray-300 bg-transparent px-3 pt-4 pb-2.5 text-sm text-gray-900 focus:border-blue-600 focus:ring-0 focus:outline-none"
-					placeholder=" "
-				/>
-				<label
-					for="kurikulum"
-					class="absolute top-2 left-1 z-10 origin-left -translate-y-4 scale-75 transform bg-white px-2 text-sm text-gray-500 duration-75 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-blue-600"
-					>Kurikulum</label
-				>
-			</div>
-
-			<!-- Jenis Rombel -->
-			<div class="relative">
-				<select
-					id="jenis_rombel"
-					bind:value={formData.jenis_rombel}
-					class="peer block w-full rounded-md border border-gray-300 bg-transparent px-3 pt-4 pb-2.5 text-sm text-gray-900 focus:border-blue-600 focus:ring-0 focus:outline-none"
-				>
-					<option value="" disabled selected>Pilih Jenis</option>
-					<option value="kelas">Kelas Reguler</option>
-					<option value="sks">SKS</option>
-				</select>
-				<label
-					for="jenis_rombel"
-					class="absolute top-2 left-1 z-10 origin-left -translate-y-4 scale-75 transform bg-white px-2 text-sm text-gray-500 duration-75 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-blue-600"
-					>Jenis Rombel</label
-				>
-			</div>
-
-			<!-- Kapasitas Siswa -->
-			<div class="relative">
-				<input
-					type="number"
-					id="student_capacity"
-					bind:value={formData.student_capacity}
-					min="1"
-					class="peer block w-full rounded-md border border-gray-300 bg-transparent px-3 pt-4 pb-2.5 text-sm text-gray-900 focus:border-blue-600 focus:ring-0 focus:outline-none"
-					placeholder=" "
-				/>
-				<label
-					for="student_capacity"
-					class="absolute top-2 left-1 z-10 origin-left -translate-y-4 scale-75 transform bg-white px-2 text-sm text-gray-500 duration-75 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-blue-600"
-					>Kapasitas Siswa</label
-				>
+			<div class="hidden items-center gap-2 sm:flex">
+				<span class="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600">
+					{selectedStudents.length}/{formData.student_capacity} siswa
+				</span>
 			</div>
 		</div>
 
-		<!-- Submit Button -->
-		<div class="mt-6 flex justify-end">
-			<button
-				on:click={handleSubmit}
-				class="rounded-md bg-blue-600 px-6 py-2 text-white transition-colors hover:bg-blue-700"
-				>Simpan Rombel</button
-			>
-		</div>
-	</div>
+		<!-- Bento Grid -->
+		<div class="grid gap-4 lg:grid-cols-5">
+			<!-- Form Section — 2 cols -->
+			<div class="rounded-lg border border-slate-200 bg-white lg:col-span-2">
+				<div class="border-b border-slate-200 px-5 py-3">
+					<h2 class="text-sm font-semibold text-slate-900">Data Rombel</h2>
+				</div>
 
-	<!-- Table Section -->
-	<div class="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm">
-		<div class="overflow-x-auto">
-			<table class="w-full text-left text-sm">
-				<thead class="border-b border-gray-200 bg-gray-50 font-medium text-gray-600 uppercase">
-					<tr>
-						<th class="w-10 px-4 py-3 text-center">
+				<div class="space-y-4 p-5">
+					<div class="space-y-1.5">
+						<label for="tahun_ajaran" class="text-sm font-medium text-slate-700">Tahun Ajaran</label>
+						<input
+							type="text"
+							id="tahun_ajaran"
+							bind:value={formData.tahun_ajaran}
+							class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+						/>
+					</div>
+
+					<div class="grid grid-cols-2 gap-4">
+						<div class="space-y-1.5">
+							<label for="nama_rombel" class="text-sm font-medium text-slate-700">
+								Nama Rombel <span class="text-red-500">*</span>
+							</label>
 							<input
-								type="checkbox"
-								class="cursor-pointer rounded border-gray-300 text-blue-600 focus:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-50"
-								checked={allSelected}
-								on:change={toggleAll}
-								disabled={students.length > formData.student_capacity &&
-									selectedStudents.length < students.length}
+								type="text"
+								id="nama_rombel"
+								bind:value={formData.nama_rombel}
+								placeholder="Contoh: VII-A"
+								class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
 							/>
-						</th>
-						<th class="w-16 px-4 py-3">NO</th>
-						<th class="px-4 py-3">NAMA SISWA</th>
-						<th class="px-4 py-3">NISN</th>
-						<th class="px-4 py-3">NOMOR ABSEN</th>
-						<th class="px-4 py-3 text-right">
-							<button
-								class="text-md inline-flex items-center gap-1 rounded-md bg-blue-600 px-4 py-2 font-medium text-white capitalize transition-colors hover:bg-blue-700"
+						</div>
+
+						<div class="space-y-1.5">
+							<label for="tingkat_kelas" class="text-sm font-medium text-slate-700">
+								Tingkat Kelas <span class="text-red-500">*</span>
+							</label>
+							<select
+								id="tingkat_kelas"
+								bind:value={formData.tingkat_kelas}
+								class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
 							>
-								<AddIcon /> tambah siswa
-							</button>
-						</th>
-					</tr>
-				</thead>
-				<tbody class="divide-y divide-gray-100">
-					{#if isLoading}
-						<tr
-							><td colspan="6" class="px-4 py-12 text-center text-gray-500">Loading data...</td></tr
+								<option value="" disabled>Pilih Tingkat</option>
+								{#each classes as cls}
+									<option value={cls.id}>{cls.className}</option>
+								{/each}
+							</select>
+						</div>
+					</div>
+
+					<div class="space-y-1.5">
+						<label for="wali_kelas" class="text-sm font-medium text-slate-700">
+							Wali Kelas <span class="text-red-500">*</span>
+						</label>
+						<select
+							id="wali_kelas"
+							bind:value={formData.wali_kelas}
+							class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
 						>
-					{:else if students.length === 0}
-						<tr
-							><td colspan="6" class="px-4 py-12 text-center text-gray-500"
-								>Data siswa masih Kosong</td
-							></tr
-						>
-					{:else}
-						{#each students as student, i}
-							<tr class="transition-colors hover:bg-gray-50">
-								<td class="px-4 py-3 text-center">
+							<option value="" disabled>Pilih Wali Kelas</option>
+							{#each teachers as teacher}
+								<option value={teacher.id}>{teacher.fullName}</option>
+							{/each}
+						</select>
+					</div>
+
+					<div class="grid grid-cols-2 gap-4">
+						<div class="space-y-1.5">
+							<label for="nama_ruangan" class="text-sm font-medium text-slate-700">Ruangan</label>
+							<select
+								id="nama_ruangan"
+								bind:value={formData.nama_ruangan}
+								class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+							>
+								<option value="" disabled>Pilih Ruangan</option>
+								<option value="R01">Ruang 01</option>
+								<option value="R02">Ruang 02</option>
+							</select>
+						</div>
+
+						<div class="space-y-1.5">
+							<label for="kurikulum" class="text-sm font-medium text-slate-700">Kurikulum</label>
+							<input
+								type="text"
+								id="kurikulum"
+								bind:value={formData.kurikulum}
+								placeholder="K13 / Merdeka"
+								class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+							/>
+						</div>
+					</div>
+
+					<div class="grid grid-cols-2 gap-4">
+						<div class="space-y-1.5">
+							<label for="jenis_rombel" class="text-sm font-medium text-slate-700">Jenis Rombel</label>
+							<select
+								id="jenis_rombel"
+								bind:value={formData.jenis_rombel}
+								class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+							>
+								<option value="" disabled>Pilih Jenis</option>
+								<option value="kelas">Kelas Reguler</option>
+								<option value="sks">SKS</option>
+							</select>
+						</div>
+
+						<div class="space-y-1.5">
+							<label for="student_capacity" class="text-sm font-medium text-slate-700">Kapasitas</label>
+							<input
+								type="number"
+								id="student_capacity"
+								bind:value={formData.student_capacity}
+								min="1"
+								class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+							/>
+						</div>
+					</div>
+
+					<button
+						on:click={handleSubmit}
+						class="mt-2 w-full rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-blue-700"
+					>
+						Simpan Rombel
+					</button>
+				</div>
+			</div>
+
+			<!-- Table Section — 3 cols -->
+			<div class="rounded-lg border border-slate-200 bg-white lg:col-span-3">
+				<div class="flex items-center justify-between border-b border-slate-200 px-5 py-3">
+					<h2 class="text-sm font-semibold text-slate-900">Pilih Siswa</h2>
+					<span class="rounded-md bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-500">
+						{selectedStudents.length} dipilih
+					</span>
+				</div>
+
+				{#if isCapacityFull}
+					<div class="border-b border-amber-200 bg-amber-50 px-5 py-2 text-xs font-medium text-amber-700">
+						Kapasitas rombel penuh ({formData.student_capacity} siswa)
+					</div>
+				{/if}
+
+				<div class="overflow-x-auto">
+					<table class="w-full text-sm">
+						<thead class="bg-slate-50">
+							<tr class="border-b border-slate-200">
+								<th class="w-10 px-4 py-2.5 text-center">
 									<input
 										type="checkbox"
-										class="cursor-pointer rounded border-gray-300 text-blue-600 focus:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-50"
-										value={student.id}
-										bind:group={selectedStudents}
-										disabled={!selectedStudents.includes(student.id) && isCapacityFull}
+										class="cursor-pointer rounded border-slate-300 accent-blue-600 disabled:cursor-not-allowed disabled:opacity-50"
+										checked={allSelected}
+										on:change={toggleAll}
+										disabled={students.length > formData.student_capacity &&
+											selectedStudents.length < students.length}
 									/>
-								</td>
-								<td class="px-4 py-3 text-gray-500">{i + 1}</td>
-								<td class="px-4 py-3 font-medium text-gray-900 capitalize">{student.name}</td>
-								<td class="px-4 py-3 text-gray-500">{student.nisn}</td>
-								<td class="px-4 py-3 text-gray-500">{student.absen || '-'}</td>
-								<td class="px-4 py-3"></td>
+								</th>
+								<th class="w-12 px-4 py-2.5 text-left text-xs font-semibold tracking-wide text-slate-600 uppercase">No</th>
+								<th class="px-4 py-2.5 text-left text-xs font-semibold tracking-wide text-slate-600 uppercase">Nama Siswa</th>
+								<th class="px-4 py-2.5 text-left text-xs font-semibold tracking-wide text-slate-600 uppercase">NISN</th>
+								<th class="px-4 py-2.5 text-left text-xs font-semibold tracking-wide text-slate-600 uppercase">Absen</th>
 							</tr>
-						{/each}
-					{/if}
-				</tbody>
-			</table>
+						</thead>
+						<tbody class="divide-y divide-slate-100">
+							{#if isLoading}
+								<tr>
+									<td colspan="5" class="px-4 py-12 text-center text-sm text-slate-500">
+										<div class="flex items-center justify-center gap-2">
+											<div class="h-4 w-4 animate-spin rounded-full border-2 border-slate-300 border-t-blue-600"></div>
+											Memuat data siswa...
+										</div>
+									</td>
+								</tr>
+							{:else if students.length === 0}
+								<tr>
+									<td colspan="5" class="px-4 py-12 text-center text-sm text-slate-500">
+										Data siswa masih kosong
+									</td>
+								</tr>
+							{:else}
+								{#each students as student, i}
+									<tr class="transition-colors hover:bg-slate-50">
+										<td class="px-4 py-2.5 text-center">
+											<input
+												type="checkbox"
+												class="cursor-pointer rounded border-slate-300 accent-blue-600 disabled:cursor-not-allowed disabled:opacity-50"
+												value={student.id}
+												bind:group={selectedStudents}
+												disabled={!selectedStudents.includes(student.id) && isCapacityFull}
+											/>
+										</td>
+										<td class="px-4 py-2.5 text-slate-400">{i + 1}</td>
+										<td class="px-4 py-2.5 font-medium text-slate-800 capitalize">{student.name}</td>
+										<td class="px-4 py-2.5 font-mono text-slate-500">{student.nisn}</td>
+										<td class="px-4 py-2.5 text-slate-500">{student.absen || '-'}</td>
+									</tr>
+								{/each}
+							{/if}
+						</tbody>
+					</table>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>

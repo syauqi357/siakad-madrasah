@@ -1,5 +1,5 @@
 import express from 'express';
-import { createRombel, getRombelList, getRombelDetail } from '../../controllers/rombelController.js';
+import { createRombel, getRombelList, getRombelDetail, deleteRombel } from '../../controllers/rombelController.js';
 
 const router = express.Router();
 
@@ -17,6 +17,6 @@ router.get('/rombel/:id', getRombelDetail);
 // router.put('/rombel/:id', updateRombel); // Placeholder for future implementation
 
 // DELETE /api/rombel/:id - Delete a Rombel
-// router.delete('/rombel/:id', deleteRombel); // Placeholder for future implementation
+router.delete('/rombel/:id', deleteRombel);
 
 export default router;

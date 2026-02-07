@@ -10,25 +10,14 @@
 	let errorMessage = '';
 	let successMessage = '';
 
-	// let show password toggles
 	let showCurrentPassword = false;
 	let showNewPassword = false;
 	let showConfirmPassword = false;
 
-	// handle change password
-	// Password strength checks (reactive)
-	// $: hasMinLength = newPassword.length >= 6;
-	// $: hasUpperCase = /[A-Z]/.test(newPassword);
-	// $: hasLowerCase = /[a-z]/.test(newPassword);
-	// $: hasNumber = /[0-9]/.test(newPassword);
-	// $: hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(newPassword);
-
 	async function handleChangePassword() {
-		// Reset messages
 		errorMessage = '';
 		successMessage = '';
 
-		// Validation
 		if (!currentPassword || !newPassword || !confirmPassword) {
 			errorMessage = 'All fields are required';
 			return;
@@ -52,10 +41,8 @@
 		loading = true;
 
 		try {
-			// Get token from localStorage (or wherever you store it)
 			const token = localStorage.getItem('token');
 
-			// const apiUrl = import.meta.env.VITE_API_URL;
 			const response = await API_FETCH(`/api/auth/change-password`, {
 				method: 'POST',
 				headers: {
@@ -72,7 +59,6 @@
 
 			if (data.success) {
 				successMessage = data.message;
-				// Clear form
 				currentPassword = '';
 				newPassword = '';
 				confirmPassword = '';
@@ -88,141 +74,104 @@
 	}
 </script>
 
-<div class="flex gap-3">
-	<!-- form -->
-	<form on:submit|preventDefault={handleChangePassword}>
-		<h2 class="text-md flex items-center font-bold sm:text-2xl">Change Password</h2>
-		<section class=" w-full p-3 sm:w-xl">
-			<div class="">
-				<div class="flex flex-col gap-2 p-2">
-					<label for="currentPassword">Current Password</label>
-					<div class="flex rounded-md border border-gray-400">
-						<input
-							class="flex w-full flex-row p-2 outline-none"
-							type={showCurrentPassword ? 'text' : 'password'}
-							id="currentPassword"
-							bind:value={currentPassword}
-							disabled={loading}
-						/>
-						<button
-							type="button"
-							on:click={() => (showCurrentPassword = !showCurrentPassword)}
-							class="m-1 flex h-9 w-9 items-center px-2 text-sm"
-						>
-							<EyeIcon open={showCurrentPassword} />
-							<!-- {showCurrentPassword ? '👁️' : '👁️‍🗨️'} -->
-						</button>
-					</div>
-				</div>
+<form on:submit|preventDefault={handleChangePassword} class="w-full max-w-xl">
+	<h2 class="text-lg font-bold text-slate-900 sm:text-2xl">Change Password</h2>
 
-				<!-- 
-				
-				id and label : currentPassword label content : Current Password
-				type : password
-				bind:value={currentPassword}
-				disabled={loading}
-	
-				-->
+	<div class="mt-4 space-y-4">
+		<!-- Current Password -->
+		<div class="flex flex-col gap-1.5">
+			<label for="currentPassword" class="text-sm font-medium text-slate-700">Current Password</label>
+			<div class="flex items-center rounded-lg border border-slate-300 transition-colors focus-within:border-slate-500">
+				<input
+					class="w-full rounded-lg p-2.5 text-sm outline-none"
+					type={showCurrentPassword ? 'text' : 'password'}
+					id="currentPassword"
+					placeholder="Enter current password"
+					bind:value={currentPassword}
+					disabled={loading}
+				/>
+				<button
+					type="button"
+					on:click={() => (showCurrentPassword = !showCurrentPassword)}
+					class="flex h-9 w-9 shrink-0 items-center justify-center text-slate-400 hover:text-slate-600"
+				>
+					<EyeIcon open={showCurrentPassword} />
+				</button>
 			</div>
+		</div>
 
-			<div>
-				<div class="flex flex-col gap-2 p-2">
-					<label for="newPassword">New Password</label>
-					<div class="flex rounded-md border border-gray-400">
-						<input
-							type={showNewPassword ? 'text' : 'password'}
-							class="flex w-full flex-row p-2 outline-none"
-							id="newPassword"
-							bind:value={newPassword}
-							disabled={loading}
-						/>
-						<button
-							type="button"
-							on:click={() => (showNewPassword = !showNewPassword)}
-							class="m-1 flex h-9 w-9 items-center px-2 text-sm"
-						>
-							<EyeIcon open={showNewPassword} />
-						</button>
-					</div>
-
-					<!-- Password requirements -->
-					<PassIndicatorStrength password={newPassword}></PassIndicatorStrength>
-				</div>
-
-				<!-- 
-	
-				id and label : newPassword label content : New Password
-				type : password
-				bind:value={newPassword}
-				disabled={loading}
-	
-				-->
+		<!-- New Password -->
+		<div class="flex flex-col gap-1.5">
+			<label for="newPassword" class="text-sm font-medium text-slate-700">New Password</label>
+			<div class="flex items-center rounded-lg border border-slate-300 transition-colors focus-within:border-slate-500">
+				<input
+					type={showNewPassword ? 'text' : 'password'}
+					class="w-full rounded-lg p-2.5 text-sm outline-none"
+					id="newPassword"
+					placeholder="Enter new password"
+					bind:value={newPassword}
+					disabled={loading}
+				/>
+				<button
+					type="button"
+					on:click={() => (showNewPassword = !showNewPassword)}
+					class="flex h-9 w-9 shrink-0 items-center justify-center text-slate-400 hover:text-slate-600"
+				>
+					<EyeIcon open={showNewPassword} />
+				</button>
 			</div>
+			<PassIndicatorStrength password={newPassword} />
+		</div>
 
-			<div>
-				<div class="flex flex-col gap-2 p-2">
-					<label for="confirmPassword">Confirm New Password</label>
-					<div class="flex rounded-md border border-gray-400">
-						<input
-							type={showConfirmPassword ? 'text' : 'password'}
-							id="confirmPassword"
-							class="flex w-full flex-row p-2 outline-none"
-							bind:value={confirmPassword}
-							disabled={loading}
-						/>
-						<button
-							type="button"
-							on:click={() => (showConfirmPassword = !showConfirmPassword)}
-							class="m-1 flex h-9 w-9 items-center px-2 text-sm"
-						>
-							<EyeIcon open={showConfirmPassword} />
-						</button>
-					</div>
-				</div>
-				<!-- 
-	
-				id and label : confirmPassword label content : Confirm New Password
-				type : password
-				bind:value={confirmPassword}
-				disabled={loading}
-	
-				-->
+		<!-- Confirm New Password -->
+		<div class="flex flex-col gap-1.5">
+			<label for="confirmPassword" class="text-sm font-medium text-slate-700">Confirm New Password</label>
+			<div class="flex items-center rounded-lg border border-slate-300 transition-colors focus-within:border-slate-500">
+				<input
+					type={showConfirmPassword ? 'text' : 'password'}
+					id="confirmPassword"
+					class="w-full rounded-lg p-2.5 text-sm outline-none"
+					placeholder="Re-enter new password"
+					bind:value={confirmPassword}
+					disabled={loading}
+				/>
+				<button
+					type="button"
+					on:click={() => (showConfirmPassword = !showConfirmPassword)}
+					class="flex h-9 w-9 shrink-0 items-center justify-center text-slate-400 hover:text-slate-600"
+				>
+					<EyeIcon open={showConfirmPassword} />
+				</button>
 			</div>
+		</div>
 
-			<!-- Error and success messages -->
-
-			<div class="flex items-center justify-center">
-				{#if errorMessage}
-					<div
-						class="error flex w-fit items-center justify-center rounded-lg border border-blue-400 bg-blue-200 p-2 pr-4 pl-4"
-					>
-						{errorMessage}
-					</div>
-				{/if}
-
-				{#if successMessage}
-					<div class="success">{successMessage}</div>
-				{/if}
+		<!-- Messages -->
+		{#if errorMessage}
+			<div class="rounded-lg border border-red-200 bg-red-50 px-4 py-2.5 text-sm text-red-700">
+				{errorMessage}
 			</div>
+		{/if}
 
-			<!-- button submit change password -->
-			<button
-				type="submit"
-				disabled={loading}
-				class="mt-3 w-full rounded-md bg-blue-600 p-2 text-white"
-			>
-				{#if loading}
-					<span class="flex flex-row-reverse items-center justify-center gap-3"
-						>mengubah...<!-- From Uiverse.io by Fresnel11 -->
-						<div
-							class="h-6 w-6 animate-spin rounded-full border-4 border-gray-300 border-t-blue-500"
-						></div>
-					</span>
-				{:else}
-					Change Password
-				{/if}
-			</button>
-		</section>
-	</form>
-	<div></div>
-</div>
+		{#if successMessage}
+			<div class="rounded-lg border border-green-200 bg-green-50 px-4 py-2.5 text-sm text-green-700">
+				{successMessage}
+			</div>
+		{/if}
+
+		<!-- Submit -->
+		<button
+			type="submit"
+			disabled={loading}
+			class="w-full rounded-lg bg-blue-600 p-2.5 text-sm font-medium text-white transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
+		>
+			{#if loading}
+				<span class="flex items-center justify-center gap-2">
+					<div class="h-5 w-5 animate-spin rounded-full border-2 border-white/30 border-t-white"></div>
+					Mengubah...
+				</span>
+			{:else}
+				Change Password
+			{/if}
+		</button>
+	</div>
+</form>

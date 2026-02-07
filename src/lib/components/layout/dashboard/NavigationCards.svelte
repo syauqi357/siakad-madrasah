@@ -1,73 +1,49 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { fly, fade } from 'svelte/transition';
+	import { quintOut } from 'svelte/easing';
 	import { navigationCategories } from '$lib/data/navigationCategories';
 
 	function navigateTo(href: string) {
 		goto(href);
 	}
 
-	// Color mapping
-	const colorClasses: Record<
-		string,
-		{ bg: string; border: string; text: string; hover: string; iconBg: string }
-	> = {
-		green: {
-			bg: 'bg-green-50',
-			border: 'border-green-200',
-			text: 'text-green-700',
-			hover: 'hover:bg-green-100 hover:border-green-400 hover:shadow-md',
-			iconBg: 'bg-green-100'
-		},
-		purple: {
-			bg: 'bg-purple-50',
-			border: 'border-purple-200',
-			text: 'text-purple-700',
-			hover: 'hover:bg-purple-100 hover:border-purple-400 hover:shadow-md',
-			iconBg: 'bg-purple-100'
-		},
-		blue: {
-			bg: 'bg-blue-50',
-			border: 'border-blue-200',
-			text: 'text-blue-700',
-			hover: 'hover:bg-blue-100 hover:border-blue-400 hover:shadow-md',
-			iconBg: 'bg-blue-100'
-		}
+	const colorClasses: Record<string, { icon: string; dot: string; hover: string }> = {
+		green: { icon: 'text-green-600', dot: 'bg-green-500', hover: 'hover:bg-green-50' },
+		purple: { icon: 'text-purple-600', dot: 'bg-purple-500', hover: 'hover:bg-purple-50' },
+		blue: { icon: 'text-blue-600', dot: 'bg-blue-500', hover: 'hover:bg-blue-50' }
 	};
 </script>
 
 <div class="space-y-6">
-	<div class="flex items-center justify-between">
-		<h2 class="text-lg font-bold text-slate-800">Akses Cepat</h2>
-	</div>
+	<h2 class="text-lg font-bold text-slate-900">Akses Cepat</h2>
 
-	{#each navigationCategories as category}
+	{#each navigationCategories as category, ci}
 		{@const colors = colorClasses[category.color] || colorClasses.blue}
-		<div>
-			<!-- Category Label -->
-			<p class="mb-3 text-xs font-semibold tracking-wider uppercase {colors.text}">
-				{category.name}
-			</p>
+		<div in:fade={{ duration: 200, delay: 100 * ci }}>
+			<div class="mb-3 flex items-center gap-2">
+				<span class="h-2 w-2 rounded-full {colors.dot}"></span>
+				<p class="text-xs font-semibold tracking-wider text-slate-500 uppercase">
+					{category.name}
+				</p>
+			</div>
 
-			<!-- Cards Grid -->
-			<div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
-				{#each category.items as item}
-					<button
-						on:click={() => navigateTo(item.href)}
-						class="group flex flex-col items-center gap-2 rounded-xl border-2 p-4 text-center transition-all duration-200 {colors.bg} {colors.border} {colors.hover}"
-					>
-						<!-- Icon -->
-						<div
-							class="rounded-xl p-3 {colors.iconBg} {colors.text} transition-transform group-hover:scale-110"
+			<div class="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-4">
+				{#each category.items as item, i}
+					<div in:fly={{ y: 12, duration: 250, delay: 100 * ci + 50 * i, easing: quintOut }}>
+						<button
+							on:click={() => navigateTo(item.href)}
+							class="flex w-full items-center gap-3 rounded-lg border border-slate-200 bg-white p-3.5 text-left transition-colors {colors.hover}"
 						>
-							{@html item.icon}
-						</div>
-
-						<!-- Text -->
-						<div>
-							<p class="text-sm font-semibold text-slate-800">{item.name}</p>
-							<p class="mt-0.5 text-xs text-slate-500">{item.description}</p>
-						</div>
-					</button>
+							<div class="{colors.icon} shrink-0">
+								{@html item.icon}
+							</div>
+							<div class="min-w-0 flex-1">
+								<p class="text-sm font-medium text-slate-800">{item.name}</p>
+								<p class="text-xs text-slate-400">{item.description}</p>
+							</div>
+						</button>
+					</div>
 				{/each}
 			</div>
 		</div>

@@ -7,6 +7,7 @@
 @theme {
 	--font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
 	--font-sans: 'StackSansText-Regular', ui-sans-serif, system-ui, sans-serif;
+	--font-inter: 'Inter', ui-sans-serif, system-ui, sans-serif;
 }
 
 /* --- Stack Sans (Body Font) --- */
@@ -33,6 +34,22 @@
 	src: url('/src/lib/fonts/StackSansText-Light.woff2') format('woff2');
 	font-weight: 200;
 	font-style: normal;
+}
+
+/* --- Inter (Documentation Font) --- */
+@font-face {
+	font-family: 'Inter';
+	src: url('/src/lib/fonts/inter-font/InterVariable.woff2') format('woff2');
+	font-weight: 100 900;
+	font-style: normal;
+	font-display: swap;
+}
+@font-face {
+	font-family: 'Inter';
+	src: url('/src/lib/fonts/inter-font/InterVariable-Italic.woff2') format('woff2');
+	font-weight: 100 900;
+	font-style: italic;
+	font-display: swap;
 }
 
 /* --- JetBrains Mono (Code Font) --- */

@@ -3,7 +3,9 @@ import { rombel } from '../src/db/schema/classGroup.js';
 import { classes } from '../src/db/schema/classesDataTable.js';
 import { teachers } from '../src/db/schema/teacherUser.js';
 import { academicYear } from '../src/db/schema/academicYear.js';
-import { and, eq, inArray, sql } from 'drizzle-orm';
+import { studentHistory } from '../src/db/schema/studentHistory.js';
+import { studentAttendance } from '../src/db/schema/studentAttendance.js';
+import { and, eq, inArray, isNull, sql } from 'drizzle-orm';
 
 /**
  * Get the active academic year ID, or create one if none exists
@@ -223,4 +225,41 @@ export const getRombelById = (rombelId) => {
 		totalSiswa: activeCount,
 		students: students
 	};
+};
+
+/**
+ * Deletes a rombel and cleans up related student assignments.
+ * @param {number} rombelId - The ID of the rombel to delete
+ */
+export const deleteRombelById = (rombelId) => {
+	const existing = db.select({ id: rombel.id }).from(rombel).where(eq(rombel.id, rombelId)).get();
+
+	if (!existing) {
+		throw new Error('Rombel not found');
+	}
+
+	db.transaction((tx) => {
+		// Clear rombelId on students that reference this rombel
+		tx.update(studentTable)
+			.set({ rombelId: null })
+			.where(eq(studentTable.rombelId, rombelId))
+			.run();
+
+		// Delete attendance records for this rombel (rombelId is NOT NULL, can't nullify)
+		tx.delete(studentAttendance).where(eq(studentAttendance.rombelId, rombelId)).run();
+
+		// Nullify rombelId in student history (keeps history but removes rombel reference)
+		tx.update(studentHistory)
+			.set({ rombelId: null })
+			.where(eq(studentHistory.rombelId, rombelId))
+			.run();
+
+		// Delete junction table entries
+		tx.delete(rombelStudents).where(eq(rombelStudents.rombelId, rombelId)).run();
+
+		// Delete the rombel itself
+		tx.delete(rombel).where(eq(rombel.id, rombelId)).run();
+	});
+
+	return { success: true };
 };

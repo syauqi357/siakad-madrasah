@@ -164,58 +164,22 @@
 		}
 	];
 
-	// Color mapping for categories
-	const colorClasses: Record<string, { bg: string; border: string; text: string; hover: string }> =
-		{
-			blue: {
-				bg: 'bg-blue-50',
-				border: 'border-blue-200',
-				text: 'text-blue-700',
-				hover: 'hover:bg-blue-100 hover:border-blue-300'
-			},
-			green: {
-				bg: 'bg-green-50',
-				border: 'border-green-200',
-				text: 'text-green-700',
-				hover: 'hover:bg-green-100 hover:border-green-300'
-			},
-			purple: {
-				bg: 'bg-purple-50',
-				border: 'border-purple-200',
-				text: 'text-purple-700',
-				hover: 'hover:bg-purple-100 hover:border-purple-300'
-			},
-			orange: {
-				bg: 'bg-orange-50',
-				border: 'border-orange-200',
-				text: 'text-orange-700',
-				hover: 'hover:bg-orange-100 hover:border-orange-300'
-			},
-			teal: {
-				bg: 'bg-teal-50',
-				border: 'border-teal-200',
-				text: 'text-teal-700',
-				hover: 'hover:bg-teal-100 hover:border-teal-300'
-			},
-			indigo: {
-				bg: 'bg-indigo-50',
-				border: 'border-indigo-200',
-				text: 'text-indigo-700',
-				hover: 'hover:bg-indigo-100 hover:border-indigo-300'
-			},
-			red: {
-				bg: 'bg-red-50',
-				border: 'border-red-200',
-				text: 'text-red-700',
-				hover: 'hover:bg-red-100 hover:border-red-300'
-			}
-		};
+	// Color mapping — icon accent + hover tint only
+	const colorClasses: Record<string, { icon: string; dot: string; hover: string }> = {
+		blue: { icon: 'text-blue-600', dot: 'bg-blue-500', hover: 'hover:bg-blue-50' },
+		green: { icon: 'text-green-600', dot: 'bg-green-500', hover: 'hover:bg-green-50' },
+		purple: { icon: 'text-purple-600', dot: 'bg-purple-500', hover: 'hover:bg-purple-50' },
+		orange: { icon: 'text-orange-600', dot: 'bg-orange-500', hover: 'hover:bg-orange-50' },
+		teal: { icon: 'text-teal-600', dot: 'bg-teal-500', hover: 'hover:bg-teal-50' },
+		indigo: { icon: 'text-indigo-600', dot: 'bg-indigo-500', hover: 'hover:bg-indigo-50' },
+		red: { icon: 'text-red-600', dot: 'bg-red-500', hover: 'hover:bg-red-50' }
+	};
 </script>
 
 {#if show}
 	<!-- Backdrop -->
 	<div
-		class="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/40 p-4 backdrop-blur-sm md:items-center md:p-8"
+		class="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/30 p-4 backdrop-blur-sm md:items-center md:p-8"
 		transition:fade={{ duration: 150 }}
 		on:click={handleClose}
 		on:keydown={(e) => e.key === 'Escape' && handleClose()}
@@ -224,7 +188,7 @@
 	>
 		<!-- Modal -->
 		<div
-			class="w-full max-w-5xl rounded-xl border border-slate-300 bg-white shadow-2xl"
+			class="w-full max-w-5xl rounded-lg border border-slate-200 bg-white shadow-lg"
 			transition:scale={{ duration: 200, start: 0.95 }}
 			on:click|stopPropagation
 			on:keydown|stopPropagation
@@ -236,15 +200,15 @@
 			<!-- Header -->
 			<div class="flex items-center justify-between border-b border-slate-200 px-6 py-4">
 				<div>
-					<h2 id="nav-title" class="text-xl font-bold text-slate-800">Navigasi Cepat</h2>
+					<h2 id="nav-title" class="text-lg font-bold text-slate-900">Navigasi Cepat</h2>
 					<p class="text-sm text-slate-500">Akses semua fitur dalam satu layar</p>
 				</div>
 				<button
 					on:click={handleClose}
-					class="flex h-10 w-10 items-center justify-center rounded-lg text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-700"
+					class="flex h-8 w-8 items-center justify-center rounded-md text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600"
 					aria-label="Tutup"
 				>
-					<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+					<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 						<path
 							stroke-linecap="round"
 							stroke-linejoin="round"
@@ -262,23 +226,26 @@
 						{@const colors = colorClasses[category.color] || colorClasses.blue}
 						<div>
 							<!-- Category Header -->
-							<h3 class="mb-3 text-sm font-semibold tracking-wider uppercase {colors.text}">
-								{category.name}
-							</h3>
+							<div class="mb-3 flex items-center gap-2">
+								<span class="h-2 w-2 rounded-full {colors.dot}"></span>
+								<h3 class="text-xs font-semibold tracking-wider text-slate-500 uppercase">
+									{category.name}
+								</h3>
+							</div>
 
 							<!-- Items Grid -->
-							<div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+							<div class="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
 								{#each category.items as item}
 									<button
 										on:click={() => navigateTo(item.href)}
-										class="flex items-start gap-3 rounded-lg border p-4 text-left transition-all {colors.bg} {colors.border} {colors.hover}"
+										class="flex items-center gap-3 rounded-lg border border-slate-200 bg-white p-3.5 text-left transition-colors {colors.hover}"
 									>
-										<div class="{colors.text} shrink-0">
+										<div class="{colors.icon} shrink-0">
 											{@html item.icon}
 										</div>
 										<div class="min-w-0 flex-1">
-											<p class="font-medium text-slate-800">{item.name}</p>
-											<p class="mt-0.5 text-xs text-slate-500">{item.description}</p>
+											<p class="text-sm font-medium text-slate-800">{item.name}</p>
+											<p class="text-xs text-slate-400">{item.description}</p>
 										</div>
 									</button>
 								{/each}
@@ -291,7 +258,7 @@
 			<!-- Footer -->
 			<div class="border-t border-slate-200 px-6 py-3">
 				<p class="text-center text-xs text-slate-400">
-					Tekan <span class="rounded-md bg-slate-100 px-1.5 py-0.5 text-slate-600">Esc</span> atau klik
+					Tekan <kbd class="rounded border border-slate-200 bg-slate-50 px-1.5 py-0.5 font-mono text-[10px] text-slate-500">Esc</kbd> atau klik
 					di luar untuk menutup
 				</p>
 			</div>

@@ -7,7 +7,7 @@
 	export let changeType: 'up' | 'down' | 'neutral' = 'neutral';
 </script>
 
-<div class="rounded-lg border border-slate-200 bg-white p-4">
+<div class="rounded-lg border border-slate-200 bg-white p-4 transition-all duration-200 hover:scale-[1.02] hover:border-slate-300 hover:shadow-sm">
 	<div class="flex items-start justify-between gap-3">
 		<div class="min-w-0 flex-1">
 			<p class="truncate text-sm text-slate-500">{title}</p>
