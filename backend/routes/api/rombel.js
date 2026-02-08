@@ -1,5 +1,5 @@
 import express from 'express';
-import { createRombel, getRombelList, getRombelDetail, deleteRombel } from '../../controllers/rombelController.js';
+import { createRombel, getRombelList, getRombelDetail, deleteRombel, addStudentsToExistingRombel } from '../../controllers/rombelController.js';
 
 const router = express.Router();
 
@@ -15,6 +15,9 @@ router.get('/rombel/:id', getRombelDetail);
 
 // PUT /api/rombel/:id - Update Rombel details
 // router.put('/rombel/:id', updateRombel); // Placeholder for future implementation
+
+// POST /api/rombel/:id/students - Add students to an existing Rombel
+router.post('/rombel/:id/students', addStudentsToExistingRombel);
 
 // DELETE /api/rombel/:id - Delete a Rombel
 router.delete('/rombel/:id', deleteRombel);

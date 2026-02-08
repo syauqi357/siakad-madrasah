@@ -228,6 +228,33 @@ export const getRombelById = (rombelId) => {
 };
 
 /**
+ * Adds students to an existing rombel.
+ * @param {number} rombelId - The ID of the rombel
+ * @param {number[]} studentIds - Array of student IDs to add
+ */
+export const addStudentsToRombel = (rombelId, studentIds) => {
+	const rombelData = getRombelById(rombelId);
+	if (!rombelData) {
+		throw new Error('Rombel not found');
+	}
+
+	const currentCount = rombelData.students.filter((s) => s.status === 'ACTIVE').length;
+	const available = rombelData.kapasitas - currentCount;
+
+	if (studentIds.length > available) {
+		throw new Error(
+			`Kapasitas tidak cukup. Tersisa ${available} slot, mencoba menambah ${studentIds.length} siswa.`
+		);
+	}
+
+	db.transaction((tx) => {
+		registerSiswaToRombel(rombelId, studentIds, tx);
+	});
+
+	return { success: true, added: studentIds.length };
+};
+
+/**
  * Deletes a rombel and cleans up related student assignments.
  * @param {number} rombelId - The ID of the rombel to delete
  */
