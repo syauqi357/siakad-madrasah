@@ -32,7 +32,7 @@
 				"arch": ["x64"]
 			}
 		],
-		"icon": "public/favicon.ico",
+		"icon": "build-resources/siakadlogo.svg",
 		"signAndEditExecutable": false
 	},
 	"forceCodeSigning": false,

@@ -8,32 +8,16 @@
 		openFaq = openFaq === index ? null : index;
 	}
 
-	const techStack = ['SvelteKit', 'Express.js', 'SQLite', 'Tailwind'];
+	const techStack = ['SvelteKit', 'Express.js', 'SQLite', 'Tailwind', 'Electron.js'];
 
 	const faqs = [
 		{
-			q: 'Bagaimana cara menambahkan siswa baru?',
-			a: 'Buka menu Data Siswa > Daftar Siswa, lalu klik tombol "Tambah Siswa" di pojok kanan atas. Isi formulir dengan data lengkap siswa kemudian simpan.'
+			q: 'Bagaimana prosedur penambahan data siswa baru?',
+			a: "Silakan akses menu Siswa pada bilah samping kiri, lalu pilih 'Daftar Siswa'. Selanjutnya, klik tombol '+ Tambah' untuk membuka formulir. Mohon lengkapi seluruh data siswa yang diminta pada halaman tersebut."
 		},
 		{
-			q: 'Bagaimana cara upload nilai menggunakan template Excel?',
-			a: 'Buka menu Penilaian > Input Nilai. Download template terlebih dahulu dengan memilih rombel, lalu isi nilai pada file Excel. Setelah selesai, upload kembali file tersebut melalui form upload.'
-		},
-		{
-			q: 'Bagaimana cara memindahkan siswa ke rombel lain?',
-			a: 'Buka menu Rombongan Belajar > Daftar Rombel. Pilih rombel tujuan, lalu gunakan fitur "Tambah Anggota" untuk memindahkan siswa dari rombel sebelumnya.'
-		},
-		{
-			q: 'Apa yang dimaksud dengan Kenaikan Kelas?',
-			a: 'Kenaikan Kelas adalah fitur untuk mempromosikan siswa ke tingkat berikutnya secara massal. Buka menu Penilaian > Kenaikan Kelas, pilih rombel asal dan rombel tujuan, lalu proses kenaikan.'
-		},
-		{
-			q: 'Bagaimana cara melihat riwayat aktivitas sistem?',
-			a: 'Buka menu Administrasi > Audit Logs. Di sana Anda dapat melihat seluruh riwayat aktivitas pengguna seperti login, perubahan data, dan operasi lainnya.'
-		},
-		{
-			q: 'Apakah data siswa bisa diekspor?',
-			a: 'Ya, pada halaman Daftar Siswa terdapat tombol export yang memungkinkan Anda mengunduh data dalam format Excel (.xlsx).'
+			q: 'Bagaimana prosedur mengimpor nilai menggunakan templat Excel?',
+			a: "Silakan buka menu Nilai Siswa, lalu pilih sub-menu Nilai. Tentukan rombel dan mata pelajaran terlebih dahulu, kemudian klik 'Download Template'. Setelah mengisi nilai pada berkas Excel tersebut, silakan unggah kembali berkasnya melalui fitur 'Upload Nilai' yang tersedia di samping tombol download."
 		}
 	];
 
@@ -42,6 +26,8 @@
 		{ keys: ['Esc'], desc: 'Tutup modal / sidebar' },
 		{ keys: ['Tab'], desc: 'Pindah antar field' }
 	];
+
+	const currentYear = new Date().getFullYear();
 </script>
 
 <div class="min-h-screen px-4 py-8 md:px-8">
@@ -154,6 +140,7 @@
 					{#each faqs as faq, i}
 						<div>
 							<button
+								type="button"
 								on:click={() => toggleFaq(i)}
 								class="flex w-full items-center justify-between px-5 py-3.5 text-left transition-colors hover:bg-slate-50"
 							>
@@ -177,7 +164,9 @@
 							</button>
 							{#if openFaq === i}
 								<div transition:slide={{ duration: 200, easing: quintOut }}>
-									<p class="px-5 py-5 text-sm leading-relaxed text-slate-500 bg-slate-200">{faq.a}</p>
+									<p class="bg-slate-200 px-5 py-5 text-sm leading-relaxed text-slate-500">
+										{faq.a}
+									</p>
 								</div>
 							{/if}
 						</div>
@@ -257,7 +246,7 @@
 										d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
 									/>
 								</svg>
-								<span class="truncate">support@siakad-madrasah.local</span>
+								<span class="truncate">m.syauqi357@gmail.com</span>
 							</div>
 							<div class="flex items-center gap-2.5 text-sm text-slate-600">
 								<svg
@@ -273,7 +262,11 @@
 										d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
 									/>
 								</svg>
-								<span class="truncate">GitHub Repository</span>
+								<span class="truncate"
+									><a href="https://github.com/syauqi357/siakad-madrasah/tree/version/v2-electron"
+										>github.com/syauqi357</a
+									></span
+								>
 							</div>
 						</div>
 					</div>
@@ -290,11 +283,11 @@
 						class="pointer-events-none absolute -right-12 -bottom-12 h-32 w-32 rounded-full bg-blue-500/0 blur-2xl transition-all duration-500 group-hover:bg-blue-500/40"
 					></div>
 					<div class="relative">
-						<p class="text-sm font-medium text-white">SIAKAD Madrasah</p>
+						<p class="text-sm font-medium text-white">SIAKAD Madrasah - {currentYear}</p>
 						<p
 							class="mt-1 text-xs leading-relaxed text-slate-400 transition-colors duration-300 group-hover:text-slate-300"
 						>
-							Sistem Informasi Akademik untuk membantu pengelolaan data sekolah secara efisien.
+							Platform Informasi Akademik untuk membantu pengelolaan data sekolah secara efisien.
 							Dibangun dengan semangat open-source.
 						</p>
 						<div class="mt-3 flex items-center gap-1.5">
