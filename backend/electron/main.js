@@ -156,8 +156,8 @@ function createWindow() {
 			preload: path.join(__dirname, 'preload.cjs')
 		},
 		icon: isDev
-			? path.join(__dirname, '..', 'public', 'favicon.ico')
-			: path.join(process.resourcesPath, 'app', 'public', 'favicon.ico'),
+			? path.join(__dirname, '..', 'build-resources', 'icon.ico')
+			: path.join(process.resourcesPath, 'app', 'build-resources', 'icon.ico'),
 		title: 'SIAKAD Madrasah',
 		show: false,
 		autoHideMenuBar: true

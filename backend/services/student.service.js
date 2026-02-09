@@ -19,9 +19,9 @@ const EXCEL_HEADER_MAP = {
 	'NIS Lokal': 'localNis',
 	'NIK / No. KTP': 'idCardNumber',
 	'No. Akta Kelahiran': 'birthCertificateNumber',
-	'Jenis Kelamin (L/P)': 'gender',
+	'Jenis Kelamin': 'gender',
 	'Tempat Lahir': 'birthPlace',
-	'Tanggal Lahir': 'birthDate', // Format: DD/MM/YYYY
+	'Tanggal Lahir': 'birthDate',
 	'Anak Ke-': 'childOrder',
 	'Jumlah Saudara': 'siblingsCount',
 	Kewarganegaraan: 'nationality',
@@ -39,7 +39,7 @@ const EXCEL_HEADER_MAP = {
 	'Alamat - RW': 'address_rw',
 	'Alamat - Desa/Kelurahan': 'address_village',
 	'Alamat - Kecamatan': 'address_subDistrict',
-	'Alamat - Kab/Kota': 'address_district', // or regency
+	'Alamat - Kab/Kota': 'address_district',
 	'Alamat - Provinsi': 'address_province',
 	'Alamat - Kode Pos': 'address_postalCode',
 
@@ -49,11 +49,11 @@ const EXCEL_HEADER_MAP = {
 	'Ayah - Pekerjaan': 'father_job',
 	'Ayah - No. HP': 'father_phone',
 	'Ayah - Tempat Lahir': 'father_birthPlace',
-	'Ayah - Tanggal Lahir': 'father_birthDate', // Format: DD/MM/YYYY
+	'Ayah - Tanggal Lahir': 'father_birthDate',
 	'Ayah - Tahun Lahir': 'father_birthYear',
 	'Ayah - Pendidikan': 'father_education',
 	'Ayah - Penghasilan': 'father_monthlyIncome',
-	'Ayah - Status Hidup (1/0)': 'father_isAlive',
+	'Ayah - Status': 'father_isAlive',
 
 	// Mother Info
 	'Ibu - Nama': 'mother_name',
@@ -61,11 +61,48 @@ const EXCEL_HEADER_MAP = {
 	'Ibu - Pekerjaan': 'mother_job',
 	'Ibu - No. HP': 'mother_phone',
 	'Ibu - Tempat Lahir': 'mother_birthPlace',
-	'Ibu - Tanggal Lahir': 'mother_birthDate', // Format: DD/MM/YYYY
+	'Ibu - Tanggal Lahir': 'mother_birthDate',
 	'Ibu - Tahun Lahir': 'mother_birthYear',
 	'Ibu - Pendidikan': 'mother_education',
 	'Ibu - Penghasilan': 'mother_monthlyIncome',
-	'Ibu - Status Hidup (1/0)': 'mother_isAlive'
+	'Ibu - Status': 'mother_isAlive'
+};
+
+// Values that need conversion from human-readable to DB values during upload
+const VALUE_CONVERTERS = {
+	gender: (val) => {
+		const v = String(val).trim().toLowerCase();
+		if (v === 'laki-laki' || v === 'l') return 'Laki-laki';
+		if (v === 'perempuan' || v === 'p') return 'Perempuan';
+		return val;
+	},
+	father_isAlive: (val) => {
+		const v = String(val).trim().toLowerCase();
+		if (v === 'hidup' || v === '1') return 1;
+		if (v === 'meninggal' || v === '0') return 0;
+		return val;
+	},
+	mother_isAlive: (val) => {
+		const v = String(val).trim().toLowerCase();
+		if (v === 'hidup' || v === '1') return 1;
+		if (v === 'meninggal' || v === '0') return 0;
+		return val;
+	}
+};
+
+// Section color config for grouped header styling
+const SECTION_COLORS = {
+	student: 'FF2E7D32', // Green
+	address: 'FF1565C0', // Blue
+	father: 'FF6A1B9A', // Purple
+	mother: 'FFC62828' // Red
+};
+
+const SECTION_RANGES = {
+	student: { start: 'Nama Siswa', end: 'No. BPJS' },
+	address: { start: 'Alamat - Jalan', end: 'Alamat - Kode Pos' },
+	father: { start: 'Ayah - Nama', end: 'Ayah - Status' },
+	mother: { start: 'Ibu - Nama', end: 'Ibu - Status' }
 };
 
 // Reverse Map for Generator (Internal Key -> Human Header)
@@ -77,54 +114,157 @@ const HUMAN_HEADERS = Object.keys(EXCEL_HEADER_MAP);
  */
 export const createStudentdataInputExcelBulkGenerator = async () => {
 	const workbook = new ExcelJS.Workbook();
-	const worksheet = workbook.addWorksheet('Data Siswa Bulk Upload');
+	const worksheet = workbook.addWorksheet('Data Siswa');
 
-	// Use the Human Readable Headers
-	const headerRow = worksheet.getRow(1);
-	headerRow.values = HUMAN_HEADERS;
-
-	// Styling
-	headerRow.font = { bold: true, color: { argb: 'FFFFFFFF' }, size: 12 };
-	headerRow.fill = {
-		type: 'pattern',
-		pattern: 'solid',
-		fgColor: { argb: 'FF628141' } // Blue color
-	};
-	headerRow.alignment = { vertical: 'middle', horizontal: 'center' };
-	headerRow.height = 30;
-
-	// Set column widths dynamically based on header length
+	// Set column widths and formats
 	worksheet.columns = HUMAN_HEADERS.map((header) => {
-		// Default config
 		let colConfig = {
 			header: header,
 			key: header,
 			width: Math.max(20, header.length + 5)
 		};
 
-		// Apply Date Format to specific columns
 		if (header.includes('Tanggal Lahir')) {
 			colConfig.style = { numFmt: 'dd/mm/yyyy' };
 		}
-		// Apply Text Format to ID columns to prevent scientific notation (e.g. 3.5E+15)
-		if (header.includes('NIK') || header.includes('NISN') || header.includes('HP')) {
-			colConfig.style = { numFmt: '@' }; // Text format
+		if (header.includes('NIK') || header.includes('NISN') || header.includes('HP') || header.includes('No. BPJS') || header.includes('Akta')) {
+			colConfig.style = { numFmt: '@' };
 		}
 
 		return colConfig;
 	});
 
-	// Add data validation or comments (Optional but helpful)
-	worksheet.getCell('F1').note = 'Isi dengan "Laki-laki" atau "Perempuan"';
+	// Style header row with section-based colors
+	const headerRow = worksheet.getRow(1);
+	headerRow.values = HUMAN_HEADERS;
+	headerRow.height = 32;
 
-	// Find the column index for 'Tanggal Lahir' to add a specific note
-	const dobIndex = HUMAN_HEADERS.indexOf('Tanggal Lahir (YYYY-MM-DD)');
-	if (dobIndex !== -1) {
-		// ExcelJS uses 1-based indexing for columns, but getCell can take column letter.
-		// Easier to just add a general note or find the cell if needed.
-		// For now, let's just update the note we had before.
-		// worksheet.getCell(1, dobIndex + 1).note = 'Format: DD/MM/YYYY (Contoh: 20/05/2010)';
+	// Helper to get section color for a header
+	const getSectionColor = (header) => {
+		for (const [section, range] of Object.entries(SECTION_RANGES)) {
+			const startIdx = HUMAN_HEADERS.indexOf(range.start);
+			const endIdx = HUMAN_HEADERS.indexOf(range.end);
+			const headerIdx = HUMAN_HEADERS.indexOf(header);
+			if (headerIdx >= startIdx && headerIdx <= endIdx) {
+				return SECTION_COLORS[section];
+			}
+		}
+		return SECTION_COLORS.student;
+	};
+
+	HUMAN_HEADERS.forEach((header, index) => {
+		const cell = headerRow.getCell(index + 1);
+		cell.font = { bold: true, color: { argb: 'FFFFFFFF' }, size: 11 };
+		cell.fill = {
+			type: 'pattern',
+			pattern: 'solid',
+			fgColor: { argb: getSectionColor(header) }
+		};
+		cell.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
+		cell.border = {
+			top: { style: 'thin', color: { argb: 'FFFFFFFF' } },
+			bottom: { style: 'thin', color: { argb: 'FFFFFFFF' } },
+			left: { style: 'thin', color: { argb: 'FFFFFFFF' } },
+			right: { style: 'thin', color: { argb: 'FFFFFFFF' } }
+		};
+	});
+
+	// Data validation dropdowns (rows 2-500)
+	const MAX_ROW = 500;
+
+	const findColLetter = (headerName) => {
+		const idx = HUMAN_HEADERS.indexOf(headerName);
+		if (idx === -1) return null;
+		// Convert 0-based index to Excel column letter
+		let col = '';
+		let n = idx;
+		while (n >= 0) {
+			col = String.fromCharCode(65 + (n % 26)) + col;
+			n = Math.floor(n / 26) - 1;
+		}
+		return col;
+	};
+
+	// Gender dropdown
+	const genderCol = findColLetter('Jenis Kelamin');
+	if (genderCol) {
+		worksheet.dataValidations.add(`${genderCol}2:${genderCol}${MAX_ROW}`, {
+			type: 'list',
+			allowBlank: true,
+			formulae: ['"Laki-laki,Perempuan"'],
+			showErrorMessage: true,
+			errorTitle: 'Jenis Kelamin',
+			error: 'Pilih Laki-laki atau Perempuan'
+		});
 	}
+
+	// Religion dropdown
+	const religionCol = findColLetter('Agama');
+	if (religionCol) {
+		worksheet.dataValidations.add(`${religionCol}2:${religionCol}${MAX_ROW}`, {
+			type: 'list',
+			allowBlank: true,
+			formulae: ['"Islam,Kristen,Katolik,Hindu,Buddha,Konghucu"'],
+			showErrorMessage: true,
+			errorTitle: 'Agama',
+			error: 'Pilih salah satu agama dari daftar'
+		});
+	}
+
+	// Father status dropdown
+	const fatherStatusCol = findColLetter('Ayah - Status');
+	if (fatherStatusCol) {
+		worksheet.dataValidations.add(`${fatherStatusCol}2:${fatherStatusCol}${MAX_ROW}`, {
+			type: 'list',
+			allowBlank: true,
+			formulae: ['"Hidup,Meninggal"'],
+			showErrorMessage: true,
+			errorTitle: 'Status Ayah',
+			error: 'Pilih Hidup atau Meninggal'
+		});
+	}
+
+	// Mother status dropdown
+	const motherStatusCol = findColLetter('Ibu - Status');
+	if (motherStatusCol) {
+		worksheet.dataValidations.add(`${motherStatusCol}2:${motherStatusCol}${MAX_ROW}`, {
+			type: 'list',
+			allowBlank: true,
+			formulae: ['"Hidup,Meninggal"'],
+			showErrorMessage: true,
+			errorTitle: 'Status Ibu',
+			error: 'Pilih Hidup atau Meninggal'
+		});
+	}
+
+	// Living with dropdown
+	const livingWithCol = findColLetter('Tinggal Bersama');
+	if (livingWithCol) {
+		worksheet.dataValidations.add(`${livingWithCol}2:${livingWithCol}${MAX_ROW}`, {
+			type: 'list',
+			allowBlank: true,
+			formulae: ['"Orang Tua,Wali,Kos,Asrama,Lainnya"'],
+			showErrorMessage: true,
+			errorTitle: 'Tinggal Bersama',
+			error: 'Pilih dari daftar yang tersedia'
+		});
+	}
+
+	// Alternate row shading for data area (light grey on even rows)
+	for (let i = 2; i <= 20; i++) {
+		const row = worksheet.getRow(i);
+		if (i % 2 === 0) {
+			row.fill = {
+				type: 'pattern',
+				pattern: 'solid',
+				fgColor: { argb: 'FFF5F5F5' }
+			};
+		}
+		row.alignment = { vertical: 'middle' };
+	}
+
+	// Freeze the header row
+	worksheet.views = [{ state: 'frozen', ySplit: 1 }];
 
 	return workbook;
 };
@@ -365,11 +505,36 @@ export const createStudentData = (payload) => {
  */
 export const createBulkStudentsFromExcel = async (fileBuffer) => {
 	const workbook = new ExcelJS.Workbook();
-	await workbook.xlsx.load(fileBuffer);
+	try {
+		await workbook.xlsx.load(fileBuffer);
+	} catch (e) {
+		throw new Error('BULK_INVALID_FILE');
+	}
+
 	const worksheet = workbook.getWorksheet(1);
+	if (!worksheet) {
+		throw new Error('BULK_NO_WORKSHEET');
+	}
 
 	const payloads = [];
 	const headerRow = worksheet.getRow(1).values; // Array of human headers
+
+	// Validate that file uses the correct template by checking required headers
+	const requiredHeaders = ['Nama Siswa', 'NISN', 'Jenis Kelamin', 'Tempat Lahir'];
+	const fileHeaders = Array.isArray(headerRow) ? headerRow.filter(Boolean).map(String) : [];
+	const missingHeaders = requiredHeaders.filter((h) => !fileHeaders.includes(h));
+	if (missingHeaders.length > 0) {
+		throw new Error('BULK_WRONG_TEMPLATE');
+	}
+
+	// Count data rows (excluding header)
+	let dataRowCount = 0;
+	worksheet.eachRow((row, rowNumber) => {
+		if (rowNumber > 1) dataRowCount++;
+	});
+	if (dataRowCount === 0) {
+		throw new Error('BULK_EMPTY_DATA');
+	}
 
 	worksheet.eachRow((row, rowNumber) => {
 		if (rowNumber === 1) return; // Skip header row
@@ -378,16 +543,16 @@ export const createBulkStudentsFromExcel = async (fileBuffer) => {
 
 		// Map Human Headers back to Internal Keys
 		row.values.forEach((value, index) => {
-			// ExcelJS values array is 1-indexed, but sometimes 0-indexed depending on parsing
-			// headerRow is usually [empty, 'Header1', 'Header2'...]
 			const humanHeader = headerRow[index];
 			if (humanHeader && EXCEL_HEADER_MAP[humanHeader]) {
 				const internalKey = EXCEL_HEADER_MAP[humanHeader];
 
 				// Handle Date Objects from Excel
 				if (value instanceof Date) {
-					// Convert to YYYY-MM-DD string for DB
 					rowData[internalKey] = value.toISOString().split('T')[0];
+				} else if (VALUE_CONVERTERS[internalKey]) {
+					// Convert human-readable values (e.g. "Hidup" -> 1, "Laki-laki" -> "Laki-laki")
+					rowData[internalKey] = VALUE_CONVERTERS[internalKey](value);
 				} else {
 					rowData[internalKey] = value;
 				}

@@ -218,14 +218,18 @@
 
 			if (!response.ok) {
 				const result = await response.json();
-				throw new Error(result.message || 'Upload failed');
+				throw new Error(
+					result.message || 'Upload gagal. Pastikan menggunakan template yang benar.'
+				);
 			}
+
+			const successResult = await response.json();
 
 			// Show success modal
 			alertModal = {
 				show: true,
 				type: 'success',
-				message: 'Upload berhasil!'
+				message: successResult.message || 'Upload berhasil!'
 			};
 
 			isUploadModalOpen = false;
@@ -236,7 +240,7 @@
 			alertModal = {
 				show: true,
 				type: 'error',
-				message: `Gagal upload: ${error instanceof Error ? error.message : 'Unknown error'}`
+				message: error instanceof Error ? error.message : 'Terjadi kesalahan saat upload.'
 			};
 		} finally {
 			loading = false;
@@ -250,6 +254,7 @@
 
 <UploadExcel
 	isOpen={isUploadModalOpen}
+	templateUrl={DOWNLOAD_TEMPLATE_EXCEL}
 	on:close={() => (isUploadModalOpen = false)}
 	on:upload={handleUpload}
 />
@@ -338,20 +343,22 @@
 				<a
 					href={DOWNLOAD_TEMPLATE_EXCEL}
 					class="flex items-center gap-1.5 rounded-md border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50"
+					title="Unduh template Excel untuk mengisi data siswa secara massal"
 				>
-					<DownloadIcon /> Template
+					<DownloadIcon /> Unduh Template
 				</a>
 				<button
 					on:click={() => (isUploadModalOpen = true)}
 					class="flex items-center gap-1.5 rounded-md border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50"
+					title="Upload file template Excel yang sudah diisi data siswa"
 				>
-					<UploadIcon /> Import
+					<UploadIcon /> Upload Excel
 				</button>
 				<a
 					href="/siswa/addStudent"
 					class="flex items-center gap-1.5 rounded-md bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-700"
 				>
-					<AddIcon /> Tambah
+					<AddIcon /> Tambah Siswa
 				</a>
 			</div>
 		</div>

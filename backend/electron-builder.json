@@ -32,7 +32,7 @@
 				"arch": ["x64"]
 			}
 		],
-		"icon": "build-resources/siakadlogo.svg",
+		"icon": "build-resources/iconsiakad-01.ico",
 		"signAndEditExecutable": false
 	},
 	"forceCodeSigning": false,
@@ -41,11 +41,7 @@
 		"allowToChangeInstallationDirectory": true,
 		"createDesktopShortcut": true,
 		"createStartMenuShortcut": true,
-		"installerIcon": "build-resources/icon.ico",
-		"uninstallerIcon": "build-resources/icon.ico",
-		"installerHeader": "build-resources/installerHeader.bmp",
-		"installerSidebar": "build-resources/installerSidebar.bmp",
-		"shortcutName": "SIAKAD Madrasah"
+		"shortcutName": "Platform SIAKAD Madrasah"
 	},
 	"mac": {
 		"target": ["dmg", "zip"],

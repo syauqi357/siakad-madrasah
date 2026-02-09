@@ -123,13 +123,36 @@ export const createBulkStudent = async (req, res) => {
 	try {
 		const file = req.file;
 		if (!file) {
-			return res.status(400).json({ message: 'No file uploaded.' });
+			return res.status(400).json({
+				message: 'Tidak ada file yang diunggah. Silakan pilih file Excel terlebih dahulu.'
+			});
 		}
 		const newBulkStudent = await studentService.createBulkStudentsFromExcel(file.buffer);
-		res.status(201).json({ message: 'Bulk student upload successful', data: newBulkStudent });
+		res.status(201).json({
+			message: `Berhasil mengunggah ${newBulkStudent.length} data siswa.`,
+			data: newBulkStudent
+		});
 	} catch (error) {
-		console.error('Database error:', error);
-		res.status(500).json({ message: 'Error uploading student', error: error.message });
+		console.error('Bulk upload error:', error);
+
+		// User-friendly error messages in Indonesian
+		const errorMessages = {
+			BULK_INVALID_FILE:
+				'File tidak dapat dibaca. Pastikan file berformat Excel (.xlsx) dan tidak rusak.',
+			BULK_NO_WORKSHEET:
+				'File Excel kosong atau tidak memiliki sheet data. Pastikan menggunakan template yang benar.',
+			BULK_WRONG_TEMPLATE:
+				'Format file tidak sesuai template. Silakan unduh template terlebih dahulu, isi datanya, lalu unggah kembali.',
+			BULK_EMPTY_DATA:
+				'File template tidak berisi data siswa. Silakan isi minimal 1 baris data pada template.'
+		};
+
+		const userMessage =
+			errorMessages[error.message] ||
+			'Gagal mengunggah data siswa. Pastikan Anda menggunakan template yang telah disediakan dan semua kolom wajib sudah terisi.';
+
+		const statusCode = errorMessages[error.message] ? 400 : 500;
+		res.status(statusCode).json({ message: userMessage });
 	}
 };
 
@@ -141,7 +164,8 @@ export const downloadStudentBulkTemplate = async (req, res) => {
 			'Content-Type',
 			'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
 		);
-		res.setHeader('Content-Disposition', 'attachment; filename="bulk_student_template.xlsx"');
+		res.setHeader('Content-Disposition', 'attachment; filename="Template_Data_Siswa.xlsx"');
+		res.setHeader('Cache-Control', 'no-store');
 
 		await workbook.xlsx.write(res);
 		res.end();
