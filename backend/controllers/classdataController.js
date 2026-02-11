@@ -55,17 +55,18 @@ export const updateClass = async (req, res) => {
 	try {
 		const id = parseInt(req.params.id);
 		const result = await classService.editClassData(id, req.body);
+
+		if (!result) {
+			return res.status(404).json({ success: false, message: 'Class not found' });
+		}
+
 		res.status(200).json({
 			success: true,
 			message: 'Class updated successfully',
 			data: result
 		});
 	} catch (error) {
-		const status = error.message === 'Class not found' ? 404 : 500;
-		res.status(status).json({
-			success: false,
-			message: error.message
-		});
+		res.status(500).json({ success: false, message: error.message });
 	}
 };
 
@@ -73,16 +74,17 @@ export const deleteClass = async (req, res) => {
 	try {
 		const id = parseInt(req.params.id);
 		const result = await classService.deleteClassData(id);
+
+		if (!result) {
+			return res.status(404).json({ success: false, message: 'Class not found' });
+		}
+
 		res.status(200).json({
 			success: true,
 			message: 'Class deleted successfully',
 			data: result
 		});
 	} catch (error) {
-		const status = error.message === 'Class not found' ? 404 : 500;
-		res.status(status).json({
-			success: false,
-			message: error.message
-		});
+		res.status(500).json({ success: false, message: error.message });
 	}
 };

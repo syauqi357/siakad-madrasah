@@ -62,11 +62,8 @@ export const createTeacher = (data) => {
  * @throws {Error} If teacher not found.
  */
 export const updateTeacher = (id, data) => {
-	// Check if teacher exists
 	const existing = getTeacherById(id);
-	if (!existing) {
-		throw new Error('Teacher not found');
-	}
+	if (!existing) return null;
 
 	const updateData = {};
 
@@ -92,11 +89,8 @@ export const updateTeacher = (id, data) => {
  * @throws {Error} If teacher not found.
  */
 export const deleteTeacher = (id) => {
-	// Check if teacher exists
 	const existing = getTeacherById(id);
-	if (!existing) {
-		throw new Error('Teacher not found');
-	}
+	if (!existing) return null;
 
 	const result = db.delete(teachers).where(eq(teachers.id, id)).returning().all();
 

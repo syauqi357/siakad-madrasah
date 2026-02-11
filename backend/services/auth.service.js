@@ -5,10 +5,7 @@ import bcrypt from 'bcryptjs'; // bcryptjs for password hashing (pure JS, no nat
 import { eq } from 'drizzle-orm'; // drizzle-orm for database queries
 import { users } from '../src/db/schema/user.js'; //schema user
 import { db } from '../src/index.js'; // database connection
-// import { fileURLToPath } from 'url';
 
-// const __filename = fileURLToPath(import.meta.url);
-// const __dirname = path.dirname(__filename);
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
@@ -28,62 +25,42 @@ const JWT_SECRET = process.env.JWT_SECRET;
 
 
 export const AUTHENTICATE_USERS = async (username, password) => {
-	try {
-		// 1. Find user by username only
-		const user = await db
-			.select()
-			.from(users)
-			.where(eq(users.username, username)) // Only check username
-			.limit(1);
+	// 1. Find user by username only
+	const user = await db
+		.select()
+		.from(users)
+		.where(eq(users.username, username))
+		.limit(1);
 
-		if (!user || user.length === 0) {
-			return {
-				success: false,
-				message: 'Invalid username or password'
-			};
-		}
+	if (!user || user.length === 0) return null;
 
-		const foundUser = user[0];
+	const foundUser = user[0];
 
-		// 2. Compare password with bcrypt
-		const isPasswordValid = await bcrypt.compare(password, foundUser.password);
+	// 2. Compare password with bcrypt
+	const isPasswordValid = await bcrypt.compare(password, foundUser.password);
+	if (!isPasswordValid) return null;
 
-		if (!isPasswordValid) {
-			return {
-				success: false,
-				message: 'Invalid username or password'
-			};
-		}
+	// 3. Create JWT token with user data
+	const token = jwt.sign(
+		{
+			id: foundUser.id,
+			username: foundUser.username,
+			role: foundUser.role
+		},
+		JWT_SECRET,
+		{ expiresIn: '24h' }
+	);
 
-		// 3. Create JWT token with user data
-		const token = jwt.sign(
-			{
-				id: foundUser.id,
-				username: foundUser.username,
-				role: foundUser.role
-			},
-			JWT_SECRET,
-			{ expiresIn: '24h' }
-		);
-
-		// 4. Remove password from response
-		const userResponse = {
+	// 4. Return token and user data (without password)
+	return {
+		token,
+		user: {
 			id: foundUser.id,
 			username: foundUser.username,
 			role: foundUser.role,
-			email: foundUser.email // if you have email field
-		};
-
-		return {
-			success: true,
-			message: 'Login successful',
-			token,
-			user: userResponse
-		};
-	} catch (error) {
-		console.error('Authentication error:', error);
-		return { success: false, message: 'Internal server error' };
-	}
+			email: foundUser.email
+		}
+	};
 };
 
 /**
@@ -97,46 +74,23 @@ export const AUTHENTICATE_USERS = async (username, password) => {
  **/
 
 export const CHANGE_PASSWORD_SERVICES = async (userId, currentPassword, newPassword) => {
-	try {
-		// 1. Get user from database
-		const user = await db.select().from(users).where(eq(users.id, userId)).limit(1);
+	// 1. Get user from database
+	const user = await db.select().from(users).where(eq(users.id, userId)).limit(1);
+	if (!user || user.length === 0) return { error: 'USER_NOT_FOUND' };
 
-		if (!user || user.length === 0) {
-			return {
-				success: false,
-				message: 'User not found'
-			};
-		}
+	const foundUser = user[0];
 
-		const foundUser = user[0];
+	// 2. Verify current password
+	const isPasswordValid = await bcrypt.compare(currentPassword, foundUser.password);
+	if (!isPasswordValid) return { error: 'INVALID_PASSWORD' };
 
-		// 2. Verify current password
-		const isPasswordValid = await bcrypt.compare(currentPassword, foundUser.password);
+	// 3. Hash new password
+	const hashedNewPassword = await bcrypt.hash(newPassword, 10);
 
-		if (!isPasswordValid) {
-			return {
-				success: false,
-				message: 'Current password is incorrect'
-			};
-		}
+	// 4. Update password in database
+	await db.update(users).set({ password: hashedNewPassword }).where(eq(users.id, userId));
 
-		// 3. Hash new password
-		const hashedNewPassword = await bcrypt.hash(newPassword, 10);
-
-		// 4. Update password in database
-		await db.update(users).set({ password: hashedNewPassword }).where(eq(users.id, userId));
-
-		return {
-			success: true,
-			message: 'Password changed successfully'
-		};
-	} catch (error) {
-		console.error('Change password service error:', error);
-		return {
-			success: false,
-			message: 'Internal server error'
-		};
-	}
+	return { success: true };
 };
 
 /**
@@ -147,24 +101,11 @@ export const CHANGE_PASSWORD_SERVICES = async (userId, currentPassword, newPassw
  *
  **/
 export const VERIFY_TOKEN_SERVICES = (token) => {
-	try {
-		if (!token) {
-			return {
-				success: false,
-				message: 'No token provided'
-			};
-		}
+	if (!token) return null;
 
-		const decoded = jwt.verify(token, JWT_SECRET);
-		return {
-			success: true,
-			decoded
-		};
+	try {
+		return jwt.verify(token, JWT_SECRET);
 	} catch (error) {
-		console.error('Token verification error:', error);
-		return {
-			success: false,
-			message: 'Invalid or expired token'
-		};
+		return null;
 	}
 };

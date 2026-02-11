@@ -827,10 +827,7 @@ export const countStudentsByStatus = async (status) => {
  */
 export const updateStudentPhoto = async (studentId, photoPath) => {
 	const student = await db.select().from(studentTable).where(eq(studentTable.id, studentId)).get();
-
-	if (!student) {
-		throw new Error('Student not found');
-	}
+	if (!student) return null;
 
 	const updated = await db
 		.update(studentTable)
@@ -842,31 +839,10 @@ export const updateStudentPhoto = async (studentId, photoPath) => {
 };
 
 export const changeStudentStatus = async (studentId, newStatus, data = {}) => {
-	// Validate newStatus
-	if (!['MUTASI', 'GRADUATE'].includes(newStatus)) {
-		throw new Error('Invalid status. Must be MUTASI or GRADUATE');
-	}
-
 	// Get current student
 	const student = await db.select().from(studentTable).where(eq(studentTable.id, studentId)).get();
-
-	if (!student) {
-		throw new Error('Student not found');
-	}
-
-	if (student.status !== 'ACTIVE') {
-		throw new Error('Only ACTIVE students can change status');
-	}
-
-	// Validate MUTASI requirements
-	if (newStatus === 'MUTASI') {
-		if (!data.reason) {
-			throw new Error('Alasan mutasi wajib diisi');
-		}
-		if (!data.mutasiType) {
-			throw new Error('Jenis mutasi wajib dipilih');
-		}
-	}
+	if (!student) return { error: 'STUDENT_NOT_FOUND' };
+	if (student.status !== 'ACTIVE') return { error: 'NOT_ACTIVE' };
 
 	// Get current active rombel assignment (optional - student might not be in rombel)
 	const activeRombel = await db

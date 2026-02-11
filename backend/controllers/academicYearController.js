@@ -95,11 +95,15 @@ export const update = (req, res) => {
 	try {
 		const id = parseInt(req.params.id);
 		const updated = academicYearService.updateAcademicYear(id, req.body);
+
+		if (!updated) {
+			return res.status(404).json({ success: false, message: 'Tahun ajaran tidak ditemukan' });
+		}
+
 		res.json({ success: true, message: 'Tahun ajaran berhasil diupdate', data: updated });
 	} catch (error) {
 		console.error('Error updating academic year:', error);
-		const status = error.message.includes('tidak ditemukan') ? 404 : 500;
-		res.status(status).json({ success: false, message: error.message });
+		res.status(500).json({ success: false, message: error.message });
 	}
 };
 
@@ -109,11 +113,15 @@ export const update = (req, res) => {
 export const remove = (req, res) => {
 	try {
 		const id = parseInt(req.params.id);
-		academicYearService.deleteAcademicYear(id);
+		const result = academicYearService.deleteAcademicYear(id);
+
+		if (!result) {
+			return res.status(404).json({ success: false, message: 'Tahun ajaran tidak ditemukan' });
+		}
+
 		res.json({ success: true, message: 'Tahun ajaran berhasil dihapus' });
 	} catch (error) {
 		console.error('Error deleting academic year:', error);
-		const status = error.message.includes('tidak ditemukan') ? 404 : 500;
-		res.status(status).json({ success: false, message: error.message });
+		res.status(500).json({ success: false, message: error.message });
 	}
 };

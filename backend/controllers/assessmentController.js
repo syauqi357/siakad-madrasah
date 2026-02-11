@@ -82,6 +82,18 @@ export const getAssessmentTypeById = async (req, res) => {
  */
 export const createAssessmentType = async (req, res) => {
 	try {
+		const { code, name } = req.body;
+
+		if (!code || !name) {
+			return res.status(400).json({ message: 'Kode dan nama penilaian wajib diisi' });
+		}
+
+		// Check if code already exists
+		const existing = await assessmentService.getAssessmentTypeByCode(code);
+		if (existing) {
+			return res.status(400).json({ message: `Kode penilaian "${code}" sudah digunakan` });
+		}
+
 		const newType = await assessmentService.createAssessmentType(req.body);
 
 		res.status(201).json({
@@ -90,7 +102,7 @@ export const createAssessmentType = async (req, res) => {
 		});
 	} catch (error) {
 		console.error('Error creating assessment type:', error);
-		res.status(400).json({ message: error.message });
+		res.status(500).json({ message: error.message });
 	}
 };
 
@@ -101,7 +113,27 @@ export const createAssessmentType = async (req, res) => {
 export const updateAssessmentType = async (req, res) => {
 	try {
 		const id = parseInt(req.params.id);
+		const { code } = req.body;
+
+		// If changing code, check for duplicates
+		if (code) {
+			const existing = await assessmentService.getAssessmentTypeById(id);
+			if (!existing) {
+				return res.status(404).json({ message: 'Jenis penilaian tidak ditemukan' });
+			}
+			if (code.toUpperCase() !== existing.code) {
+				const duplicate = await assessmentService.getAssessmentTypeByCode(code);
+				if (duplicate) {
+					return res.status(400).json({ message: `Kode penilaian "${code}" sudah digunakan` });
+				}
+			}
+		}
+
 		const updated = await assessmentService.updateAssessmentType(id, req.body);
+
+		if (!updated) {
+			return res.status(404).json({ message: 'Jenis penilaian tidak ditemukan' });
+		}
 
 		res.status(200).json({
 			message: 'Jenis penilaian berhasil diperbarui',
@@ -109,8 +141,7 @@ export const updateAssessmentType = async (req, res) => {
 		});
 	} catch (error) {
 		console.error('Error updating assessment type:', error);
-		const statusCode = error.message.includes('tidak ditemukan') ? 404 : 400;
-		res.status(statusCode).json({ message: error.message });
+		res.status(500).json({ message: error.message });
 	}
 };
 
@@ -123,14 +154,17 @@ export const toggleAssessmentTypeStatus = async (req, res) => {
 		const id = parseInt(req.params.id);
 		const updated = await assessmentService.toggleAssessmentTypeStatus(id);
 
+		if (!updated) {
+			return res.status(404).json({ message: 'Jenis penilaian tidak ditemukan' });
+		}
+
 		res.status(200).json({
 			message: `Status berhasil diubah menjadi ${updated.isActive ? 'Aktif' : 'Nonaktif'}`,
 			data: updated
 		});
 	} catch (error) {
 		console.error('Error toggling assessment type:', error);
-		const statusCode = error.message.includes('tidak ditemukan') ? 404 : 400;
-		res.status(statusCode).json({ message: error.message });
+		res.status(500).json({ message: error.message });
 	}
 };
 
@@ -141,14 +175,23 @@ export const toggleAssessmentTypeStatus = async (req, res) => {
 export const deleteAssessmentType = async (req, res) => {
 	try {
 		const id = parseInt(req.params.id);
-		await assessmentService.deleteAssessmentType(id);
+		const result = await assessmentService.deleteAssessmentType(id);
+
+		if (!result) {
+			return res.status(404).json({ message: 'Jenis penilaian tidak ditemukan' });
+		}
+
+		if (!result.deleted) {
+			return res.status(400).json({
+				message: `Tidak dapat menghapus. Jenis penilaian ini digunakan oleh ${result.usageCount} nilai siswa. Nonaktifkan saja jika tidak ingin dipakai lagi.`
+			});
+		}
 
 		res.status(200).json({
 			message: 'Jenis penilaian berhasil dihapus'
 		});
 	} catch (error) {
 		console.error('Error deleting assessment type:', error);
-		const statusCode = error.message.includes('tidak ditemukan') ? 404 : 400;
-		res.status(statusCode).json({ message: error.message });
+		res.status(500).json({ message: error.message });
 	}
 };

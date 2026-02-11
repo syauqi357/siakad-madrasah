@@ -147,24 +147,10 @@ export const getGraduationYears = async () => {
  * @param {Object} data - { completionDate, graduationYear, certificateNumber, finalGrade, scores }
  */
 export const graduateStudent = async (studentId, data) => {
-	// Validate required fields
-	if (!data.completionDate) {
-		throw new Error('Tanggal kelulusan wajib diisi');
-	}
-	if (!data.graduationYear) {
-		throw new Error('Tahun kelulusan wajib diisi');
-	}
-
 	// Get current student
 	const student = await db.select().from(studentTable).where(eq(studentTable.id, studentId)).get();
-
-	if (!student) {
-		throw new Error('Siswa tidak ditemukan');
-	}
-
-	if (student.status !== 'ACTIVE') {
-		throw new Error('Hanya siswa ACTIVE yang dapat diluluskan');
-	}
+	if (!student) return { error: 'STUDENT_NOT_FOUND' };
+	if (student.status !== 'ACTIVE') return { error: 'NOT_ACTIVE' };
 
 	// Get current active rombel assignment
 	const activeRombel = await db
@@ -242,14 +228,6 @@ export const graduateStudent = async (studentId, data) => {
  * @param {Object} commonData - { completionDate, graduationYear }
  */
 export const bulkGraduateStudents = (students, commonData) => {
-	if (!commonData.completionDate || !commonData.graduationYear) {
-		throw new Error('Tanggal dan tahun kelulusan wajib diisi');
-	}
-
-	if (!Array.isArray(students) || students.length === 0) {
-		throw new Error('Daftar siswa tidak boleh kosong');
-	}
-
 	const results = {
 		success: [],
 		failed: []
@@ -353,10 +331,7 @@ export const bulkGraduateStudents = (students, commonData) => {
 export const updateGraduateData = async (studentId, data) => {
 	// Verify student is graduated
 	const student = await db.select().from(studentTable).where(eq(studentTable.id, studentId)).get();
-
-	if (!student || student.status !== 'GRADUATE') {
-		throw new Error('Siswa bukan alumni');
-	}
+	if (!student || student.status !== 'GRADUATE') return { error: 'NOT_GRADUATE' };
 
 	// Get history record
 	const history = await db
@@ -364,10 +339,7 @@ export const updateGraduateData = async (studentId, data) => {
 		.from(studentHistory)
 		.where(and(eq(studentHistory.studentId, studentId), eq(studentHistory.statusType, 'GRADUATE')))
 		.get();
-
-	if (!history) {
-		throw new Error('Data history tidak ditemukan');
-	}
+	if (!history) return { error: 'HISTORY_NOT_FOUND' };
 
 	// Update allowed fields only
 	const updateData = {};
@@ -377,9 +349,7 @@ export const updateGraduateData = async (studentId, data) => {
 	if (data.graduationYear !== undefined) updateData.graduationYear = data.graduationYear;
 	if (data.completionDate !== undefined) updateData.completionDate = data.completionDate;
 
-	if (Object.keys(updateData).length === 0) {
-		throw new Error('Tidak ada data yang diupdate');
-	}
+	if (Object.keys(updateData).length === 0) return { error: 'NO_DATA' };
 
 	const updated = await db
 		.update(studentHistory)

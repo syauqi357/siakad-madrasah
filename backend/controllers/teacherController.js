@@ -89,17 +89,17 @@ export const updateTeacher = (req, res) => {
 		const id = parseInt(req.params.id);
 		const result = teacherService.updateTeacher(id, req.body);
 
+		if (!result) {
+			return res.status(404).json({ success: false, message: 'Teacher not found' });
+		}
+
 		res.status(200).json({
 			success: true,
 			message: 'Teacher updated successfully',
 			data: result
 		});
 	} catch (error) {
-		const status = error.message === 'Teacher not found' ? 404 : 500;
-		res.status(status).json({
-			success: false,
-			message: error.message
-		});
+		res.status(500).json({ success: false, message: error.message });
 	}
 };
 
@@ -109,16 +109,16 @@ export const deleteTeacher = (req, res) => {
 		const id = parseInt(req.params.id);
 		const result = teacherService.deleteTeacher(id);
 
+		if (!result) {
+			return res.status(404).json({ success: false, message: 'Teacher not found' });
+		}
+
 		res.status(200).json({
 			success: true,
 			message: 'Teacher deleted successfully',
 			data: result
 		});
 	} catch (error) {
-		const status = error.message === 'Teacher not found' ? 404 : 500;
-		res.status(status).json({
-			success: false,
-			message: error.message
-		});
+		res.status(500).json({ success: false, message: error.message });
 	}
 };

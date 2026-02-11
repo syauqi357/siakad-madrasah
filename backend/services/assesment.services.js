@@ -100,22 +100,6 @@ export const getAssessmentTypeById = async (id) => {
 export const createAssessmentType = async (data) => {
 	const { code, name, defaultWeight } = data;
 
-	// Validate required fields
-	if (!code || !name) {
-		throw new Error('Kode dan nama penilaian wajib diisi');
-	}
-
-	// Check if code already exists
-	const existing = await db
-		.select()
-		.from(assessmentType)
-		.where(eq(assessmentType.code, code.toUpperCase()))
-		.get();
-
-	if (existing) {
-		throw new Error(`Kode penilaian "${code}" sudah digunakan`);
-	}
-
 	return db
 		.insert(assessmentType)
 		.values({
@@ -129,6 +113,18 @@ export const createAssessmentType = async (data) => {
 };
 
 /**
+ * Check if assessment type code already exists
+ * @param {string} code - Assessment type code
+ */
+export const getAssessmentTypeByCode = async (code) => {
+	return db
+		.select()
+		.from(assessmentType)
+		.where(eq(assessmentType.code, code.toUpperCase()))
+		.get();
+};
+
+/**
  * Update assessment type
  * @param {number} id - Assessment type ID
  * @param {Object} data - { code?, name?, defaultWeight? }
@@ -136,25 +132,8 @@ export const createAssessmentType = async (data) => {
 export const updateAssessmentType = async (id, data) => {
 	const { code, name, defaultWeight } = data;
 
-	// Check if exists
 	const existing = await db.select().from(assessmentType).where(eq(assessmentType.id, id)).get();
-
-	if (!existing) {
-		throw new Error('Jenis penilaian tidak ditemukan');
-	}
-
-	// If changing code, check for duplicates
-	if (code && code.toUpperCase() !== existing.code) {
-		const duplicate = await db
-			.select()
-			.from(assessmentType)
-			.where(eq(assessmentType.code, code.toUpperCase()))
-			.get();
-
-		if (duplicate) {
-			throw new Error(`Kode penilaian "${code}" sudah digunakan`);
-		}
-	}
+	if (!existing) return null;
 
 	const updateData = {};
 	if (code) updateData.code = code.toUpperCase().trim();
@@ -175,10 +154,7 @@ export const updateAssessmentType = async (id, data) => {
  */
 export const toggleAssessmentTypeStatus = async (id) => {
 	const existing = await db.select().from(assessmentType).where(eq(assessmentType.id, id)).get();
-
-	if (!existing) {
-		throw new Error('Jenis penilaian tidak ditemukan');
-	}
+	if (!existing) return null;
 
 	return db
 		.update(assessmentType)
@@ -193,23 +169,17 @@ export const toggleAssessmentTypeStatus = async (id) => {
  * @param {number} id - Assessment type ID
  */
 export const deleteAssessmentType = async (id) => {
-	// Check if exists
 	const existing = await db.select().from(assessmentType).where(eq(assessmentType.id, id)).get();
+	if (!existing) return null;
 
-	if (!existing) {
-		throw new Error('Jenis penilaian tidak ditemukan');
-	}
-
-	// Check if used by any scores
+	// Check usage count - let controller decide what to do
 	const [usage] = await db
 		.select({ count: count() })
 		.from(studentScores)
 		.where(eq(studentScores.assessmentTypeId, id));
 
 	if (usage?.count > 0) {
-		throw new Error(
-			`Tidak dapat menghapus. Jenis penilaian ini digunakan oleh ${usage.count} nilai siswa. Nonaktifkan saja jika tidak ingin dipakai lagi.`
-		);
+		return { deleted: false, usageCount: usage.count };
 	}
 
 	await db.delete(assessmentType).where(eq(assessmentType.id, id)).run();

@@ -14,18 +14,31 @@ export const createRombel = async (req, res) => {
 			});
 		}
 
-		const result = registerRombel(payload); // Synchronous call now
+		const result = registerRombel(payload);
+
+		if (result.error === 'CAPACITY_EXCEEDED') {
+			return res.status(400).json({
+				success: false,
+				message: `Jumlah siswa (${result.studentCount}) melebihi kapasitas rombel (${result.capacity}).`
+			});
+		}
+
+		if (result.error === 'INVALID_CAPACITY') {
+			return res.status(400).json({
+				success: false,
+				message: 'Kapasitas siswa harus lebih dari 0.'
+			});
+		}
 
 		return res.status(201).json({
 			success: true,
-			message: result.message
+			message: 'Rombel registered successfully'
 		});
 	} catch (error) {
 		console.error('Error in createRombel controller:', error);
 		return res.status(500).json({
 			success: false,
-			message: 'Internal Server Error',
-			error: error.message
+			message: 'Internal Server Error'
 		});
 	}
 };
@@ -101,7 +114,14 @@ export const deleteRombel = (req, res) => {
 			});
 		}
 
-		deleteRombelById(rombelId);
+		const result = deleteRombelById(rombelId);
+
+		if (!result) {
+			return res.status(404).json({
+				success: false,
+				message: 'Rombel not found'
+			});
+		}
 
 		res.status(200).json({
 			success: true,
@@ -109,10 +129,9 @@ export const deleteRombel = (req, res) => {
 		});
 	} catch (error) {
 		console.error('Error in deleteRombel controller:', error);
-		const status = error.message === 'Rombel not found' ? 404 : 500;
-		res.status(status).json({
+		res.status(500).json({
 			success: false,
-			message: error.message
+			message: 'Internal Server Error'
 		});
 	}
 };
@@ -142,6 +161,20 @@ export const addStudentsToExistingRombel = (req, res) => {
 
 		const result = addStudentsToRombel(rombelId, studentIds);
 
+		if (!result) {
+			return res.status(404).json({
+				success: false,
+				message: 'Rombel not found'
+			});
+		}
+
+		if (result.error === 'CAPACITY_EXCEEDED') {
+			return res.status(400).json({
+				success: false,
+				message: `Kapasitas tidak cukup. Tersisa ${result.available} slot, mencoba menambah ${result.requested} siswa.`
+			});
+		}
+
 		res.status(200).json({
 			success: true,
 			message: `${result.added} siswa berhasil ditambahkan`,
@@ -149,10 +182,9 @@ export const addStudentsToExistingRombel = (req, res) => {
 		});
 	} catch (error) {
 		console.error('Error in addStudentsToExistingRombel controller:', error);
-		const status = error.message === 'Rombel not found' ? 404 : 400;
-		res.status(status).json({
+		res.status(500).json({
 			success: false,
-			message: error.message
+			message: 'Internal Server Error'
 		});
 	}
 };

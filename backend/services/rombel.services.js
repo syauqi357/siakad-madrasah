@@ -89,44 +89,41 @@ const registerSiswaToRombel = (rombelId, siswaIds, tx) => {
 };
 
 export const registerRombel = (payloadList) => {
-	try {
-		// Get active academic year before transaction
-		const academicYearId = getActiveAcademicYearId();
-
-		db.transaction((tx) => {
-			for (const rombelData of payloadList) {
-				const studentCount = rombelData.siswa ? rombelData.siswa.length : 0;
-				const capacity = rombelData.student_capacity || 30;
-				if (studentCount > capacity) {
-					throw new Error(
-						`Jumlah siswa (${studentCount}) melebihi kapasitas rombel (${capacity}).`
-					);
-				}
-				if (capacity <= 0) {
-					throw new Error('Kapasitas siswa harus lebih dari 0.');
-				}
-				const rombelId = insertRombel(
-					{
-						name: rombelData.nama_rombel,
-						class_id: parseInt(rombelData.tingkat_kelas),
-						academic_year_id: academicYearId,
-						class_advisor_id: parseInt(rombelData.wali_kelas),
-						classroom: rombelData.nama_ruangan,
-						student_capacity: capacity,
-						kurikulum: rombelData.kurikulum || null
-					},
-					tx
-				);
-				if (rombelData.siswa && rombelData.siswa.length > 0) {
-					registerSiswaToRombel(rombelId, rombelData.siswa, tx);
-				}
-			}
-		});
-		return { success: true, message: 'Rombel registered successfully' };
-	} catch (error) {
-		console.error('Error registering rombel:', error);
-		throw new Error('Failed to register rombel: ' + error.message);
+	// Validate payload before transaction
+	for (const rombelData of payloadList) {
+		const studentCount = rombelData.siswa ? rombelData.siswa.length : 0;
+		const capacity = rombelData.student_capacity || 30;
+		if (studentCount > capacity) {
+			return { error: 'CAPACITY_EXCEEDED', studentCount, capacity };
+		}
+		if (capacity <= 0) {
+			return { error: 'INVALID_CAPACITY' };
+		}
 	}
+
+	// Get active academic year before transaction
+	const academicYearId = getActiveAcademicYearId();
+
+	db.transaction((tx) => {
+		for (const rombelData of payloadList) {
+			const rombelId = insertRombel(
+				{
+					name: rombelData.nama_rombel,
+					class_id: parseInt(rombelData.tingkat_kelas),
+					academic_year_id: academicYearId,
+					class_advisor_id: parseInt(rombelData.wali_kelas),
+					classroom: rombelData.nama_ruangan,
+					student_capacity: rombelData.student_capacity || 30,
+					kurikulum: rombelData.kurikulum || null
+				},
+				tx
+			);
+			if (rombelData.siswa && rombelData.siswa.length > 0) {
+				registerSiswaToRombel(rombelId, rombelData.siswa, tx);
+			}
+		}
+	});
+	return { success: true };
 };
 
 /**
@@ -234,17 +231,13 @@ export const getRombelById = (rombelId) => {
  */
 export const addStudentsToRombel = (rombelId, studentIds) => {
 	const rombelData = getRombelById(rombelId);
-	if (!rombelData) {
-		throw new Error('Rombel not found');
-	}
+	if (!rombelData) return null;
 
 	const currentCount = rombelData.students.filter((s) => s.status === 'ACTIVE').length;
 	const available = rombelData.kapasitas - currentCount;
 
 	if (studentIds.length > available) {
-		throw new Error(
-			`Kapasitas tidak cukup. Tersisa ${available} slot, mencoba menambah ${studentIds.length} siswa.`
-		);
+		return { error: 'CAPACITY_EXCEEDED', available, requested: studentIds.length };
 	}
 
 	db.transaction((tx) => {
@@ -260,10 +253,7 @@ export const addStudentsToRombel = (rombelId, studentIds) => {
  */
 export const deleteRombelById = (rombelId) => {
 	const existing = db.select({ id: rombel.id }).from(rombel).where(eq(rombel.id, rombelId)).get();
-
-	if (!existing) {
-		throw new Error('Rombel not found');
-	}
+	if (!existing) return null;
 
 	db.transaction((tx) => {
 		// Clear rombelId on students that reference this rombel

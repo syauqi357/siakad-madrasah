@@ -54,9 +54,7 @@ export const generateScoreTemplateForRombel = async (rombelId, subjectId = null)
 		.where(eq(rombelStudents.rombelId, rombelId));
 
 	if (studentsInRombel.length === 0) {
-		throw new Error(
-			`Tidak ada siswa di rombel "${rombelName}". Silakan assign siswa terlebih dahulu.`
-		);
+		return { error: 'NO_STUDENTS', rombelName };
 	}
 
 	// 3. Fetch all assessment types to create the score columns
@@ -129,7 +127,7 @@ export const getSubjectsForRombel = async (rombelId) => {
 		.where(eq(rombel.id, rombelId))
 		.limit(1);
 
-	if (!rombelData.length) throw new Error('Rombel not found');
+	if (!rombelData.length) return null;
 
 	// 2. Get subjects for that class
 	const subjects = await db
@@ -339,7 +337,7 @@ export const getRombelScoreReport = async (rombelId) => {
 		.where(eq(rombel.id, rombelId))
 		.limit(1);
 
-	if (!rombelInfo.length) throw new Error('Rombel not found');
+	if (!rombelInfo.length) return null;
 
 	const rombelName = rombelInfo[0].name;
 	const classId = rombelInfo[0].classId;

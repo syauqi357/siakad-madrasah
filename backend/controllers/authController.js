@@ -6,17 +6,28 @@ export const login = async (req, res) => {
 	try {
 		const { username, password } = req.body;
 
-		// Call service layer to authenticate
-		const result = await AUTHENTICATE_USERS(username, password); // ← ADD AWAIT!
-
-		if (!result.success) {
-			return res.status(result.message === 'Username and password are required' ? 400 : 401).json({
+		if (!username || !password) {
+			return res.status(400).json({
 				success: false,
-				message: result.message
+				message: 'Username and password are required'
 			});
 		}
 
-		return res.status(200).json(result);
+		const result = await AUTHENTICATE_USERS(username, password);
+
+		if (!result) {
+			return res.status(401).json({
+				success: false,
+				message: 'Invalid username or password'
+			});
+		}
+
+		return res.status(200).json({
+			success: true,
+			message: 'Login successful',
+			token: result.token,
+			user: result.user
+		});
 	} catch (error) {
 		console.error('Login controller error:', error);
 		return res.status(500).json({
@@ -76,13 +87,15 @@ export const changePassword = async (req, res) => {
 		// Call service
 		const result = await CHANGE_PASSWORD_SERVICES(userId, currentPassword, newPassword);
 
-		if (!result.success) {
-			return res
-				.status(result.message === 'Current password is incorrect' ? 401 : 500)
-				.json(result);
+		if (result.error === 'USER_NOT_FOUND') {
+			return res.status(404).json({ success: false, message: 'User not found' });
 		}
 
-		return res.status(200).json(result);
+		if (result.error === 'INVALID_PASSWORD') {
+			return res.status(401).json({ success: false, message: 'Current password is incorrect' });
+		}
+
+		return res.status(200).json({ success: true, message: 'Password changed successfully' });
 	} catch (error) {
 		console.error('Change password controller error:', error);
 		return res.status(500).json({

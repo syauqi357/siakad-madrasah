@@ -126,6 +126,20 @@ export const promoteStudents = (req, res) => {
 			parseInt(targetRombelId)
 		);
 
+		if (result.error === 'TARGET_NOT_FOUND') {
+			return res.status(404).json({
+				success: false,
+				message: 'Rombel tujuan tidak ditemukan'
+			});
+		}
+
+		if (result.error === 'CAPACITY_EXCEEDED') {
+			return res.status(400).json({
+				success: false,
+				message: `Kapasitas tidak cukup. Tersedia: ${result.available}, Diminta: ${result.requested}`
+			});
+		}
+
 		res.json({
 			success: true,
 			message: `Berhasil mempromosikan ${result.successCount} siswa`,
@@ -135,7 +149,7 @@ export const promoteStudents = (req, res) => {
 		console.error('Error promoting students:', error);
 		res.status(500).json({
 			success: false,
-			message: error.message || 'Gagal mempromosikan siswa'
+			message: 'Gagal mempromosikan siswa'
 		});
 	}
 };

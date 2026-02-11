@@ -67,9 +67,7 @@ export const createAcademicYear = (data) => {
  */
 export const updateAcademicYear = (id, data) => {
 	const existing = getAcademicYearById(id);
-	if (!existing) {
-		throw new Error('Tahun ajaran tidak ditemukan');
-	}
+	if (!existing) return null;
 
 	// If setting as active, deactivate others first
 	if (data.isActive) {
@@ -99,13 +97,11 @@ export const updateAcademicYear = (id, data) => {
  */
 export const deleteAcademicYear = (id) => {
 	const existing = getAcademicYearById(id);
-	if (!existing) {
-		throw new Error('Tahun ajaran tidak ditemukan');
-	}
+	if (!existing) return null;
 
 	db.delete(academicYear).where(eq(academicYear.id, id)).run();
 
-	return { success: true };
+	return { deleted: true };
 };
 
 /**

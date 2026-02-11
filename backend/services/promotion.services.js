@@ -191,10 +191,6 @@ export const getTargetRombels = (sourceClassId) => {
  * @returns {object} Result with success/failed counts
  */
 export const promoteStudents = (studentIds, targetRombelId) => {
-	if (!studentIds || studentIds.length === 0) {
-		throw new Error('Tidak ada siswa yang dipilih');
-	}
-
 	// Validate target rombel exists
 	const targetRombelData = db
 		.select({
@@ -206,9 +202,7 @@ export const promoteStudents = (studentIds, targetRombelId) => {
 		.where(eq(rombel.id, targetRombelId))
 		.get();
 
-	if (!targetRombelData) {
-		throw new Error('Rombel tujuan tidak ditemukan');
-	}
+	if (!targetRombelData) return { error: 'TARGET_NOT_FOUND' };
 
 	// Check capacity
 	const currentCount = db
@@ -219,9 +213,7 @@ export const promoteStudents = (studentIds, targetRombelId) => {
 
 	const availableSlots = targetRombelData.capacity - (currentCount?.count || 0);
 	if (studentIds.length > availableSlots) {
-		throw new Error(
-			`Kapasitas tidak cukup. Tersedia: ${availableSlots}, Diminta: ${studentIds.length}`
-		);
+		return { error: 'CAPACITY_EXCEEDED', available: availableSlots, requested: studentIds.length };
 	}
 
 	const results = {

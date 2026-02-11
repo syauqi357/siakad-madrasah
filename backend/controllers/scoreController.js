@@ -25,6 +25,13 @@ export const downloadScoreTemplateForRombel = async (req, res) => {
 			pSubjectId
 		);
 
+		if (workbook?.error === 'NO_STUDENTS') {
+			return res.status(400).json({
+				success: false,
+				message: `Tidak ada siswa di rombel "${workbook.rombelName}". Silakan assign siswa terlebih dahulu.`
+			});
+		}
+
 		res.setHeader(
 			'Content-Type',
 			'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
@@ -49,10 +56,15 @@ export const getSubjects = async (req, res) => {
 			return res.status(400).json({ success: false, message: 'Rombel ID is required' });
 		}
 		const result = await scoreService.getSubjectsForRombel(parseInt(rombelId));
+
+		if (!result) {
+			return res.status(404).json({ success: false, message: 'Rombel not found' });
+		}
+
 		res.json({ success: true, data: result });
 	} catch (error) {
 		console.error('Error fetching subjects:', error);
-		res.status(500).json({ success: false, message: 'Internal server error: ' + error.message });
+		res.status(500).json({ success: false, message: 'Internal server error' });
 	}
 };
 
@@ -211,12 +223,16 @@ export const getRombelScoreReport = async (req, res) => {
 
 		const result = await scoreService.getRombelScoreReport(parseInt(rombelId));
 
+		if (!result) {
+			return res.status(404).json({ success: false, message: 'Rombel not found' });
+		}
+
 		res.json({
 			success: true,
 			...result
 		});
 	} catch (error) {
 		console.error('Error fetching rombel score report:', error);
-		res.status(500).json({ success: false, message: 'Internal server error: ' + error.message });
+		res.status(500).json({ success: false, message: 'Internal server error' });
 	}
 };

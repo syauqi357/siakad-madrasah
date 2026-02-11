@@ -89,6 +89,13 @@ export const graduateStudent = async (req, res) => {
 		const studentId = parseInt(req.params.id);
 		const { completionDate, graduationYear, certificateNumber, finalGrade, scores } = req.body;
 
+		if (!completionDate) {
+			return res.status(400).json({ message: 'Tanggal kelulusan wajib diisi' });
+		}
+		if (!graduationYear) {
+			return res.status(400).json({ message: 'Tahun kelulusan wajib diisi' });
+		}
+
 		const result = await graduateService.graduateStudent(studentId, {
 			completionDate,
 			graduationYear,
@@ -97,14 +104,20 @@ export const graduateStudent = async (req, res) => {
 			scores
 		});
 
+		if (result.error === 'STUDENT_NOT_FOUND') {
+			return res.status(404).json({ message: 'Siswa tidak ditemukan' });
+		}
+		if (result.error === 'NOT_ACTIVE') {
+			return res.status(400).json({ message: 'Hanya siswa ACTIVE yang dapat diluluskan' });
+		}
+
 		res.status(200).json({
 			message: 'Siswa berhasil diluluskan',
 			data: result
 		});
 	} catch (error) {
 		console.error('Error in graduateStudent controller:', error);
-		const statusCode = error.message.includes('tidak ditemukan') ? 404 : 400;
-		res.status(statusCode).json({ message: error.message });
+		res.status(500).json({ message: error.message });
 	}
 };
 
@@ -116,12 +129,12 @@ export const bulkGraduateStudents = (req, res) => {
 	try {
 		const { students, commonData } = req.body;
 
-		if (!students || !Array.isArray(students)) {
-			return res.status(400).json({ message: 'Daftar siswa harus berupa array' });
+		if (!students || !Array.isArray(students) || students.length === 0) {
+			return res.status(400).json({ message: 'Daftar siswa tidak boleh kosong' });
 		}
 
 		if (!commonData || !commonData.completionDate || !commonData.graduationYear) {
-			return res.status(400).json({ message: 'Data kelulusan (completionDate, graduationYear) wajib diisi' });
+			return res.status(400).json({ message: 'Tanggal dan tahun kelulusan wajib diisi' });
 		}
 
 		const result = graduateService.bulkGraduateStudents(students, commonData);
@@ -132,7 +145,7 @@ export const bulkGraduateStudents = (req, res) => {
 		});
 	} catch (error) {
 		console.error('Error in bulkGraduateStudents controller:', error);
-		res.status(400).json({ message: error.message });
+		res.status(500).json({ message: error.message });
 	}
 };
 
@@ -146,13 +159,22 @@ export const updateGraduate = async (req, res) => {
 
 		const result = await graduateService.updateGraduateData(studentId, updateData);
 
+		if (result?.error === 'NOT_GRADUATE') {
+			return res.status(404).json({ message: 'Siswa bukan alumni' });
+		}
+		if (result?.error === 'HISTORY_NOT_FOUND') {
+			return res.status(404).json({ message: 'Data history tidak ditemukan' });
+		}
+		if (result?.error === 'NO_DATA') {
+			return res.status(400).json({ message: 'Tidak ada data yang diupdate' });
+		}
+
 		res.status(200).json({
 			message: 'Data alumni berhasil diupdate',
 			data: result
 		});
 	} catch (error) {
 		console.error('Error in updateGraduate controller:', error);
-		const statusCode = error.message.includes('bukan alumni') ? 404 : 400;
-		res.status(statusCode).json({ message: error.message });
+		res.status(500).json({ message: error.message });
 	}
 };

@@ -65,9 +65,7 @@ export const createCurriculum = (data) => {
  */
 export const updateCurriculum = (id, data) => {
 	const existing = getCurriculumById(id);
-	if (!existing) {
-		throw new Error('Kurikulum tidak ditemukan');
-	}
+	if (!existing) return null;
 
 	// If setting as active, deactivate others first
 	if (data.isActive) {
@@ -96,13 +94,11 @@ export const updateCurriculum = (id, data) => {
  */
 export const deleteCurriculum = (id) => {
 	const existing = getCurriculumById(id);
-	if (!existing) {
-		throw new Error('Kurikulum tidak ditemukan');
-	}
+	if (!existing) return null;
 
 	db.delete(curriculum).where(eq(curriculum.id, id)).run();
 
-	return { success: true };
+	return { deleted: true };
 };
 
 /**

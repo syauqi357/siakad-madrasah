@@ -70,7 +70,7 @@ export const createClassSubject = async (data) => {
 		.where(and(eq(classSubject.classId, classId), eq(classSubject.subjectId, subjectId)));
 
 	if (existing.length > 0) {
-		throw new Error('Mata pelajaran sudah ditugaskan ke kelas ini');
+		return { error: 'DUPLICATE_ASSIGNMENT' };
 	}
 
 	const result = await db

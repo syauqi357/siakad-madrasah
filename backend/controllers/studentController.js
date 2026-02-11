@@ -225,6 +225,10 @@ export const uploadStudentPhoto = async (req, res) => {
 
 		const updated = await studentService.updateStudentPhoto(studentId, photoPath);
 
+		if (!updated) {
+			return res.status(404).json({ message: 'Student not found' });
+		}
+
 		res.status(200).json({
 			message: 'Photo uploaded successfully',
 			data: {
@@ -234,8 +238,7 @@ export const uploadStudentPhoto = async (req, res) => {
 		});
 	} catch (error) {
 		console.error('Photo upload error:', error);
-		const statusCode = error.message.includes('not found') ? 404 : 500;
-		res.status(statusCode).json({ message: error.message });
+		res.status(500).json({ message: error.message });
 	}
 };
 
@@ -333,6 +336,20 @@ export const changeStudentStatus = async (req, res) => {
 			return res.status(400).json({ message: 'Status is required' });
 		}
 
+		if (!['MUTASI', 'GRADUATE'].includes(status)) {
+			return res.status(400).json({ message: 'Invalid status. Must be MUTASI or GRADUATE' });
+		}
+
+		// Validate MUTASI requirements
+		if (status === 'MUTASI') {
+			if (!reason) {
+				return res.status(400).json({ message: 'Alasan mutasi wajib diisi' });
+			}
+			if (!mutasiType) {
+				return res.status(400).json({ message: 'Jenis mutasi wajib dipilih' });
+			}
+		}
+
 		const result = await studentService.changeStudentStatus(studentId, status, {
 			scores,
 			reason,
@@ -341,14 +358,19 @@ export const changeStudentStatus = async (req, res) => {
 			completionDate
 		});
 
+		if (result?.error === 'STUDENT_NOT_FOUND') {
+			return res.status(404).json({ message: 'Student not found' });
+		}
+		if (result?.error === 'NOT_ACTIVE') {
+			return res.status(400).json({ message: 'Only ACTIVE students can change status' });
+		}
+
 		res.status(200).json({
 			message: `Student status changed to ${status} successfully`,
 			data: result
 		});
 	} catch (error) {
 		console.error('Database error:', error);
-		// Return appropriate status code based on error type
-		const statusCode = error.message.includes('not found') ? 404 : 400;
-		res.status(statusCode).json({ message: error.message });
+		res.status(500).json({ message: error.message });
 	}
 };

@@ -76,6 +76,13 @@ export const createClassSubject = async (req, res) => {
 			teacherId: teacherId ? parseInt(teacherId) : null
 		});
 
+		if (data?.error === 'DUPLICATE_ASSIGNMENT') {
+			return res.status(409).json({
+				success: false,
+				message: 'Mata pelajaran sudah ditugaskan ke kelas ini'
+			});
+		}
+
 		res.status(201).json({
 			success: true,
 			message: 'Berhasil menambahkan penugasan mapel',
@@ -83,15 +90,6 @@ export const createClassSubject = async (req, res) => {
 		});
 	} catch (error) {
 		console.error('Error creating class-subject:', error);
-
-		// Handle duplicate assignment error
-		if (error.message.includes('sudah ditugaskan')) {
-			return res.status(409).json({
-				success: false,
-				message: error.message
-			});
-		}
-
 		res.status(500).json({
 			success: false,
 			message: 'Gagal menambahkan penugasan mapel',

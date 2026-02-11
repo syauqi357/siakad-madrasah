@@ -94,11 +94,15 @@ export const update = (req, res) => {
 	try {
 		const id = parseInt(req.params.id);
 		const updated = curriculumService.updateCurriculum(id, req.body);
+
+		if (!updated) {
+			return res.status(404).json({ success: false, message: 'Kurikulum tidak ditemukan' });
+		}
+
 		res.json({ success: true, message: 'Kurikulum berhasil diupdate', data: updated });
 	} catch (error) {
 		console.error('Error updating curriculum:', error);
-		const status = error.message.includes('tidak ditemukan') ? 404 : 500;
-		res.status(status).json({ success: false, message: error.message });
+		res.status(500).json({ success: false, message: error.message });
 	}
 };
 
@@ -108,11 +112,15 @@ export const update = (req, res) => {
 export const remove = (req, res) => {
 	try {
 		const id = parseInt(req.params.id);
-		curriculumService.deleteCurriculum(id);
+		const result = curriculumService.deleteCurriculum(id);
+
+		if (!result) {
+			return res.status(404).json({ success: false, message: 'Kurikulum tidak ditemukan' });
+		}
+
 		res.json({ success: true, message: 'Kurikulum berhasil dihapus' });
 	} catch (error) {
 		console.error('Error deleting curriculum:', error);
-		const status = error.message.includes('tidak ditemukan') ? 404 : 500;
-		res.status(status).json({ success: false, message: error.message });
+		res.status(500).json({ success: false, message: error.message });
 	}
 };
