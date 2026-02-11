@@ -170,6 +170,8 @@
 		deleteTargetId = null;
 		deleteTargetName = '';
 	}
+
+	import AddIcon from '$lib/components/icons/addIcon.svelte';
 </script>
 
 <!-- Alert Modal -->
@@ -250,7 +252,7 @@
 							<span class="ml-2 text-gray-600">Memuat data...</span>
 						</div>
 					{:else if teachers.length === 0}
-						<div class="py-12 text-center text-gray-500">
+						<div class="py-12 flex justify-center items-center flex-col text-gray-500">
 							<svg
 								class="mx-auto h-12 w-12 text-gray-400"
 								fill="none"
@@ -267,9 +269,9 @@
 							<p class="mt-2">Belum ada data guru</p>
 							<button
 								on:click={() => (activeTab = 'form')}
-								class="mt-2 text-blue-600 hover:underline"
+								class="mt-2 flex items-center justify-center rounded-md bg-blue-600 px-4 py-1.5 text-blue-50 capitalize"
 							>
-								Tambah guru pertama
+								<AddIcon /> Tambah guru pertama
 							</button>
 						</div>
 					{:else}
@@ -392,7 +394,7 @@
 									type="text"
 									id="nip"
 									bind:value={formData.nip}
-									placeholder="198507152010011001"
+									placeholder="Masukkan 18 digit NIP"
 									class="w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
 								/>
 							</div>
@@ -406,7 +408,7 @@
 									type="text"
 									id="fullName"
 									bind:value={formData.fullName}
-									placeholder="Ahmad Fauzi, S.Pd"
+									placeholder="Masukkan nama lengkap beserta gelar"
 									required
 									class="w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
 								/>
@@ -468,7 +470,7 @@
 									type="text"
 									id="birthPlace"
 									bind:value={formData.birthPlace}
-									placeholder="Jakarta"
+									placeholder="Masukkan kota/kabupaten kelahiran"
 									class="w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
 								/>
 							</div>
@@ -495,7 +497,7 @@
 									type="text"
 									id="phoneNumber"
 									bind:value={formData.phoneNumber}
-									placeholder="081234567890"
+									placeholder="Masukkan nomor telepon aktif"
 									class="w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
 								/>
 							</div>
@@ -509,7 +511,7 @@
 									type="email"
 									id="personalEmail"
 									bind:value={formData.personalEmail}
-									placeholder="guru@email.com"
+									placeholder="Masukkan alamat email pribadi"
 									class="w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
 								/>
 							</div>
