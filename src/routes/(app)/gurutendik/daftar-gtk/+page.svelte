@@ -416,7 +416,7 @@
 
 							<!-- Jenis Kelamin -->
 							<div>
-								<label class="mb-1 block text-sm font-medium text-gray-700">Jenis Kelamin</label>
+								<label class="mb-1 block text-sm font-medium text-gray-700" for="jenis kelamin">Jenis Kelamin</label>
 								<div class="flex gap-6 pt-1">
 									<label class="flex cursor-pointer items-center gap-2">
 										<input

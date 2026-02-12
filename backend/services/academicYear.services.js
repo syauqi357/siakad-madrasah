@@ -1,9 +1,10 @@
 import { db } from '../src/index.js';
 import { academicYear } from '../src/db/schema/academicYear.js';
-import { eq, desc } from 'drizzle-orm';
+import { rombel } from '../src/db/schema/classGroup.js';
+import { eq, desc, sql } from 'drizzle-orm';
 
 /**
- * Get all academic years ordered by most recent
+ * Get all academic years ordered by most recent, with rombel usage count
  */
 export const getAllAcademicYears = () => {
 	return db
@@ -14,7 +15,8 @@ export const getAllAcademicYears = () => {
 			endYear: academicYear.endYear,
 			startDate: academicYear.startDate,
 			endDate: academicYear.endDate,
-			isActive: academicYear.isActive
+			isActive: academicYear.isActive,
+			rombelCount: sql`(SELECT COUNT(*) FROM rombel WHERE rombel.academic_year_id = ${academicYear.id})`.as('rombelCount')
 		})
 		.from(academicYear)
 		.orderBy(desc(academicYear.startYear))

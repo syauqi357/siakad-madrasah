@@ -109,6 +109,24 @@
 			]
 		},
 		{
+			name: 'Informasi Sekolah',
+			color: 'cyan',
+			items: [
+				{
+					name: 'Kurikulum',
+					href: '/info/curriculum',
+					description: 'Kelola data kurikulum',
+					icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>`
+				},
+				{
+					name: 'Tahun Ajaran',
+					href: '/info/academicyear',
+					description: 'Kelola tahun ajaran akademik',
+					icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>`
+				}
+			]
+		},
+		{
 			name: 'Guru & Tendik',
 			color: 'teal',
 			items: [
@@ -160,7 +178,7 @@
 					description: 'Riwayat aktivitas sistem',
 					icon: `<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="currentColor"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12 7.77L18.39 18H5.61L12 7.77m-.85-2.41l-8.2 13.11c-.41.67.07 1.53.85 1.53h16.4c.79 0 1.26-.86.85-1.53l-8.2-13.11c-.39-.63-1.31-.63-1.7 0z"/></svg>`
 				}
-			]
+			]	
 		}
 	];
 
@@ -170,6 +188,7 @@
 		green: { icon: 'text-green-600', dot: 'bg-green-500', hover: 'hover:bg-green-50' },
 		purple: { icon: 'text-purple-600', dot: 'bg-purple-500', hover: 'hover:bg-purple-50' },
 		orange: { icon: 'text-orange-600', dot: 'bg-orange-500', hover: 'hover:bg-orange-50' },
+		cyan: { icon: 'text-cyan-600', dot: 'bg-cyan-500', hover: 'hover:bg-cyan-50' },
 		teal: { icon: 'text-teal-600', dot: 'bg-teal-500', hover: 'hover:bg-teal-50' },
 		indigo: { icon: 'text-indigo-600', dot: 'bg-indigo-500', hover: 'hover:bg-indigo-50' },
 		red: { icon: 'text-red-600', dot: 'bg-red-500', hover: 'hover:bg-red-50' }

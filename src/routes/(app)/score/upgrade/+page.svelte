@@ -443,7 +443,7 @@
 				{/if}
 
 				<!-- Student list -->
-				<div class="max-h-[28rem] overflow-y-auto">
+				<div class="max-h-112 overflow-y-auto">
 					{#if loadingStudents}
 						<div class="flex flex-col items-center justify-center py-14">
 							<div
@@ -565,7 +565,7 @@
 				</div>
 
 				<!-- Summary + Action -->
-				<div class="overflow-hidden rounded-lg border border-slate-200 bg-white">
+				<div class="overflow-hidden rounded-xl border border-slate-200 bg-white">
 					<div class="border-b border-slate-100 px-5 py-3.5">
 						<h3 class="text-sm font-semibold text-slate-800">Ringkasan</h3>
 					</div>
@@ -586,7 +586,7 @@
 
 							<!-- Dashed line -->
 							<div
-								class="mt-3 h-[2px] flex-1 {selectedStudentIds.length > 0
+								class="mt-3 h-0.5 flex-1 {selectedStudentIds.length > 0
 									? 'promotion-line-active'
 									: 'promotion-line-idle'}"
 							></div>
@@ -616,7 +616,7 @@
 						<button
 							on:click={promoteStudents}
 							disabled={!canPromote}
-							class="flex w-full items-center justify-center gap-2 rounded-lg px-4 py-3 text-sm font-semibold transition-all duration-200
+							class="flex w-full items-center justify-center gap-2 rounded-sm px-4 py-3 text-sm font-semibold transition-all duration-200
 								{canPromote
 								? 'bg-emerald-600 text-white shadow-sm hover:bg-emerald-700 hover:shadow-md'
 								: 'cursor-not-allowed bg-slate-100 text-slate-400'}"
@@ -635,7 +635,7 @@
 										d="M5 10l7-7m0 0l7 7m-7-7v18"
 									/>
 								</svg>
-								Promosikan {selectedStudentIds.length} Siswa
+								naikkan {selectedStudentIds.length} Siswa
 							{/if}
 						</button>
 
@@ -655,7 +655,7 @@
 				{#if promotionResult}
 					<div class="overflow-hidden rounded-lg border border-slate-200 bg-white">
 						<div class="border-b border-slate-100 px-5 py-3.5">
-							<h3 class="text-sm font-semibold text-slate-800">Hasil Promosi</h3>
+							<h3 class="text-sm font-semibold text-slate-800">Hasil kenaikan</h3>
 						</div>
 						<div class="space-y-3 p-5">
 							{#if promotionResult.success.length > 0}

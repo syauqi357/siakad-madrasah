@@ -3,6 +3,7 @@
 	import { fade, fly } from 'svelte/transition';
 	import AddIcon from '$lib/components/icons/addIcon.svelte';
 	import { API_FETCH } from '$lib/api';
+	import ModalAlert from '$lib/components/modal/modalalert.svelte';
 
 	// ==================== TYPES ====================
 	interface AcademicYear {
@@ -13,6 +14,7 @@
 		startDate: string | null;
 		endDate: string | null;
 		isActive: number;
+		rombelCount: number;
 	}
 
 	// ==================== STATE ====================
@@ -30,10 +32,39 @@
 		endYear: new Date().getFullYear() + 1,
 		startDate: null,
 		endDate: null,
-		isActive: 0
+		isActive: 0,
+		rombelCount: 0
 	};
 
 	let currentAcademicYear: AcademicYear = { ...emptyAcademicYear };
+
+	// Alert state
+	let showAlert = false;
+	let alertType: 'success' | 'error' | 'warning' | 'info' = 'success';
+	let alertMessage = '';
+	let alertShowCancel = false;
+	let alertConfirmText = 'OK';
+	let pendingAction: (() => void) | null = null;
+
+	function showAlertModal(type: typeof alertType, message: string, showCancel = false, confirmText = 'OK') {
+		alertType = type;
+		alertMessage = message;
+		alertShowCancel = showCancel;
+		alertConfirmText = confirmText;
+		showAlert = true;
+	}
+
+	function handleAlertConfirm() {
+		if (pendingAction) {
+			const action = pendingAction;
+			pendingAction = null;
+			action();
+		}
+	}
+
+	function handleAlertCancel() {
+		pendingAction = null;
+	}
 
 	// ==================== COMPUTED ====================
 	$: {
@@ -53,10 +84,10 @@
 			if (data.success) {
 				academicYears = data.data;
 			} else {
-				error = data.message || 'Gagal memuat data';
+				showAlertModal('error', data.message || 'Gagal memuat data');
 			}
 		} catch (err) {
-			error = 'Gagal terhubung ke server';
+			showAlertModal('error', 'Gagal terhubung ke server');
 			console.error('Error fetching academic years:', err);
 		} finally {
 			isLoading = false;
@@ -142,8 +173,11 @@
 
 			const data = await response.json();
 			if (data.success) {
+				const action = isEditing ? 'diperbarui' : 'ditambahkan';
+				const name = currentAcademicYear.name;
 				await fetchAcademicYears();
 				handleCloseModal();
+				showAlertModal('success', `Tahun ajaran "${name}" berhasil ${action}`);
 			} else {
 				error = data.message || 'Gagal menyimpan data';
 			}
@@ -155,61 +189,55 @@
 		}
 	}
 
-	async function handleDelete(academicYear: AcademicYear) {
-		if (!confirm(`Apakah Anda yakin ingin menghapus tahun ajaran "${academicYear.name}"?`)) {
-			return;
-		}
-
-		isLoading = true;
-		error = '';
-
-		try {
-			const response = await API_FETCH(`/routes/api/academic-years/${academicYear.id}`, {
-				method: 'DELETE'
-			});
-
-			const data = await response.json();
-			if (data.success) {
-				await fetchAcademicYears();
-			} else {
-				error = data.message || 'Gagal menghapus data';
+	function handleDeleteClick(academicYear: AcademicYear) {
+		pendingAction = async () => {
+			isLoading = true;
+			try {
+				const response = await API_FETCH(`/routes/api/academic-years/${academicYear.id}`, {
+					method: 'DELETE'
+				});
+				const data = await response.json();
+				if (data.success) {
+					await fetchAcademicYears();
+					showAlertModal('success', `Tahun ajaran "${academicYear.name}" berhasil dihapus`);
+				} else {
+					showAlertModal('error', data.message || 'Gagal menghapus data');
+				}
+			} catch (err) {
+				showAlertModal('error', 'Gagal terhubung ke server');
+				console.error('Error deleting academic year:', err);
+			} finally {
+				isLoading = false;
 			}
-		} catch (err) {
-			error = 'Gagal terhubung ke server';
-			console.error('Error deleting academic year:', err);
-		} finally {
-			isLoading = false;
-		}
+		};
+		showAlertModal('warning', `Apakah Anda yakin ingin menghapus tahun ajaran "${academicYear.name}"?`, true, 'Hapus');
 	}
 
-	async function handleSetActive(academicYear: AcademicYear) {
+	function handleSetActive(academicYear: AcademicYear) {
 		if (academicYear.isActive) return;
 
-		if (!confirm(`Jadikan "${academicYear.name}" sebagai tahun ajaran aktif?`)) {
-			return;
-		}
-
-		isLoading = true;
-		error = '';
-
-		try {
-			const response = await API_FETCH(`/routes/api/academic-years/${academicYear.id}`, {
-				method: 'PUT',
-				body: JSON.stringify({ isActive: 1 })
-			});
-
-			const data = await response.json();
-			if (data.success) {
-				await fetchAcademicYears();
-			} else {
-				error = data.message || 'Gagal mengubah status';
+		pendingAction = async () => {
+			isLoading = true;
+			try {
+				const response = await API_FETCH(`/routes/api/academic-years/${academicYear.id}`, {
+					method: 'PUT',
+					body: JSON.stringify({ isActive: 1 })
+				});
+				const data = await response.json();
+				if (data.success) {
+					await fetchAcademicYears();
+					showAlertModal('success', `"${academicYear.name}" sekarang menjadi tahun ajaran aktif`);
+				} else {
+					showAlertModal('error', data.message || 'Gagal mengubah status');
+				}
+			} catch (err) {
+				showAlertModal('error', 'Gagal terhubung ke server');
+				console.error('Error setting active:', err);
+			} finally {
+				isLoading = false;
 			}
-		} catch (err) {
-			error = 'Gagal terhubung ke server';
-			console.error('Error setting active:', err);
-		} finally {
-			isLoading = false;
-		}
+		};
+		showAlertModal('info', `Jadikan "${academicYear.name}" sebagai tahun ajaran aktif?`, true, 'Aktifkan');
 	}
 
 	function formatDate(dateString: string | null): string {
@@ -222,7 +250,6 @@
 		});
 	}
 
-	// ==================== LIFECYCLE ====================
 	onMount(async () => {
 		await fetchAcademicYears();
 	});
@@ -240,21 +267,11 @@
 			<p class="text-gray-600">Kelola data tahun ajaran sekolah.</p>
 		</div>
 
-		<!-- Error Message -->
-		{#if error && !showModal}
-			<div
-				class="mt-4 rounded-md bg-red-50 p-4 text-red-700"
-				transition:fly={{ y: -10, duration: 300 }}
-			>
-				{error}
-			</div>
-		{/if}
-
 		<!-- Add Button -->
 		<div class="mt-6">
 			<button
 				on:click={handleAddClick}
-				class="flex w-fit items-center justify-center gap-2 rounded-md bg-blue-600 px-5 py-3 text-blue-50 capitalize transition-all duration-200 hover:bg-blue-700 hover:shadow-lg active:scale-95"
+				class="flex w-fit items-center justify-center gap-2 rounded-md bg-blue-600 px-3 py-2 text-blue-50 capitalize transition-all duration-200 hover:bg-blue-700 hover:shadow-lg active:scale-95"
 			>
 				<AddIcon /> tambah tahun ajaran
 			</button>
@@ -262,7 +279,7 @@
 
 		<!-- Table Card -->
 		<div class="mt-6">
-			<div class="w-full overflow-hidden rounded-xl border border-gray-300 bg-white shadow-sm">
+			<div class="w-full overflow-hidden rounded-xl border border-gray-300 bg-white">
 				<header class="border-b border-gray-200 bg-gray-50 px-6 py-4">
 					<h2 class="text-lg font-semibold text-gray-900">Daftar Tahun Ajaran</h2>
 				</header>
@@ -317,6 +334,7 @@
 									<th scope="col" class="px-6 py-3 font-medium">Periode</th>
 									<th scope="col" class="px-6 py-3 font-medium">Tanggal Mulai</th>
 									<th scope="col" class="px-6 py-3 font-medium">Tanggal Selesai</th>
+									<th scope="col" class="px-6 py-3 font-medium">Rombel</th>
 									<th scope="col" class="px-6 py-3 font-medium">Status</th>
 									<th scope="col" class="px-6 py-3 text-right font-medium">Aksi</th>
 								</tr>
@@ -339,9 +357,20 @@
 										<td class="px-6 py-4">{formatDate(ay.startDate)}</td>
 										<td class="px-6 py-4">{formatDate(ay.endDate)}</td>
 										<td class="px-6 py-4">
+											{#if ay.rombelCount > 0}
+												<span
+													class="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700"
+												>
+													{ay.rombelCount} rombel
+												</span>
+											{:else}
+												<span class="text-xs text-gray-400">Belum ada</span>
+											{/if}
+										</td>
+										<td class="px-6 py-4">
 											{#if ay.isActive}
 												<span
-													class="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-semibold text-green-800"
+													class="inline-flex items-center rounded-md bg-green-200 px-3 py-1 text-xs font-semibold text-green-800"
 												>
 													<span class="mr-1 h-1.5 w-1.5 rounded-full bg-green-500"></span>
 													Aktif
@@ -379,7 +408,7 @@
 													</svg>
 												</button>
 												<button
-													on:click={() => handleDelete(ay)}
+													on:click={() => handleDeleteClick(ay)}
 													class="rounded p-1.5 text-red-600 transition-all duration-200 hover:scale-110 hover:bg-red-50 active:scale-95"
 													title="Hapus"
 													disabled={ay.isActive === 1}
@@ -413,7 +442,7 @@
 						class="flex items-center justify-between border-t border-gray-200 bg-white px-6 py-3"
 					>
 						<div class="text-sm text-gray-500">
-							Total <span class="font-medium">{academicYears.length}</span> tahun ajaran
+							Total <span class="font-medium text-blue-600 mx-1.5 bg-blue-200 px-2 py-1 rounded-sm border border-blue-400">{academicYears.length}</span> tahun ajaran
 						</div>
 					</div>
 				{/if}
@@ -422,10 +451,9 @@
 	</div>
 </div>
 
-<!-- ==================== MODAL ==================== -->
 {#if showModal}
 	<div
-		class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+		class="fixed inset-0 z-20 flex items-center justify-center p-4 backdrop-blur-sm"
 		transition:fade={{ duration: 150 }}
 		on:click={handleBackdropClick}
 		on:keydown={handleKeydown}
@@ -434,10 +462,10 @@
 		aria-modal="true"
 	>
 		<div
-			class="w-full max-w-lg rounded-lg bg-white shadow-lg"
+			class="shadow-msd w-full max-w-lg rounded-lg border border-slate-400 bg-white"
 			transition:fly={{ y: 20, duration: 200 }}
 		>
-			<div class="flex items-center justify-between border-b px-6 py-4">
+			<div class="flex items-center justify-between border-b border-b-slate-400 px-6 py-4">
 				<h2 class="text-lg font-semibold text-gray-900">
 					{isEditing ? 'Edit Tahun Ajaran' : 'Tambah Tahun Ajaran'}
 				</h2>
@@ -578,3 +606,14 @@
 		</div>
 	</div>
 {/if}
+
+<!-- Alert Modal -->
+<ModalAlert
+	bind:show={showAlert}
+	type={alertType}
+	message={alertMessage}
+	showCancel={alertShowCancel}
+	confirmText={alertConfirmText}
+	on:confirm={handleAlertConfirm}
+	on:cancel={handleAlertCancel}
+/>

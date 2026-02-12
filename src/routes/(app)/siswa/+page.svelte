@@ -340,13 +340,26 @@
 
 			<!-- Actions -->
 			<div class="flex flex-wrap items-center gap-2">
-				<a
-					href={DOWNLOAD_TEMPLATE_EXCEL}
-					class="flex items-center gap-1.5 rounded-md border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50"
-					title="Unduh template Excel untuk mengisi data siswa secara massal"
-				>
-					<DownloadIcon /> Unduh Template
-				</a>
+				<div class="group relative">
+					<a
+						href={DOWNLOAD_TEMPLATE_EXCEL}
+						class="flex items-center gap-1.5 rounded-md border border-amber-400 bg-amber-200 px-3 py-2 text-sm font-medium text-amber-800 transition-all duration-150 ease-in-out hover:bg-amber-300"
+						title="Unduh template Excel untuk mengisi data siswa secara massal"
+					>
+						<DownloadIcon /> Unduh Template
+					</a>
+					<div
+						class="pointer-events-none absolute top-full left-0 z-10 mt-2 w-64 rounded-md border border-slate-200 bg-white p-3 opacity-0 shadow-lg transition-opacity group-hover:opacity-100"
+					>
+						<p class="text-xs font-semibold text-slate-700">Template Excel Siswa</p>
+						<p class="mt-1 text-xs text-slate-500">
+							Unduh file <code
+								class="rounded bg-slate-100 px-1 py-0.5 font-mono text-[10px] text-slate-600"
+								>.xlsx</code
+							> template untuk mengisi data siswa secara massal, lalu upload kembali.
+						</p>
+					</div>
+				</div>
 				<button
 					on:click={() => (isUploadModalOpen = true)}
 					class="flex items-center gap-1.5 rounded-md border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50"
@@ -403,7 +416,12 @@
 									<span class="text-slate-400 italic">Belum ada</span>
 								{/if}
 							</span>
-							<span>{student.gender === 'L' ? 'Laki-laki' : 'Perempuan'}</span>
+							<span
+								class="rounded-md px-2 py-1.5 text-xs font-medium {student.gender === 'L'
+									? 'bg-blue-100 text-blue-600'
+									: 'bg-pink-100 text-pink-600'}"
+								>{student.gender === 'L' ? 'Laki-laki' : 'Perempuan'}</span
+							>
 							<span>Asal: {student.asal}</span>
 						</div>
 					</div>
@@ -412,9 +430,9 @@
 					<div class="flex items-center">
 						<button
 							on:click={() => goto(`/siswa/${student.id}`)}
-							class="flex items-center gap-1 rounded-md border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium text-slate-600 hover:bg-slate-50"
+							class="flex items-center gap-1 rounded-md border border-blue-700 bg-blue-500 px-3 py-1.5 text-sm font-medium text-blue-50 capitalize transition-all duration-75 ease-in-out hover:bg-blue-700"
 						>
-							Detail
+							selengkapnya
 							<Arrow_up />
 						</button>
 					</div>

@@ -101,7 +101,7 @@
 				<button
 					on:click={close}
 					aria-label="Close"
-					class="rounded-full p-1 text-slate-500 transition-colors hover:bg-slate-100"
+					class="rounded-lg p-1 text-slate-500 transition-colors hover:bg-slate-100"
 				>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
@@ -121,7 +121,7 @@
 			</div>
 
 			<!-- Step-by-step guide -->
-			<div class="mb-4 rounded-lg border border-amber-200 bg-amber-50 p-3">
+			<div class="mb-4 rounded-xl border border-amber-200 bg-amber-50 p-3">
 				<p class="mb-2 text-sm font-semibold text-amber-800">Cara Upload Data Siswa:</p>
 				<ol class="list-inside list-decimal space-y-1 text-sm text-amber-700">
 					<li><strong>Unduh template</strong> Excel terlebih dahulu</li>
@@ -131,7 +131,7 @@
 				{#if templateUrl}
 					<a
 						href={templateUrl}
-						class="mt-3 inline-flex items-center gap-1.5 rounded-md bg-amber-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-amber-700"
+						class="mt-3 inline-flex items-center gap-1.5 rounded-sm bg-amber-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-amber-700"
 					>
 						<DownloadIcon /> Unduh Template Excel
 					</a>

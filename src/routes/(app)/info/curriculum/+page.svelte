@@ -9,6 +9,7 @@
 		year: string;
 		description: string;
 		isActive: boolean;
+		rombelCount: number;
 	}
 
 	interface AcademicYear {
@@ -148,7 +149,7 @@
 <div class="space-y-6 p-6">
 	<!-- Header -->
 	<div>
-		<h1 class="text-2xl font-bold text-slate-800">Kurikulum</h1>
+		<h1 class="text-4xl font-bold text-blue-700">Kurikulum</h1>
 		<p class="mt-1 text-sm text-slate-500">Kelola data kurikulum yang digunakan</p>
 	</div>
 
@@ -188,7 +189,7 @@
 	<div class="grid gap-6 lg:grid-cols-3">
 		<!-- Form Section -->
 		<div class="lg:col-span-1">
-			<div id="curriculum-form" class="rounded-lg border border-slate-200 bg-white p-5">
+			<div id="curriculum-form" class="rounded-xl border border-slate-200 bg-white p-5">
 				<h2 class="mb-4 text-lg font-semibold text-slate-800">
 					{isEditing ? 'Edit Kurikulum' : 'Tambah Kurikulum'}
 				</h2>
@@ -256,7 +257,7 @@
 						<button
 							type="submit"
 							disabled={submitting}
-							class="flex-1 rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700 disabled:opacity-50"
+							class="flex-1 rounded-sm bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700 disabled:opacity-50"
 						>
 							{submitting ? 'Menyimpan...' : isEditing ? 'Perbarui' : 'Simpan'}
 						</button>
@@ -276,7 +277,7 @@
 
 		<!-- List Section -->
 		<div class="lg:col-span-2">
-			<div class="rounded-lg border border-slate-200 bg-white">
+			<div class="rounded-xl border border-slate-200 bg-white">
 				<div class="border-b border-slate-100 px-5 py-4">
 					<h2 class="text-lg font-semibold text-slate-800">Daftar Kurikulum</h2>
 				</div>
@@ -334,6 +335,15 @@
 											{curriculum.description}
 										{/if}
 									</p>
+									{#if curriculum.rombelCount > 0}
+										<p class="mt-1 text-xs text-blue-600">
+											Digunakan oleh {curriculum.rombelCount} rombel
+										</p>
+									{:else}
+										<p class="mt-1 text-xs text-slate-400">
+											Belum digunakan rombel
+										</p>
+									{/if}
 								</div>
 								<div class="ml-4 flex items-center gap-1">
 									<button

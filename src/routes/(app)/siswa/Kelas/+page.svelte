@@ -3,6 +3,7 @@
 	import { fade, fly } from 'svelte/transition';
 	import AddIcon from '$lib/components/icons/addIcon.svelte';
 	import { API_FETCH } from '$lib/api';
+	import ModalAlert from '$lib/components/modal/modalalert.svelte';
 
 	interface ClassData {
 		id: number;
@@ -19,6 +20,14 @@
 		className: ''
 	};
 	let error = '';
+
+	// Alert state
+	let showAlert = false;
+	let alertType: 'success' | 'error' | 'warning' | 'info' = 'success';
+	let alertMessage = '';
+	let alertShowCancel = false;
+	let alertConfirmText = 'OK';
+	let pendingDeleteClass: ClassData | null = null;
 
 	const emptyClass: ClassData = {
 		id: 0,
@@ -38,10 +47,10 @@
 			if (data.success) {
 				classes = data.data;
 			} else {
-				error = data.message || 'Gagal memuat data';
+				showAlertModal('error', data.message || 'Gagal memuat data');
 			}
 		} catch (err) {
-			error = 'Gagal terhubung ke server';
+			showAlertModal('error', 'Gagal terhubung ke server');
 			console.error('Error fetching classes:', err);
 		} finally {
 			isLoading = false;
@@ -108,8 +117,10 @@
 
 			const data = await response.json();
 			if (data.success) {
+				const action = isEditing ? 'diperbarui' : 'ditambahkan';
 				await fetchClasses();
 				handleCloseModal();
+				showAlertModal('success', `Kelas "${currentClass.className}" berhasil ${action}`);
 			} else {
 				error = data.message || 'Gagal menyimpan data';
 			}
@@ -121,31 +132,53 @@
 		}
 	}
 
-	async function handleDelete(classData: ClassData) {
-		if (!confirm(`Apakah Anda yakin ingin menghapus kelas "${classData.className}"?`)) {
-			return;
-		}
+	function showAlertModal(type: typeof alertType, message: string, showCancel = false, confirmText = 'OK') {
+		alertType = type;
+		alertMessage = message;
+		alertShowCancel = showCancel;
+		alertConfirmText = confirmText;
+		showAlert = true;
+	}
+
+	function handleDeleteClick(classData: ClassData) {
+		pendingDeleteClass = classData;
+		showAlertModal('warning', `Apakah Anda yakin ingin menghapus kelas "${classData.className}"?`, true, 'Hapus');
+	}
+
+	async function confirmDelete() {
+		if (!pendingDeleteClass) return;
 
 		isLoading = true;
-		error = '';
 
 		try {
-			const response = await API_FETCH(`/routes/api/class-data/classes/${classData.id}`, {
+			const response = await API_FETCH(`/routes/api/class-data/classes/${pendingDeleteClass.id}`, {
 				method: 'DELETE'
 			});
 
 			const data = await response.json();
 			if (data.success) {
 				await fetchClasses();
+				showAlertModal('success', `Kelas "${pendingDeleteClass.className}" berhasil dihapus`);
 			} else {
-				error = data.message || 'Gagal menghapus data';
+				showAlertModal('error', data.message || 'Gagal menghapus data');
 			}
 		} catch (err) {
-			error = 'Gagal terhubung ke server';
+			showAlertModal('error', 'Gagal terhubung ke server');
 			console.error('Error deleting class:', err);
 		} finally {
 			isLoading = false;
+			pendingDeleteClass = null;
 		}
+	}
+
+	function handleAlertConfirm() {
+		if (pendingDeleteClass) {
+			confirmDelete();
+		}
+	}
+
+	function handleAlertCancel() {
+		pendingDeleteClass = null;
 	}
 </script>
 
@@ -164,16 +197,6 @@
 				<AddIcon /> tambah kelas
 			</button>
 		</div>
-
-		<!-- Error Message -->
-		{#if error && !showModal}
-			<div
-				class="mt-4 rounded-md bg-red-50 p-4 text-red-700"
-				transition:fly={{ y: -10, duration: 300 }}
-			>
-				{error}
-			</div>
-		{/if}
 
 		<!-- Table Section -->
 		<div class="mt-2">
@@ -272,7 +295,7 @@
 													</svg>
 												</button>
 												<button
-													on:click={() => handleDelete(classData)}
+													on:click={() => handleDeleteClick(classData)}
 													class="rounded p-1.5 text-red-600 transition-all duration-75 hover:scale-110 hover:bg-red-50 active:scale-95"
 													title="Hapus"
 												>
@@ -416,3 +439,14 @@
 		</div>
 	</div>
 {/if}
+
+<!-- Alert Modal -->
+<ModalAlert
+	bind:show={showAlert}
+	type={alertType}
+	message={alertMessage}
+	showCancel={alertShowCancel}
+	confirmText={alertConfirmText}
+	on:confirm={handleAlertConfirm}
+	on:cancel={handleAlertCancel}
+/>

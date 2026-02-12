@@ -1,9 +1,9 @@
 import { db } from '../src/index.js';
 import { curriculum } from '../src/db/schema/curriculum.js';
-import { eq, desc } from 'drizzle-orm';
+import { eq, desc, sql } from 'drizzle-orm';
 
 /**
- * Get all curricula ordered by most recent
+ * Get all curricula ordered by most recent, with rombel usage count
  */
 export const getAllCurricula = () => {
 	return db
@@ -13,7 +13,8 @@ export const getAllCurricula = () => {
 			code: curriculum.code,
 			year: curriculum.year,
 			description: curriculum.description,
-			isActive: curriculum.isActive
+			isActive: curriculum.isActive,
+			rombelCount: sql`(SELECT COUNT(*) FROM rombel WHERE CAST(rombel.kurikulum AS INTEGER) = ${curriculum.id})`.as('rombelCount')
 		})
 		.from(curriculum)
 		.orderBy(desc(curriculum.year))
