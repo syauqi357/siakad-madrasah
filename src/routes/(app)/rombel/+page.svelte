@@ -264,85 +264,166 @@
 		</div>
 	{:else}
 		<!-- Grid -->
-		<div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+		<div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
 			{#each rombelData as rombel}
 				<div
-					class="group flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition-all duration-200 hover:border-blue-200 hover:shadow-lg"
+					class="group flex flex-col overflow-hidden rounded-lg border border-slate-200 bg-white transition-colors hover:border-blue-300"
 				>
-					<!-- Color accent top bar -->
-					<div class="h-1.5 w-full bg-gradient-to-r from-blue-500 to-indigo-500"></div>
-
 					<!-- Clickable Content -->
 					<button
 						type="button"
 						on:click={() => detailrombel(rombel.id)}
-						class="flex flex-1 cursor-pointer flex-col p-5 text-left"
+						class="flex flex-1 cursor-pointer flex-col p-6 text-left"
 					>
-						<!-- Header: Name + Tingkat -->
-						<div class="flex w-full items-start justify-between gap-3">
+						<!-- Header: Name + Tingkat Badge -->
+						<div class="flex items-start justify-between gap-3">
 							<div class="min-w-0 flex-1">
-								<h3 class="truncate text-lg font-bold text-slate-900">{rombel.namaRombel}</h3>
-								<p class="mt-1 text-sm text-slate-500 capitalize">
-									{rombel.waliKelas || 'Belum ada wali kelas'}
-								</p>
+								<h3 class="text-2xl font-semibold text-slate-800">{rombel.namaRombel}</h3>
+								<p class="mt-1 text-sm text-slate-500">{rombel.tingkat || '-'}</p>
 							</div>
 							<span
-								class="shrink-0 rounded-lg bg-indigo-600 px-3 py-1.5 text-sm font-bold text-white shadow-sm"
+								class="shrink-0 rounded bg-blue-100 px-2.5 py-1.5 text-xs font-medium text-blue-700"
 							>
-								{rombel.tingkat || '-'}
+								ID: {rombel.id}
 							</span>
 						</div>
 
-						<!-- Info Badges -->
-						<div class="mt-4 flex flex-wrap gap-2">
-							{#if rombel.ruangan}
-								<span
-									class="rounded-md border border-blue-200 bg-blue-50 px-2.5 py-1 text-xs font-semibold text-blue-700"
+						<!-- Info Grid - Structured Data -->
+						<div class="mt-5 space-y-3">
+							<!-- Wali Kelas -->
+							<div class="flex items-start gap-2.5">
+								<svg
+									class="mt-0.5 h-5 w-5 shrink-0 text-slate-400"
+									fill="none"
+									stroke="currentColor"
+									viewBox="0 0 24 24"
 								>
-									{rombel.ruangan}
-								</span>
-							{/if}
-							{#if rombel.kurikulum}
-								<span
-									class="rounded-md border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700"
+									<path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										stroke-width="2"
+										d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+									/>
+								</svg>
+								<div class="min-w-0 flex-1">
+									<p class="text-xs font-medium text-slate-500">Wali Kelas</p>
+									<p class="mt-0.5 text-sm font-medium text-slate-700 capitalize">
+										{rombel.waliKelas || 'Belum ditentukan'}
+									</p>
+								</div>
+							</div>
+
+							<!-- Ruangan -->
+							<div class="flex items-start gap-2.5">
+								<svg
+									class="mt-0.5 h-5 w-5 shrink-0 text-slate-400"
+									fill="none"
+									stroke="currentColor"
+									viewBox="0 0 24 24"
 								>
-									{rombel.kurikulum}
-								</span>
-							{/if}
+									<path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										stroke-width="2"
+										d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+									/>
+								</svg>
+								<div class="min-w-0 flex-1">
+									<p class="text-xs font-medium text-slate-500">Ruangan</p>
+									<p class="mt-0.5 text-sm font-medium text-slate-700">
+										{rombel.ruangan || 'Tidak ditentukan'}
+									</p>
+								</div>
+							</div>
+
+							<!-- Kurikulum -->
+							<div class="flex items-start gap-2.5">
+								<svg
+									class="mt-0.5 h-5 w-5 shrink-0 text-slate-400"
+									fill="none"
+									stroke="currentColor"
+									viewBox="0 0 24 24"
+								>
+									<path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										stroke-width="2"
+										d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+									/>
+								</svg>
+								<div class="min-w-0 flex-1">
+									<p class="text-xs font-medium text-slate-500">Kurikulum</p>
+									<p class="mt-0.5 text-sm font-medium text-slate-700">
+										{rombel.kurikulum || 'Tidak ditentukan'}
+									</p>
+								</div>
+							</div>
 						</div>
 
-						<!-- Student Count -->
-						<div class="mt-5 w-full border-t border-slate-100 pt-4">
-							<div class="flex items-end justify-between">
-								<span class="text-xs font-semibold tracking-wider text-slate-500 uppercase">Siswa</span>
-								<span class="text-base font-bold text-slate-800">
-									{rombel.totalSiswa}<span class="text-sm font-normal text-slate-400"> / {rombel.kapasitas}</span>
-								</span>
+						<!-- Student Count Section -->
+						<div class="mt-5 rounded-md border border-slate-200 bg-slate-50 p-4">
+							<div class="flex items-center justify-between">
+								<div class="flex items-center gap-2">
+									<svg
+										class="h-5 w-5 text-slate-500"
+										fill="none"
+										stroke="currentColor"
+										viewBox="0 0 24 24"
+									>
+										<path
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											stroke-width="2"
+											d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+										/>
+									</svg>
+									<span class="text-sm font-medium text-slate-600">Jumlah Siswa</span>
+								</div>
+								<div class="flex items-baseline gap-1">
+									<span class="text-xl font-bold text-slate-800">{rombel.totalSiswa}</span>
+									<span class="text-sm text-slate-500">/ {rombel.kapasitas}</span>
+								</div>
 							</div>
-							<div class="mt-2.5 h-2 w-full rounded-full bg-slate-100">
+							<!-- Progress Bar -->
+							<div class="mt-2.5 h-2 w-full overflow-hidden rounded-full bg-slate-200">
 								<div
-									class="h-2 rounded-full transition-all duration-300 {rombel.totalSiswa / rombel.kapasitas >= 0.9
-										? 'bg-gradient-to-r from-amber-400 to-red-500'
-										: 'bg-gradient-to-r from-blue-400 to-blue-600'}"
+									class="h-full transition-all duration-300 {rombel.totalSiswa / rombel.kapasitas >=
+									0.9
+										? 'bg-amber-500'
+										: rombel.totalSiswa / rombel.kapasitas >= 0.7
+											? 'bg-blue-500'
+											: 'bg-emerald-500'}"
 									style="width: {Math.min((rombel.totalSiswa / rombel.kapasitas) * 100, 100)}%"
 								></div>
 							</div>
+							<!-- Capacity Status -->
+							<p
+								class="mt-2 text-xs {rombel.totalSiswa / rombel.kapasitas >= 0.9
+									? 'text-amber-600'
+									: 'text-slate-500'}"
+							>
+								{rombel.totalSiswa / rombel.kapasitas >= 0.9
+									? 'Kapasitas hampir penuh'
+									: rombel.totalSiswa === 0
+										? 'Belum ada siswa'
+										: `${Math.round((rombel.totalSiswa / rombel.kapasitas) * 100)}% terisi`}
+							</p>
 						</div>
 					</button>
 
 					<!-- Actions -->
-					<div class="flex gap-2.5 border-t border-slate-100 p-3">
+					<div class="flex gap-2.5 border-t border-slate-200 p-4">
 						<button
 							type="button"
 							on:click={(e) => initiateDownload(e, rombel.id, rombel.namaRombel)}
 							disabled={downloadingId === rombel.id}
-							class="flex flex-1 items-center justify-center gap-2 rounded-lg bg-emerald-600 py-2.5 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:bg-emerald-700 hover:shadow-md disabled:cursor-not-allowed disabled:bg-emerald-300"
+							class="flex flex-1 items-center justify-center gap-2 rounded-md bg-emerald-600 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-emerald-700 disabled:cursor-not-allowed disabled:bg-emerald-400"
 						>
 							{#if downloadingId === rombel.id}
 								<div
-									class="h-3.5 w-3.5 animate-spin rounded-full border-2 border-white/30 border-t-white"
+									class="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white"
 								></div>
-								{#if isFetchingSubjects}Memuat...{:else}Mengunduh...{/if}
+								<span>{isFetchingSubjects ? 'Memuat...' : 'Mengunduh...'}</span>
 							{:else}
 								<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 									<path
@@ -352,22 +433,22 @@
 										d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
 									/>
 								</svg>
-								Template
+								<span>Template</span>
 							{/if}
 						</button>
 						<button
 							type="button"
 							on:click={(e) => promptDelete(e, rombel)}
 							disabled={deletingId === rombel.id}
-							class="flex items-center justify-center rounded-lg border-2 border-red-200 bg-red-50 px-3.5 py-2.5 text-red-500 transition-all duration-200 hover:border-red-400 hover:bg-red-500 hover:text-white hover:shadow-md disabled:cursor-not-allowed disabled:opacity-50"
+							class="flex items-center justify-center rounded-md border border-red-300 bg-white px-4 py-2.5 text-red-600 transition-colors hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50"
 							aria-label="Hapus rombel {rombel.namaRombel}"
 						>
 							{#if deletingId === rombel.id}
 								<div
-									class="h-3.5 w-3.5 animate-spin rounded-full border-2 border-red-200 border-t-red-500"
+									class="h-4 w-4 animate-spin rounded-full border-2 border-red-200 border-t-red-600"
 								></div>
 							{:else}
-								<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+								<svg class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 									<path
 										stroke-linecap="round"
 										stroke-linejoin="round"

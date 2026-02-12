@@ -666,10 +666,10 @@
 <!-- Add Student Slide-over -->
 {#if showAddPanel}
 	<!-- svelte-ignore a11y_no_static_element_interactions -->
-	<div class="fixed inset-0 z-40 flex justify-end" transition:fade={{ duration: 150 }}>
+	<div class="fixed inset-0 z-20 flex justify-end" transition:fade={{ duration: 150 }}>
 		<!-- Backdrop -->
 		<!-- svelte-ignore a11y_click_events_have_key_events -->
-		<div class="absolute inset-0 bg-black/30 backdrop-blur-sm" on:click={closeAddPanel}></div>
+		<div class="absolute inset-0 bg-black/10 backdrop-blur-sm" on:click={closeAddPanel}></div>
 
 		<!-- Panel -->
 		<div
