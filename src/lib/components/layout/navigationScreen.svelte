@@ -200,7 +200,23 @@
 			<!-- Header -->
 			<div class="flex items-center justify-between border-b border-slate-200 px-6 py-4">
 				<div>
-					<h2 id="nav-title" class="text-lg font-bold text-slate-900">Navigasi Cepat</h2>
+					<h2 id="nav-title" class="text-xl font-bold text-amber-700 flex items-center gap-2">
+						<span>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								enable-background="new 0 0 24 24"
+								height="24px"
+								viewBox="0 0 24 24"
+								width="24px"
+								fill="currentColor"
+								><g><rect fill="none" height="24" width="24" /></g><g
+									><path
+										d="M11,21h-1l1-7H7.5c-0.88,0-0.33-0.75-0.31-0.78C8.48,10.94,10.42,7.54,13.01,3h1l-1,7h3.51c0.4,0,0.62,0.19,0.4,0.66 C12.97,17.55,11,21,11,21z"
+									/></g
+								></svg
+							>
+						</span> Navigasi Cepat
+					</h2>
 					<p class="text-sm text-slate-500">Akses semua fitur dalam satu layar</p>
 				</div>
 				<button
@@ -258,8 +274,10 @@
 			<!-- Footer -->
 			<div class="border-t border-slate-200 px-6 py-3">
 				<p class="text-center text-xs text-slate-400">
-					Tekan <kbd class="rounded border border-slate-200 bg-slate-50 px-1.5 py-0.5 font-mono text-[10px] text-slate-500">Esc</kbd> atau klik
-					di luar untuk menutup
+					Tekan <kbd
+						class="rounded border border-slate-200 bg-slate-50 px-1.5 py-0.5 font-mono text-[10px] text-slate-500"
+						>Esc</kbd
+					> atau klik di luar untuk menutup
 				</p>
 			</div>
 		</div>

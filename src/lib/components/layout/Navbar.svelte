@@ -103,12 +103,14 @@
 							<div class="h-5 w-36 animate-pulse rounded bg-slate-200 sm:h-6 sm:w-52"></div>
 							<div class="mt-1.5 h-4 w-24 animate-pulse rounded bg-slate-200 sm:w-32"></div>
 						{:else}
-							<span class="text-sm font-semibold text-slate-900 sm:text-lg leading-tight">
+							<span class="text-sm leading-tight font-semibold text-slate-900 sm:text-lg">
 								{schoolData.name}
 							</span>
-							<div class="mt-0.5 flex items-center gap-1.5 text-xs uppercase text-slate-500">
+							<div class="mt-0.5 flex items-center gap-1.5 text-xs text-slate-500 uppercase">
 								npsn :
-								<span class="rounded border border-slate-300 bg-slate-100 px-1.5 py-0.5 text-xs font-medium text-slate-600">
+								<span
+									class="rounded border border-slate-300 bg-slate-100 px-1.5 py-0.5 text-xs font-medium text-slate-600"
+								>
 									{schoolData.npsn}
 								</span>
 							</div>
@@ -126,14 +128,16 @@
 					aria-label="Navigasi Cepat"
 					title="Navigasi Cepat"
 				>
-					<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
-						/>
-					</svg>
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						height="24px"
+						viewBox="0 0 24 24"
+						width="24px"
+						fill="currentColor"
+						><path d="M0 0h24v24H0V0z" fill="none" /><path
+							d="M4 8h4V4H4v4zm6 12h4v-4h-4v4zm-6 0h4v-4H4v4zm0-6h4v-4H4v4zm6 0h4v-4h-4v4zm6-10v4h4V4h-4zm-6 4h4V4h-4v4zm6 6h4v-4h-4v4zm0 6h4v-4h-4v4z"
+						/></svg
+					>
 					<span class="hidden text-sm font-medium md:block">Menu</span>
 				</button>
 
@@ -184,7 +188,9 @@
 						class="absolute top-full right-0 z-50 mt-2 w-52 overflow-hidden rounded-lg border border-slate-200 bg-white shadow-lg"
 					>
 						<!-- Header -->
-						<div class="flex items-center justify-between border-b border-slate-100 bg-slate-50 px-4 py-2.5">
+						<div
+							class="flex items-center justify-between border-b border-slate-100 bg-slate-50 px-4 py-2.5"
+						>
 							<p class="text-sm font-semibold text-slate-800">Menu</p>
 							<button
 								on:click={closeUserMenu}
@@ -213,7 +219,7 @@
 									{user.email || 'N/A'}
 								</p>
 								<p class="mt-1.5 text-xs text-slate-500">
-									Sebagai: <span class="font-medium capitalize text-slate-700">{user.role}</span>
+									Sebagai: <span class="font-medium text-slate-700 capitalize">{user.role}</span>
 								</p>
 							</div>
 						{/if}

@@ -2,6 +2,20 @@
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { API_FETCH } from '$lib/api';
+	import ModalAlert from '$lib/components/modal/modalalert.svelte';
+
+	let alertModal = { show: false, type: 'success' as 'success' | 'error' | 'warning' | 'info', message: '' };
+	let alertAction: (() => void) | null = null;
+
+	function showAlert(type: 'success' | 'error' | 'warning' | 'info', message: string, onConfirm?: () => void) {
+		alertModal = { show: true, type, message };
+		alertAction = onConfirm || null;
+	}
+
+	function handleAlertConfirm() {
+		alertModal.show = false;
+		if (alertAction) alertAction();
+	}
 
 	interface Student {
 		id: number;
@@ -17,15 +31,28 @@
 		id: number;
 		fullName: string;
 	}
+	interface AcademicYear {
+		id: number;
+		name: string;
+		isActive: number;
+	}
+	interface Curriculum {
+		id: number;
+		name: string;
+		code: string;
+		isActive: number;
+	}
 
 	let students: Student[] = [];
 	let classes: ClassData[] = [];
 	let teachers: Teacher[] = [];
+	let academicYears: AcademicYear[] = [];
+	let curricula: Curriculum[] = [];
 	let selectedStudents: number[] = [];
 	let isLoading = true;
 
 	let formData = {
-		tahun_ajaran: '2025/2026 Genap',
+		tahun_ajaran: '',
 		tingkat_kelas: '',
 		nama_rombel: '',
 		wali_kelas: '',
@@ -37,10 +64,12 @@
 
 	onMount(async () => {
 		try {
-			const [studentRes, classRes, teacherRes] = await Promise.all([
+			const [studentRes, classRes, teacherRes, academicYearRes, curriculumRes] = await Promise.all([
 				API_FETCH('/routes/api/studentDataSet/lite'),
 				API_FETCH('/routes/api/class-data/classes'),
-				API_FETCH('/routes/api/teachers/list')
+				API_FETCH('/routes/api/teachers/list'),
+				API_FETCH('/routes/api/academic-years/lite'),
+				API_FETCH('/routes/api/curriculum/lite')
 			]);
 
 			if (studentRes.ok) {
@@ -63,9 +92,27 @@
 			} else {
 				console.error('Failed to fetch teachers:', teacherRes.statusText);
 			}
+
+			if (academicYearRes.ok) {
+				const data = await academicYearRes.json();
+				academicYears = data.data || data;
+				const active = academicYears.find((ay) => ay.isActive === 1);
+				if (active) formData.tahun_ajaran = String(active.id);
+			} else {
+				console.error('Failed to fetch academic years:', academicYearRes.statusText);
+			}
+
+			if (curriculumRes.ok) {
+				const data = await curriculumRes.json();
+				curricula = data.data || data;
+				const active = curricula.find((c) => c.isActive === 1);
+				if (active) formData.kurikulum = String(active.id);
+			} else {
+				console.error('Failed to fetch curricula:', curriculumRes.statusText);
+			}
 		} catch (error) {
 			console.error('Error fetching initial data:', error);
-			alert('Failed to load initial page data. Check console for details.');
+			showAlert('error', 'Gagal memuat data halaman. Periksa konsol untuk detail.');
 		} finally {
 			isLoading = false;
 		}
@@ -82,12 +129,13 @@
 
 	async function handleSubmit() {
 		if (!formData.nama_rombel || !formData.tingkat_kelas || !formData.wali_kelas) {
-			alert('Mohon lengkapi data wajib: Nama Rombel, Tingkat Kelas, dan Wali Kelas.');
+			showAlert('warning', 'Mohon lengkapi data wajib: Nama Rombel, Tingkat Kelas, dan Wali Kelas.');
 			return;
 		}
 
 		if (selectedStudents.length > formData.student_capacity) {
-			alert(
+			showAlert(
+				'warning',
 				`Jumlah siswa terpilih (${selectedStudents.length}) melebihi kapasitas rombel (${formData.student_capacity}).`
 			);
 			return;
@@ -104,14 +152,13 @@
 
 			const result = await response.json();
 			if (response.ok) {
-				alert('Rombel created successfully!');
-				goto('/rombel');
+				showAlert('success', 'Rombel berhasil dibuat!', () => goto('/rombel'));
 			} else {
-				alert('Failed to create rombel: ' + result.message);
+				showAlert('error', 'Gagal membuat rombel: ' + result.message);
 			}
 		} catch (error) {
 			console.error('Error submitting form:', error);
-			alert('An error occurred while submitting the form.');
+			showAlert('error', 'Terjadi kesalahan saat mengirim formulir.');
 		}
 	}
 
@@ -129,7 +176,12 @@
 					class="mb-4 inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3.5 py-2 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-50 hover:text-slate-800"
 				>
 					<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M15 19l-7-7 7-7"
+						/>
 					</svg>
 					Kembali
 				</button>
@@ -137,7 +189,9 @@
 				<p class="mt-0.5 text-sm text-slate-500">Buat rombongan belajar baru dan pilih siswa</p>
 			</div>
 			<div class="hidden items-center gap-2 sm:flex">
-				<span class="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600">
+				<span
+					class="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600"
+				>
 					{selectedStudents.length}/{formData.student_capacity} siswa
 				</span>
 			</div>
@@ -153,13 +207,18 @@
 
 				<div class="space-y-4 p-5">
 					<div class="space-y-1.5">
-						<label for="tahun_ajaran" class="text-sm font-medium text-slate-700">Tahun Ajaran</label>
-						<input
-							type="text"
+						<label for="tahun_ajaran" class="text-sm font-medium text-slate-700">Tahun Ajaran</label
+						>
+						<select
 							id="tahun_ajaran"
 							bind:value={formData.tahun_ajaran}
-							class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
-						/>
+							class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-700 transition-colors outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+						>
+							<option value="" disabled>Pilih Tahun Ajaran</option>
+							{#each academicYears as ay}
+								<option value={ay.id}>{ay.name} {ay.isActive === 1 ? '(Aktif)' : ''}</option>
+							{/each}
+						</select>
 					</div>
 
 					<div class="grid grid-cols-2 gap-4">
@@ -172,7 +231,7 @@
 								id="nama_rombel"
 								bind:value={formData.nama_rombel}
 								placeholder="Contoh: VII-A"
-								class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+								class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-700 transition-colors outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
 							/>
 						</div>
 
@@ -183,7 +242,7 @@
 							<select
 								id="tingkat_kelas"
 								bind:value={formData.tingkat_kelas}
-								class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+								class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-700 transition-colors outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
 							>
 								<option value="" disabled>Pilih Tingkat</option>
 								{#each classes as cls}
@@ -200,7 +259,7 @@
 						<select
 							id="wali_kelas"
 							bind:value={formData.wali_kelas}
-							class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+							class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-700 transition-colors outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
 						>
 							<option value="" disabled>Pilih Wali Kelas</option>
 							{#each teachers as teacher}
@@ -215,7 +274,7 @@
 							<select
 								id="nama_ruangan"
 								bind:value={formData.nama_ruangan}
-								class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+								class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-700 transition-colors outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
 							>
 								<option value="" disabled>Pilih Ruangan</option>
 								<option value="R01">Ruang 01</option>
@@ -225,23 +284,30 @@
 
 						<div class="space-y-1.5">
 							<label for="kurikulum" class="text-sm font-medium text-slate-700">Kurikulum</label>
-							<input
-								type="text"
+							<select
 								id="kurikulum"
 								bind:value={formData.kurikulum}
-								placeholder="K13 / Merdeka"
-								class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
-							/>
+								class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-700 transition-colors outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+							>
+								<option value="" disabled>Pilih Kurikulum</option>
+								{#each curricula as curr}
+									<option value={curr.id}
+										>{curr.name} ({curr.code}) {curr.isActive === 1 ? '- Aktif' : ''}</option
+									>
+								{/each}
+							</select>
 						</div>
 					</div>
 
 					<div class="grid grid-cols-2 gap-4">
 						<div class="space-y-1.5">
-							<label for="jenis_rombel" class="text-sm font-medium text-slate-700">Jenis Rombel</label>
+							<label for="jenis_rombel" class="text-sm font-medium text-slate-700"
+								>Jenis Rombel</label
+							>
 							<select
 								id="jenis_rombel"
 								bind:value={formData.jenis_rombel}
-								class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+								class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-700 transition-colors outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
 							>
 								<option value="" disabled>Pilih Jenis</option>
 								<option value="kelas">Kelas Reguler</option>
@@ -250,13 +316,15 @@
 						</div>
 
 						<div class="space-y-1.5">
-							<label for="student_capacity" class="text-sm font-medium text-slate-700">Kapasitas</label>
+							<label for="student_capacity" class="text-sm font-medium text-slate-700"
+								>Kapasitas</label
+							>
 							<input
 								type="number"
 								id="student_capacity"
 								bind:value={formData.student_capacity}
 								min="1"
-								class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+								class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-700 transition-colors outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
 							/>
 						</div>
 					</div>
@@ -280,7 +348,9 @@
 				</div>
 
 				{#if isCapacityFull}
-					<div class="border-b border-amber-200 bg-amber-50 px-5 py-2 text-xs font-medium text-amber-700">
+					<div
+						class="border-b border-amber-200 bg-amber-50 px-5 py-2 text-xs font-medium text-amber-700"
+					>
 						Kapasitas rombel penuh ({formData.student_capacity} siswa)
 					</div>
 				{/if}
@@ -299,10 +369,22 @@
 											selectedStudents.length < students.length}
 									/>
 								</th>
-								<th class="w-12 px-4 py-2.5 text-left text-xs font-semibold tracking-wide text-slate-600 uppercase">No</th>
-								<th class="px-4 py-2.5 text-left text-xs font-semibold tracking-wide text-slate-600 uppercase">Nama Siswa</th>
-								<th class="px-4 py-2.5 text-left text-xs font-semibold tracking-wide text-slate-600 uppercase">NISN</th>
-								<th class="px-4 py-2.5 text-left text-xs font-semibold tracking-wide text-slate-600 uppercase">Absen</th>
+								<th
+									class="w-12 px-4 py-2.5 text-left text-xs font-semibold tracking-wide text-slate-600 uppercase"
+									>No</th
+								>
+								<th
+									class="px-4 py-2.5 text-left text-xs font-semibold tracking-wide text-slate-600 uppercase"
+									>Nama Siswa</th
+								>
+								<th
+									class="px-4 py-2.5 text-left text-xs font-semibold tracking-wide text-slate-600 uppercase"
+									>NISN</th
+								>
+								<th
+									class="px-4 py-2.5 text-left text-xs font-semibold tracking-wide text-slate-600 uppercase"
+									>Absen</th
+								>
 							</tr>
 						</thead>
 						<tbody class="divide-y divide-slate-100">
@@ -310,7 +392,9 @@
 								<tr>
 									<td colspan="5" class="px-4 py-12 text-center text-sm text-slate-500">
 										<div class="flex items-center justify-center gap-2">
-											<div class="h-4 w-4 animate-spin rounded-full border-2 border-slate-300 border-t-blue-600"></div>
+											<div
+												class="h-4 w-4 animate-spin rounded-full border-2 border-slate-300 border-t-blue-600"
+											></div>
 											Memuat data siswa...
 										</div>
 									</td>
@@ -334,7 +418,8 @@
 											/>
 										</td>
 										<td class="px-4 py-2.5 text-slate-400">{i + 1}</td>
-										<td class="px-4 py-2.5 font-medium text-slate-800 capitalize">{student.name}</td>
+										<td class="px-4 py-2.5 font-medium text-slate-800 capitalize">{student.name}</td
+										>
 										<td class="px-4 py-2.5 font-mono text-slate-500">{student.nisn}</td>
 										<td class="px-4 py-2.5 text-slate-500">{student.absen || '-'}</td>
 									</tr>
@@ -347,3 +432,11 @@
 		</div>
 	</div>
 </div>
+
+<ModalAlert
+	bind:show={alertModal.show}
+	type={alertModal.type}
+	message={alertModal.message}
+	on:confirm={handleAlertConfirm}
+	on:close={() => (alertModal.show = false)}
+/>

@@ -585,7 +585,11 @@
 							</div>
 
 							<!-- Dashed line -->
-							<div class="mt-3 flex-1 border-t-2 border-dashed border-slate-300"></div>
+							<div
+								class="mt-3 h-[2px] flex-1 {selectedStudentIds.length > 0
+									? 'promotion-line-active'
+									: 'promotion-line-idle'}"
+							></div>
 
 							<!-- Target -->
 							<div class="flex shrink-0 flex-col items-center">
@@ -728,3 +732,59 @@
 		if (alertOnConfirm) alertOnConfirm();
 	}}
 />
+
+<style>
+	:global(.promotion-line-idle) {
+		background-image: repeating-linear-gradient(
+			to right,
+			#e5e7eb 0px,
+			#e5e7eb 6px,
+			transparent 6px,
+			transparent 12px
+		);
+	}
+
+	:global(.promotion-line-active) {
+		background-image: repeating-linear-gradient(
+			to right,
+			#10b981 0px,
+			#10b981 6px,
+			transparent 6px,
+			transparent 12px
+		);
+		-webkit-mask-image: linear-gradient(
+			to right,
+			transparent 0%,
+			rgba(0, 0, 0, 0.03) 15%,
+			rgba(0, 0, 0, 0.15) 30%,
+			rgba(0, 0, 0, 0.5) 42%,
+			black 50%,
+			transparent 56%,
+			transparent 100%
+		);
+		mask-image: linear-gradient(
+			to right,
+			transparent 0%,
+			rgba(0, 0, 0, 0.03) 15%,
+			rgba(0, 0, 0, 0.15) 30%,
+			rgba(0, 0, 0, 0.5) 42%,
+			black 50%,
+			transparent 56%,
+			transparent 100%
+		);
+		-webkit-mask-size: 300% 100%;
+		mask-size: 300% 100%;
+		animation: pulse-sweep 2s ease-in-out infinite;
+	}
+
+	@keyframes pulse-sweep {
+		0% {
+			-webkit-mask-position: 100% 0;
+			mask-position: 100% 0;
+		}
+		100% {
+			-webkit-mask-position: 0 0;
+			mask-position: 0 0;
+		}
+	}
+</style>
