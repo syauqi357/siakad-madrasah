@@ -211,14 +211,10 @@
 	$: currentLogoSrc = logoPreview || (formData.logoUrl ? `${apiUrl}${formData.logoUrl}` : null);
 </script>
 
-<svelte:head>
-	<title>Profil Lembaga</title>
-</svelte:head>
-
 <div class="min-h-screen p-4 md:p-6">
 	<!-- Header -->
 	<div class="mb-6">
-		<h1 class="text-2xl font-bold text-gray-800">Profil Lembaga</h1>
+		<h1 class="text-3xl font-bold text-blue-600">Profil Lembaga</h1>
 		<p class="mt-1 text-sm text-gray-500">Kelola informasi dasar sekolah/madrasah</p>
 	</div>
 

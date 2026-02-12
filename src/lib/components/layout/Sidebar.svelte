@@ -2,6 +2,7 @@
 	import { slide, fade } from 'svelte/transition';
 	import { fly } from 'svelte/transition';
 	import { quintOut } from 'svelte/easing';
+	import { page } from '$app/stores';
 
 	interface NavItem {
 		name: string;
@@ -19,15 +20,49 @@
 	export let navItems: NavItem[];
 	export let openDropdowns: Record<string, boolean> = {};
 
+	$: currentPath = $page.url.pathname;
+
+	function isActive(path: string, href: string, exact = false): boolean {
+		if (href === '/' || exact) return path === href;
+		return path === href || path.startsWith(href + '/');
+	}
+
+	function isChildActive(path: string, item: NavItem, childHref: string): boolean {
+		if (!item.children) return path === childHref;
+		// If other siblings share a prefix, use exact match for the shortest href
+		const hasMoreSpecificSibling = item.children.some(
+			(c) => c.href !== childHref && c.href.startsWith(childHref + '/')
+		);
+		return hasMoreSpecificSibling ? path === childHref : isActive(path, childHref);
+	}
+
+	function isParentActive(path: string, item: NavItem): boolean {
+		if (!item.children) return false;
+		return item.children.some((child) => isChildActive(path, item, child.href));
+	}
+
 	function toggleDropdown(itemName: string) {
 		openDropdowns[itemName] = !openDropdowns[itemName];
+	}
+
+	// Auto-open dropdown if a child route is active
+	$: if (currentPath) {
+		for (const item of navItems) {
+			if (item.hasDropdown && item.children) {
+				if (item.children.some((child) => isChildActive(currentPath, item, child.href))) {
+					openDropdowns[item.name] = true;
+				}
+			}
+		}
 	}
 </script>
 
 <!-- Backdrop for mobile -->
 {#if sidebarOpen}
 	<div
-		role="button" tabindex="0" aria-label="Close sidebar"
+		role="button"
+		tabindex="0"
+		aria-label="Close sidebar"
 		class="fixed inset-0 z-30 bg-black/75 backdrop-blur-sm sm:hidden"
 		transition:fade={{ duration: 200 }}
 		on:click={() => (sidebarOpen = false)}
@@ -48,11 +83,14 @@
 						<!-- Parent item with dropdown -->
 						<button
 							on:click={() => toggleDropdown(item.name)}
-							class="group flex w-full items-center justify-between rounded-lg p-2 text-sm text-slate-600 transition-all duration-200 hover:bg-slate-100 hover:text-slate-900 {openDropdowns[
-								item.name
-							]
-								? 'bg-slate-100 text-slate-900 font-semibold'
-								: ''}"
+							class="sidebar-item group flex w-full items-center justify-between rounded-lg p-2 text-sm hover:bg-blue-600 hover:text-slate-100 {isParentActive(
+								currentPath,
+								item
+							)
+								? 'active bg-blue-500 font-medium text-slate-100'
+								: openDropdowns[item.name]
+									? 'bg-slate-100 font-semibold text-slate-900'
+									: 'text-slate-600'}"
 						>
 							<div class="flex items-center justify-center">
 								<span
@@ -62,7 +100,7 @@
 								>
 									{@html item.icon || ''}
 								</span>
-								<span class="capitalize ml-3">{item.name}</span>
+								<span class="ml-3 capitalize">{item.name}</span>
 							</div>
 							<span
 								class="transform transition-transform duration-300 ease-in-out {openDropdowns[
@@ -93,7 +131,13 @@
 										>
 											<a
 												href={child.href}
-												class="capitalize block rounded-lg p-2 text-sm text-slate-500 transition-all duration-200 hover:bg-slate-100 hover:text-slate-900"
+												class="sidebar-item block rounded-lg p-2 text-sm capitalize hover:bg-blue-600 hover:text-slate-100 {isChildActive(
+													currentPath,
+													item,
+													child.href
+												)
+													? 'active bg-blue-500 font-semibold text-slate-100'
+													: 'text-slate-500'}"
 											>
 												<span>
 													{child.icon || ''}
@@ -109,10 +153,19 @@
 						<!-- Regular menu item without dropdown -->
 						<a
 							href={item.href}
-							class="group flex items-center justify-between rounded-lg p-2 text-sm text-slate-600 transition-all duration-200 hover:bg-slate-100 hover:text-slate-900"
+							class="sidebar-item group flex items-center justify-between rounded-lg p-2 text-sm hover:bg-blue-600 hover:text-slate-100 {isActive(
+								currentPath,
+								item.href
+							)
+								? 'active bg-blue-500 font-semibold text-slate-100'
+								: 'text-slate-600'}"
 						>
 							<div class="flex items-center justify-center">
-								<span class="h-6 w-6 transition-transform duration-200 group-hover:scale-110">
+								<span
+									class="h-6 w-6 transition-transform duration-200 {isActive(currentPath, item.href)
+										? 'scale-110'
+										: 'group-hover:scale-110'}"
+								>
 									{@html item.icon || ''}
 								</span>
 								<span class="ml-3">{item.name}</span>
@@ -156,3 +209,40 @@
 		</div>
 	</div>
 </aside>
+
+<style>
+	.sidebar-item {
+		position: relative;
+		isolation: isolate;
+		transition:
+			background-color 300ms cubic-bezier(0.4, 0, 0.2, 1),
+			color 300ms cubic-bezier(0.4, 0, 0.2, 1),
+			box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1);
+	}
+
+	.sidebar-item::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		border-radius: inherit;
+		background: linear-gradient(
+			to right,
+			rgb(109 40 217 / 0.35) 0%,
+			transparent 50%
+		);
+		opacity: 0;
+		z-index: -1;
+		transition: opacity 400ms cubic-bezier(0.4, 0, 0.2, 1);
+		pointer-events: none;
+	}
+
+	.sidebar-item:global(.active)::before {
+		opacity: 1;
+	}
+
+	.sidebar-item:global(.active) {
+		box-shadow:
+			0 1px 1px 0 rgb(59 130 246 / 0.3),
+			inset 1px 0 1px -2px rgb(109 40 217 / 0.25);
+	}
+</style>
