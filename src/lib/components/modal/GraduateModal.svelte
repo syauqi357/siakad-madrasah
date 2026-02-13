@@ -2,6 +2,10 @@
 	import { createEventDispatcher, onMount } from 'svelte';
 	import { fade, scale } from 'svelte/transition';
 	import { API_FETCH } from '$lib/api';
+	import ModalAlert from './modalalert.svelte';
+
+	let showAlert = false;
+	let alertMessage = '';
 
 	export let show = false;
 	export let studentName = '';
@@ -95,11 +99,13 @@
 	function handleSubmit() {
 		// Validation
 		if (!graduationYear) {
-			alert('Tahun kelulusan wajib dipilih');
+			alertMessage = 'Tahun kelulusan wajib dipilih';
+			showAlert = true;
 			return;
 		}
 		if (!completionDate) {
-			alert('Tanggal kelulusan wajib diisi');
+			alertMessage = 'Tanggal kelulusan wajib diisi';
+			showAlert = true;
 			return;
 		}
 
@@ -260,3 +266,9 @@
 		</div>
 	</div>
 {/if}
+
+<ModalAlert
+	bind:show={showAlert}
+	type="warning"
+	message={alertMessage}
+/>

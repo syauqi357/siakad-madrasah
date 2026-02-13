@@ -1,6 +1,10 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import { fade, scale } from 'svelte/transition';
+	import ModalAlert from './modalalert.svelte';
+
+	let showAlert = false;
+	let alertMessage = '';
 
 	export let show = false;
 	export let studentName = '';
@@ -39,15 +43,18 @@
 	function handleSubmit() {
 		// Validation
 		if (!mutasiType) {
-			alert('Jenis mutasi wajib dipilih');
+			alertMessage = 'Jenis mutasi wajib dipilih';
+			showAlert = true;
 			return;
 		}
 		if (!reason.trim()) {
-			alert('Alasan mutasi wajib diisi');
+			alertMessage = 'Alasan mutasi wajib diisi';
+			showAlert = true;
 			return;
 		}
 		if (!completionDate) {
-			alert('Tanggal mutasi wajib diisi');
+			alertMessage = 'Tanggal mutasi wajib diisi';
+			showAlert = true;
 			return;
 		}
 
@@ -196,3 +203,9 @@
 		</div>
 	</div>
 {/if}
+
+<ModalAlert
+	bind:show={showAlert}
+	type="warning"
+	message={alertMessage}
+/>

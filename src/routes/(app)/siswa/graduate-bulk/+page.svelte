@@ -514,11 +514,11 @@
 											<p class="font-mono text-xs text-slate-500">{student.nisn}</p>
 										</div>
 										<span
-											class="rounded-md px-2.5 py-1 text-xs font-semibold {student.gender === 'L'
+											class="rounded-md px-2.5 py-1 text-xs font-semibold {student.gender?.toLowerCase().startsWith('l')
 												? 'bg-sky-100 text-sky-700'
 												: 'bg-pink-100 text-pink-700'}"
 										>
-											{student.gender === 'L' ? 'Laki-laki' : 'Perempuan'}
+											{student.gender?.toLowerCase().startsWith('l') ? 'Laki-laki' : 'Perempuan'}
 										</span>
 									</label>
 								{/each}

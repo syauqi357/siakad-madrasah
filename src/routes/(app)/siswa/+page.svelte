@@ -59,7 +59,7 @@
 	let loading = false;
 	let isUploadModalOpen = false;
 	let searchQuery = '';
-	let statusFilter: 'ALL' | 'ACTIVE' | 'MUTASI' | 'GRADUATE' = 'ACTIVE';
+	let statusFilter: 'ALL' | 'ACTIVE' | 'MUTASI' | 'GRADUATE' = 'ALL';
 
 	// Filter options - MUTASI hidden from default, accessible via dedicated page
 	const statusOptions = [
@@ -164,12 +164,13 @@
 			}
 
 			// Transform data
-			students = dataFromApi.map((item: any) => ({
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			students = dataFromApi.map((item: Record<string, any>) => ({
 				id: item.id,
 				nisn: item.nisn || '-',
 				nama: item.name,
 				kelas: item.className || item.lastClassName || 'Belum Masuk Rombel',
-				gender: item.gender === 'L' || item.gender === 'laki-laki' ? 'L' : 'P',
+				gender: !item.gender || String(item.gender).toLowerCase().startsWith('l') ? 'L' : 'P',
 				asal: item.originRegion || '-',
 				status: item.status || 'ACTIVE'
 			}));
@@ -383,11 +384,66 @@
 			<span class="text-sm text-slate-500">Memuat data...</span>
 		</div>
 	{:else if students.length === 0}
-		<div class="rounded-md border border-dashed border-slate-300 py-12 text-center text-slate-500">
+		<div
+			class="flex flex-col items-center rounded-lg border border-dashed border-slate-300 py-16 text-center"
+		>
 			{#if searchQuery.trim() !== '' || statusFilter !== 'ALL'}
-				<p class="text-sm">Tidak ada siswa yang sesuai filter.</p>
+				<svg
+					class="mb-3 h-10 w-10 text-slate-300"
+					fill="none"
+					stroke="currentColor"
+					viewBox="0 0 24 24"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="1.5"
+						d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+					/>
+				</svg>
+				<p class="text-sm font-medium text-slate-600">Tidak ada siswa yang sesuai filter.</p>
+				<p class="mt-1 text-xs text-slate-400">Coba ubah kata kunci atau filter status.</p>
 			{:else}
-				<p class="text-sm">Belum ada data siswa.</p>
+				<svg
+					class="mb-3 h-12 w-12 text-slate-300"
+					fill="none"
+					stroke="currentColor"
+					viewBox="0 0 24 24"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="1.5"
+						d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+					/>
+				</svg>
+				<p class="text-sm font-medium text-slate-600">Belum ada data siswa.</p>
+				<p class="mt-1 text-xs text-slate-400">
+					Mulai dengan menambahkan siswa secara manual atau import dari Excel.
+				</p>
+				<div class="mt-5 flex flex-wrap items-center justify-center gap-3">
+					<button
+						on:click={() => goto('siswa/addStudent')}
+						class="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white transition-all hover:bg-blue-700"
+					>
+						<AddIcon />
+						Tambah Siswa
+					</button>
+					<a
+						href={DOWNLOAD_TEMPLATE_EXCEL}
+						class="flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 transition-all hover:bg-slate-50"
+					>
+						<DownloadIcon />
+						Download Template
+					</a>
+					<button
+						on:click={() => (isUploadModalOpen = true)}
+						class="flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 transition-all hover:bg-slate-50"
+					>
+						<UploadIcon />
+						Upload Excel
+					</button>
+				</div>
 			{/if}
 		</div>
 	{:else}
@@ -450,7 +506,7 @@
 				value={limit}
 				on:change={handleLimitChange}
 			>
-				{#each limitOptions as option}
+				{#each limitOptions as option (option)}
 					<option value={option}>{option}</option>
 				{/each}
 			</select>
@@ -466,7 +522,7 @@
 				Sebelumnya
 			</button>
 
-			{#each getPageNumbers(currentPage, totalPages) as page}
+			{#each getPageNumbers(currentPage, totalPages) as page, i (i)}
 				{#if page === '...'}
 					<span class="px-1.5 text-xs text-slate-400">...</span>
 				{:else}

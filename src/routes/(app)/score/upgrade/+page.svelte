@@ -490,9 +490,9 @@
 										</div>
 										<span
 											class="rounded-md px-2 py-0.5 text-[10px] font-medium
-											{student.gender === 'L' ? 'bg-blue-50 text-blue-600' : 'bg-pink-50 text-pink-600'}"
+											{student.gender?.toLowerCase().startsWith('l') ? 'bg-blue-50 text-blue-600' : 'bg-pink-50 text-pink-600'}"
 										>
-											{student.gender === 'L' ? 'L' : 'P'}
+											{student.gender?.toLowerCase().startsWith('l') ? 'L' : 'P'}
 										</span>
 									</div>
 								</label>

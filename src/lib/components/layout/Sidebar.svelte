@@ -83,7 +83,7 @@
 						<!-- Parent item with dropdown -->
 						<button
 							on:click={() => toggleDropdown(item.name)}
-							class="sidebar-item group flex w-full items-center justify-between rounded-lg p-2 text-sm hover:bg-blue-600 hover:text-slate-100 {isParentActive(
+							class="sidebar-item group flex w-full items-center justify-between rounded-md p-2 text-sm hover:bg-blue-600 hover:text-slate-100 {isParentActive(
 								currentPath,
 								item
 							)
@@ -131,7 +131,7 @@
 										>
 											<a
 												href={child.href}
-												class="sidebar-item block rounded-lg p-2 text-sm capitalize hover:bg-blue-600 hover:text-slate-100 {isChildActive(
+												class="sidebar-item block rounded-md p-2 text-sm capitalize hover:bg-blue-600 hover:text-slate-100 {isChildActive(
 													currentPath,
 													item,
 													child.href
@@ -153,7 +153,7 @@
 						<!-- Regular menu item without dropdown -->
 						<a
 							href={item.href}
-							class="sidebar-item group flex items-center justify-between rounded-lg p-2 text-sm hover:bg-blue-600 hover:text-slate-100 {isActive(
+							class="sidebar-item group flex items-center justify-between rounded-md p-2 text-sm hover:bg-blue-600 hover:text-slate-100 {isActive(
 								currentPath,
 								item.href
 							)
@@ -180,7 +180,7 @@
 		<div class="mt-auto space-y-1 border-t border-slate-200 pt-4">
 			<a
 				href="/Documentations"
-				class="flex items-center rounded-lg p-2 text-sm text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-900"
+				class="flex items-center rounded-md p-2 text-sm text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-900"
 			>
 				<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 					<path
@@ -194,7 +194,7 @@
 			</a>
 			<a
 				href="/support"
-				class="flex items-center rounded-lg p-2 text-sm text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-900"
+				class="flex items-center rounded-md p-2 text-sm text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-900"
 			>
 				<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 					<path

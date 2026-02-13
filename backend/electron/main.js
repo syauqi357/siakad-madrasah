@@ -1,10 +1,14 @@
 import { app, BrowserWindow, ipcMain, dialog } from 'electron';
 import path from 'path';
 import { fileURLToPath, pathToFileURL } from 'url';
+import dotenv from 'dotenv'
 import fs from 'fs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+// Load .env from backend root
+dotenv.config({ path: path.join(__dirname, '..', '.env') });
 
 let mainWindow;
 let serverStarted = false;
@@ -163,7 +167,7 @@ function createWindow() {
 		autoHideMenuBar: true
 	});
 
-	const port = process.env.PORT || '3000';
+	const port = process.env.PORT;
 
 	// Load the app from Express server
 	mainWindow.loadURL(`http://localhost:${port}`);

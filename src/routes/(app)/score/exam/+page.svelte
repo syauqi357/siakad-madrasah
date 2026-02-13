@@ -3,6 +3,9 @@
 	import { API_FETCH } from '$lib/api';
 	import StudentScoreTable from '$lib/components/layout/studentScoreTable.svelte';
 	import { goto } from '$app/navigation';
+	import ModalAlert from '$lib/components/modal/modalalert.svelte';
+
+	let showInfoAlert = false;
 
 	// Default demo data (fallback)
 	const demoHeaders = ['Nama Siswa', 'NISN', 'UH1', 'UTS', 'UAS', 'Total'];
@@ -108,9 +111,7 @@
 	}
 
 	function downloadTemplate() {
-		alert(
-			'Silakan gunakan fitur Import di halaman Dashboard Guru untuk template umum, atau tunggu update berikutnya untuk template spesifik.'
-		);
+		showInfoAlert = true;
 	}
 
 	onMount(() => {
@@ -175,3 +176,9 @@
 		</StudentScoreTable>
 	</div>
 </div>
+
+<ModalAlert
+	bind:show={showInfoAlert}
+	type="info"
+	message="Silakan gunakan fitur Import di halaman Dashboard Guru untuk template umum, atau tunggu update berikutnya untuk template spesifik."
+/>

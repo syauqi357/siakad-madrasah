@@ -1,5 +1,9 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
+	import ModalAlert from '$lib/components/modal/modalalert.svelte';
+
+	let showAlert = false;
+	let alertMessage = '';
 
 	export let subject: {
 		id?: number;
@@ -21,7 +25,8 @@
 
 	function handleSubmit() {
 		if (!subject.name.trim()) {
-			alert('Nama mata pelajaran harus diisi');
+			alertMessage = 'Nama mata pelajaran harus diisi';
+			showAlert = true;
 			return;
 		}
 		dispatch('submit', subject);
@@ -159,3 +164,9 @@
 		</div>
 	</form>
 </div>
+
+<ModalAlert
+	bind:show={showAlert}
+	type="warning"
+	message={alertMessage}
+/>

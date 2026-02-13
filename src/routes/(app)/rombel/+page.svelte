@@ -33,6 +33,10 @@
 	let confirmDeleteRombel: Rombel | null = null;
 	let showDeleteModal = false;
 
+	// Error alert state
+	let showErrorAlert = false;
+	let errorAlertMessage = '';
+
 	// Modal State
 	let showSubjectModal = false;
 	let availableSubjects: Subject[] = [];
@@ -132,7 +136,8 @@
 			window.URL.revokeObjectURL(url);
 		} catch (err) {
 			console.error('Error downloading template:', err);
-			alert(err instanceof Error ? err.message : 'Gagal mengunduh template Excel');
+			errorAlertMessage = err instanceof Error ? err.message : 'Gagal mengunduh template Excel';
+			showErrorAlert = true;
 		} finally {
 			downloadingId = null;
 			showSubjectModal = false; // Close modal
@@ -170,11 +175,13 @@
 			if (response.ok && result.success) {
 				rombelData = rombelData.filter((r) => r.id !== rombelToDelete.id);
 			} else {
-				alert(result.message || 'Gagal menghapus rombel');
+				errorAlertMessage = result.message || 'Gagal menghapus rombel';
+				showErrorAlert = true;
 			}
 		} catch (err) {
 			console.error('Error deleting rombel:', err);
-			alert('Terjadi kesalahan saat menghapus rombel');
+			errorAlertMessage = 'Terjadi kesalahan saat menghapus rombel';
+			showErrorAlert = true;
 		} finally {
 			deletingId = null;
 		}
@@ -477,6 +484,13 @@
 	on:confirm={handleDelete}
 	on:cancel={() => (confirmDeleteRombel = null)}
 	on:close={() => (confirmDeleteRombel = null)}
+/>
+
+<!-- Error Alert Modal -->
+<ModalAlert
+	bind:show={showErrorAlert}
+	type="error"
+	message={errorAlertMessage}
 />
 
 <!-- Subject Select Modal Component -->

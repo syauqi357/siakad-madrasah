@@ -586,8 +586,7 @@ export const createBulkStudentsFromExcel = async (fileBuffer) => {
 				rw: rowData.address_rw,
 				village: rowData.address_village,
 				subDistrict: rowData.address_subDistrict,
-				district: rowData.address_district,
-				regency: rowData.address_regency, // Map district/regency correctly
+				regency: rowData.address_district,
 				province: rowData.address_province,
 				postalCode: rowData.address_postalCode
 			},
