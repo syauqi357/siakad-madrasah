@@ -1,0 +1,436 @@
+<mxfile host="app.diagrams.net" modified="2026-02-13T00:00:00.000Z" agent="Claude" version="24.0.0">
+  <diagram name="SIAKAD Madrasah - Class Diagram" id="siakad-class-diagram">
+    <mxGraphModel dx="1422" dy="794" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="3300" pageHeight="2339" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- Auth & User Management Package -->
+        <mxCell id="auth-package" value="Auth &amp; User Management" style="shape=folder;fontStyle=1;tabWidth=110;tabHeight=30;tabPosition=left;html=1;boundedLbl=1;labelInHeader=1;container=1;collapsible=0;fillColor=#E8F5E9;strokeColor=#4CAF50;" vertex="1" parent="1">
+          <mxGeometry x="50" y="50" width="400" height="320" as="geometry" />
+        </mxCell>
+
+        <!-- users class -->
+        <mxCell id="users" value="users" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#FFFFFF;strokeColor=#334155;" vertex="1" parent="auth-package">
+          <mxGeometry x="20" y="50" width="160" height="240" as="geometry" />
+        </mxCell>
+        <mxCell id="users-attrs" value="+ id: INTEGER &lt;PK&gt;&#xa;─────────────────&#xa;username: TEXT&#xa;password: TEXT&#xa;email: TEXT&#xa;role: TEXT&#xa;nama_lengkap: TEXT&#xa;nip: TEXT&#xa;jabatan: TEXT" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="users">
+          <mxGeometry y="26" width="160" height="214" as="geometry" />
+        </mxCell>
+
+        <!-- teachers class -->
+        <mxCell id="teachers" value="teachers" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#FFFFFF;strokeColor=#334155;" vertex="1" parent="auth-package">
+          <mxGeometry x="220" y="50" width="160" height="240" as="geometry" />
+        </mxCell>
+        <mxCell id="teachers-attrs" value="+ id: INTEGER &lt;PK&gt;&#xa;─────────────────&#xa;userId: INTEGER &lt;FK&gt;&#xa;nip: TEXT&#xa;fullName: TEXT&#xa;gender: TEXT&#xa;birthPlace: TEXT&#xa;birthDate: TEXT&#xa;religion: TEXT&#xa;phoneNumber: TEXT&#xa;personalEmail: TEXT&#xa;profilePhoto: TEXT" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="teachers">
+          <mxGeometry y="26" width="160" height="214" as="geometry" />
+        </mxCell>
+
+        <!-- Academic Structure Package -->
+        <mxCell id="academic-package" value="Academic Structure" style="shape=folder;fontStyle=1;tabWidth=110;tabHeight=30;tabPosition=left;html=1;boundedLbl=1;labelInHeader=1;container=1;collapsible=0;fillColor=#E3F2FD;strokeColor=#2196F3;" vertex="1" parent="1">
+          <mxGeometry x="500" y="50" width="900" height="520" as="geometry" />
+        </mxCell>
+
+        <!-- academic_year class -->
+        <mxCell id="academic_year" value="academic_year" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#FFFFFF;strokeColor=#334155;" vertex="1" parent="academic-package">
+          <mxGeometry x="20" y="50" width="160" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="academic_year-attrs" value="+ id: INTEGER &lt;PK&gt;&#xa;─────────────────&#xa;name: TEXT&#xa;startYear: INTEGER&#xa;endYear: INTEGER&#xa;startDate: TEXT&#xa;endDate: TEXT&#xa;isActive: INTEGER" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="academic_year">
+          <mxGeometry y="26" width="160" height="174" as="geometry" />
+        </mxCell>
+
+        <!-- curriculum class -->
+        <mxCell id="curriculum" value="curriculum" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#FFFFFF;strokeColor=#334155;" vertex="1" parent="academic-package">
+          <mxGeometry x="210" y="50" width="160" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="curriculum-attrs" value="+ id: INTEGER &lt;PK&gt;&#xa;─────────────────&#xa;name: TEXT&#xa;code: TEXT&#xa;year: TEXT&#xa;description: TEXT&#xa;isActive: INTEGER" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="curriculum">
+          <mxGeometry y="26" width="160" height="134" as="geometry" />
+        </mxCell>
+
+        <!-- classes class -->
+        <mxCell id="classes" value="classes" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#FFFFFF;strokeColor=#334155;" vertex="1" parent="academic-package">
+          <mxGeometry x="400" y="50" width="160" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="classes-attrs" value="+ id: INTEGER &lt;PK&gt;&#xa;─────────────────&#xa;className: TEXT" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="classes">
+          <mxGeometry y="26" width="160" height="74" as="geometry" />
+        </mxCell>
+
+        <!-- subjects class -->
+        <mxCell id="subjects" value="subjects" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#FFFFFF;strokeColor=#334155;" vertex="1" parent="academic-package">
+          <mxGeometry x="590" y="50" width="160" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="subjects-attrs" value="+ id: INTEGER &lt;PK&gt;&#xa;─────────────────&#xa;name: TEXT&#xa;subjectCode: TEXT&#xa;description: TEXT&#xa;kkm: INTEGER" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="subjects">
+          <mxGeometry y="26" width="160" height="114" as="geometry" />
+        </mxCell>
+
+        <!-- class_subject class -->
+        <mxCell id="class_subject" value="class_subject" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#FFFFFF;strokeColor=#334155;" vertex="1" parent="academic-package">
+          <mxGeometry x="400" y="280" width="160" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="class_subject-attrs" value="+ id: INTEGER &lt;PK&gt;&#xa;─────────────────&#xa;classId: INTEGER &lt;FK&gt;&#xa;subjectId: INTEGER &lt;FK&gt;&#xa;teacherId: INTEGER &lt;FK&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="class_subject">
+          <mxGeometry y="26" width="160" height="114" as="geometry" />
+        </mxCell>
+
+        <!-- Rombel Package -->
+        <mxCell id="rombel-package" value="Rombel (Class Group)" style="shape=folder;fontStyle=1;tabWidth=110;tabHeight=30;tabPosition=left;html=1;boundedLbl=1;labelInHeader=1;container=1;collapsible=0;fillColor=#FFF3E0;strokeColor=#FF9800;" vertex="1" parent="1">
+          <mxGeometry x="50" y="410" width="600" height="350" as="geometry" />
+        </mxCell>
+
+        <!-- rombel class -->
+        <mxCell id="rombel" value="rombel" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#FFFFFF;strokeColor=#334155;" vertex="1" parent="rombel-package">
+          <mxGeometry x="20" y="50" width="200" height="260" as="geometry" />
+        </mxCell>
+        <mxCell id="rombel-attrs" value="+ id: INTEGER &lt;PK&gt;&#xa;─────────────────&#xa;code: TEXT&#xa;name: TEXT&#xa;classId: INTEGER &lt;FK&gt;&#xa;academicYearId: INTEGER &lt;FK&gt;&#xa;classAdvisorId: INTEGER &lt;FK&gt;&#xa;studentCapacity: INTEGER&#xa;classroom: TEXT&#xa;kurikulum: TEXT" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="rombel">
+          <mxGeometry y="26" width="200" height="234" as="geometry" />
+        </mxCell>
+
+        <!-- rombel_students class -->
+        <mxCell id="rombel_students" value="rombel_students" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#FFFFFF;strokeColor=#334155;" vertex="1" parent="rombel-package">
+          <mxGeometry x="380" y="50" width="200" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="rombel_students-attrs" value="+ rombelId: INTEGER &lt;PK,FK&gt;&#xa;+ studentId: INTEGER &lt;PK,FK&gt;&#xa;─────────────────&#xa;isActive: INTEGER&#xa;leftAt: TEXT" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="rombel_students">
+          <mxGeometry y="26" width="200" height="114" as="geometry" />
+        </mxCell>
+
+        <!-- Student Data Package -->
+        <mxCell id="student-package" value="Student Data" style="shape=folder;fontStyle=1;tabWidth=110;tabHeight=30;tabPosition=left;html=1;boundedLbl=1;labelInHeader=1;container=1;collapsible=0;fillColor=#F3E5F5;strokeColor=#9C27B0;" vertex="1" parent="1">
+          <mxGeometry x="700" y="410" width="1100" height="700" as="geometry" />
+        </mxCell>
+
+        <!-- student class -->
+        <mxCell id="student" value="student" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#FFFFFF;strokeColor=#334155;" vertex="1" parent="student-package">
+          <mxGeometry x="20" y="50" width="220" height="600" as="geometry" />
+        </mxCell>
+        <mxCell id="student-attrs" value="+ id: INTEGER &lt;PK&gt;&#xa;─────────────────&#xa;studentName: TEXT&#xa;nisn: INTEGER&#xa;localNis: INTEGER&#xa;gender: TEXT&#xa;religion: TEXT&#xa;birthPlace: TEXT&#xa;birthDate: TEXT&#xa;previousSchool: TEXT&#xa;phoneNumber: TEXT&#xa;childOrder: INTEGER&#xa;siblingsCount: INTEGER&#xa;originRegion: TEXT&#xa;bpjs: TEXT&#xa;idCardNumber: TEXT&#xa;birthCertificateNumber: TEXT&#xa;nationality: TEXT&#xa;livingWith: TEXT&#xa;transportation: TEXT&#xa;profilePhoto: TEXT&#xa;rombelId: INTEGER &lt;FK&gt;&#xa;status: TEXT&#xa;createdAt: TEXT&#xa;updatedAt: TEXT" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="student">
+          <mxGeometry y="26" width="220" height="574" as="geometry" />
+        </mxCell>
+
+        <!-- studentAddress class -->
+        <mxCell id="studentAddress" value="studentAddress" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#FFFFFF;strokeColor=#334155;" vertex="1" parent="student-package">
+          <mxGeometry x="280" y="50" width="200" height="280" as="geometry" />
+        </mxCell>
+        <mxCell id="studentAddress-attrs" value="+ id: INTEGER &lt;PK&gt;&#xa;─────────────────&#xa;studentId: INTEGER &lt;FK&gt;&#xa;province: TEXT&#xa;regency: TEXT&#xa;district: TEXT&#xa;subDistrict: TEXT&#xa;village: TEXT&#xa;hamlet: TEXT&#xa;street: TEXT&#xa;houseNumber: TEXT&#xa;rt: TEXT&#xa;rw: TEXT&#xa;postalCode: TEXT" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="studentAddress">
+          <mxGeometry y="26" width="200" height="254" as="geometry" />
+        </mxCell>
+
+        <!-- student_father class -->
+        <mxCell id="student_father" value="student_father" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#FFFFFF;strokeColor=#334155;" vertex="1" parent="student-package">
+          <mxGeometry x="520" y="50" width="180" height="260" as="geometry" />
+        </mxCell>
+        <mxCell id="student_father-attrs" value="+ id: INTEGER &lt;PK&gt;&#xa;─────────────────&#xa;studentId: INTEGER &lt;FK&gt;&#xa;nik: TEXT&#xa;name: TEXT&#xa;birthPlace: TEXT&#xa;birthDate: TEXT&#xa;birthYear: INTEGER&#xa;education: TEXT&#xa;occupation: TEXT&#xa;monthlyIncome: REAL&#xa;phoneNumber: TEXT&#xa;isAlive: INTEGER" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="student_father">
+          <mxGeometry y="26" width="180" height="234" as="geometry" />
+        </mxCell>
+
+        <!-- student_mother class -->
+        <mxCell id="student_mother" value="student_mother" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#FFFFFF;strokeColor=#334155;" vertex="1" parent="student-package">
+          <mxGeometry x="730" y="50" width="180" height="260" as="geometry" />
+        </mxCell>
+        <mxCell id="student_mother-attrs" value="+ id: INTEGER &lt;PK&gt;&#xa;─────────────────&#xa;studentId: INTEGER &lt;FK&gt;&#xa;nik: TEXT&#xa;name: TEXT&#xa;birthPlace: TEXT&#xa;birthDate: TEXT&#xa;birthYear: INTEGER&#xa;education: TEXT&#xa;occupation: TEXT&#xa;monthlyIncome: REAL&#xa;phoneNumber: TEXT&#xa;isAlive: INTEGER" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="student_mother">
+          <mxGeometry y="26" width="180" height="234" as="geometry" />
+        </mxCell>
+
+        <!-- student_wali class -->
+        <mxCell id="student_wali" value="student_wali" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#FFFFFF;strokeColor=#334155;" vertex="1" parent="student-package">
+          <mxGeometry x="280" y="370" width="180" height="260" as="geometry" />
+        </mxCell>
+        <mxCell id="student_wali-attrs" value="+ id: INTEGER &lt;PK&gt;&#xa;─────────────────&#xa;studentId: INTEGER &lt;FK&gt;&#xa;nik: TEXT&#xa;name: TEXT&#xa;birthPlace: TEXT&#xa;birthDate: TEXT&#xa;birthYear: INTEGER&#xa;education: TEXT&#xa;occupation: TEXT&#xa;monthlyIncome: REAL&#xa;phoneNumber: TEXT&#xa;isAlive: INTEGER" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="student_wali">
+          <mxGeometry y="26" width="180" height="234" as="geometry" />
+        </mxCell>
+
+        <!-- Academic Records Package -->
+        <mxCell id="records-package" value="Academic Records" style="shape=folder;fontStyle=1;tabWidth=110;tabHeight=30;tabPosition=left;html=1;boundedLbl=1;labelInHeader=1;container=1;collapsible=0;fillColor=#FFF8E1;strokeColor=#FFC107;" vertex="1" parent="1">
+          <mxGeometry x="1850" y="50" width="900" height="800" as="geometry" />
+        </mxCell>
+
+        <!-- assessment_type class -->
+        <mxCell id="assessment_type" value="assessment_type" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#FFFFFF;strokeColor=#334155;" vertex="1" parent="records-package">
+          <mxGeometry x="20" y="50" width="180" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="assessment_type-attrs" value="+ id: INTEGER &lt;PK&gt;&#xa;─────────────────&#xa;code: TEXT&#xa;name: TEXT&#xa;defaultWeight: INTEGER&#xa;isActive: INTEGER&#xa;createdAt: TEXT" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="assessment_type">
+          <mxGeometry y="26" width="180" height="134" as="geometry" />
+        </mxCell>
+
+        <!-- student_scores class -->
+        <mxCell id="student_scores" value="student_scores" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#FFFFFF;strokeColor=#334155;" vertex="1" parent="records-package">
+          <mxGeometry x="240" y="50" width="220" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="student_scores-attrs" value="+ id: INTEGER &lt;PK&gt;&#xa;─────────────────&#xa;studentId: INTEGER &lt;FK&gt;&#xa;classSubjectId: INTEGER &lt;FK&gt;&#xa;assessmentTypeId: INTEGER &lt;FK&gt;&#xa;score: REAL&#xa;assessmentDate: TEXT&#xa;note: TEXT&#xa;createdAt: TEXT" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="student_scores">
+          <mxGeometry y="26" width="220" height="174" as="geometry" />
+        </mxCell>
+
+        <!-- student_Attendance class -->
+        <mxCell id="student_Attendance" value="student_Attendance" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#FFFFFF;strokeColor=#334155;" vertex="1" parent="records-package">
+          <mxGeometry x="500" y="50" width="200" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="student_Attendance-attrs" value="+ id: INTEGER &lt;PK&gt;&#xa;─────────────────&#xa;studentId: INTEGER &lt;FK&gt;&#xa;rombelId: INTEGER &lt;FK&gt;&#xa;date: TEXT&#xa;status: TEXT&#xa;checkInTime: TEXT&#xa;checkOutTime: TEXT&#xa;note: TEXT" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="student_Attendance">
+          <mxGeometry y="26" width="200" height="194" as="geometry" />
+        </mxCell>
+
+        <!-- student_history class -->
+        <mxCell id="student_history" value="student_history" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#FFFFFF;strokeColor=#334155;" vertex="1" parent="records-package">
+          <mxGeometry x="20" y="320" width="220" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="student_history-attrs" value="+ id: INTEGER &lt;PK&gt;&#xa;─────────────────&#xa;studentId: INTEGER &lt;FK&gt;&#xa;rombelId: INTEGER &lt;FK&gt;&#xa;scores: TEXT&#xa;statusType: TEXT&#xa;reason: TEXT&#xa;mutasiType: TEXT&#xa;destinationSchool: TEXT&#xa;graduationYear: TEXT&#xa;certificateNumber: TEXT&#xa;finalGrade: TEXT&#xa;completionDate: TEXT&#xa;createdAt: TEXT" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="student_history">
+          <mxGeometry y="26" width="220" height="274" as="geometry" />
+        </mxCell>
+
+        <!-- School Information Package -->
+        <mxCell id="school-package" value="School Information" style="shape=folder;fontStyle=1;tabWidth=110;tabHeight=30;tabPosition=left;html=1;boundedLbl=1;labelInHeader=1;container=1;collapsible=0;fillColor=#FFEBEE;strokeColor=#F44336;" vertex="1" parent="1">
+          <mxGeometry x="1850" y="900" width="500" height="350" as="geometry" />
+        </mxCell>
+
+        <!-- school_data class -->
+        <mxCell id="school_data" value="school_data" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#FFFFFF;strokeColor=#334155;" vertex="1" parent="school-package">
+          <mxGeometry x="20" y="50" width="180" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="school_data-attrs" value="+ id: INTEGER &lt;PK&gt;&#xa;─────────────────&#xa;name: TEXT&#xa;npsn: INTEGER&#xa;nsm: INTEGER&#xa;akreditasi: TEXT&#xa;alamat: TEXT&#xa;kota: TEXT&#xa;negara: TEXT&#xa;logoUrl: TEXT" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="school_data">
+          <mxGeometry y="26" width="180" height="194" as="geometry" />
+        </mxCell>
+
+        <!-- school_facilities class -->
+        <mxCell id="school_facilities" value="school_facilities" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#FFFFFF;strokeColor=#334155;" vertex="1" parent="school-package">
+          <mxGeometry x="280" y="50" width="180" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="school_facilities-attrs" value="+ id: INTEGER &lt;PK&gt;&#xa;─────────────────&#xa;facilityType: TEXT&#xa;subFolder: TEXT&#xa;imagePath: TEXT&#xa;caption: TEXT&#xa;displayOrder: INTEGER&#xa;createdAt: INTEGER" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="school_facilities">
+          <mxGeometry y="26" width="180" height="154" as="geometry" />
+        </mxCell>
+
+        <!-- Audit Package -->
+        <mxCell id="audit-package" value="Audit" style="shape=folder;fontStyle=1;tabWidth=110;tabHeight=30;tabPosition=left;html=1;boundedLbl=1;labelInHeader=1;container=1;collapsible=0;fillColor=#ECEFF1;strokeColor=#607D8B;" vertex="1" parent="1">
+          <mxGeometry x="2400" y="900" width="400" height="250" as="geometry" />
+        </mxCell>
+
+        <!-- audit_logs class -->
+        <mxCell id="audit_logs" value="audit_logs" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#FFFFFF;strokeColor=#334155;" vertex="1" parent="audit-package">
+          <mxGeometry x="20" y="50" width="180" height="240" as="geometry" />
+        </mxCell>
+        <mxCell id="audit_logs-attrs" value="+ id: INTEGER &lt;PK&gt;&#xa;─────────────────&#xa;audit_type: TEXT&#xa;user_id: TEXT&#xa;action: TEXT&#xa;target: TEXT&#xa;status: TEXT&#xa;metadata: TEXT&#xa;ip_address: TEXT&#xa;user_agent: TEXT&#xa;timestamp: INTEGER" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="audit_logs">
+          <mxGeometry y="26" width="180" height="214" as="geometry" />
+        </mxCell>
+
+        <!-- RELATIONSHIPS -->
+
+        <!-- users -> teachers -->
+        <mxCell id="rel-users-teachers" value="" style="endArrow=none;html=1;edgeStyle=orthogonalEdgeStyle;startArrow=none;startFill=0;endFill=0;strokeWidth=1.5;strokeColor=#475569;" edge="1" parent="1" source="users" target="teachers">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel-users-teachers-label" value="1" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=bottom;" connectable="0" vertex="1" parent="rel-users-teachers">
+          <mxGeometry x="-1" relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel-users-teachers-label2" value="0..1" style="edgeLabel;resizable=0;html=1;align=right;verticalAlign=bottom;" connectable="0" vertex="1" parent="rel-users-teachers">
+          <mxGeometry x="1" relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- classes -> rombel -->
+        <mxCell id="rel-classes-rombel" value="" style="endArrow=none;html=1;edgeStyle=orthogonalEdgeStyle;startArrow=none;startFill=0;endFill=0;strokeWidth=1.5;strokeColor=#475569;" edge="1" parent="1" source="classes" target="rombel">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel-classes-rombel-label" value="1" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=bottom;" connectable="0" vertex="1" parent="rel-classes-rombel">
+          <mxGeometry x="-1" relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel-classes-rombel-label2" value="*" style="edgeLabel;resizable=0;html=1;align=right;verticalAlign=bottom;" connectable="0" vertex="1" parent="rel-classes-rombel">
+          <mxGeometry x="1" relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- academic_year -> rombel -->
+        <mxCell id="rel-academic-rombel" value="" style="endArrow=none;html=1;edgeStyle=orthogonalEdgeStyle;startArrow=none;startFill=0;endFill=0;strokeWidth=1.5;strokeColor=#475569;" edge="1" parent="1" source="academic_year" target="rombel">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel-academic-rombel-label" value="1" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=bottom;" connectable="0" vertex="1" parent="rel-academic-rombel">
+          <mxGeometry x="-1" relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel-academic-rombel-label2" value="*" style="edgeLabel;resizable=0;html=1;align=right;verticalAlign=bottom;" connectable="0" vertex="1" parent="rel-academic-rombel">
+          <mxGeometry x="1" relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- teachers -> rombel -->
+        <mxCell id="rel-teachers-rombel" value="" style="endArrow=none;html=1;edgeStyle=orthogonalEdgeStyle;startArrow=none;startFill=0;endFill=0;strokeWidth=1.5;strokeColor=#475569;" edge="1" parent="1" source="teachers" target="rombel">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel-teachers-rombel-label" value="1" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=bottom;" connectable="0" vertex="1" parent="rel-teachers-rombel">
+          <mxGeometry x="-1" relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel-teachers-rombel-label2" value="*" style="edgeLabel;resizable=0;html=1;align=right;verticalAlign=bottom;" connectable="0" vertex="1" parent="rel-teachers-rombel">
+          <mxGeometry x="1" relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- classes -> class_subject -->
+        <mxCell id="rel-classes-classsubject" value="" style="endArrow=none;html=1;edgeStyle=orthogonalEdgeStyle;startArrow=none;startFill=0;endFill=0;strokeWidth=1.5;strokeColor=#475569;" edge="1" parent="1" source="classes" target="class_subject">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel-classes-classsubject-label" value="1" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=bottom;" connectable="0" vertex="1" parent="rel-classes-classsubject">
+          <mxGeometry x="-1" relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel-classes-classsubject-label2" value="*" style="edgeLabel;resizable=0;html=1;align=right;verticalAlign=bottom;" connectable="0" vertex="1" parent="rel-classes-classsubject">
+          <mxGeometry x="1" relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- subjects -> class_subject -->
+        <mxCell id="rel-subjects-classsubject" value="" style="endArrow=none;html=1;edgeStyle=orthogonalEdgeStyle;startArrow=none;startFill=0;endFill=0;strokeWidth=1.5;strokeColor=#475569;" edge="1" parent="1" source="subjects" target="class_subject">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel-subjects-classsubject-label" value="1" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=bottom;" connectable="0" vertex="1" parent="rel-subjects-classsubject">
+          <mxGeometry x="-1" relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel-subjects-classsubject-label2" value="*" style="edgeLabel;resizable=0;html=1;align=right;verticalAlign=bottom;" connectable="0" vertex="1" parent="rel-subjects-classsubject">
+          <mxGeometry x="1" relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- teachers -> class_subject -->
+        <mxCell id="rel-teachers-classsubject" value="" style="endArrow=none;html=1;edgeStyle=orthogonalEdgeStyle;startArrow=none;startFill=0;endFill=0;strokeWidth=1.5;strokeColor=#475569;" edge="1" parent="1" source="teachers" target="class_subject">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel-teachers-classsubject-label" value="1" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=bottom;" connectable="0" vertex="1" parent="rel-teachers-classsubject">
+          <mxGeometry x="-1" relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel-teachers-classsubject-label2" value="*" style="edgeLabel;resizable=0;html=1;align=right;verticalAlign=bottom;" connectable="0" vertex="1" parent="rel-teachers-classsubject">
+          <mxGeometry x="1" relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- rombel -> rombel_students -->
+        <mxCell id="rel-rombel-rombelstudents" value="" style="endArrow=none;html=1;edgeStyle=orthogonalEdgeStyle;startArrow=none;startFill=0;endFill=0;strokeWidth=1.5;strokeColor=#475569;" edge="1" parent="1" source="rombel" target="rombel_students">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel-rombel-rombelstudents-label" value="1" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=bottom;" connectable="0" vertex="1" parent="rel-rombel-rombelstudents">
+          <mxGeometry x="-1" relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel-rombel-rombelstudents-label2" value="*" style="edgeLabel;resizable=0;html=1;align=right;verticalAlign=bottom;" connectable="0" vertex="1" parent="rel-rombel-rombelstudents">
+          <mxGeometry x="1" relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- student -> rombel_students -->
+        <mxCell id="rel-student-rombelstudents" value="" style="endArrow=none;html=1;edgeStyle=orthogonalEdgeStyle;startArrow=none;startFill=0;endFill=0;strokeWidth=1.5;strokeColor=#475569;" edge="1" parent="1" source="student" target="rombel_students">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel-student-rombelstudents-label" value="1" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=bottom;" connectable="0" vertex="1" parent="rel-student-rombelstudents">
+          <mxGeometry x="-1" relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel-student-rombelstudents-label2" value="*" style="edgeLabel;resizable=0;html=1;align=right;verticalAlign=bottom;" connectable="0" vertex="1" parent="rel-student-rombelstudents">
+          <mxGeometry x="1" relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- student -> studentAddress -->
+        <mxCell id="rel-student-address" value="" style="endArrow=none;html=1;edgeStyle=orthogonalEdgeStyle;startArrow=none;startFill=0;endFill=0;strokeWidth=1.5;strokeColor=#475569;" edge="1" parent="1" source="student" target="studentAddress">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel-student-address-label" value="1" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=bottom;" connectable="0" vertex="1" parent="rel-student-address">
+          <mxGeometry x="-1" relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel-student-address-label2" value="0..1" style="edgeLabel;resizable=0;html=1;align=right;verticalAlign=bottom;" connectable="0" vertex="1" parent="rel-student-address">
+          <mxGeometry x="1" relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- student -> student_father -->
+        <mxCell id="rel-student-father" value="" style="endArrow=none;html=1;edgeStyle=orthogonalEdgeStyle;startArrow=none;startFill=0;endFill=0;strokeWidth=1.5;strokeColor=#475569;" edge="1" parent="1" source="student" target="student_father">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel-student-father-label" value="1" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=bottom;" connectable="0" vertex="1" parent="rel-student-father">
+          <mxGeometry x="-1" relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel-student-father-label2" value="0..1" style="edgeLabel;resizable=0;html=1;align=right;verticalAlign=bottom;" connectable="0" vertex="1" parent="rel-student-father">
+          <mxGeometry x="1" relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- student -> student_mother -->
+        <mxCell id="rel-student-mother" value="" style="endArrow=none;html=1;edgeStyle=orthogonalEdgeStyle;startArrow=none;startFill=0;endFill=0;strokeWidth=1.5;strokeColor=#475569;" edge="1" parent="1" source="student" target="student_mother">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel-student-mother-label" value="1" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=bottom;" connectable="0" vertex="1" parent="rel-student-mother">
+          <mxGeometry x="-1" relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel-student-mother-label2" value="0..1" style="edgeLabel;resizable=0;html=1;align=right;verticalAlign=bottom;" connectable="0" vertex="1" parent="rel-student-mother">
+          <mxGeometry x="1" relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- student -> student_wali -->
+        <mxCell id="rel-student-wali" value="" style="endArrow=none;html=1;edgeStyle=orthogonalEdgeStyle;startArrow=none;startFill=0;endFill=0;strokeWidth=1.5;strokeColor=#475569;" edge="1" parent="1" source="student" target="student_wali">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel-student-wali-label" value="1" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=bottom;" connectable="0" vertex="1" parent="rel-student-wali">
+          <mxGeometry x="-1" relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel-student-wali-label2" value="0..1" style="edgeLabel;resizable=0;html=1;align=right;verticalAlign=bottom;" connectable="0" vertex="1" parent="rel-student-wali">
+          <mxGeometry x="1" relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- student -> student_scores -->
+        <mxCell id="rel-student-scores" value="" style="endArrow=none;html=1;edgeStyle=orthogonalEdgeStyle;startArrow=none;startFill=0;endFill=0;strokeWidth=1.5;strokeColor=#475569;" edge="1" parent="1" source="student" target="student_scores">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel-student-scores-label" value="1" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=bottom;" connectable="0" vertex="1" parent="rel-student-scores">
+          <mxGeometry x="-1" relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel-student-scores-label2" value="*" style="edgeLabel;resizable=0;html=1;align=right;verticalAlign=bottom;" connectable="0" vertex="1" parent="rel-student-scores">
+          <mxGeometry x="1" relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- class_subject -> student_scores -->
+        <mxCell id="rel-classsubject-scores" value="" style="endArrow=none;html=1;edgeStyle=orthogonalEdgeStyle;startArrow=none;startFill=0;endFill=0;strokeWidth=1.5;strokeColor=#475569;" edge="1" parent="1" source="class_subject" target="student_scores">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel-classsubject-scores-label" value="1" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=bottom;" connectable="0" vertex="1" parent="rel-classsubject-scores">
+          <mxGeometry x="-1" relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel-classsubject-scores-label2" value="*" style="edgeLabel;resizable=0;html=1;align=right;verticalAlign=bottom;" connectable="0" vertex="1" parent="rel-classsubject-scores">
+          <mxGeometry x="1" relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- assessment_type -> student_scores -->
+        <mxCell id="rel-assessment-scores" value="" style="endArrow=none;html=1;edgeStyle=orthogonalEdgeStyle;startArrow=none;startFill=0;endFill=0;strokeWidth=1.5;strokeColor=#475569;" edge="1" parent="1" source="assessment_type" target="student_scores">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel-assessment-scores-label" value="1" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=bottom;" connectable="0" vertex="1" parent="rel-assessment-scores">
+          <mxGeometry x="-1" relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel-assessment-scores-label2" value="*" style="edgeLabel;resizable=0;html=1;align=right;verticalAlign=bottom;" connectable="0" vertex="1" parent="rel-assessment-scores">
+          <mxGeometry x="1" relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- student -> student_Attendance -->
+        <mxCell id="rel-student-attendance" value="" style="endArrow=none;html=1;edgeStyle=orthogonalEdgeStyle;startArrow=none;startFill=0;endFill=0;strokeWidth=1.5;strokeColor=#475569;" edge="1" parent="1" source="student" target="student_Attendance">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel-student-attendance-label" value="1" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=bottom;" connectable="0" vertex="1" parent="rel-student-attendance">
+          <mxGeometry x="-1" relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel-student-attendance-label2" value="*" style="edgeLabel;resizable=0;html=1;align=right;verticalAlign=bottom;" connectable="0" vertex="1" parent="rel-student-attendance">
+          <mxGeometry x="1" relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- rombel -> student_Attendance -->
+        <mxCell id="rel-rombel-attendance" value="" style="endArrow=none;html=1;edgeStyle=orthogonalEdgeStyle;startArrow=none;startFill=0;endFill=0;strokeWidth=1.5;strokeColor=#475569;" edge="1" parent="1" source="rombel" target="student_Attendance">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel-rombel-attendance-label" value="1" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=bottom;" connectable="0" vertex="1" parent="rel-rombel-attendance">
+          <mxGeometry x="-1" relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel-rombel-attendance-label2" value="*" style="edgeLabel;resizable=0;html=1;align=right;verticalAlign=bottom;" connectable="0" vertex="1" parent="rel-rombel-attendance">
+          <mxGeometry x="1" relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- student -> student_history -->
+        <mxCell id="rel-student-history" value="" style="endArrow=none;html=1;edgeStyle=orthogonalEdgeStyle;startArrow=none;startFill=0;endFill=0;strokeWidth=1.5;strokeColor=#475569;" edge="1" parent="1" source="student" target="student_history">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel-student-history-label" value="1" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=bottom;" connectable="0" vertex="1" parent="rel-student-history">
+          <mxGeometry x="-1" relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel-student-history-label2" value="*" style="edgeLabel;resizable=0;html=1;align=right;verticalAlign=bottom;" connectable="0" vertex="1" parent="rel-student-history">
+          <mxGeometry x="1" relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- rombel -> student_history -->
+        <mxCell id="rel-rombel-history" value="" style="endArrow=none;html=1;edgeStyle=orthogonalEdgeStyle;startArrow=none;startFill=0;endFill=0;strokeWidth=1.5;strokeColor=#475569;" edge="1" parent="1" source="rombel" target="student_history">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel-rombel-history-label" value="1" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=bottom;" connectable="0" vertex="1" parent="rel-rombel-history">
+          <mxGeometry x="-1" relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel-rombel-history-label2" value="*" style="edgeLabel;resizable=0;html=1;align=right;verticalAlign=bottom;" connectable="0" vertex="1" parent="rel-rombel-history">
+          <mxGeometry x="1" relative="1" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
