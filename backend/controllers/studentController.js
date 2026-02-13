@@ -87,11 +87,16 @@ export const getStudentById = async (req, res) => {
 			return res.status(404).json({ message: `No student found with id ${studentId}` });
 		}
 
-		// Handle BigInt serialization
+		// Handle BigInt serialization + coerce document numbers to strings
+		const DOC_FIELDS = ['nisn', 'localNis', 'nik', 'bpjs', 'idCardNumber', 'birthCertificateNumber'];
 		const serializedStudent = JSON.parse(
-			JSON.stringify(student, (key, value) =>
-				typeof value === 'bigint' ? value.toString() : value
-			)
+			JSON.stringify(student, (key, value) => {
+				if (typeof value === 'bigint') return value.toString();
+				if (DOC_FIELDS.includes(key) && typeof value === 'number') {
+					return Number.isInteger(value) ? value.toFixed(0) : String(value);
+				}
+				return value;
+			})
 		);
 
 		res.status(200).json(serializedStudent);
@@ -105,11 +110,16 @@ export const createStudent = async (req, res) => {
 	try {
 		const newStudent = await studentService.createStudentData(req.body);
 
-		// Handle BigInt serialization (better-sqlite3 may return BigInt for IDs)
+		// Handle BigInt serialization + coerce document numbers to strings
+		const DOC_FIELDS = ['nisn', 'localNis', 'nik', 'bpjs', 'idCardNumber', 'birthCertificateNumber'];
 		const serializedStudent = JSON.parse(
-			JSON.stringify(newStudent, (key, value) =>
-				typeof value === 'bigint' ? value.toString() : value
-			)
+			JSON.stringify(newStudent, (key, value) => {
+				if (typeof value === 'bigint') return value.toString();
+				if (DOC_FIELDS.includes(key) && typeof value === 'number') {
+					return Number.isInteger(value) ? value.toFixed(0) : String(value);
+				}
+				return value;
+			})
 		);
 
 		res.status(201).json(serializedStudent);

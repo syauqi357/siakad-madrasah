@@ -233,6 +233,7 @@
 	<div class="mx-auto max-w-7xl px-4 py-8 md:px-8">
 		<!-- Back button -->
 		<button
+			aria-labelledby="kembali"
 			on:click={() => goto('/siswa')}
 			class="group mb-6 flex w-fit items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition-all hover:border-emerald-300 hover:bg-emerald-50"
 		>
@@ -385,10 +386,10 @@
 													? 'border-emerald-500 bg-emerald-50'
 													: 'border-transparent bg-slate-50 hover:border-slate-200 hover:bg-slate-100'}"
 											>
-												<div>
+												<span>
 													<span class="font-semibold text-slate-800">{rom.name}</span>
 													<span class="text-xs text-slate-500">{rom.code}</span>
-												</div>
+												</span>
 												<span
 													class="flex h-8 w-8 items-center justify-center rounded-lg {selectedRombel?.id ===
 													rom.id
@@ -488,7 +489,7 @@
 									<label
 										class="flex cursor-pointer items-center gap-4 px-5 py-3.5 transition-colors hover:bg-slate-50"
 									>
-										<div class="relative flex items-center">
+										<span class="relative flex items-center">
 											<input
 												type="checkbox"
 												checked={selectedStudentIds.includes(student.id)}
@@ -508,13 +509,15 @@
 													d="M5 13l4 4L19 7"
 												/>
 											</svg>
-										</div>
-										<div class="flex-1">
-											<p class="font-semibold text-slate-800 capitalize">{student.name}</p>
-											<p class="font-mono text-xs text-slate-500">{student.nisn}</p>
-										</div>
+										</span>
+										<span class="flex-1">
+											<span class="font-semibold text-slate-800 capitalize">{student.name}</span>
+											<span class="font-mono text-xs text-slate-500">{student.nisn}</span>
+										</span>
 										<span
-											class="rounded-md px-2.5 py-1 text-xs font-semibold {student.gender?.toLowerCase().startsWith('l')
+											class="rounded-md px-2.5 py-1 text-xs font-semibold {student.gender
+												?.toLowerCase()
+												.startsWith('l')
 												? 'bg-sky-100 text-sky-700'
 												: 'bg-pink-100 text-pink-700'}"
 										>
@@ -594,7 +597,8 @@
 										<p class="font-mono text-xs text-slate-500">{student.nisn}</p>
 									</div>
 								</div>
-								<button aria-label=""
+								<button
+									aria-label="siswa lulus"
 									on:click={() => toggleStudent(student.id)}
 									class="flex h-8 w-8 items-center justify-center rounded-lg text-slate-400 transition-colors hover:bg-red-50 hover:text-red-500"
 								>

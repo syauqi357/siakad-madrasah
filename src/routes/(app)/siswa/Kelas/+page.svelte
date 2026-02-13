@@ -132,7 +132,12 @@
 		}
 	}
 
-	function showAlertModal(type: typeof alertType, message: string, showCancel = false, confirmText = 'OK') {
+	function showAlertModal(
+		type: typeof alertType,
+		message: string,
+		showCancel = false,
+		confirmText = 'OK'
+	) {
 		alertType = type;
 		alertMessage = message;
 		alertShowCancel = showCancel;
@@ -142,7 +147,12 @@
 
 	function handleDeleteClick(classData: ClassData) {
 		pendingDeleteClass = classData;
-		showAlertModal('warning', `Apakah Anda yakin ingin menghapus kelas "${classData.className}"?`, true, 'Hapus');
+		showAlertModal(
+			'warning',
+			`Apakah Anda yakin ingin menghapus kelas "${classData.className}"?`,
+			true,
+			'Hapus'
+		);
 	}
 
 	async function confirmDelete() {
@@ -189,7 +199,12 @@
 		<!-- Header Section -->
 		<div class="flex flex-col gap-2">
 			<h1 class="text-2xl font-bold text-blue-600 sm:text-3xl md:text-4xl">Manajemen Kelas</h1>
-			<p class="text-gray-600">Kelola data kelas di sini. <a href="">butuh keterangan?</a></p>
+			<p class="text-gray-600">
+				Kelola data kelas di sini. <a
+					href="../support"
+					class="text-blue-500 hover:text-blue-600 hover:underline">butuh keterangan?</a
+				>
+			</p>
 			<button
 				on:click={handleAddClick}
 				class="hover:-lg flex w-fit items-center justify-center gap-2 rounded-md bg-blue-600 px-5 py-3 text-blue-50 capitalize transition-all duration-75 hover:bg-blue-700"
@@ -339,7 +354,7 @@
 <!-- Modal Popup -->
 {#if showModal}
 	<div
-		class="fixed inset-0 z-2 flex items-center shadow-md justify-center bg-black/20 p-4 backdrop-blur-xs"
+		class="fixed inset-0 z-2 flex items-center justify-center bg-black/20 p-4 shadow-md backdrop-blur-xs"
 		transition:fade={{ duration: 75 }}
 		on:click={handleBackdropClick}
 		on:keydown={handleKeydown}

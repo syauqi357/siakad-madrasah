@@ -68,8 +68,32 @@ const EXCEL_HEADER_MAP = {
 	'Ibu - Status': 'mother_isAlive'
 };
 
+// Force a value to string (handles numbers, scientific notation, etc.)
+const toStr = (val) => {
+	if (val == null || val === '') return null;
+	if (typeof val === 'number') {
+		return Number.isInteger(val) ? val.toFixed(0) : String(val);
+	}
+	return String(val).trim();
+};
+
 // Values that need conversion from human-readable to DB values during upload
 const VALUE_CONVERTERS = {
+	// Document number fields — always coerce to string to avoid scientific notation
+	nisn: toStr,
+	localNis: toStr,
+	idCardNumber: toStr,
+	birthCertificateNumber: toStr,
+	bpjs: toStr,
+	phoneNumber: toStr,
+	father_nik: toStr,
+	father_phone: toStr,
+	mother_nik: toStr,
+	mother_phone: toStr,
+	address_postalCode: toStr,
+	address_rt: toStr,
+	address_rw: toStr,
+	address_houseNumber: toStr,
 	gender: (val) => {
 		const v = String(val).trim().toLowerCase();
 		if (v === 'laki-laki' || v === 'l') return 'Laki-laki';
@@ -99,10 +123,22 @@ const SECTION_COLORS = {
 };
 
 const SECTION_RANGES = {
-	student: { start: 'Nama Siswa', end: 'No. BPJS' },
-	address: { start: 'Alamat - Jalan', end: 'Alamat - Kode Pos' },
-	father: { start: 'Ayah - Nama', end: 'Ayah - Status' },
-	mother: { start: 'Ibu - Nama', end: 'Ibu - Status' }
+	student: {
+		start: 'Nama Siswa',
+		end: 'No. BPJS'
+	},
+	address: {
+		start: 'Alamat - Jalan',
+		end: 'Alamat - Kode Pos'
+	},
+	father: {
+		start: 'Ayah - Nama',
+		end: 'Ayah - Status'
+	},
+	mother: {
+		start: 'Ibu - Nama',
+		end: 'Ibu - Status'
+	}
 };
 
 // Reverse Map for Generator (Internal Key -> Human Header)
@@ -127,7 +163,13 @@ export const createStudentdataInputExcelBulkGenerator = async () => {
 		if (header.includes('Tanggal Lahir')) {
 			colConfig.style = { numFmt: 'dd/mm/yyyy' };
 		}
-		if (header.includes('NIK') || header.includes('NISN') || header.includes('HP') || header.includes('No. BPJS') || header.includes('Akta')) {
+		if (
+			header.includes('NIK') ||
+			header.includes('NISN') ||
+			header.includes('HP') ||
+			header.includes('No. BPJS') ||
+			header.includes('Akta')
+		) {
 			colConfig.style = { numFmt: '@' };
 		}
 
@@ -250,17 +292,30 @@ export const createStudentdataInputExcelBulkGenerator = async () => {
 		});
 	}
 
-	// Alternate row shading for data area (light grey on even rows)
-	for (let i = 2; i <= 20; i++) {
-		const row = worksheet.getRow(i);
-		if (i % 2 === 0) {
-			row.fill = {
-				type: 'pattern',
-				pattern: 'solid',
-				fgColor: { argb: 'FFF5F5F5' }
-			};
+	// Pre-format document number columns as text on data rows to prevent Excel auto-number
+	const TEXT_COLUMNS = [
+		'NISN',
+		'NIS Lokal',
+		'NIK / No. KTP',
+		'No. Akta Kelahiran',
+		'No. BPJS',
+		'No. HP Siswa',
+		'Ayah - NIK',
+		'Ayah - No. HP',
+		'Ibu - NIK',
+		'Ibu - No. HP',
+		'Alamat - Kode Pos',
+		'Alamat - RT',
+		'Alamat - RW',
+		'Alamat - No. Rumah'
+	];
+	for (const colName of TEXT_COLUMNS) {
+		const colLetter = findColLetter(colName);
+		if (colLetter) {
+			for (let r = 2; r <= MAX_ROW; r++) {
+				worksheet.getCell(`${colLetter}${r}`).numFmt = '@';
+			}
 		}
-		row.alignment = { vertical: 'middle' };
 	}
 
 	// Freeze the header row
@@ -696,13 +751,126 @@ export const createBulkStudentsFromExcel = async (fileBuffer) => {
 };
 
 export const updateStudentData = async (id, data) => {
-	const updated = await db
-		.update(studentTable)
-		.set(data)
-		.where(eq(studentTable.id, id))
-		.returning();
+	// Separate nested objects from main student fields
+	const { address, father, mother, guardian, ...studentFields } = data;
 
-	return updated[0];
+	return db.transaction((tx) => {
+		// 1. Update main student table
+		const updated = tx
+			.update(studentTable)
+			.set(studentFields)
+			.where(eq(studentTable.id, id))
+			.returning()
+			.get();
+
+		if (!updated) return null;
+
+		// 2. Update or insert address
+		if (address) {
+			const existingAddr = tx
+				.select()
+				.from(studentAddress)
+				.where(eq(studentAddress.studentId, id))
+				.get();
+
+			if (existingAddr) {
+				tx.update(studentAddress).set(address).where(eq(studentAddress.studentId, id)).run();
+			} else {
+				tx.insert(studentAddress)
+					.values({ studentId: id, ...address })
+					.run();
+			}
+		}
+
+		// 3. Update or insert father
+		if (father && father.name) {
+			const fatherValues = {
+				name: father.name,
+				nik: father.nik,
+				occupation: father.job || father.occupation,
+				phoneNumber: father.phone || father.phoneNumber,
+				birthPlace: father.birthPlace,
+				birthDate: father.birthDate,
+				birthYear: father.birthYear,
+				education: father.education,
+				monthlyIncome: father.monthlyIncome,
+				isAlive: father.isAlive != null ? Number(father.isAlive) : 1
+			};
+
+			const existingFather = tx
+				.select()
+				.from(studentFather)
+				.where(eq(studentFather.studentId, id))
+				.get();
+
+			if (existingFather) {
+				tx.update(studentFather).set(fatherValues).where(eq(studentFather.studentId, id)).run();
+			} else {
+				tx.insert(studentFather)
+					.values({ studentId: id, ...fatherValues })
+					.run();
+			}
+		}
+
+		// 4. Update or insert mother
+		if (mother && mother.name) {
+			const motherValues = {
+				name: mother.name,
+				nik: mother.nik,
+				occupation: mother.job || mother.occupation,
+				phoneNumber: mother.phone || mother.phoneNumber,
+				birthPlace: mother.birthPlace,
+				birthDate: mother.birthDate,
+				birthYear: mother.birthYear,
+				education: mother.education,
+				monthlyIncome: mother.monthlyIncome,
+				isAlive: mother.isAlive != null ? Number(mother.isAlive) : 1
+			};
+
+			const existingMother = tx
+				.select()
+				.from(studentMother)
+				.where(eq(studentMother.studentId, id))
+				.get();
+
+			if (existingMother) {
+				tx.update(studentMother).set(motherValues).where(eq(studentMother.studentId, id)).run();
+			} else {
+				tx.insert(studentMother)
+					.values({ studentId: id, ...motherValues })
+					.run();
+			}
+		}
+
+		// 5. Update or insert guardian
+		const wali = guardian;
+		if (wali && wali.name) {
+			const waliValues = {
+				name: wali.name,
+				nik: wali.nik,
+				occupation: wali.job || wali.occupation,
+				phoneNumber: wali.phone || wali.phoneNumber,
+				birthPlace: wali.birthPlace,
+				birthDate: wali.birthDate,
+				birthYear: wali.birthYear,
+				education: wali.education,
+				monthlyIncome: wali.monthlyIncome,
+				isAlive: wali.isAlive != null ? Number(wali.isAlive) : 1
+			};
+
+			const existingWali = tx.select().from(studentWali).where(eq(studentWali.studentId, id)).get();
+
+			if (existingWali) {
+				tx.update(studentWali).set(waliValues).where(eq(studentWali.studentId, id)).run();
+			} else {
+				tx.insert(studentWali)
+					.values({ studentId: id, ...waliValues })
+					.run();
+			}
+		}
+
+		return updated;
+	});
 };
 
 export const deleteStudentData = async (id) => {

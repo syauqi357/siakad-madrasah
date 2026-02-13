@@ -121,7 +121,7 @@
 {#if show}
 	<!-- Backdrop -->
 	<div
-		class="fixed inset-0 z-2 flex items-center justify-center bg-black/20 p-4 backdrop-blur-sm"
+		class="fixed inset-0 z-20 flex items-center justify-center bg-black/20 p-4 backdrop-blur-sm"
 		transition:fade={{ duration: 150 }}
 		on:click={handleClose}
 		on:keydown={(e) => e.key === 'Escape' && handleClose()}
@@ -140,10 +140,10 @@
 			aria-labelledby="modal-title"
 		>
 			<!-- Header -->
-			<div class="flex items-center justify-between border-b border-gray-500 px-6 py-4">
+			<div class="flex items-center justify-between border-b border-gray-400 px-6 py-4">
 				<div>
-					<h2 id="modal-title" class="text-lg font-bold text-green-700">Luluskan Siswa</h2>
-					<p class="text-md opacity-70">{studentName} - {studentNisn}</p>
+					<h2 id="modal-title" class="text-2xl font-bold text-emerald-700">Luluskan Siswa</h2>
+					<p class="text-md text-slate-600">{studentName} - {studentNisn}</p>
 				</div>
 				<!-- close button -->
 				<button
@@ -165,7 +165,7 @@
 					<select
 						id="graduationYear"
 						bind:value={graduationYear}
-						class="w-full rounded-md border border-gray-400 px-3 py-2 transition-all ease-in-out focus:border-green-500 focus:outline-none"
+						class="w-full rounded-md border-2 border-slate-400 px-3 py-2 transition-all ease-in-out focus:border-emerald-500 focus:outline-none"
 						required
 						disabled={loadingYears}
 					>
@@ -190,7 +190,7 @@
 						type="date"
 						id="completionDate"
 						bind:value={completionDate}
-						class="w-full rounded-md border border-gray-400 px-3 py-2 transition-all ease-in-out focus:border-green-500 focus:outline-none"
+						class="w-full rounded-md border-2 border-slate-400 px-3 py-2 transition-all ease-in-out focus:border-emerald-500 focus:outline-none"
 						required
 					/>
 				</div>
@@ -205,7 +205,7 @@
 						id="certificateNumber"
 						bind:value={certificateNumber}
 						placeholder="Contoh: DN-01 Ma 0123456"
-						class="w-full rounded-md border border-gray-400 px-3 py-2 transition-all ease-in-out focus:border-green-500 focus:outline-none"
+						class="w-full rounded-md border-2 border-slate-400 px-3 py-2 transition-all ease-in-out focus:border-emerald-500 focus:outline-none"
 					/>
 				</div>
 
@@ -217,7 +217,7 @@
 					<select
 						id="finalGrade"
 						bind:value={finalGrade}
-						class="w-full rounded-md border border-gray-400 px-3 py-2 transition-all ease-in-out focus:border-green-500 focus:outline-none"
+						class="w-full rounded-md border-2 border-slate-400 px-3 py-2 transition-all ease-in-out focus:border-emerald-500 focus:outline-none"
 					>
 						<option value="">Pilih predikat</option>
 						{#each gradeOptions as grade}
@@ -227,8 +227,8 @@
 				</div>
 
 				<!-- Info box -->
-				<div class="rounded-md border border-green-300 bg-green-50 p-3 text-sm text-green-800">
-					<p class="font-medium">Perhatian:</p>
+				<div class="rounded-md border border-emerald-300 bg-emerald-50 p-3 text-sm text-emerald-800">
+					<h2 class="font-semibold">Perhatian:</h2>
 					<p>
 						Setelah diluluskan, siswa akan dipindahkan dari kelas aktif dan tidak dapat dikembalikan
 						ke status aktif.
@@ -247,7 +247,7 @@
 					</button>
 					<button
 						type="submit"
-						class="rounded-md bg-green-500 px-4 py-2 text-sm font-medium text-white transition-all ease-in-out hover:bg-green-600 disabled:opacity-50"
+						class="rounded-md bg-emerald-500 px-4 py-2 text-sm font-medium text-white transition-all ease-in-out hover:bg-emerald-600 disabled:opacity-50"
 						disabled={isLoading}
 					>
 						{#if isLoading}
@@ -267,8 +267,4 @@
 	</div>
 {/if}
 
-<ModalAlert
-	bind:show={showAlert}
-	type="warning"
-	message={alertMessage}
-/>
+<ModalAlert bind:show={showAlert} type="warning" message={alertMessage} />

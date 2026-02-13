@@ -249,7 +249,10 @@
 				livingWith: formData.livingWith,
 				transportation: formData.transportation,
 				bpjs: formData.bpjs,
-				originRegion: formData.originRegion
+				originRegion: formData.originRegion,
+				address: formData.address,
+				father: formData.father,
+				mother: formData.mother
 			};
 
 			const response = await API_FETCH(`/routes/api/students/${studentId}`, {
@@ -365,7 +368,7 @@
 											class="h-28 w-24 rounded-lg border-2 border-blue-300 object-cover"
 										/>
 										<button
-											type="button"
+											type="button" aria-labelledby="select Photo Preview"
 											on:click={() => {
 												selectedPhoto = null;
 												photoPreview = null;

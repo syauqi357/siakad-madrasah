@@ -7,8 +7,8 @@ export const studentTable = sqliteTable(
 	{
 		id: int('id').primaryKey({ autoIncrement: true }),
 		studentName: text('student_name').notNull(),
-		nisn: int('nisn').notNull().unique(),
-		localNis: int('local_nis').unique(),
+		nisn: text('nisn').notNull().unique(),
+		localNis: text('local_nis').unique(),
 		gender: text('gender', { enum: ['laki-laki', 'Perempuan'] }),
 		religion: text('religion'),
 		birthPlace: text('birth_place'),
@@ -18,9 +18,9 @@ export const studentTable = sqliteTable(
 		childOrder: int('child_order'), // anak ke-berapa
 		siblingsCount: int('siblings_count'),
 		originRegion: text('origin_region'),
-		bpjs: text('bpjs'), // health insurance number
-		idCardNumber: text('id_card_number'), // KTP
-		birthCertificateNumber: text('birth_certificate_number'), // akta
+		bpjs: text('bpjs').unique(), // health insurance number
+		idCardNumber: text('id_card_number').unique(), // KTP / NIK
+		birthCertificateNumber: text('birth_certificate_number').unique(), // akta
 		nationality: text('nationality').default('Indonesia'),
 		livingWith: text('living_with'), // tinggal bersama
 		transportation: text('transportation'),

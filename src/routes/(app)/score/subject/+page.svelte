@@ -435,18 +435,18 @@
 
 		<!-- Tab Content -->
 		{#if activeTab === 'subjects'}
-			<!-- ==================== SUBJECTS TAB ==================== -->
+			<!-- SUBJECTS TAB -->
 			<div class="mt-6">
 				<button
 					on:click={handleAddClick}
-					class="flex w-fit items-center justify-center gap-2 rounded-md bg-blue-600 px-5 py-3 text-blue-50 capitalize transition-all duration-200 hover:bg-blue-700 hover:shadow-lg active:scale-95"
+					class="flex w-fit items-center justify-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-blue-50 capitalize transition-all duration-200 hover:bg-blue-700 hover:shadow-lg active:scale-95"
 				>
 					<AddIcon /> tambah mata pelajaran
 				</button>
 			</div>
 
 			<div class="mt-6">
-				<div class="w-full overflow-hidden rounded-xl border border-gray-300 bg-white shadow-sm">
+				<div class="w-full overflow-hidden rounded-xl border border-gray-300 bg-white">
 					<header class="border-b border-gray-200 bg-gray-50 px-6 py-4">
 						<h2 class="text-lg font-semibold text-gray-900">Daftar Mata Pelajaran</h2>
 					</header>
@@ -615,7 +615,7 @@
 				{#if selectedClassFilter}
 					<button
 						on:click={handleAddAssignClick}
-						class="flex items-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm text-white transition-all hover:bg-blue-700 active:scale-95"
+						class="flex items-center gap-2 rounded-md bg-blue-600 px-3 py-1.5 text-sm text-white transition-all hover:bg-blue-700 active:scale-95"
 					>
 						<AddIcon /> Tambah Mapel
 					</button>
@@ -623,7 +623,7 @@
 			</div>
 
 			<div class="mt-6">
-				<div class="w-full overflow-hidden rounded-xl border border-gray-300 bg-white shadow-sm">
+				<div class="w-full overflow-hidden rounded-xl border border-gray-300 bg-white">
 					<header class="border-b border-gray-200 bg-gray-50 px-6 py-4">
 						<h2 class="text-lg font-semibold text-gray-900">
 							Penugasan Mapel & Guru
@@ -797,10 +797,10 @@
 		aria-modal="true"
 	>
 		<div
-			class="w-full max-w-md rounded-lg bg-white shadow-lg"
+			class="w-full max-w-md rounded-lg bg-white border border-slate-400 shadow-sm"
 			transition:fly={{ y: 20, duration: 200 }}
 		>
-			<div class="flex items-center justify-between border-b px-6 py-4">
+			<div class="flex items-center justify-between border-b border-slate-400 px-6 py-4">
 				<h2 class="text-lg font-semibold text-gray-900">
 					{isEditing ? 'Edit Mata Pelajaran' : 'Tambah Mata Pelajaran'}
 				</h2>
@@ -835,7 +835,7 @@
 							id="subjectName"
 							bind:value={currentSubject.name}
 							class="w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
-							placeholder="Contoh: Matematika"
+							placeholder="masukkan mata pelajaran"
 							required
 						/>
 					</div>
@@ -849,7 +849,7 @@
 							id="subjectCode"
 							bind:value={currentSubject.subjectCode}
 							class="w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
-							placeholder="Contoh: MTK-101"
+							placeholder="masukkan kode mapel"
 						/>
 					</div>
 
@@ -862,7 +862,7 @@
 							min="0"
 							max="100"
 							class="w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
-							placeholder="75"
+							placeholder="masukkan KKM"
 						/>
 					</div>
 

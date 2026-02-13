@@ -7,29 +7,63 @@
 	import MutasiModal from '$lib/components/modal/MutasiModal.svelte';
 	import GraduateModal from '$lib/components/modal/GraduateModal.svelte';
 	import ArrowLeft from '$lib/components/icons/arrow_left.svelte';
+	import MutationIcon from '$lib/components/icons/mutationIcon.svelte';
+	import EditIcon from '$lib/components/icons/editIcon.svelte';
+	import DeleteIcon from '$lib/components/icons/deleteIcon.svelte';
+	import GraduateIcon from '$lib/components/icons/graduateIcon.svelte';
+
+	type Parent = {
+		nik: string;
+		name: string;
+		birthPlace: string;
+		birthDate: string;
+		birthYear: string;
+		education: string;
+		occupation: string;
+		monthlyIncome: string;
+		phoneNumber: string;
+		isAlive: number;
+	};
 
 	type Student = {
 		id: number;
-		name: string;
+		studentName: string;
 		nisn: string;
-		class: string;
-		gender: string;
-		cityOfOrigin: string;
-		status: 'ACTIVE' | 'MUTASI' | 'GRADUATE';
-		profilePhoto: string | null;
 		localNis: string;
-		birthDate: string;
+		gender: string;
 		religion: string;
+		birthPlace: string;
+		birthDate: string;
+		previousSchool: string;
+		phoneNumber: string;
+		childOrder: string;
+		siblingsCount: string;
+		originRegion: string;
+		bpjs: string;
+		idCardNumber: string;
+		birthCertificateNumber: string;
+		nationality: string;
+		livingWith: string;
+		transportation: string;
+		profilePhoto: string | null;
+		status: 'ACTIVE' | 'MUTASI' | 'GRADUATE';
+		class: string;
 		address: {
-			street: string;
-			village: string;
-			subDistrict: string;
-			regency: string;
 			province: string;
+			regency: string;
+			district: string;
+			subDistrict: string;
+			village: string;
+			hamlet: string;
+			street: string;
+			houseNumber: string;
+			rt: string;
+			rw: string;
+			postalCode: string;
 		} | null;
-		father: { name: string; phone: string; job: string } | null;
-		mother: { name: string; phone: string; job: string } | null;
-		guardian: { name: string; phone: string; job: string } | null;
+		father: Parent | null;
+		mother: Parent | null;
+		guardian: Parent | null;
 	};
 
 	let student: Student | null = null;
@@ -47,6 +81,18 @@
 	let isMutasiLoading = false;
 	let showGraduateModal = false;
 	let isGraduateLoading = false;
+
+	const d = (val: unknown): string => {
+		if (val == null || val === '') return '-';
+		if (typeof val === 'bigint') return val.toString();
+		if (typeof val === 'number') {
+			if (!Number.isFinite(val)) return '-';
+			// Prevent scientific notation for large integers (NIK, NISN, akta, BPJS, etc.)
+			if (Number.isInteger(val)) return val.toFixed(0);
+			return String(val);
+		}
+		return String(val);
+	};
 
 	onMount(async () => {
 		try {
@@ -70,39 +116,85 @@
 
 			student = {
 				id: data.id,
-				name: data.studentName,
-				class: data.class || 'Belum Masuk Kelas',
-				gender: data.gender,
-				cityOfOrigin: data.originRegion || data.birthPlace || '-',
-				status: data.status || 'ACTIVE',
+				studentName: d(data.studentName),
+				nisn: d(data.nisn),
+				localNis: d(data.localNis),
+				gender: d(data.gender),
+				religion: d(data.religion),
+				birthPlace: d(data.birthPlace),
+				birthDate: d(data.birthDate),
+				previousSchool: d(data.previousSchool),
+				phoneNumber: d(data.phoneNumber),
+				childOrder: d(data.childOrder),
+				siblingsCount: d(data.siblingsCount),
+				originRegion: d(data.originRegion),
+				bpjs: d(data.bpjs),
+				idCardNumber: d(data.idCardNumber),
+				birthCertificateNumber: d(data.birthCertificateNumber),
+				nationality: d(data.nationality),
+				livingWith: d(data.livingWith),
+				transportation: d(data.transportation),
 				profilePhoto: data.profilePhoto || null,
-				nisn: data.nisn || '-',
-				localNis: data.localNis || '-',
-				birthDate: data.birthDate || '-',
-				religion: data.religion || '-',
+				status: data.status || 'ACTIVE',
+				class: data.class || 'Belum Masuk Kelas',
 				address: data.address
 					? {
-							street: data.address.street,
-							village: data.address.village,
-							subDistrict: data.address.subDistrict,
-							regency: data.address.regency,
-							province: data.address.province
+							province: d(data.address.province),
+							regency: d(data.address.regency),
+							district: d(data.address.district),
+							subDistrict: d(data.address.subDistrict),
+							village: d(data.address.village),
+							hamlet: d(data.address.hamlet),
+							street: d(data.address.street),
+							houseNumber: d(data.address.houseNumber),
+							rt: d(data.address.rt),
+							rw: d(data.address.rw),
+							postalCode: d(data.address.postalCode)
 						}
 					: null,
 				father: data.father
-					? { name: data.father.name, phone: data.father.phoneNumber, job: data.father.occupation }
+					? {
+							nik: d(data.father.nik),
+							name: d(data.father.name),
+							birthPlace: d(data.father.birthPlace),
+							birthDate: d(data.father.birthDate),
+							birthYear: d(data.father.birthYear),
+							education: d(data.father.education),
+							occupation: d(data.father.occupation),
+							monthlyIncome: d(data.father.monthlyIncome),
+							phoneNumber: d(data.father.phoneNumber),
+							isAlive: data.father.isAlive ?? 1
+						}
 					: null,
 				mother: data.mother
-					? { name: data.mother.name, phone: data.mother.phoneNumber, job: data.mother.occupation }
+					? {
+							nik: d(data.mother.nik),
+							name: d(data.mother.name),
+							birthPlace: d(data.mother.birthPlace),
+							birthDate: d(data.mother.birthDate),
+							birthYear: d(data.mother.birthYear),
+							education: d(data.mother.education),
+							occupation: d(data.mother.occupation),
+							monthlyIncome: d(data.mother.monthlyIncome),
+							phoneNumber: d(data.mother.phoneNumber),
+							isAlive: data.mother.isAlive ?? 1
+						}
 					: null,
 				guardian: data.guardian
 					? {
-							name: data.guardian.name,
-							phone: data.guardian.phoneNumber,
-							job: data.guardian.occupation
+							nik: d(data.guardian.nik),
+							name: d(data.guardian.name),
+							birthPlace: d(data.guardian.birthPlace),
+							birthDate: d(data.guardian.birthDate),
+							birthYear: d(data.guardian.birthYear),
+							education: d(data.guardian.education),
+							occupation: d(data.guardian.occupation),
+							monthlyIncome: d(data.guardian.monthlyIncome),
+							phoneNumber: d(data.guardian.phoneNumber),
+							isAlive: data.guardian.isAlive ?? 1
 						}
 					: null
-			} as Student;
+			};
 		} catch (err: unknown) {
 			error = err instanceof Error ? err.message : String(err);
 		} finally {
@@ -233,11 +325,6 @@
 			isGraduateLoading = false;
 		}
 	}
-
-	import MutationIcon from '$lib/components/icons/mutationIcon.svelte';
-	import EditIcon from '$lib/components/icons/editIcon.svelte';
-	import DeleteIcon from '$lib/components/icons/deleteIcon.svelte';
-	import GraduateIcon from '$lib/components/icons/graduateIcon.svelte';
 </script>
 
 <ModalAlert
@@ -255,7 +342,7 @@
 {#if student}
 	<MutasiModal
 		show={showMutasiModal}
-		studentName={student.name}
+		studentName={student.studentName}
 		studentNisn={student.nisn}
 		isLoading={isMutasiLoading}
 		on:close={() => (showMutasiModal = false)}
@@ -264,7 +351,7 @@
 
 	<GraduateModal
 		show={showGraduateModal}
-		studentName={student.name}
+		studentName={student.studentName}
 		studentNisn={student.nisn}
 		isLoading={isGraduateLoading}
 		on:close={() => (showGraduateModal = false)}
@@ -272,7 +359,7 @@
 	/>
 {/if}
 
-<div class="min-h-screen bg-white">
+<div class="min-h-screen bg-slate-50">
 	<div class="mx-auto max-w-6xl">
 		{#if loading}
 			<div class="flex h-screen items-center justify-center">
@@ -285,7 +372,6 @@
 			</div>
 		{:else if error}
 			<div class="flex h-screen flex-col items-center justify-center px-4">
-				<!-- svg: error icon (48x48) -->
 				<div class="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-red-50">
 					<span class="h-6 w-6 border border-dashed border-red-300"></span>
 				</div>
@@ -294,301 +380,521 @@
 				<a href="/siswa" class="mt-6 text-blue-600 hover:underline">Kembali ke daftar</a>
 			</div>
 		{:else if student}
-			<!-- Header Section -->
-			<header class="border-b border-slate-200">
-				<div class="flex items-center justify-between px-6 py-4">
+			<!-- Top Bar -->
+			<header>
+				<div class="flex items-center justify-between px-6 py-3">
 					<a
 						href="/siswa"
-						class="flex items-center gap-3 px-4 py-2 transition-all ease-in-out hover:bg-blue-600 hover:text-blue-50"
+						class="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900"
 					>
-						<!-- svg: arrow-left (20x20) -->
-						<span class="flex items-center justify-center">
-							<ArrowLeft />
-						</span>
-						<span class="text-sm font-medium">Kembali</span>
+						<ArrowLeft />
+						<span class="font-medium">Kembali</span>
 					</a>
 
 					<div class="flex items-center gap-2">
 						{#if student.status === 'ACTIVE'}
 							<button
 								on:click={() => (showGraduateModal = true)}
-								class="flex items-center gap-2 border border-emerald-200 bg-emerald-50 px-4 py-2 text-sm font-medium text-emerald-700 hover:bg-emerald-100"
+								class="flex items-center gap-1.5 rounded-md border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-sm font-medium text-emerald-700 transition-colors hover:bg-emerald-100"
 							>
-								<!-- svg: graduation cap (18x18) -->
-								<span class="h-5 w-5 flex justify-center items-center"><GraduateIcon/></span>
+								<GraduateIcon />
 								Luluskan
 							</button>
 							<button
 								on:click={() => (showMutasiModal = true)}
-								class="flex items-center gap-2 border border-amber-400 bg-amber-100 px-4 py-2 text-sm font-medium text-amber-700 hover:bg-amber-300"
+								class="flex items-center gap-1.5 rounded-md border border-amber-200 bg-amber-50 px-3 py-1.5 text-sm font-medium text-amber-700 transition-colors hover:bg-amber-100"
 							>
-								<!-- svg: transfer (18x18) -->
-								<span class="h-5 w-5 flex justify-center items-center"><MutationIcon/></span>
+								<MutationIcon />
 								Mutasi
 							</button>
 						{/if}
 						<a
 							href="/siswa/{student.id}/edit"
-							class="flex items-center gap-2 bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+							class="flex items-center gap-1.5 rounded-md bg-blue-600 px-3 py-1.5 text-sm font-medium text-white transition-colors hover:bg-blue-700"
 						>
-							<!-- svg: edit (18x18) -->
-							<span class="h-5 w-5 flex justify-center items-center"><EditIcon/></span>
+							<EditIcon />
 							Edit
 						</a>
 						<button
 							on:click={confirmDelete}
-							class="flex items-center gap-2 border border-red-200 px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50"
+							class="flex items-center gap-1.5 rounded-md border border-red-200 px-3 py-1.5 text-sm font-medium text-red-600 transition-colors hover:bg-red-50"
 						>
-							<!-- svg: trash (18x18) -->
-							<span class="h-5 w-5 justify-center items-center flex"><DeleteIcon/></span>
+							<DeleteIcon />
 							Hapus
 						</button>
 					</div>
 				</div>
 			</header>
 
-			<!-- Profile Section -->
-			<section class="border-b border-slate-200 px-6 py-8">
-				<div class="flex gap-6">
-					<!-- Photo -->
-					<div class="h-32 w-32 flex-shrink-0 overflow-hidden border border-slate-200 bg-slate-50">
-						{#if student.profilePhoto}
-							<img
-								src="{import.meta.env.VITE_API_URL}{student.profilePhoto}"
-								alt="Foto {student.name}"
-								class="h-full w-full object-cover"
-							/>
-						{:else}
-							<!-- svg: user placeholder (64x64) -->
-							<div class="flex h-full w-full items-center justify-center">
-								<span class="h-16 w-16 border border-dashed border-slate-300"></span>
-							</div>
-						{/if}
-					</div>
-
-					<!-- Basic Info -->
-					<div class="flex-1">
-						<div class="flex items-start justify-between">
-							<div>
-								<div class="flex items-center gap-3">
-									<h1 class="text-2xl font-semibold text-slate-900">{student.name}</h1>
-									<span
-										class="border px-2 py-1 text-xs font-medium {statusConfig[student.status]
-											?.class || 'bg-slate-50 text-slate-600'}"
+			<div class="space-y-4 p-6">
+				<div class="rounded-md border border-slate-200 bg-white p-6">
+					<div class="flex gap-6">
+						<div
+							class="h-36 w-36 flex-shrink-0 overflow-hidden rounded-md border border-slate-200 bg-slate-100"
+						>
+							{#if student.profilePhoto}
+								<img
+									src="{import.meta.env.VITE_API_URL}{student.profilePhoto}"
+									alt="Foto {student.studentName}"
+									class="h-full w-full object-cover"
+								/>
+							{:else}
+								<div class="flex h-full w-full items-center justify-center text-slate-400">
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										class="h-16 w-16"
+										fill="none"
+										viewBox="0 0 24 24"
+										stroke="currentColor"
+										stroke-width="1"
 									>
-										{statusConfig[student.status]?.label || student.status}
-									</span>
+										<path
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+										/>
+									</svg>
 								</div>
-								<p class="mt-1 text-slate-500">{student.class}</p>
-							</div>
+							{/if}
 						</div>
 
-						<div class="mt-6 grid grid-cols-4 gap-8">
-							<div>
-								<p class="text-xs font-medium tracking-wider text-slate-400 uppercase">NISN</p>
-								<p class="mt-1 text-lg font-medium text-slate-900">{student.nisn}</p>
+						<div class="flex flex-1 flex-col justify-center">
+							<div class="flex items-center gap-3">
+								<h1 class="text-2xl font-bold text-slate-900">{student.studentName}</h1>
+								<span
+									class="rounded-sm border px-2.5 py-0.5 text-xs font-semibold {statusConfig[
+										student.status
+									]?.class || 'border-slate-200 bg-slate-50 text-slate-600'}"
+								>
+									{statusConfig[student.status]?.label || student.status}
+								</span>
 							</div>
-							<div>
-								<p class="text-xs font-medium tracking-wider text-slate-400 uppercase">NIS Lokal</p>
-								<p class="mt-1 text-lg font-medium text-slate-900">{student.localNis}</p>
-							</div>
-							<div>
-								<p class="text-xs font-medium tracking-wider text-slate-400 uppercase">
-									Jenis Kelamin
-								</p>
-								<p class="mt-1 text-lg font-medium text-slate-900 capitalize">
-									{student.gender || '-'}
-								</p>
-							</div>
-							<div>
-								<p class="text-xs font-medium tracking-wider text-slate-400 uppercase">Agama</p>
-								<p class="mt-1 text-lg font-medium text-slate-900">{student.religion}</p>
-							</div>
-						</div>
-					</div>
-				</div>
-			</section>
+							<p class="mt-1 text-slate-500">{student.class}</p>
 
-			<!-- Details Grid -->
-			<div class="grid grid-cols-2 divide-x divide-slate-200">
-				<!-- Left Column -->
-				<div class="divide-y divide-slate-200">
-					<!-- Birth Info -->
-					<section class="px-6 py-6">
-						<div class="mb-4 flex items-center gap-3">
-							<!-- svg: calendar (20x20) -->
-							<span class="h-5 w-5 border border-dashed border-slate-300"></span>
-							<h2 class="text-sm font-semibold tracking-wider text-slate-400 uppercase">
-								Kelahiran
-							</h2>
-						</div>
-						<div class="grid grid-cols-2 gap-6">
-							<div>
-								<p class="text-sm text-slate-500">Tempat Lahir</p>
-								<p class="mt-1 text-base font-medium text-slate-900">{student.cityOfOrigin}</p>
-							</div>
-							<div>
-								<p class="text-sm text-slate-500">Tanggal Lahir</p>
-								<p class="mt-1 text-base font-medium text-slate-900">{student.birthDate}</p>
-							</div>
-						</div>
-					</section>
-
-					<!-- Address -->
-					<section class="px-6 py-6">
-						<div class="mb-4 flex items-center gap-3">
-							<!-- svg: location (20x20) -->
-							<span class="h-5 w-5 border border-dashed border-slate-300"></span>
-							<h2 class="text-sm font-semibold tracking-wider text-slate-400 uppercase">
-								Alamat Domisili
-							</h2>
-						</div>
-						{#if student.address}
-							<div class="space-y-4">
+							<div class="mt-5 flex items-center gap-10 border-t border-slate-100 pt-5">
 								<div>
-									<p class="text-sm text-slate-500">Jalan</p>
-									<p class="mt-1 text-base font-medium text-slate-900">
-										{student.address.street || '-'}
+									<p class="text-xs font-medium text-slate-400">NISN</p>
+									<p class="mt-0.5 text-base font-semibold text-slate-900 tabular-nums">
+										{student.nisn}
 									</p>
 								</div>
-								<div class="grid grid-cols-2 gap-6">
-									<div>
-										<p class="text-sm text-slate-500">Desa/Kelurahan</p>
-										<p class="mt-1 text-base font-medium text-slate-900">
-											{student.address.village || '-'}
-										</p>
-									</div>
-									<div>
-										<p class="text-sm text-slate-500">Kecamatan</p>
-										<p class="mt-1 text-base font-medium text-slate-900">
-											{student.address.subDistrict || '-'}
-										</p>
-									</div>
+								<div class="h-8 w-px bg-slate-200"></div>
+								<div>
+									<p class="text-xs font-medium text-slate-400">NIS Lokal</p>
+									<p class="mt-0.5 text-base font-semibold text-slate-900 tabular-nums">
+										{student.localNis}
+									</p>
 								</div>
-								<div class="grid grid-cols-2 gap-6">
-									<div>
-										<p class="text-sm text-slate-500">Kabupaten/Kota</p>
-										<p class="mt-1 text-base font-medium text-slate-900">
-											{student.address.regency || '-'}
-										</p>
-									</div>
-									<div>
-										<p class="text-sm text-slate-500">Provinsi</p>
-										<p class="mt-1 text-base font-medium text-slate-900">
-											{student.address.province || '-'}
-										</p>
-									</div>
+								<div class="h-8 w-px bg-slate-200"></div>
+								<div>
+									<p class="text-xs font-medium text-slate-400">Jenis Kelamin</p>
+									<p class="mt-0.5 text-base font-semibold text-slate-900 capitalize">
+										{student.gender}
+									</p>
+								</div>
+								<div class="h-8 w-px bg-slate-200"></div>
+								<div>
+									<p class="text-xs font-medium text-slate-400">Agama</p>
+									<p class="mt-0.5 text-base font-semibold text-slate-900">{student.religion}</p>
+								</div>
+								<div class="h-8 w-px bg-slate-200"></div>
+								<div>
+									<p class="text-xs font-medium text-slate-400">Kewarganegaraan</p>
+									<p class="mt-0.5 text-base font-semibold text-slate-900">
+										{student.nationality}
+									</p>
 								</div>
 							</div>
-						{:else}
-							<p class="text-slate-400 italic">Data alamat belum tersedia</p>
-						{/if}
-					</section>
+						</div>
+					</div>
 				</div>
 
-				<!-- Right Column: Parents -->
-				<div class="divide-y divide-slate-200">
-					<!-- Father -->
-					<section class="px-6 py-6">
-						<div class="mb-4 flex items-center gap-3">
-							<!-- svg: user male (20x20) -->
-							<span class="h-5 w-5 border border-dashed border-slate-300"></span>
-							<h2 class="text-sm font-semibold tracking-wider text-slate-400 uppercase">
-								Data Ayah
-							</h2>
+				<div class="grid grid-cols-3 gap-4">
+					<!-- Kelahiran -->
+					<div class="rounded-md border border-slate-200 bg-white p-5">
+						<h2 class="mb-4 text-xs font-bold tracking-wider text-slate-400 uppercase">
+							Kelahiran
+						</h2>
+						<div class="space-y-3">
+							<div>
+								<p class="text-xs text-slate-500">Tempat Lahir</p>
+								<p class="mt-0.5 text-sm font-semibold text-slate-900">{student.birthPlace}</p>
+							</div>
+							<div>
+								<p class="text-xs text-slate-500">Tanggal Lahir</p>
+								<p class="mt-0.5 text-sm font-semibold text-slate-900">{student.birthDate}</p>
+							</div>
+							<div>
+								<p class="text-xs text-slate-500">Asal Daerah</p>
+								<p class="mt-0.5 text-sm font-semibold text-slate-900">{student.originRegion}</p>
+							</div>
+						</div>
+					</div>
+
+					<!-- Dokumen -->
+					<div class="rounded-md border border-slate-200 bg-white p-5">
+						<h2 class="mb-4 text-xs font-bold tracking-wider text-slate-400 uppercase">
+							Nomor Dokumen
+						</h2>
+						<div class="space-y-3">
+							<div>
+								<p class="text-xs text-slate-500">No. KTP / NIK</p>
+								<p class="mt-0.5 text-sm font-semibold text-slate-900 tabular-nums">
+									{student.idCardNumber}
+								</p>
+							</div>
+							<div>
+								<p class="text-xs text-slate-500">No. Akta Kelahiran</p>
+								<p class="mt-0.5 text-sm font-semibold text-slate-900 tabular-nums">
+									{student.birthCertificateNumber}
+								</p>
+							</div>
+							<div>
+								<p class="text-xs text-slate-500">No. BPJS</p>
+								<p class="mt-0.5 text-sm font-semibold text-slate-900 tabular-nums">
+									{student.bpjs}
+								</p>
+							</div>
+						</div>
+					</div>
+
+					<!-- Kondisi -->
+					<div class="rounded-md border border-slate-200 bg-white p-5">
+						<h2 class="mb-4 text-xs font-bold tracking-wider text-slate-400 uppercase">
+							Kondisi Siswa
+						</h2>
+						<div class="space-y-3">
+							<div>
+								<p class="text-xs text-slate-500">No. Telepon</p>
+								<p class="mt-0.5 text-sm font-semibold text-slate-900">{student.phoneNumber}</p>
+							</div>
+							<div class="grid grid-cols-2 gap-3">
+								<div>
+									<p class="text-xs text-slate-500">Anak Ke-</p>
+									<p class="mt-0.5 text-sm font-semibold text-slate-900">
+										{student.childOrder}
+									</p>
+								</div>
+								<div>
+									<p class="text-xs text-slate-500">Jumlah Saudara</p>
+									<p class="mt-0.5 text-sm font-semibold text-slate-900">
+										{student.siblingsCount}
+									</p>
+								</div>
+							</div>
+							<div>
+								<p class="text-xs text-slate-500">Tinggal Bersama</p>
+								<p class="mt-0.5 text-sm font-semibold text-slate-900">{student.livingWith}</p>
+							</div>
+							<div>
+								<p class="text-xs text-slate-500">Transportasi</p>
+								<p class="mt-0.5 text-sm font-semibold text-slate-900">
+									{student.transportation}
+								</p>
+							</div>
+							<div>
+								<p class="text-xs text-slate-500">Sekolah Sebelumnya</p>
+								<p class="mt-0.5 text-sm font-semibold text-slate-900">
+									{student.previousSchool}
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="rounded-md border border-slate-200 bg-white p-5">
+					<h2 class="mb-4 text-xs font-bold tracking-wider text-slate-400 uppercase">
+						Alamat Domisili
+					</h2>
+					{#if student.address}
+						<div class="grid grid-cols-4 gap-x-6 gap-y-3">
+							<div class="col-span-2">
+								<p class="text-xs text-slate-500">Jalan</p>
+								<p class="mt-0.5 text-sm font-semibold text-slate-900">
+									{student.address.street}
+								</p>
+							</div>
+							<div>
+								<p class="text-xs text-slate-500">No. Rumah</p>
+								<p class="mt-0.5 text-sm font-semibold text-slate-900">
+									{student.address.houseNumber}
+								</p>
+							</div>
+							<div>
+								<p class="text-xs text-slate-500">Dusun</p>
+								<p class="mt-0.5 text-sm font-semibold text-slate-900">
+									{student.address.hamlet}
+								</p>
+							</div>
+							<div>
+								<p class="text-xs text-slate-500">RT / RW</p>
+								<p class="mt-0.5 text-sm font-semibold text-slate-900">
+									{student.address.rt} / {student.address.rw}
+								</p>
+							</div>
+							<div>
+								<p class="text-xs text-slate-500">Desa/Kelurahan</p>
+								<p class="mt-0.5 text-sm font-semibold text-slate-900">
+									{student.address.village}
+								</p>
+							</div>
+							<div>
+								<p class="text-xs text-slate-500">Kecamatan</p>
+								<p class="mt-0.5 text-sm font-semibold text-slate-900">
+									{student.address.subDistrict}
+								</p>
+							</div>
+							<div>
+								<p class="text-xs text-slate-500">Kabupaten/Kota</p>
+								<p class="mt-0.5 text-sm font-semibold text-slate-900">
+									{student.address.regency}
+								</p>
+							</div>
+							<div>
+								<p class="text-xs text-slate-500">Provinsi</p>
+								<p class="mt-0.5 text-sm font-semibold text-slate-900">
+									{student.address.province}
+								</p>
+							</div>
+							<div>
+								<p class="text-xs text-slate-500">Kode Pos</p>
+								<p class="mt-0.5 text-sm font-semibold text-slate-900 tabular-nums">
+									{student.address.postalCode}
+								</p>
+							</div>
+						</div>
+					{:else}
+						<p class="text-sm text-slate-400 italic">Data alamat belum tersedia</p>
+					{/if}
+				</div>
+
+				<div
+					class="grid gap-4"
+					class:grid-cols-2={!student.guardian}
+					class:grid-cols-3={student.guardian}
+				>
+					<!-- Ayah -->
+					<div class="rounded-md border border-slate-200 bg-white p-5">
+						<div class="mb-4 flex items-center justify-between">
+							<h2 class="text-xs font-bold tracking-wider text-slate-400 uppercase">Data Ayah</h2>
+							{#if student.father}
+								<span
+									class="rounded-sm border px-2 py-0.5 text-sm font-medium {student.father.isAlive
+										? 'border-emerald-200 bg-emerald-50 text-emerald-700'
+										: 'border-red-200 bg-red-50 text-red-500'}"
+								>
+									{student.father.isAlive ? 'Masih Hidup' : 'Almarhum'}
+								</span>
+							{/if}
 						</div>
 						{#if student.father}
-							<div class="space-y-4">
+							<div class="space-y-3">
 								<div>
-									<p class="text-sm text-slate-500">Nama Lengkap</p>
-									<p class="mt-1 text-base font-medium text-slate-900">{student.father.name}</p>
+									<p class="text-xs text-slate-500">Nama Lengkap</p>
+									<p class="mt-0.5 text-sm font-semibold text-slate-900">
+										{student.father.name}
+									</p>
 								</div>
-								<div class="grid grid-cols-2 gap-6">
+								<div>
+									<p class="text-xs text-slate-500">NIK</p>
+									<p class="mt-0.5 text-sm font-semibold text-slate-900 tabular-nums">
+										{student.father.nik}
+									</p>
+								</div>
+								<div class="grid grid-cols-2 gap-3">
 									<div>
-										<p class="text-sm text-slate-500">Pekerjaan</p>
-										<p class="mt-1 text-base font-medium text-slate-900">
-											{student.father.job || '-'}
+										<p class="text-xs text-slate-500">Tempat Lahir</p>
+										<p class="mt-0.5 text-sm font-semibold text-slate-900">
+											{student.father.birthPlace}
 										</p>
 									</div>
 									<div>
-										<p class="text-sm text-slate-500">No. Telepon</p>
-										<p class="mt-1 text-base font-medium text-slate-900">
-											{student.father.phone || '-'}
+										<p class="text-xs text-slate-500">Tanggal Lahir</p>
+										<p class="mt-0.5 text-sm font-semibold text-slate-900">
+											{student.father.birthDate}
+										</p>
+									</div>
+								</div>
+								<div class="grid grid-cols-2 gap-3">
+									<div>
+										<p class="text-xs text-slate-500">Pendidikan</p>
+										<p class="mt-0.5 text-sm font-semibold text-slate-900">
+											{student.father.education}
+										</p>
+									</div>
+									<div>
+										<p class="text-xs text-slate-500">Pekerjaan</p>
+										<p class="mt-0.5 text-sm font-semibold text-slate-900">
+											{student.father.occupation}
+										</p>
+									</div>
+								</div>
+								<div class="grid grid-cols-2 gap-3">
+									<div>
+										<p class="text-xs text-slate-500">Penghasilan/Bulan</p>
+										<p class="mt-0.5 text-sm font-semibold text-slate-900">
+											{student.father.monthlyIncome}
+										</p>
+									</div>
+									<div>
+										<p class="text-xs text-slate-500">No. Telepon</p>
+										<p class="mt-0.5 text-sm font-semibold text-slate-900">
+											{student.father.phoneNumber}
 										</p>
 									</div>
 								</div>
 							</div>
 						{:else}
-							<p class="text-slate-400 italic">Data ayah belum tersedia</p>
+							<p class="text-sm text-slate-400 italic">Data ayah belum tersedia</p>
 						{/if}
-					</section>
+					</div>
 
-					<!-- Mother -->
-					<section class="px-6 py-6">
-						<div class="mb-4 flex items-center gap-3">
-							<!-- svg: user female (20x20) -->
-							<span class="h-5 w-5 border border-dashed border-slate-300"></span>
-							<h2 class="text-sm font-semibold tracking-wider text-slate-400 uppercase">
-								Data Ibu
-							</h2>
+					<!-- Ibu -->
+					<div class="rounded-md border border-slate-200 bg-white p-5">
+						<div class="mb-4 flex items-center justify-between">
+							<h2 class="text-md font-bold tracking-wider text-slate-400 uppercase">Data Ibu</h2>
+							{#if student.mother}
+								<span
+									class="rounded-sm border px-2 py-0.5 text-sm	 font-medium {student.mother.isAlive
+										? 'border-emerald-200 bg-emerald-50 text-emerald-700'
+										: 'border-red-200 bg-red-50 text-red-500'}"
+								>
+									{student.mother.isAlive ? 'Masih Hidup' : 'Almarhumah'}
+								</span>
+							{/if}
 						</div>
 						{#if student.mother}
-							<div class="space-y-4">
+							<div class="space-y-3">
 								<div>
-									<p class="text-sm text-slate-500">Nama Lengkap</p>
-									<p class="mt-1 text-base font-medium text-slate-900">{student.mother.name}</p>
+									<p class="text-xs text-slate-500">Nama Lengkap</p>
+									<p class="mt-0.5 text-sm font-semibold text-slate-900">
+										{student.mother.name}
+									</p>
 								</div>
-								<div class="grid grid-cols-2 gap-6">
+								<div>
+									<p class="text-xs text-slate-500">NIK</p>
+									<p class="mt-0.5 text-sm font-semibold text-slate-900 tabular-nums">
+										{student.mother.nik}
+									</p>
+								</div>
+								<div class="grid grid-cols-2 gap-3">
 									<div>
-										<p class="text-sm text-slate-500">Pekerjaan</p>
-										<p class="mt-1 text-base font-medium text-slate-900">
-											{student.mother.job || '-'}
+										<p class="text-xs text-slate-500">Tempat Lahir</p>
+										<p class="mt-0.5 text-sm font-semibold text-slate-900">
+											{student.mother.birthPlace}
 										</p>
 									</div>
 									<div>
-										<p class="text-sm text-slate-500">No. Telepon</p>
-										<p class="mt-1 text-base font-medium text-slate-900">
-											{student.mother.phone || '-'}
+										<p class="text-xs text-slate-500">Tanggal Lahir</p>
+										<p class="mt-0.5 text-sm font-semibold text-slate-900">
+											{student.mother.birthDate}
+										</p>
+									</div>
+								</div>
+								<div class="grid grid-cols-2 gap-3">
+									<div>
+										<p class="text-xs text-slate-500">Pendidikan</p>
+										<p class="mt-0.5 text-sm font-semibold text-slate-900">
+											{student.mother.education}
+										</p>
+									</div>
+									<div>
+										<p class="text-xs text-slate-500">Pekerjaan</p>
+										<p class="mt-0.5 text-sm font-semibold text-slate-900">
+											{student.mother.occupation}
+										</p>
+									</div>
+								</div>
+								<div class="grid grid-cols-2 gap-3">
+									<div>
+										<p class="text-xs text-slate-500">Penghasilan/Bulan</p>
+										<p class="mt-0.5 text-sm font-semibold text-slate-900">
+											{student.mother.monthlyIncome}
+										</p>
+									</div>
+									<div>
+										<p class="text-xs text-slate-500">No. Telepon</p>
+										<p class="mt-0.5 text-sm font-semibold text-slate-900">
+											{student.mother.phoneNumber}
 										</p>
 									</div>
 								</div>
 							</div>
 						{:else}
-							<p class="text-slate-400 italic">Data ibu belum tersedia</p>
+							<p class="text-sm text-slate-400 italic">Data ibu belum tersedia</p>
 						{/if}
-					</section>
+					</div>
 
-					<!-- Guardian -->
+					<!-- Wali (only rendered if exists) -->
 					{#if student.guardian}
-						<section class="px-6 py-6">
-							<div class="mb-4 flex items-center gap-3">
-								<!-- svg: user shield (20x20) -->
-								<span class="h-5 w-5 border border-dashed border-slate-300"></span>
-								<h2 class="text-sm font-semibold tracking-wider text-slate-400 uppercase">
-									Data Wali
-								</h2>
+						<div class="rounded-md border border-slate-200 bg-white p-5">
+							<div class="mb-4 flex items-center justify-between">
+								<h2 class="text-xs font-bold tracking-wider text-slate-400 uppercase">Data Wali</h2>
+								<span
+									class="rounded-sm border px-2 py-0.5 text-xs font-medium {student.guardian.isAlive
+										? 'border-emerald-200 bg-emerald-50 text-emerald-700'
+										: 'border-slate-200 bg-slate-50 text-slate-500'}"
+								>
+									{student.guardian.isAlive ? 'Masih Hidup' : 'Almarhum/ah'}
+								</span>
 							</div>
-							<div class="space-y-4">
+							<div class="space-y-3">
 								<div>
-									<p class="text-sm text-slate-500">Nama Lengkap</p>
-									<p class="mt-1 text-base font-medium text-slate-900">{student.guardian.name}</p>
+									<p class="text-xs text-slate-500">Nama Lengkap</p>
+									<p class="mt-0.5 text-sm font-semibold text-slate-900">
+										{student.guardian.name}
+									</p>
 								</div>
-								<div class="grid grid-cols-2 gap-6">
+								<div>
+									<p class="text-xs text-slate-500">NIK</p>
+									<p class="mt-0.5 text-sm font-semibold text-slate-900 tabular-nums">
+										{student.guardian.nik}
+									</p>
+								</div>
+								<div class="grid grid-cols-2 gap-3">
 									<div>
-										<p class="text-sm text-slate-500">Pekerjaan</p>
-										<p class="mt-1 text-base font-medium text-slate-900">
-											{student.guardian.job || '-'}
+										<p class="text-xs text-slate-500">Tempat Lahir</p>
+										<p class="mt-0.5 text-sm font-semibold text-slate-900">
+											{student.guardian.birthPlace}
 										</p>
 									</div>
 									<div>
-										<p class="text-sm text-slate-500">No. Telepon</p>
-										<p class="mt-1 text-base font-medium text-slate-900">
-											{student.guardian.phone || '-'}
+										<p class="text-xs text-slate-500">Tanggal Lahir</p>
+										<p class="mt-0.5 text-sm font-semibold text-slate-900">
+											{student.guardian.birthDate}
+										</p>
+									</div>
+								</div>
+								<div class="grid grid-cols-2 gap-3">
+									<div>
+										<p class="text-xs text-slate-500">Pendidikan</p>
+										<p class="mt-0.5 text-sm font-semibold text-slate-900">
+											{student.guardian.education}
+										</p>
+									</div>
+									<div>
+										<p class="text-xs text-slate-500">Pekerjaan</p>
+										<p class="mt-0.5 text-sm font-semibold text-slate-900">
+											{student.guardian.occupation}
+										</p>
+									</div>
+								</div>
+								<div class="grid grid-cols-2 gap-3">
+									<div>
+										<p class="text-xs text-slate-500">Penghasilan/Bulan</p>
+										<p class="mt-0.5 text-sm font-semibold text-slate-900">
+											{student.guardian.monthlyIncome}
+										</p>
+									</div>
+									<div>
+										<p class="text-xs text-slate-500">No. Telepon</p>
+										<p class="mt-0.5 text-sm font-semibold text-slate-900">
+											{student.guardian.phoneNumber}
 										</p>
 									</div>
 								</div>
 							</div>
-						</section>
+						</div>
 					{/if}
 				</div>
 			</div>

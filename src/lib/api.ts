@@ -2,7 +2,7 @@
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-type FetchOptions = RequestInit & {
+type FetchOptions = Omit<RequestInit, 'headers'> & {
 	headers?: Record<string, string>;
 };
 

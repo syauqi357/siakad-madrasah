@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { API_FETCH } from '$lib/api';
 
 	let searchQuery: string = '';
 	let selectedType: string = 'all';
@@ -63,7 +64,6 @@
 	let searchTimeout: ReturnType<typeof setTimeout>;
 
 	async function fetchLogs() {
-		const apiBaseUrl = import.meta.env.VITE_API_URL;
 		isLoading = true;
 		error = null;
 
@@ -74,7 +74,7 @@
 			if (selectedTimeRange !== 'all') params.append('timeRange', selectedTimeRange);
 			if (searchQuery.trim()) params.append('search', searchQuery.trim());
 
-			const response = await fetch(`${apiBaseUrl}/routes/api/audit-logs?${params.toString()}`);
+			const response = await API_FETCH(`/routes/api/audit-logs?${params.toString()}`);
 
 			if (!response.ok) {
 				throw new Error(`Gagal memuat data: ${response.statusText}`);
@@ -96,8 +96,8 @@
 
 	// Sort logs (filtering is now server-side)
 	$: filteredLogs = [...auditLogs].sort((a, b) => {
-		let aVal = a[sortField] || '';
-		let bVal = b[sortField] || '';
+		let aVal: string | number = a[sortField] || '';
+		let bVal: string | number = b[sortField] || '';
 
 		// Handle timestamp sorting
 		if (sortField === 'timestamp') {

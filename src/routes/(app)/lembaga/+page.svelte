@@ -305,7 +305,7 @@
 				<div class="grid gap-6 md:grid-cols-2">
 					<!-- Logo Upload Section -->
 					<div class="md:col-span-2">
-						<label class="mb-1.5 block text-sm font-medium text-gray-700">Logo Sekolah</label>
+						<label class="mb-1.5 block text-sm font-medium text-gray-700" for="logo sekolah" aria-label="logo sekolah">Logo Sekolah</label>
 						<div class="flex flex-col gap-4 sm:flex-row sm:items-start">
 							<!-- Logo Display -->
 							<div

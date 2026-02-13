@@ -1,51 +1,63 @@
 <script lang="ts">
 	import { slide, fade } from 'svelte/transition';
-	import { onMount } from 'svelte';
-	export let data;
+	import { browser } from '$app/environment';
 
-	let selectedDoc = data.docs[0] || null;
+	// Define types for better safety
+	interface Doc {
+		title: string;
+		filename: string;
+		content: string;
+		[key: string]: string;
+	}
+
+	interface TOCItem {
+		id: string;
+		text: string;
+		level: number;
+	}
+
+	export let data: { docs: Doc[] };
+
+	let selectedDoc: Doc | null = data.docs[0] || null;
 	let isMobileMenuOpen = false;
-	let tableOfContents: { id: string; text: string; level: number }[] = [];
+	let tableOfContents: TOCItem[] = [];
 	let activeHeading = '';
+	let processedContent = '';
 
-	function selectDoc(doc: any) {
+	function selectDoc(doc: Doc) {
 		selectedDoc = doc;
 		isMobileMenuOpen = false;
-		extractTOC();
-		setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 100);
-	}
-
-	function extractTOC() {
-		if (!selectedDoc?.content) {
-			tableOfContents = [];
-			return;
+		if (browser) {
+			window.scrollTo({ top: 0, behavior: 'smooth' });
 		}
-
-		const parser = new DOMParser();
-		const doc = parser.parseFromString(selectedDoc.content, 'text/html');
-		const headings = doc.querySelectorAll('h1, h2, h3');
-
-		tableOfContents = Array.from(headings).map((h, i) => {
-			const id = `heading-${i}`;
-			const level = parseInt(h.tagName[1]);
-			return {
-				id,
-				text: h.textContent || '',
-				level
-			};
-		});
 	}
 
-	function processContent(html: string): string {
+	// Unified function to process content and extract TOC in one pass
+	function processDocument(content: string) {
+		if (!content) return { html: '', toc: [] };
+
+		// Guard against SSR (Server Side Rendering) where DOMParser is missing
+		if (!browser) return { html: content, toc: [] };
+
 		const parser = new DOMParser();
-		const doc = parser.parseFromString(html, 'text/html');
+		const doc = parser.parseFromString(content, 'text/html');
 		const headings = doc.querySelectorAll('h1, h2, h3');
+		const toc: TOCItem[] = [];
 
 		headings.forEach((h, i) => {
-			h.id = `heading-${i}`;
+			const id = `heading-${i}`;
+			h.id = id; // Add ID to the actual HTML element
+			toc.push({
+				id,
+				text: h.textContent || '',
+				level: parseInt(h.tagName[1])
+			});
 		});
 
-		return doc.body.innerHTML;
+		return {
+			html: doc.body.innerHTML,
+			toc
+		};
 	}
 
 	function scrollToHeading(id: string) {
@@ -56,11 +68,17 @@
 		}
 	}
 
-	onMount(() => {
-		extractTOC();
-	});
-
-	$: processedContent = selectedDoc ? processContent(selectedDoc.content) : '';
+	// Reactive statement handles initialization and updates automatically
+	$: {
+		if (selectedDoc) {
+			const result = processDocument(selectedDoc.content);
+			processedContent = result.html;
+			tableOfContents = result.toc;
+		} else {
+			processedContent = '';
+			tableOfContents = [];
+		}
+	}
 </script>
 
 <div class="min-h-screen bg-slate-50 font-inter">
@@ -68,9 +86,7 @@
 	<div class="sticky top-20 z-40 border-b border-slate-200 bg-white/90 backdrop-blur-md">
 		<div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6">
 			<div class="flex items-center gap-3">
-				<div
-					class="flex h-8 w-8 items-center justify-center rounded-md bg-blue-600 text-white"
-				>
+				<div class="flex h-8 w-8 items-center justify-center rounded-md bg-blue-600 text-white">
 					<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 						<path
 							stroke-linecap="round"
@@ -289,8 +305,8 @@
 								prose-a:text-blue-600
 								prose-a:no-underline
 								hover:prose-a:underline
-								prose-blockquote:border-l-blue-500
 								prose-blockquote:rounded-r-md
+								prose-blockquote:border-l-blue-500
 								prose-blockquote:py-1
 								prose-blockquote:text-slate-600
 								prose-strong:text-slate-700

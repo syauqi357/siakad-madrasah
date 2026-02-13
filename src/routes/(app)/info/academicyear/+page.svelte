@@ -46,7 +46,12 @@
 	let alertConfirmText = 'OK';
 	let pendingAction: (() => void) | null = null;
 
-	function showAlertModal(type: typeof alertType, message: string, showCancel = false, confirmText = 'OK') {
+	function showAlertModal(
+		type: typeof alertType,
+		message: string,
+		showCancel = false,
+		confirmText = 'OK'
+	) {
 		alertType = type;
 		alertMessage = message;
 		alertShowCancel = showCancel;
@@ -210,7 +215,12 @@
 				isLoading = false;
 			}
 		};
-		showAlertModal('warning', `Apakah Anda yakin ingin menghapus tahun ajaran "${academicYear.name}"?`, true, 'Hapus');
+		showAlertModal(
+			'warning',
+			`Apakah Anda yakin ingin menghapus tahun ajaran "${academicYear.name}"?`,
+			true,
+			'Hapus'
+		);
 	}
 
 	function handleSetActive(academicYear: AcademicYear) {
@@ -237,7 +247,12 @@
 				isLoading = false;
 			}
 		};
-		showAlertModal('info', `Jadikan "${academicYear.name}" sebagai tahun ajaran aktif?`, true, 'Aktifkan');
+		showAlertModal(
+			'info',
+			`Jadikan "${academicYear.name}" sebagai tahun ajaran aktif?`,
+			true,
+			'Aktifkan'
+		);
 	}
 
 	function formatDate(dateString: string | null): string {
@@ -442,7 +457,10 @@
 						class="flex items-center justify-between border-t border-gray-200 bg-white px-6 py-3"
 					>
 						<div class="text-sm text-gray-500">
-							Total <span class="font-medium text-blue-600 mx-1.5 bg-blue-200 px-2 py-1 rounded-sm border border-blue-400">{academicYears.length}</span> tahun ajaran
+							Total <span
+								class="mx-1.5 rounded-sm border border-blue-400 bg-blue-200 px-2 py-1 font-medium text-blue-600"
+								>{academicYears.length}</span
+							> tahun ajaran
 						</div>
 					</div>
 				{/if}
@@ -572,7 +590,8 @@
 						<input
 							type="checkbox"
 							id="isActive"
-							bind:checked={currentAcademicYear.isActive}
+							checked={currentAcademicYear.isActive === 1}
+							on:change={(e) => (currentAcademicYear.isActive = e.currentTarget.checked ? 1 : 0)}
 							class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
 						/>
 						<label for="isActive" class="text-sm font-medium text-gray-700">

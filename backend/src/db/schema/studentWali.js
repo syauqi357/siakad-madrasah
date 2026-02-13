@@ -12,7 +12,7 @@ id: integer('id').primaryKey({ autoIncrement: true }),
 			onDelete: 'cascade'
 		}),
 
-	nik: text('nik'),
+	nik: text('nik').unique(),
 	name: text('name'),
 	birthPlace: text('birth_place'),
 	birthDate: text('birth_date'), // SQLite DATE = TEXT
