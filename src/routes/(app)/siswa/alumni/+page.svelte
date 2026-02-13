@@ -179,7 +179,7 @@
 					class="rounded-md border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 transition-colors focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 focus:outline-none"
 				>
 					<option value="">Semua Tahun</option>
-					{#each availableYears as year}
+					{#each availableYears as year (year)}
 						<option value={year}>{year}</option>
 					{/each}
 				</select>
@@ -212,7 +212,7 @@
 			</div>
 
 			<!-- Per Year Stats -->
-			{#each yearStats.slice(0, 5) as stat}
+			{#each yearStats.slice(0, 5) as stat (stat.year)}
 				{#if stat.year}
 					<div
 						class="rounded-md border border-slate-200 bg-white p-5 transition-all hover:border-slate-300"
@@ -380,7 +380,7 @@
 							Prev
 						</button>
 						<div class="flex items-center gap-1">
-							{#each Array(Math.min(totalPages, 5)) as _, idx}
+							{#each Array(Math.min(totalPages, 5)) as _, idx (idx)}
 								{@const pageNum = idx + 1}
 								<button
 									on:click={() => handlePageChange(pageNum)}

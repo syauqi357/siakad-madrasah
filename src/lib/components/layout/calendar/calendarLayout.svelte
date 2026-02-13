@@ -158,7 +158,7 @@
 	<div class="p-3">
 		<!-- Days of week -->
 		<div class="mb-1 grid grid-cols-7">
-			{#each daysOfWeek as day, i}
+			{#each daysOfWeek as day, i(day)}
 				<div
 					class="py-2 text-center text-xs font-medium"
 					class:text-red-400={i === 0}
@@ -171,7 +171,7 @@
 
 		<!-- Calendar grid -->
 		<div class="grid grid-cols-7 gap-0.5">
-			{#each calendarDays as { day, isCurrentMonth, isToday, isWeekend }}
+			{#each calendarDays as { day, isCurrentMonth, isToday, isWeekend }, i (i)}
 				<button
 					class="relative flex aspect-square items-center justify-center rounded-md text-sm transition-colors
 						{isToday

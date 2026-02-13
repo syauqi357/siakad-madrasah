@@ -57,8 +57,11 @@ export const generateScoreTemplateForRombel = async (rombelId, subjectId = null)
 		return { error: 'NO_STUDENTS', rombelName };
 	}
 
-	// 3. Fetch all assessment types to create the score columns
-	const allAssessmentTypes = await db.select().from(assessmentType);
+	// 3. Fetch active assessment types to create the score columns
+	const allAssessmentTypes = await db
+		.select()
+		.from(assessmentType)
+		.where(eq(assessmentType.isActive, true));
 	const scoreHeaders = allAssessmentTypes.map((at) => at.code);
 
 	// 4. Create the Excel Workbook
@@ -178,7 +181,10 @@ export const getScoresByClassSubject = async (classSubjectId) => {
 
 	const className = classSubjectInfo[0]?.className || 'Unknown Class';
 	const subjectName = classSubjectInfo[0]?.subjectName || 'Unknown Subject';
-	const assessmentTypes = await db.select().from(assessmentType);
+	const assessmentTypes = await db
+		.select()
+		.from(assessmentType)
+		.where(eq(assessmentType.isActive, true));
 
 	// Create a map of assessment type code to weight for calculation
 	const typeWeightMap = new Map(assessmentTypes.map((t) => [t.code, t.defaultWeight || 0]));

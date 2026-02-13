@@ -904,7 +904,7 @@
 <!-- ==================== ASSIGNMENT MODAL ==================== -->
 {#if showAssignModal}
 	<div
-		class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+		class="fixed inset-0 z-20 backdrop-blur-sm flex items-center justify-center bg-black/20 p-4"
 		transition:fade={{ duration: 150 }}
 		on:click={handleAssignBackdropClick}
 		on:keydown={handleKeydown}

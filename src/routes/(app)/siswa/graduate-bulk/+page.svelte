@@ -368,7 +368,7 @@
 								<p class="mt-1 text-xs text-slate-400">Pastikan ada kelas dengan tingkat akhir</p>
 							</div>
 						{:else}
-							{#each classGroups as group}
+							{#each classGroups as group (group.classId)}
 								<div class="mb-5 last:mb-0">
 									<p
 										class="mb-2 flex items-center gap-2 text-xs font-semibold tracking-wide text-slate-400 uppercase"
@@ -378,7 +378,7 @@
 										<span class="h-px flex-1 bg-slate-200"></span>
 									</p>
 									<div class="space-y-2">
-										{#each group.rombels as rom}
+										{#each group.rombels as rom (rom.id)}
 											<button
 												on:click={() => selectRombel(rom)}
 												class="group flex w-full items-center justify-between rounded-xl border-2 p-3.5 text-left transition-all {selectedRombel?.id ===
@@ -485,7 +485,7 @@
 							</div>
 						{:else}
 							<div class="divide-y divide-slate-100">
-								{#each students as student}
+								{#each students as student (student.id)}
 									<label
 										class="flex cursor-pointer items-center gap-4 px-5 py-3.5 transition-colors hover:bg-slate-50"
 									>
@@ -583,7 +583,7 @@
 						</div>
 					</div>
 					<div class="max-h-[22rem] divide-y divide-slate-100 overflow-y-auto">
-						{#each selectedStudents as student, i}
+						{#each selectedStudents as student, i (student.id)}
 							<div
 								class="flex items-center justify-between px-5 py-3.5 transition-colors hover:bg-slate-50"
 							>
@@ -637,7 +637,7 @@
 									class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700 transition-colors focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 focus:outline-none"
 								>
 									<option value="">Pilih tahun ajaran</option>
-									{#each academicYears as year}
+									{#each academicYears as year (year.id)}
 										<option value={year.name}>
 											{year.name}
 											{year.isActive === 1 ? '(Aktif)' : ''}
@@ -827,7 +827,7 @@
 											</div>
 										</div>
 										<ul class="space-y-1 pl-4 text-sm text-red-700">
-											{#each graduationResult.failed as f}
+											{#each graduationResult.failed as f, i (i)}
 												<li class="flex items-start gap-2">
 													<span class="mt-1.5 h-1 w-1 flex-shrink-0 rounded-md bg-red-400"></span>
 													{f.name || f.studentId}: {f.error}

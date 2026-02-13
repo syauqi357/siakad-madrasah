@@ -208,7 +208,6 @@
 
 <div class="mx-auto w-full max-w-full space-y-6 p-6">
 	<!-- Top Nav -->
-	<div class="flex items-center justify-between">
 		<button
 			on:click={backToMain}
 			class="group flex items-center gap-2 rounded-full border border-blue-200 px-5 py-1.5 text-sm font-medium text-blue-600 transition-all hover:border-blue-300 hover:bg-blue-50"
@@ -216,11 +215,12 @@
 			<span class="transition-transform group-hover:-translate-x-1.5"><ArrowLeft /></span>
 			Kembali
 		</button>
+	<div class="flex items-center justify-between">
 
 		{#if rombelData}
 			<button
 				on:click={openAddPanel}
-				class="flex items-center gap-2 rounded-full bg-blue-600 px-5 py-2 text-sm font-medium text-white shadow-sm transition-all hover:bg-blue-700 hover:shadow-md"
+				class="flex items-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition-all hover:bg-blue-700 hover:shadow-md"
 			>
 				<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 					<path
@@ -325,8 +325,8 @@
 					? 'border-emerald-500 ring-2 ring-emerald-500/10'
 					: 'border-transparent'}"
 			>
-				<div class="flex items-center gap-2.5">
-					<div class="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-100">
+				<span class="flex items-center gap-2.5">
+					<span class="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-100">
 						<svg
 							class="h-4 w-4 text-emerald-600"
 							fill="none"
@@ -340,14 +340,14 @@
 								d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
 							/>
 						</svg>
-					</div>
-					<div>
+					</span>
+					<span>
 						<span class="block text-[11px] font-semibold tracking-wide text-slate-400 uppercase"
 							>Aktif</span
 						>
 						<span class="text-xl font-bold text-slate-800">{activeCount}</span>
-					</div>
-				</div>
+					</span>
+				</span>
 			</button>
 
 			<button
@@ -355,8 +355,8 @@
 				class="rounded-xl border-2 bg-white p-5 text-left transition-all hover:shadow-sm
 					{statusFilter === 'MUTASI' ? 'border-amber-500 ring-2 ring-amber-500/10' : 'border-transparent'}"
 			>
-				<div class="flex items-center gap-2.5">
-					<div class="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-100">
+				<span class="flex items-center gap-2.5">
+					<span class="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-100">
 						<svg
 							class="h-4 w-4 text-amber-600"
 							fill="none"
@@ -370,14 +370,14 @@
 								d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
 							/>
 						</svg>
-					</div>
-					<div>
+					</span>
+					<span>
 						<span class="block text-[11px] font-semibold tracking-wide text-slate-400 uppercase"
 							>Mutasi</span
 						>
 						<span class="text-xl font-bold text-slate-800">{mutasiCount}</span>
-					</div>
-				</div>
+					</span>
+				</span>
 			</button>
 
 			<button
@@ -385,8 +385,8 @@
 				class="rounded-xl border-2 bg-white p-5 text-left transition-all hover:shadow-sm
 					{statusFilter === 'GRADUATE' ? 'border-blue-500 ring-2 ring-blue-500/10' : 'border-transparent'}"
 			>
-				<div class="flex items-center gap-2.5">
-					<div class="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-100">
+				<span class="flex items-center gap-2.5">
+					<span class="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-100">
 						<svg
 							class="h-4 w-4 text-blue-600"
 							fill="none"
@@ -400,14 +400,14 @@
 								d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"
 							/>
 						</svg>
-					</div>
-					<div>
+					</span>
+					<span>
 						<span class="block text-[11px] font-semibold tracking-wide text-slate-400 uppercase"
 							>Lulus</span
 						>
 						<span class="text-xl font-bold text-slate-800">{graduateCount}</span>
-					</div>
-				</div>
+					</span>
+				</span>
 			</button>
 		</div>
 
@@ -587,7 +587,7 @@
 										<div class="flex items-center gap-3">
 											<div
 												class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-bold
-												{student.gender === 'L' || student.gender === 'Laki-laki'
+												{student.gender?.toLowerCase().startsWith('l')
 													? 'bg-blue-50 text-blue-600'
 													: 'bg-pink-50 text-pink-600'}"
 											>
@@ -602,11 +602,11 @@
 									<td class="px-5 py-3.5">
 										<span
 											class="rounded-md px-2 py-0.5 text-[11px] font-medium
-											{student.gender === 'L' || student.gender === 'Laki-laki'
+											{student.gender?.toLowerCase().startsWith('l')
 												? 'bg-blue-50 text-blue-600'
 												: 'bg-pink-50 text-pink-600'}"
 										>
-											{student.gender === 'L' || student.gender === 'Laki-laki'
+											{student.gender?.toLowerCase().startsWith('l')
 												? 'Laki-laki'
 												: 'Perempuan'}
 										</span>
@@ -805,10 +805,10 @@
 									on:change={() => toggleNewStudent(student.id)}
 									class="h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500 disabled:cursor-not-allowed"
 								/>
-								<div class="flex-1">
-									<p class="text-sm font-medium text-slate-800 capitalize">{student.name}</p>
-									<p class="text-xs text-slate-400">{student.nisn}</p>
-								</div>
+								<span class="flex-1">
+									<span class="text-sm font-medium text-slate-800 capitalize">{student.name}</span>
+									<span class="text-xs text-slate-400">{student.nisn}</span>
+								</span>
 							</label>
 						{/each}
 					</div>

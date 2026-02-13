@@ -390,7 +390,7 @@
 								class="rounded-lg border border-emerald-200 bg-white px-3 py-1.5 text-sm font-semibold text-emerald-800 transition-colors focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 focus:outline-none print:hidden"
 							>
 								<option value="">Pilih predikat</option>
-								{#each gradeOptions as grade}
+								{#each gradeOptions as grade (grade)}
 									<option value={grade}>{grade}</option>
 								{/each}
 							</select>
@@ -408,7 +408,7 @@
 						<h2 class="font-semibold text-slate-800">Nilai Akhir</h2>
 					</div>
 					<div class="grid gap-3 p-6 md:grid-cols-2 lg:grid-cols-3">
-						{#each Object.entries(parsedScores) as [subject, score]}
+						{#each Object.entries(parsedScores) as [subject, score] (subject)}
 							<div
 								class="flex items-center justify-between rounded-md border border-slate-100 bg-slate-50 p-3 print:border-slate-200"
 							>

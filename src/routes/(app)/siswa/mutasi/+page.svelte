@@ -306,7 +306,7 @@
 							Prev
 						</button>
 						<div class="flex items-center gap-1">
-							{#each Array(Math.min(totalPages, 5)) as _, idx}
+							{#each Array(Math.min(totalPages, 5)) as _, idx(idx)}
 								{@const pageNum = idx + 1}
 								<button
 									on:click={() => handlePageChange(pageNum)}

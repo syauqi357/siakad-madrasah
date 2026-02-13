@@ -163,7 +163,7 @@
 					</button>
 				</div>
 				<div class="space-y-0.5">
-					{#each data.docs as doc}
+					{#each data.docs as doc (doc.filename)}
 						<button
 							on:click={() => selectDoc(doc)}
 							class="flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-left transition-colors
@@ -206,7 +206,7 @@
 							Dokumen
 						</p>
 						<nav class="space-y-0.5">
-							{#each data.docs as doc}
+							{#each data.docs as doc (doc.filename)}
 								<button
 									on:click={() => selectDoc(doc)}
 									class="group flex w-full items-center gap-2 rounded-md px-2.5 py-2 text-left text-sm transition-colors
@@ -242,7 +242,7 @@
 								Daftar Isi
 							</p>
 							<nav class="space-y-0.5">
-								{#each tableOfContents as item}
+								{#each tableOfContents as item (item.id)}
 									<button
 										on:click={() => scrollToHeading(item.id)}
 										class="block w-full truncate rounded-md px-2.5 py-1.5 text-left text-sm transition-colors hover:bg-slate-100

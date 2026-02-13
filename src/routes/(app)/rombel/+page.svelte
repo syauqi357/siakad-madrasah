@@ -272,7 +272,7 @@
 	{:else}
 		<!-- Grid -->
 		<div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
-			{#each rombelData as rombel}
+			{#each rombelData as rombel (rombel.id)}
 				<div
 					class="group flex flex-col overflow-hidden rounded-lg border border-slate-200 bg-white transition-colors hover:border-blue-300"
 				>
@@ -283,22 +283,22 @@
 						class="flex flex-1 cursor-pointer flex-col p-6 text-left"
 					>
 						<!-- Header: Name + Tingkat Badge -->
-						<div class="flex items-start justify-between gap-3">
-							<div class="min-w-0 flex-1">
-								<h3 class="text-2xl font-semibold text-slate-800">{rombel.namaRombel}</h3>
-								<p class="mt-1 text-sm text-slate-500">{rombel.tingkat || '-'}</p>
-							</div>
+						<span class="flex items-start justify-between gap-3">
+							<span class="flex min-w-0 flex-col">
+								<span class="text-2xl font-semibold text-slate-800">{rombel.namaRombel}</span>
+								<span class="mt-1 text-sm text-slate-500">{rombel.tingkat || '-'}</span>
+							</span>
 							<span
 								class="shrink-0 rounded bg-blue-100 px-2.5 py-1.5 text-xs font-medium text-blue-700"
 							>
 								ID: {rombel.id}
 							</span>
-						</div>
+						</span>
 
 						<!-- Info Grid - Structured Data -->
-						<div class="mt-5 space-y-3">
+						<span class="mt-5 space-y-3">
 							<!-- Wali Kelas -->
-							<div class="flex items-start gap-2.5">
+							<span class="flex items-start gap-2.5">
 								<svg
 									class="mt-0.5 h-5 w-5 shrink-0 text-slate-400"
 									fill="none"
@@ -312,16 +312,16 @@
 										d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
 									/>
 								</svg>
-								<div class="min-w-0 flex-1">
-									<p class="text-xs font-medium text-slate-500">Wali Kelas</p>
-									<p class="mt-0.5 text-sm font-medium text-slate-700 capitalize">
+								<span class="flex min-w-0 flex-col">
+									<span class="text-xs font-medium text-slate-500">Wali Kelas</span>
+									<span class="mt-0.5 text-sm font-medium text-slate-700 capitalize">
 										{rombel.waliKelas || 'Belum ditentukan'}
-									</p>
-								</div>
-							</div>
+									</span>
+								</span>
+							</span>
 
 							<!-- Ruangan -->
-							<div class="flex items-start gap-2.5">
+							<span class="flex items-start gap-2.5">
 								<svg
 									class="mt-0.5 h-5 w-5 shrink-0 text-slate-400"
 									fill="none"
@@ -335,16 +335,16 @@
 										d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
 									/>
 								</svg>
-								<div class="min-w-0 flex-1">
-									<p class="text-xs font-medium text-slate-500">Ruangan</p>
-									<p class="mt-0.5 text-sm font-medium text-slate-700">
+								<span class="flex min-w-0 flex-col">
+									<span class="text-xs font-medium text-slate-500">Ruangan</span>
+									<span class="mt-0.5 text-sm font-medium text-slate-700">
 										{rombel.ruangan || 'Tidak ditentukan'}
-									</p>
-								</div>
-							</div>
+									</span>
+								</span>
+							</span>
 
 							<!-- Kurikulum -->
-							<div class="flex items-start gap-2.5">
+							<span class="flex items-start gap-2.5">
 								<svg
 									class="mt-0.5 h-5 w-5 shrink-0 text-slate-400"
 									fill="none"
@@ -358,19 +358,19 @@
 										d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
 									/>
 								</svg>
-								<div class="min-w-0 flex-1">
-									<p class="text-xs font-medium text-slate-500">Kurikulum</p>
-									<p class="mt-0.5 text-sm font-medium text-slate-700">
+								<span class="flex min-w-0 flex-col">
+									<span class="text-xs font-medium text-slate-500">Kurikulum</span>
+									<span class="text-md mt-0.5 font-bold text-slate-700">
 										{rombel.kurikulum || 'Tidak ditentukan'}
-									</p>
-								</div>
-							</div>
-						</div>
+									</span>
+								</span>
+							</span>
+						</span>
 
 						<!-- Student Count Section -->
-						<div class="mt-5 rounded-md border border-slate-200 bg-slate-50 p-4">
-							<div class="flex items-center justify-between">
-								<div class="flex items-center gap-2">
+						<span class="mt-5 rounded-md border border-slate-200 bg-slate-50 p-4">
+							<span class="flex items-center justify-between">
+								<span class="flex items-center gap-2">
 									<svg
 										class="h-5 w-5 text-slate-500"
 										fill="none"
@@ -385,12 +385,12 @@
 										/>
 									</svg>
 									<span class="text-sm font-medium text-slate-600">Jumlah Siswa</span>
-								</div>
-								<div class="flex items-baseline gap-1">
+								</span>
+								<span class="flex items-baseline gap-1">
 									<span class="text-xl font-bold text-slate-800">{rombel.totalSiswa}</span>
 									<span class="text-sm text-slate-500">/ {rombel.kapasitas}</span>
-								</div>
-							</div>
+								</span>
+							</span>
 							<!-- Progress Bar -->
 							<div class="mt-2.5 h-2 w-full overflow-hidden rounded-full bg-slate-200">
 								<div
@@ -415,7 +415,7 @@
 										? 'Belum ada siswa'
 										: `${Math.round((rombel.totalSiswa / rombel.kapasitas) * 100)}% terisi`}
 							</p>
-						</div>
+						</span>
 					</button>
 
 					<!-- Actions -->
@@ -487,11 +487,7 @@
 />
 
 <!-- Error Alert Modal -->
-<ModalAlert
-	bind:show={showErrorAlert}
-	type="error"
-	message={errorAlertMessage}
-/>
+<ModalAlert bind:show={showErrorAlert} type="error" message={errorAlertMessage} />
 
 <!-- Subject Select Modal Component -->
 <SubjectSelectModal

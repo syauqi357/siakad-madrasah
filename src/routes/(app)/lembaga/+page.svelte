@@ -32,6 +32,10 @@
 	// Original data for cancel
 	let originalData = { ...formData };
 
+	interface akreditasiOptions {
+		id: string;
+	}
+
 	const akreditasiOptions = ['A', 'B', 'C', 'Belum Terakreditasi'];
 
 	onMount(async () => {
@@ -487,7 +491,7 @@
 							required
 							class="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm transition-colors focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-500"
 						>
-							{#each akreditasiOptions as option}
+							{#each akreditasiOptions as option (option)}
 								<option value={option}>{option}</option>
 							{/each}
 						</select>

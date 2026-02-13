@@ -215,7 +215,7 @@
 							class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-700 transition-colors outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
 						>
 							<option value="" disabled>Pilih Tahun Ajaran</option>
-							{#each academicYears as ay}
+							{#each academicYears as ay (ay.id)}
 								<option value={ay.id}>{ay.name} {ay.isActive === 1 ? '(Aktif)' : ''}</option>
 							{/each}
 						</select>
@@ -245,7 +245,7 @@
 								class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-700 transition-colors outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
 							>
 								<option value="" disabled>Pilih Tingkat</option>
-								{#each classes as cls}
+								{#each classes as cls (cls.id)}
 									<option value={cls.id}>{cls.className}</option>
 								{/each}
 							</select>
@@ -262,7 +262,7 @@
 							class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-700 transition-colors outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
 						>
 							<option value="" disabled>Pilih Wali Kelas</option>
-							{#each teachers as teacher}
+							{#each teachers as teacher (teacher.id)}
 								<option value={teacher.id}>{teacher.fullName}</option>
 							{/each}
 						</select>
@@ -290,7 +290,7 @@
 								class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-700 transition-colors outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
 							>
 								<option value="" disabled>Pilih Kurikulum</option>
-								{#each curricula as curr}
+								{#each curricula as curr(curr.id)}
 									<option value={curr.id}
 										>{curr.name} ({curr.code}) {curr.isActive === 1 ? '- Aktif' : ''}</option
 									>
@@ -406,7 +406,7 @@
 									</td>
 								</tr>
 							{:else}
-								{#each students as student, i}
+								{#each students as student, i(student.id)}
 									<tr class="transition-colors hover:bg-slate-50">
 										<td class="px-4 py-2.5 text-center">
 											<input

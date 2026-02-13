@@ -20,6 +20,18 @@
 		personalEmail: ''
 	};
 
+	interface teacherData {
+		id: number;
+		nip: string;
+		fullName: string;
+		gender: string;
+		birthPlace: string;
+		birthDate: string;
+		religion: string;
+		phoneNumber: string;
+		personalEmail: string;
+	}
+
 	let isLoading = false;
 
 	// Modal state
@@ -33,7 +45,7 @@
 	let deleteTargetName = '';
 
 	// Teacher list
-	let teachers: any[] = [];
+	let teachers: teacherData[] = [];
 	let loadingTeachers = true;
 
 	onMount(() => {
@@ -121,7 +133,7 @@
 		editingId = null;
 	}
 
-	function handleEdit(teacher: any) {
+	function handleEdit(teacher: teacherData) {
 		formData = {
 			nip: teacher.nip || '',
 			fullName: teacher.fullName || '',
@@ -280,8 +292,8 @@
 								<thead class="bg-gray-50 text-xs text-gray-700 uppercase">
 									<tr>
 										<th scope="col" class="px-6 py-3 font-medium">No</th>
-										<th scope="col" class="px-6 py-3 font-medium">NIP</th>
 										<th scope="col" class="px-6 py-3 font-medium">Nama</th>
+										<th scope="col" class="px-6 py-3 font-medium">NIP</th>
 										<th scope="col" class="px-6 py-3 font-medium">L/P</th>
 										<th scope="col" class="px-6 py-3 font-medium">No. Telepon</th>
 										<th scope="col" class="px-6 py-3 font-medium">Email</th>
@@ -289,7 +301,7 @@
 									</tr>
 								</thead>
 								<tbody class="divide-y divide-gray-200">
-									{#each teachers as teacher, i}
+									{#each teachers as teacher, i (teacher.id)}
 										<tr class="transition-colors duration-150 hover:bg-gray-50">
 											<td class="px-6 py-4 font-medium text-gray-900">{i + 1}</td>
 											<td class="px-6 py-4 font-medium text-gray-900">{teacher.fullName}</td>

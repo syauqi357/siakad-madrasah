@@ -7,7 +7,8 @@
 	"scripts": {
 		"dev": "nodemon app.js",
 		"start": "node app.js",
-		"seed": "",
+		"seed": "node utils/seedFile/seedMapelKurikulum.js",
+		"db:seed": "node utils/seedFile/seedMapelKurikulum.js",
 		"build": "tsc",
 		"test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
 		"db:generate": "drizzle-kit generate",
