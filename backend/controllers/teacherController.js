@@ -103,6 +103,22 @@ export const updateTeacher = (req, res) => {
 	}
 };
 
+// GET /api/teachers/count - Get teacher count
+export const getTeacherCount = (req, res) => {
+	try {
+		const result = teacherService.countTeacher();
+		res.status(200).json({
+			success: true,
+			data: { count: result.count }
+		});
+	} catch (error) {
+		res.status(500).json({
+			success: false,
+			message: 'Failed to get teacher count: ' + error.message
+		});
+	}
+};
+
 // DELETE /api/teachers/:id - Delete teacher
 export const deleteTeacher = (req, res) => {
 	try {

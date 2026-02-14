@@ -30,8 +30,14 @@
 				studentCount = data.count;
 			}
 
-			// 3. Fetch Teacher Count (Placeholder for now)
-			teacherCount = 89;
+			const teacherResCount = await API_FETCH('/routes/api/teachers/count');
+			if (teacherResCount.ok){
+				const teacherCountResult = await teacherResCount.json();
+				teacherCount = teacherCountResult.data.count;
+			}
+
+
+
 
 			// 4. Fetch Class Count (Placeholder for now)
 			classCount = 32;
@@ -58,7 +64,7 @@
 
 <div class=" w-full px-6 py-4">
 	<div class=" py-6">
-		<h1 class="text-3xl font-bold text-gray-900">Dashboard</h1>
+		<h1 class="text-3xl font-bold text-blue-700">Dashboard</h1>
 		<p class="mt-2 text-gray-600">Welcome to {schoolName} Education Platform</p>
 	</div>
 
@@ -82,7 +88,7 @@
 			{loading}
 			icon={teacherIcon}
 			iconBg="bg-purple-100"
-			change="+5%"
+			change=""
 			changeColor="text-green-600"
 		/>
 

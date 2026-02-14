@@ -32,16 +32,18 @@
 				"arch": ["x64"]
 			}
 		],
-		"icon": "build-resources/iconsiakad-01.ico",
+		"icon": "build-resources/icon.ico",
 		"signAndEditExecutable": false
 	},
 	"forceCodeSigning": false,
+	"afterPack": "./afterPack.cjs",
 	"nsis": {
 		"oneClick": false,
 		"allowToChangeInstallationDirectory": true,
 		"createDesktopShortcut": true,
 		"createStartMenuShortcut": true,
-		"shortcutName": "Platform SIAKAD Madrasah"
+		"shortcutName": "Platform SIAKAD Madrasah",
+		"include": "build-resources/uninstaller.nsh"
 	},
 	"mac": {
 		"target": ["dmg", "zip"],

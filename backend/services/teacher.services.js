@@ -1,6 +1,6 @@
 import { db } from '../src/index.js';
 import { teachers } from '../src/db/schema/teacherUser.js';
-import { eq } from 'drizzle-orm';
+import { eq, count } from 'drizzle-orm';
 
 /**
  * Fetches a lightweight list of all teachers (id and full name).
@@ -94,5 +94,10 @@ export const deleteTeacher = (id) => {
 
 	const result = db.delete(teachers).where(eq(teachers.id, id)).returning().all();
 
+	return result[0];
+};
+
+export const countTeacher = () => {
+	const result = db.select({ count: count() }).from(teachers).all();
 	return result[0];
 };

@@ -3,6 +3,7 @@ import {
 	getTeachersList,
 	getTeachers,
 	getTeacher,
+	getTeacherCount,
 	createTeacher,
 	updateTeacher,
 	deleteTeacher
@@ -12,6 +13,9 @@ const router = express.Router();
 
 // GET /api/teachers - Get all teachers (full details)
 router.get('/', getTeachers);
+
+// GET /api/teachers/count - Get teacher count
+router.get('/count', getTeacherCount);
 
 // GET /api/teachers/list - Get lightweight list (id + fullName only)
 router.get('/list', getTeachersList);

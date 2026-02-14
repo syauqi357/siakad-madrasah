@@ -65,6 +65,22 @@ Output files will be in `backend/dist-electron/`.
 | `electron/main.js` | Electron main process - starts Express server and creates window |
 | `electron/preload.cjs` | Secure IPC bridge for renderer (CommonJS) |
 | `electron-builder.json` | Build configuration for packaging |
+| `afterPack.cjs` | Post-pack hook - replaces .exe icon using `rcedit` |
+| `build-resources/uninstaller.nsh` | Custom NSIS uninstall script - prompts user to delete app data |
+
+## Custom Icon (afterPack.cjs)
+
+The default `signAndEditExecutable` in electron-builder fails on Windows due to `winCodeSign` symlink permission errors. To work around this:
+
+- `signAndEditExecutable` is set to `false` in `electron-builder.json`
+- `afterPack.cjs` runs after packaging and uses the `rcedit` package to replace the default Electron icon in the `.exe` with `build-resources/icon.ico`
+- The `rcedit` dev dependency is required (`npm install --save-dev rcedit`)
+
+**To change the app icon:** replace `backend/build-resources/icon.ico` with your new `.ico` file (must be a valid multi-size ICO, not a renamed PNG).
+
+## Uninstaller Data Cleanup (uninstaller.nsh)
+
+By default, NSIS does not remove user data (`%APPDATA%/SIAKAD Madrasah/`) on uninstall. The custom `build-resources/uninstaller.nsh` script adds a prompt during uninstall asking the user (in Indonesian) whether to delete their app data (database, settings) or keep it.
 
 ## Native Module Notes
 
