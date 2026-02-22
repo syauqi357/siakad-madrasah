@@ -8,6 +8,9 @@ import { sqliteTable, int, text } from 'drizzle-orm/sqlite-core';
  *               kamar_mandi, kantor, kelas, lab, lapangan, masjid, parking_lot
  *
  * subFolder: untuk lab saja (lab_Ipa, lab_komputer, lab_multimedia), null untuk lainnya
+ *
+ * buildingId: optional link ke buildings_school table,
+ *             menghubungkan foto fasilitas dengan data aset tetap
  */
 export const schoolFacilitiesTable = sqliteTable('school_facilities', {
 	id: int().primaryKey({ autoIncrement: true }),
@@ -16,6 +19,7 @@ export const schoolFacilitiesTable = sqliteTable('school_facilities', {
 	imagePath: text().notNull(), // '/upload/imageSch/canteen/image1.jpg'
 	caption: text(), // optional: deskripsi gambar
 	displayOrder: int().default(0), // untuk sorting tampilan
+	buildingId: int(), // optional: references buildings_school.id
 	createdAt: int().default(Date.now()) // timestamp
 });
 
@@ -29,6 +33,7 @@ export const schoolFacilitiesTable = sqliteTable('school_facilities', {
  *   "imagePath": "/upload/imageSch/canteen/kantin1.jpg",
  *   "caption": "Kantin utama",
  *   "displayOrder": 0,
+ *   "buildingId": null,
  *   "createdAt": 1706234567890
  * }
  *
@@ -39,6 +44,7 @@ export const schoolFacilitiesTable = sqliteTable('school_facilities', {
  *   "imagePath": "/upload/imageSch/lab/lab_komputer/komputer1.jpg",
  *   "caption": "Lab Komputer",
  *   "displayOrder": 0,
+ *   "buildingId": 5,
  *   "createdAt": 1706234567890
  * }
  */

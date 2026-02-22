@@ -17,6 +17,7 @@ import graduateRouter from './routes/api/graduate.js'; // Import graduateRouter
 import promotionRouter from './routes/api/promotion.js'; // Import promotionRouter
 import academicYearRouter from './routes/api/academicYear.js'; // Import academicYearRouter
 import curriculumRouter from './routes/api/curriculum.js'; // Import curriculumRouter
+import buildingsSchoolRouter from './routes/api/buildingsSchool.js'; // Import buildingsSchoolRouter
 import { auditLog } from './middlewares/middlewareAudit.js';
 import { GLOBAL_RATE_LIMIT } from './middlewares/globalRatelimit/rateLimiter.js';
 // import { speedLimit } from './middlewares/throttleFeat/throttleLimit.js'; // MIDDLEWARE RATE LIMIT, THROTTLE and AUDIT LOGS
@@ -108,6 +109,9 @@ app.use('/routes/api/academic-years', academicYearRouter);
 
 // 15. Curriculum: /routes/api/curriculum
 app.use('/routes/api/curriculum', curriculumRouter);
+
+// 16. Buildings & Fixed Assets: /routes/api/buildings-school
+app.use('/routes/api/buildings-school', buildingsSchoolRouter);
 
 // For Single Page Applications (SPAs) with client-side routing,
 // serve index.html for all non-API routes

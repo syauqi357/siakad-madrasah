@@ -17,6 +17,7 @@ import {
 	classSubjectsRelations
 } from './db/schema/relations.js';
 import { schoolFacilitiesTable } from './db/schema/schoolFacilities.js';
+import { buildingsSchoolTable } from './db/schema/buildingsSchool.js';
 
 // Get database path - supports both regular Node and Electron environments
 function getDatabasePath() {
@@ -52,5 +53,6 @@ export {
 	classesRelations,
 	rombelRelations,
 	classSubjectsRelations,
-	schoolFacilitiesTable
+	schoolFacilitiesTable,
+	buildingsSchoolTable
 };
