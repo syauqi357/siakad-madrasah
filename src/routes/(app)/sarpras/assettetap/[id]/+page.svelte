@@ -1,9 +1,8 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import { API_FETCH } from '$lib/api';
-	import { onMount } from 'svelte';
+	import ModalAlert from '$lib/components/modal/modalalert.svelte';
 
-	// Same subcategory map as parent page - static labels
 	const SUBCATEGORIES: Record<number, { name: string; items: string[] }> = {
 		1: {
 			name: 'Tanah dan Bangunan',
@@ -54,31 +53,42 @@
 		updatedAt: number;
 	}
 
-	// Parse route param: "1-0" -> categoryId=1, itemIndex=0
-	let categoryId = 0;
-	let itemIndex = 0;
-	let categoryName = '';
-	let subcategoryName = '';
+	// Derived from route param: "1-0" -> categoryId=1, itemIndex=0
+	let categoryId = $derived(parseInt(page.params.id?.split('-')[0] ?? '0') || 0);
+	let itemIndex = $derived(parseInt(page.params.id?.split('-')[1] ?? '0') || 0);
+	let categoryName = $derived(SUBCATEGORIES[categoryId]?.name ?? '');
+	let subcategoryName = $derived(SUBCATEGORIES[categoryId]?.items[itemIndex] ?? '');
 
-	$: {
-		const parts = $page.params.id.split('-');
-		categoryId = parseInt(parts[0]);
-		itemIndex = parseInt(parts[1]);
-		const cat = SUBCATEGORIES[categoryId];
-		categoryName = cat?.name || '';
-		subcategoryName = cat?.items[itemIndex] || '';
+	let assets = $state<BuildingAsset[]>([]);
+	let loading = $state(true);
+	let submitting = $state(false);
+
+	// Modal alert state
+	let alertShow = $state(false);
+	let alertType = $state<'success' | 'error' | 'warning' | 'info'>('success');
+	let alertMessage = $state('');
+	let alertShowCancel = $state(false);
+	let alertConfirmText = $state('OK');
+	let pendingDeleteId = $state<number | null>(null);
+
+	function showAlert(
+		type: 'success' | 'error' | 'warning' | 'info',
+		message: string,
+		showCancel = false,
+		confirmText = 'OK'
+	) {
+		// Clear stale pending delete when showing a non-delete alert
+		if (!showCancel) pendingDeleteId = null;
+		alertType = type;
+		alertMessage = message;
+		alertShowCancel = showCancel;
+		alertConfirmText = confirmText;
+		alertShow = true;
 	}
 
-	let assets: BuildingAsset[] = [];
-	let loading = true;
-	let submitting = false;
-	let error = '';
-	let success = '';
-
-	// Form state
-	let isEditing = false;
-	let editId: number | null = null;
-	let form = {
+	let isEditing = $state(false);
+	let editId = $state<number | null>(null);
+	let form = $state({
 		name: '',
 		condition: 'baik',
 		quantity: 1,
@@ -87,19 +97,17 @@
 		location: '',
 		registrationNumber: '',
 		description: ''
-	};
+	});
 
 	function resetForm() {
-		form = {
-			name: '',
-			condition: 'baik',
-			quantity: 1,
-			acquisitionYear: null,
-			acquisitionValue: null,
-			location: '',
-			registrationNumber: '',
-			description: ''
-		};
+		form.name = '';
+		form.condition = 'baik';
+		form.quantity = 1;
+		form.acquisitionYear = null;
+		form.acquisitionValue = null;
+		form.location = '';
+		form.registrationNumber = '';
+		form.description = '';
 		isEditing = false;
 		editId = null;
 	}
@@ -107,22 +115,19 @@
 	function editAsset(asset: BuildingAsset) {
 		isEditing = true;
 		editId = asset.id;
-		form = {
-			name: asset.name,
-			condition: asset.condition,
-			quantity: asset.quantity,
-			acquisitionYear: asset.acquisitionYear,
-			acquisitionValue: asset.acquisitionValue,
-			location: asset.location || '',
-			registrationNumber: asset.registrationNumber || '',
-			description: asset.description || ''
-		};
+		form.name = asset.name;
+		form.condition = asset.condition;
+		form.quantity = asset.quantity;
+		form.acquisitionYear = asset.acquisitionYear;
+		form.acquisitionValue = asset.acquisitionValue;
+		form.location = asset.location ?? '';
+		form.registrationNumber = asset.registrationNumber ?? '';
+		form.description = asset.description ?? '';
 		document.getElementById('asset-form')?.scrollIntoView({ behavior: 'smooth' });
 	}
 
 	async function fetchAssets() {
 		loading = true;
-		error = '';
 		try {
 			const encoded = encodeURIComponent(subcategoryName);
 			const response = await API_FETCH(
@@ -130,22 +135,22 @@
 			);
 			if (!response.ok) throw new Error('Failed to load');
 			assets = await response.json();
-		} catch (e) {
-			error = 'Gagal memuat data aset';
+		} catch {
+			showAlert('error', 'Gagal memuat data aset');
 		} finally {
 			loading = false;
 		}
 	}
 
-	async function handleSubmit() {
+	async function handleSubmit(e: SubmitEvent) {
+		e.preventDefault();
+
 		if (!form.name.trim()) {
-			error = 'Nama aset wajib diisi';
+			showAlert('warning', 'Nama aset wajib diisi');
 			return;
 		}
 
 		submitting = true;
-		error = '';
-		success = '';
 
 		try {
 			const url = isEditing
@@ -154,9 +159,11 @@
 			const method = isEditing ? 'PUT' : 'POST';
 
 			const payload = {
-				...form,
+				name: form.name,
 				categoryId,
 				subcategory: subcategoryName,
+				condition: form.condition,
+				quantity: form.quantity,
 				acquisitionYear: form.acquisitionYear || null,
 				acquisitionValue: form.acquisitionValue || null,
 				location: form.location || null,
@@ -171,30 +178,47 @@
 
 			if (!response.ok) throw new Error('Failed to save');
 
-			success = isEditing ? 'Aset berhasil diperbarui' : 'Aset berhasil ditambahkan';
+			showAlert('success', isEditing ? 'Aset berhasil diperbarui' : 'Aset berhasil ditambahkan');
 			resetForm();
 			await fetchAssets();
-		} catch (e) {
-			error = 'Gagal menyimpan data aset';
+		} catch {
+			showAlert('error', 'Gagal menyimpan data aset');
 		} finally {
 			submitting = false;
 		}
 	}
 
-	async function deleteAsset(id: number) {
-		if (!confirm('Yakin ingin menghapus aset ini?')) return;
+	function confirmDeleteAsset(id: number) {
+		pendingDeleteId = id;
+		showAlert('warning', 'Yakin ingin menghapus aset ini?', true, 'Hapus');
+	}
+
+	async function executeDelete() {
+		if (pendingDeleteId === null) return;
+		const id = pendingDeleteId;
+		pendingDeleteId = null;
 
 		try {
 			const response = await API_FETCH(`/routes/api/buildings-school/${id}`, {
 				method: 'DELETE'
 			});
 			if (!response.ok) throw new Error('Failed to delete');
-			success = 'Aset berhasil dihapus';
+			showAlert('success', 'Aset berhasil dihapus');
 			if (editId === id) resetForm();
 			await fetchAssets();
-		} catch (e) {
-			error = 'Gagal menghapus aset';
+		} catch {
+			showAlert('error', 'Gagal menghapus aset');
 		}
+	}
+
+	function handleAlertConfirm() {
+		if (pendingDeleteId !== null) {
+			executeDelete();
+		}
+	}
+
+	function handleAlertCancel() {
+		pendingDeleteId = null;
 	}
 
 	function formatCurrency(value: number | null): string {
@@ -220,7 +244,8 @@
 		return map[c] || 'bg-slate-100 text-slate-600';
 	}
 
-	onMount(() => {
+	// Fetch on mount and when navigating between subcategories
+	$effect(() => {
 		if (subcategoryName) fetchAssets();
 	});
 </script>
@@ -229,7 +254,7 @@
 	<!-- Header -->
 	<div>
 		<button
-			on:click={() => history.back()}
+			onclick={() => history.back()}
 			class="mb-2 inline-flex items-center gap-1 text-sm text-slate-500 hover:text-slate-700"
 		>
 			<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -241,46 +266,17 @@
 		<p class="mt-1 text-sm text-slate-500">{categoryName}</p>
 	</div>
 
-	<!-- Alerts -->
-	{#if error}
-		<div class="flex items-center justify-between rounded-lg bg-red-50 px-4 py-3">
-			<p class="text-sm text-red-600">{error}</p>
-			<button
-				on:click={() => (error = '')}
-				class="text-red-400 hover:text-red-600"
-				aria-label="Close"
-			>
-				<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-					<path
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke-width="2"
-						d="M6 18L18 6M6 6l12 12"
-					/>
-				</svg>
-			</button>
-		</div>
-	{/if}
-
-	{#if success}
-		<div class="flex items-center justify-between rounded-lg bg-green-50 px-4 py-3">
-			<p class="text-sm text-green-600">{success}</p>
-			<button
-				on:click={() => (success = '')}
-				class="text-green-400 hover:text-green-600"
-				aria-label="Close"
-			>
-				<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-					<path
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke-width="2"
-						d="M6 18L18 6M6 6l12 12"
-					/>
-				</svg>
-			</button>
-		</div>
-	{/if}
+	<!-- Modal Alert -->
+	<ModalAlert
+		bind:show={alertShow}
+		type={alertType}
+		message={alertMessage}
+		showCancel={alertShowCancel}
+		confirmText={alertConfirmText}
+		on:confirm={handleAlertConfirm}
+		on:cancel={handleAlertCancel}
+		on:close={handleAlertCancel}
+	/>
 
 	<div class="grid gap-6 lg:grid-cols-3">
 		<!-- Form Section -->
@@ -290,7 +286,7 @@
 					{isEditing ? 'Edit Aset' : 'Tambah Aset'}
 				</h2>
 
-				<form on:submit|preventDefault={handleSubmit} class="space-y-4">
+				<form onsubmit={handleSubmit} class="space-y-4">
 					<div>
 						<label for="name" class="mb-1 block text-sm font-medium text-slate-700">
 							Nama Aset <span class="text-red-500">*</span>
@@ -413,7 +409,7 @@
 						{#if isEditing}
 							<button
 								type="button"
-								on:click={resetForm}
+								onclick={resetForm}
 								class="rounded-md border border-slate-200 px-4 py-2 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-50"
 							>
 								Batal
@@ -501,7 +497,7 @@
 								</div>
 								<div class="ml-4 flex items-center gap-1">
 									<button
-										on:click={() => editAsset(asset)}
+										onclick={() => editAsset(asset)}
 										class="rounded p-2 text-slate-400 transition-colors hover:bg-slate-100 hover:text-blue-600"
 										title="Edit"
 									>
@@ -515,10 +511,10 @@
 										</svg>
 									</button>
 									<button
-										on:click={() => deleteAsset(asset.id)}
+										onclick={() => confirmDeleteAsset(asset.id)}
 										class="rounded p-2 text-slate-400 transition-colors hover:bg-red-50 hover:text-red-600"
 										title="Hapus"
-										aria-labelledby="Hapus"
+										aria-label="Hapus"
 									>
 										<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 											<path
