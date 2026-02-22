@@ -47,6 +47,10 @@
 		acquisitionValue: number | null;
 		location: string | null;
 		registrationNumber: string | null;
+		brand: string | null;
+		model: string | null;
+		serialNumber: string | null;
+		specifications: string | null;
 		description: string | null;
 		status: string;
 		createdAt: number;
@@ -96,6 +100,10 @@
 		acquisitionValue: null as number | null,
 		location: '',
 		registrationNumber: '',
+		brand: '',
+		model: '',
+		serialNumber: '',
+		specifications: '',
 		description: ''
 	});
 
@@ -107,6 +115,10 @@
 		form.acquisitionValue = null;
 		form.location = '';
 		form.registrationNumber = '';
+		form.brand = '';
+		form.model = '';
+		form.serialNumber = '';
+		form.specifications = '';
 		form.description = '';
 		isEditing = false;
 		editId = null;
@@ -122,6 +134,10 @@
 		form.acquisitionValue = asset.acquisitionValue;
 		form.location = asset.location ?? '';
 		form.registrationNumber = asset.registrationNumber ?? '';
+		form.brand = asset.brand ?? '';
+		form.model = asset.model ?? '';
+		form.serialNumber = asset.serialNumber ?? '';
+		form.specifications = asset.specifications ?? '';
 		form.description = asset.description ?? '';
 		document.getElementById('asset-form')?.scrollIntoView({ behavior: 'smooth' });
 	}
@@ -168,6 +184,10 @@
 				acquisitionValue: form.acquisitionValue || null,
 				location: form.location || null,
 				registrationNumber: form.registrationNumber || null,
+				brand: form.brand || null,
+				model: form.model || null,
+				serialNumber: form.serialNumber || null,
+				specifications: form.specifications || null,
 				description: form.description || null
 			};
 
@@ -385,6 +405,63 @@
 						/>
 					</div>
 
+					<!-- Electronics-specific fields (categoryId === 2) -->
+					{#if categoryId === 2}
+						<div class="space-y-4 rounded-lg border border-blue-100 bg-blue-50/50 p-3">
+							<p class="text-xs font-medium text-blue-600">Detail Perangkat</p>
+							<div class="grid grid-cols-2 gap-3">
+								<div>
+									<label for="brand" class="mb-1 block text-sm font-medium text-slate-700">
+										Merek
+									</label>
+									<input
+										type="text"
+										id="brand"
+										bind:value={form.brand}
+										placeholder="HP, Lenovo, Epson..."
+										class="w-full rounded-md border border-slate-200 px-3 py-2 text-sm outline-none focus:border-blue-500"
+									/>
+								</div>
+								<div>
+									<label for="model" class="mb-1 block text-sm font-medium text-slate-700">
+										Model/Tipe
+									</label>
+									<input
+										type="text"
+										id="model"
+										bind:value={form.model}
+										placeholder="ProBook 450 G10..."
+										class="w-full rounded-md border border-slate-200 px-3 py-2 text-sm outline-none focus:border-blue-500"
+									/>
+								</div>
+							</div>
+							<div>
+								<label for="serialNumber" class="mb-1 block text-sm font-medium text-slate-700">
+									Nomor Seri
+								</label>
+								<input
+									type="text"
+									id="serialNumber"
+									bind:value={form.serialNumber}
+									placeholder="SN-XXXX-XXXX-XXXX"
+									class="w-full rounded-md border border-slate-200 px-3 py-2 text-sm outline-none focus:border-blue-500"
+								/>
+							</div>
+							<div>
+								<label for="specifications" class="mb-1 block text-sm font-medium text-slate-700">
+									Spesifikasi
+								</label>
+								<textarea
+									id="specifications"
+									bind:value={form.specifications}
+									placeholder="RAM 8GB, Intel i5, SSD 512GB..."
+									rows="2"
+									class="w-full resize-none rounded-md border border-slate-200 px-3 py-2 text-sm outline-none focus:border-blue-500"
+								></textarea>
+							</div>
+						</div>
+					{/if}
+
 					<div>
 						<label for="description" class="mb-1 block text-sm font-medium text-slate-700">
 							Keterangan
@@ -491,6 +568,22 @@
 											<span>Nilai: {formatCurrency(asset.acquisitionValue)}</span>
 										{/if}
 									</div>
+									{#if asset.brand || asset.model || asset.serialNumber}
+										<div class="mt-1 flex flex-wrap gap-x-3 text-xs text-blue-500">
+											{#if asset.brand}
+												<span>{asset.brand}</span>
+											{/if}
+											{#if asset.model}
+												<span>{asset.model}</span>
+											{/if}
+											{#if asset.serialNumber}
+												<span>SN: {asset.serialNumber}</span>
+											{/if}
+										</div>
+									{/if}
+									{#if asset.specifications}
+										<p class="mt-0.5 text-xs text-slate-400">{asset.specifications}</p>
+									{/if}
 									{#if asset.description}
 										<p class="mt-1 text-xs text-slate-400">{asset.description}</p>
 									{/if}

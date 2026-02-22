@@ -26,6 +26,10 @@ export const buildingsSchoolTable = sqliteTable('buildings_school', {
 	acquisitionValue: int(),
 	location: text(),
 	registrationNumber: text(),
+	brand: text(), // merek (untuk elektronik/TIK)
+	model: text(), // model/tipe
+	serialNumber: text(), // nomor seri
+	specifications: text(), // spesifikasi teknis (RAM, CPU, dll)
 	description: text(),
 	status: text().default('aktif'),
 	createdAt: int().default(Date.now()),
