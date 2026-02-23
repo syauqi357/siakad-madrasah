@@ -1,6 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
+  "id": "c584e638-2bdc-467a-9bd4-cabfb4702f86",
   "prevId": "2eb0dbbb-2fd1-4e76-b775-22abf1ef107e",
   "tables": {
     "academic_year": {
@@ -214,6 +215,147 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
+    "buildings_school": {
+      "name": "buildings_school",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "categoryId": {
+          "name": "categoryId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "subcategory": {
+          "name": "subcategory",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "condition": {
+          "name": "condition",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "'baik'"
+        },
+        "quantity": {
+          "name": "quantity",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": 1
+        },
+        "acquisitionYear": {
+          "name": "acquisitionYear",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "acquisitionValue": {
+          "name": "acquisitionValue",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "location": {
+          "name": "location",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "registrationNumber": {
+          "name": "registrationNumber",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "brand": {
+          "name": "brand",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "model": {
+          "name": "model",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "serialNumber": {
+          "name": "serialNumber",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "specifications": {
+          "name": "specifications",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "status": {
+          "name": "status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "'aktif'"
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": 1771726528033
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": 1771726528033
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
     "classes": {
       "name": "classes",
       "columns": {
@@ -375,6 +517,13 @@
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
+        },
+        "kurikulum": {
+          "name": "kurikulum",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
         }
       },
       "indexes": {
@@ -431,6 +580,67 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
+    "curriculum": {
+      "name": "curriculum",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "code": {
+          "name": "code",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "year": {
+          "name": "year",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "is_active": {
+          "name": "is_active",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": 0
+        }
+      },
+      "indexes": {
+        "curriculum_code_unique": {
+          "name": "curriculum_code_unique",
+          "columns": [
+            "code"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
     "rombel_students": {
       "name": "rombel_students",
       "columns": {
@@ -446,6 +656,21 @@
           "type": "integer",
           "primaryKey": false,
           "notNull": true,
+          "autoincrement": false
+        },
+        "is_active": {
+          "name": "is_active",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": true
+        },
+        "left_at": {
+          "name": "left_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
           "autoincrement": false
         }
       },
@@ -609,12 +834,20 @@
           "autoincrement": false,
           "default": 0
         },
+        "buildingId": {
+          "name": "buildingId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
         "createdAt": {
           "name": "createdAt",
           "type": "integer",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false,
+          "default": 1771726528068
         }
       },
       "indexes": {},
@@ -959,6 +1192,13 @@
             "student_id"
           ],
           "isUnique": true
+        },
+        "student_father_nik_unique": {
+          "name": "student_father_nik_unique",
+          "columns": [
+            "nik"
+          ],
+          "isUnique": true
         }
       },
       "foreignKeys": {
@@ -973,6 +1213,135 @@
             "id"
           ],
           "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "student_history": {
+      "name": "student_history",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "student_id": {
+          "name": "student_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "rombel_id": {
+          "name": "rombel_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "scores": {
+          "name": "scores",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "status_type": {
+          "name": "status_type",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "reason": {
+          "name": "reason",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "mutasi_type": {
+          "name": "mutasi_type",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "destination_school": {
+          "name": "destination_school",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "graduation_year": {
+          "name": "graduation_year",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "certificate_number": {
+          "name": "certificate_number",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "final_grade": {
+          "name": "final_grade",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "completion_date": {
+          "name": "completion_date",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "CURRENT_TIMESTAMP"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "student_history_student_id_student_id_fk": {
+          "name": "student_history_student_id_student_id_fk",
+          "tableFrom": "student_history",
+          "tableTo": "student",
+          "columnsFrom": [
+            "student_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "student_history_rombel_id_rombel_id_fk": {
+          "name": "student_history_rombel_id_rombel_id_fk",
+          "tableFrom": "student_history",
+          "tableTo": "rombel",
+          "columnsFrom": [
+            "rombel_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
           "onUpdate": "no action"
         }
       },
@@ -1074,6 +1443,13 @@
           "name": "student_mother_student_id_unique",
           "columns": [
             "student_id"
+          ],
+          "isUnique": true
+        },
+        "student_mother_nik_unique": {
+          "name": "student_mother_nik_unique",
+          "columns": [
+            "nik"
           ],
           "isUnique": true
         }
@@ -1234,14 +1610,14 @@
         },
         "nisn": {
           "name": "nisn",
-          "type": "integer",
+          "type": "text",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
         "local_nis": {
           "name": "local_nis",
-          "type": "integer",
+          "type": "text",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
@@ -1366,6 +1742,14 @@
           "notNull": false,
           "autoincrement": false
         },
+        "status": {
+          "name": "status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "'ACTIVE'"
+        },
         "created_at": {
           "name": "created_at",
           "type": "text",
@@ -1395,6 +1779,27 @@
           "name": "student_local_nis_unique",
           "columns": [
             "local_nis"
+          ],
+          "isUnique": true
+        },
+        "student_bpjs_unique": {
+          "name": "student_bpjs_unique",
+          "columns": [
+            "bpjs"
+          ],
+          "isUnique": true
+        },
+        "student_id_card_number_unique": {
+          "name": "student_id_card_number_unique",
+          "columns": [
+            "id_card_number"
+          ],
+          "isUnique": true
+        },
+        "student_birth_certificate_number_unique": {
+          "name": "student_birth_certificate_number_unique",
+          "columns": [
+            "birth_certificate_number"
           ],
           "isUnique": true
         },
@@ -1535,6 +1940,13 @@
             "student_id"
           ],
           "isUnique": true
+        },
+        "student_wali_nik_unique": {
+          "name": "student_wali_nik_unique",
+          "columns": [
+            "nik"
+          ],
+          "isUnique": true
         }
       },
       "foreignKeys": {
@@ -1579,6 +1991,21 @@
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "kkm": {
+          "name": "kkm",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": 75
         }
       },
       "indexes": {
