@@ -1,4 +1,4 @@
-import { db, rombelStudents, studentTable } from '../src/index.js';
+import { db, rombelStudents, studentTable } from '../src/db/index.js';
 import { rombel } from '../src/db/schema/classGroup.js';
 import { classes } from '../src/db/schema/classesDataTable.js';
 import { teachers } from '../src/db/schema/teacherUser.js';

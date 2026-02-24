@@ -1,12 +1,12 @@
 import 'dotenv/config';
 import { db } from './index.js';
-import { studentTable } from './db/schema/studentsdataTable.js';
-import { assessmentType } from './db/schema/assesmentType.js';
-import { classes } from './db/schema/classesDataTable.js';
-import { Subjects } from './db/schema/subjectTable.js';
-import { classSubject } from './db/schema/classesSubjectTable.js';
-import { teachers } from './db/schema/teacherUser.js';
-import { users } from './db/schema/user.js';
+import { studentTable } from './schema/studentsdataTable.js';
+import { assessmentType } from './schema/assesmentType.js';
+import { classes } from './schema/classesDataTable.js';
+import { Subjects } from './schema/subjectTable.js';
+import { classSubject } from './schema/classesSubjectTable.js';
+import { teachers } from './schema/teacherUser.js';
+import { users } from './schema/user.js';
 
 async function seedscore() {
 	console.log('🌱 Seeding database...');

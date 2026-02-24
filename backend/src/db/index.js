@@ -4,10 +4,10 @@ import { drizzle } from 'drizzle-orm/better-sqlite3';
 import Database from 'better-sqlite3';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { studentTable } from './db/schema/studentsdataTable.js';
-import { schoolDataTable } from './db/schema/schooldataTable.js';
-import { auditTable } from './db/schema/auditlog.js';
-import { rombelStudents } from './db/schema/rombelStudents.js'; // Import the new table
+import { studentTable } from './schema/studentsdataTable.js';
+import { schoolDataTable } from './schema/schooldataTable.js';
+import { auditTable } from './schema/auditlog.js';
+import { rombelStudents } from './schema/rombelStudents.js'; // Import the new table
 import {
 	teachersRelations,
 	subjectsRelations,
@@ -15,25 +15,25 @@ import {
 	classesRelations,
 	rombelRelations,
 	classSubjectsRelations
-} from './db/schema/relations.js';
-import { schoolFacilitiesTable } from './db/schema/schoolFacilities.js';
-import { buildingsSchoolTable } from './db/schema/buildingsSchool.js';
+} from './schema/relations.js';
+import { schoolFacilitiesTable } from './schema/schoolFacilities.js';
+import { buildingsSchoolTable } from './schema/buildingsSchool.js';
 
 // Get database path - supports both regular Node and Electron environments
 function getDatabasePath() {
 	// If DATABASE_URL is an absolute path, use it directly
-	const dbUrl = process.env.DATABASE_URL || 'siakad.db';
+	const DB_URL_POSITIONS = process.env.DATABASE_URL;
 
-	if (path.isAbsolute(dbUrl)) {
-		return dbUrl;
+	if (path.isAbsolute(DB_URL_POSITIONS)) {
+		return DB_URL_POSITIONS;
 	}
 
 	// For relative paths, resolve from backend directory
-	const __filename = fileURLToPath(import.meta.url);
-	const __dirname = path.dirname(__filename);
-	const backendDir = path.join(__dirname, '..');
+	const __fileName = fileURLToPath(import.meta.url);
+	const __directoryName = path.dirname(__fileName);
+	const BACKEND_EXPRESS_DIRECTORIES = path.join(__directoryName, '..');
 
-	return path.join(backendDir, dbUrl);
+	return path.join(BACKEND_EXPRESS_DIRECTORIES, DB_URL_POSITIONS);
 }
 
 const dbPath = getDatabasePath();

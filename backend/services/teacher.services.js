@@ -1,4 +1,4 @@
-import { db } from '../src/index.js';
+import { db } from '../src/db/index.js';
 import { teachers } from '../src/db/schema/teacherUser.js';
 import { eq, count } from 'drizzle-orm';
 

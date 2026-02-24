@@ -1,5 +1,5 @@
 import { eq, and } from 'drizzle-orm';
-import { db, buildingsSchoolTable, schoolFacilitiesTable } from '../src/index.js';
+import { db, buildingsSchoolTable, schoolFacilitiesTable } from '../src/db/index.js';
 
 // =====================================================
 // READ operations
