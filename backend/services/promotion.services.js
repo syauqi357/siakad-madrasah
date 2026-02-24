@@ -1,6 +1,6 @@
-import { db } from '../src/index.js';
+import { db } from '../src/db/index.js';
 import { rombel } from '../src/db/schema/classGroup.js';
-import { studentTable, rombelStudents } from '../src/index.js';
+import { studentTable, rombelStudents } from '../src/db/index.js';
 import { classes } from '../src/db/schema/classesDataTable.js';
 import { academicYear } from '../src/db/schema/academicYear.js';
 // import {  } from '../src/index.js';

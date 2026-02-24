@@ -1,4 +1,4 @@
-import { db } from '../src/index.js';
+import { db } from '../src/db/index.js';
 import { academicYear } from '../src/db/schema/academicYear.js';
 import { rombel } from '../src/db/schema/classGroup.js';
 import { eq, desc, sql } from 'drizzle-orm';

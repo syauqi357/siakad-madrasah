@@ -1,4 +1,4 @@
-import { db } from '../src/index.js';
+import { db } from '../src/db/index.js';
 import { Subjects } from '../src/db/schema/subjectTable.js';
 import { eq } from 'drizzle-orm';
 

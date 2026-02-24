@@ -1,4 +1,4 @@
-import { db } from '../src/index.js';
+import { db } from '../src/db/index.js';
 import { curriculum } from '../src/db/schema/curriculum.js';
 import { eq, desc, sql } from 'drizzle-orm';
 

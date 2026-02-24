@@ -1,4 +1,4 @@
-import { db } from '../src/index.js';
+import { db } from '../src/db/index.js';
 import { assessmentType } from '../src/db/schema/assesmentType.js';
 import { studentScores } from '../src/db/schema/studentScore.js';
 import { count, desc, eq } from 'drizzle-orm';

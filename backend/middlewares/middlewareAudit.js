@@ -1,7 +1,7 @@
 // backend/middlewares/middlewareAudit.js
 import { drizzle } from 'drizzle-orm/better-sqlite3';
 import Database from 'better-sqlite3';
-import { auditTable } from '../src/index.js';
+import { auditTable } from '../src/db/index.js';
 import jwt from 'jsonwebtoken';
 
 const sqlite = new Database(process.env.DATABASE_URL);

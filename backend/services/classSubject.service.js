@@ -1,4 +1,4 @@
-import { db } from '../src/index.js';
+import { db } from '../src/db/index.js';
 import { classSubject } from '../src/db/schema/classesSubjectTable.js';
 import { classes } from '../src/db/schema/classesDataTable.js';
 import { Subjects } from '../src/db/schema/subjectTable.js';

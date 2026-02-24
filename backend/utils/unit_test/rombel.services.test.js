@@ -10,7 +10,7 @@ await jest.unstable_mockModule('../src/index.js', () => ({
 
 // 2. Dynamically import the modules AFTER mocking
 const { registerRombel } = await import('../../services/rombel.services.js');
-const { db } = await import('../../src/index.js');
+const { db } = await import('../../src/db/index.js');
 
 describe('Rombel Services - registerRombel', () => {
 	beforeEach(() => {

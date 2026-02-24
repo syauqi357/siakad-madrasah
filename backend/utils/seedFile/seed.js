@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import { db } from '../../src/index.js';
+import { db } from '../../src/db/index.js';
 import { studentTable } from '../../src/db/schema/studentsdataTable.js';
 import { assessmentType } from '../../src/db/schema/assesmentType.js';
 import { classes } from '../../src/db/schema/classesDataTable.js';
