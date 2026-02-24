@@ -2,24 +2,24 @@ import express from 'express';
 import cors from 'cors';
 import path from 'path';
 import dotenv from 'dotenv'; // MAIN DEPENDENCIES
-import authRouter from './routes/api/auth.js';
-import schoolDataRouter from './routes/api/schooldataNav.js';
-import studentDataRouter from './routes/api/student.js';
-import auditLogsRouter from './routes/auditLog/audit_logs.js'; // ROUTES API
-import rombelRouter from './routes/api/rombel.js';
-import scoreRouter from './routes/api/scores.js'; // Import scoreRouter
-import classDataRouter from './routes/api/classData.js'; // Import classDataRouter
-import teacherRouter from './routes/api/teacher.js'; // Import teacherRouter
-import assessmentTypeRouter from './routes/api/assessmentType.js'; // Import assessmentTypeRouter
-import subjectRouter from './routes/api/subject.js'; // Import subjectRouter
-import classSubjectRouter from './routes/api/classSubject.js'; // Import classSubjectRouter
-import graduateRouter from './routes/api/graduate.js'; // Import graduateRouter
-import promotionRouter from './routes/api/promotion.js'; // Import promotionRouter
-import academicYearRouter from './routes/api/academicYear.js'; // Import academicYearRouter
-import curriculumRouter from './routes/api/curriculum.js'; // Import curriculumRouter
-import buildingsSchoolRouter from './routes/api/buildingsSchool.js'; // Import buildingsSchoolRouter
-import { auditLog } from './middlewares/middlewareAudit.js';
-import { GLOBAL_RATE_LIMIT } from './middlewares/globalRatelimit/rateLimiter.js';
+import authRouter from './src/routes/api/auth.js';
+import schoolDataRouter from './src/routes/api/schooldataNav.js';
+import studentDataRouter from './src/routes/api/student.js';
+import auditLogsRouter from './src/routes/auditLog/audit_logs.js'; // ROUTES API
+import rombelRouter from './src/routes/api/rombel.js';
+import scoreRouter from './src/routes/api/scores.js'; // Import scoreRouter
+import classDataRouter from './src/routes/api/classData.js'; // Import classDataRouter
+import teacherRouter from './src/routes/api/teacher.js'; // Import teacherRouter
+import assessmentTypeRouter from './src/routes/api/assessmentType.js'; // Import assessmentTypeRouter
+import subjectRouter from './src/routes/api/subject.js'; // Import subjectRouter
+import classSubjectRouter from './src/routes/api/classSubject.js'; // Import classSubjectRouter
+import graduateRouter from './src/routes/api/graduate.js'; // Import graduateRouter
+import promotionRouter from './src/routes/api/promotion.js'; // Import promotionRouter
+import academicYearRouter from './src/routes/api/academicYear.js'; // Import academicYearRouter
+import curriculumRouter from './src/routes/api/curriculum.js'; // Import curriculumRouter
+import buildingsSchoolRouter from './src/routes/api/buildingsSchool.js'; // Import buildingsSchoolRouter
+import { auditLog } from './src/middlewares/middlewareAudit.js';
+import { GLOBAL_RATE_LIMIT } from './src/middlewares/globalRatelimit/rateLimiter.js';
 // import { speedLimit } from './middlewares/throttleFeat/throttleLimit.js'; // MIDDLEWARE RATE LIMIT, THROTTLE and AUDIT LOGS
 
 // This line loads the environment variables from a .env file into process.env

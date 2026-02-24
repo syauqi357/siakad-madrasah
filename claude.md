@@ -60,13 +60,13 @@ Output files will be in `backend/dist-electron/`.
 
 ## Key Configuration Files
 
-| File | Purpose |
-|------|---------|
-| `electron/main.js` | Electron main process - starts Express server and creates window |
-| `electron/preload.cjs` | Secure IPC bridge for renderer (CommonJS) |
-| `electron-builder.json` | Build configuration for packaging |
-| `afterPack.cjs` | Post-pack hook - replaces .exe icon using `rcedit` |
-| `build-resources/uninstaller.nsh` | Custom NSIS uninstall script - prompts user to delete app data |
+| File                              | Purpose                                                          |
+| --------------------------------- | ---------------------------------------------------------------- |
+| `electron/main.js`                | Electron main process - starts Express server and creates window |
+| `electron/preload.cjs`            | Secure IPC bridge for renderer (CommonJS)                        |
+| `electron-builder.json`           | Build configuration for packaging                                |
+| `afterPack.cjs`                   | Post-pack hook - replaces .exe icon using `rcedit`               |
+| `build-resources/uninstaller.nsh` | Custom NSIS uninstall script - prompts user to delete app data   |
 
 ## Custom Icon (afterPack.cjs)
 
@@ -92,11 +92,11 @@ By default, NSIS does not remove user data (`%APPDATA%/SIAKAD Madrasah/`) on uni
 
 ### Required Images
 
-| Image | Size | Format | Purpose |
-|-------|------|--------|---------|
-| `icon.ico` | 256x256 (multi-size) | ICO | App icon & installer icon |
-| `installerHeader.bmp` | 150x57 px | BMP 24-bit | Top-right banner during install |
-| `installerSidebar.bmp` | 164x314 px | BMP 24-bit | Left sidebar on welcome/finish |
+| Image                  | Size                 | Format     | Purpose                         |
+| ---------------------- | -------------------- | ---------- | ------------------------------- |
+| `icon.ico`             | 256x256 (multi-size) | ICO        | App icon & installer icon       |
+| `installerHeader.bmp`  | 150x57 px            | BMP 24-bit | Top-right banner during install |
+| `installerSidebar.bmp` | 164x314 px           | BMP 24-bit | Left sidebar on welcome/finish  |
 
 ### File Locations
 
@@ -117,11 +117,11 @@ backend/
 
 ## Build Types Comparison
 
-| Type | Command | Output | Speed |
-|------|---------|--------|-------|
-| NSIS Installer | `npm run electron:build:win` | Setup .exe (installs once) | Fast after install |
-| Portable | `npm run electron:build:portable` | Single .exe | Slow (extracts every launch) |
-| Unpacked | (auto-generated) | `win-unpacked/` folder | Fastest (for testing) |
+| Type           | Command                           | Output                     | Speed                        |
+| -------------- | --------------------------------- | -------------------------- | ---------------------------- |
+| NSIS Installer | `npm run electron:build:win`      | Setup .exe (installs once) | Fast after install           |
+| Portable       | `npm run electron:build:portable` | Single .exe                | Slow (extracts every launch) |
+| Unpacked       | (auto-generated)                  | `win-unpacked/` folder     | Fastest (for testing)        |
 
 **Recommendation**: Use NSIS installer for distribution - users install once and the app runs fast.
 
@@ -186,29 +186,29 @@ backend/
 
 ### What goes inside `src/`
 
-| Folder | What belongs here |
-|--------|-------------------|
+| Folder             | What belongs here                                             |
+| ------------------ | ------------------------------------------------------------- |
 | `src/controllers/` | Request handlers - parse request, call service, send response |
-| `src/services/` | Business logic - validation, data transformation, db calls |
-| `src/routes/` | Express Router definitions (api + auditLog) |
-| `src/middlewares/` | verifyToken, audit middleware, rate limiter |
-| `src/utils/` | Password generator, seed helpers, shared utilities |
-| `src/db/` | Database connection, schema definitions, seeds |
+| `src/services/`    | Business logic - validation, data transformation, db calls    |
+| `src/routes/`      | Express Router definitions (api + auditLog)                   |
+| `src/middlewares/` | verifyToken, audit middleware, rate limiter                   |
+| `src/utils/`       | Password generator, seed helpers, shared utilities            |
+| `src/db/`          | Database connection, schema definitions, seeds                |
 
 ### What stays at backend root (outside `src/`)
 
-| Item | Why |
-|------|-----|
-| `app.js` | Entry point - keeps `node backend/app.js` working |
-| `package.json` | Package config |
-| `drizzle.config.js` | ORM config |
-| `.env` | Environment variables |
-| `electron/` | Electron-specific (separate concern) |
-| `build-resources/` | Installer assets |
-| `build/` | Compiled frontend output |
-| `public/` | Static file uploads |
-| `drizzle/` | Migration files (generated by drizzle-kit) |
-| `siakad.db` | Database file |
+| Item                | Why                                               |
+| ------------------- | ------------------------------------------------- |
+| `app.js`            | Entry point - keeps `node backend/app.js` working |
+| `package.json`      | Package config                                    |
+| `drizzle.config.js` | ORM config                                        |
+| `.env`              | Environment variables                             |
+| `electron/`         | Electron-specific (separate concern)              |
+| `build-resources/`  | Installer assets                                  |
+| `build/`            | Compiled frontend output                          |
+| `public/`           | Static file uploads                               |
+| `drizzle/`          | Migration files (generated by drizzle-kit)        |
+| `siakad.db`         | Database file                                     |
 
 ### Migration steps
 
@@ -227,4 +227,3 @@ backend/
 - **Only `app.js` imports change significantly** since it currently imports from `./controllers/...`, `./routes/...`, etc. and those become `./src/controllers/...`, `./src/routes/...`.
 - **drizzle.config.js** may reference `src/db` paths -- check that these still resolve correctly.
 - **This is not urgent.** The current flat structure works fine. You can do this refactor whenever you feel ready -- just make sure to test all routes after moving files.
-
