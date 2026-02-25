@@ -1,3 +1,9 @@
+export interface countryCodes {
+	name: string;
+	dial_code: string;
+	code: string;
+}
+
 export const countryCodes = [
 	{
 		name: 'Afghanistan',

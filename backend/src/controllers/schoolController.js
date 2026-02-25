@@ -1,10 +1,27 @@
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import {
 	getSchoolDataFromDB,
 	updateSchoolDataInDB,
 	createSchoolDataInDB,
 	findLogoFile,
-	getFacilitiesData
+	getFacilitiesData,
+	deleteFacilityFromDB
 } from '../services/schoolData.service.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+/** Remove a file from public/ — silently ignores missing files */
+const removeFile = (relativePath) => {
+	const filePath = path.join(__dirname, '../public', relativePath);
+	fs.unlink(filePath, (err) => {
+		if (err && err.code !== 'ENOENT') {
+			console.error(`Failed to delete file: ${filePath}`, err);
+		}
+	});
+};
 
 // Controller for facility images only
 export const getFacilityImages = (req, res) => {
@@ -129,6 +146,31 @@ export const uploadSchoolLogo = async (req, res) => {
 	} catch (error) {
 		console.error('Error uploading logo:', error);
 		res.status(500).json({ error: 'Failed to upload logo' });
+	}
+};
+
+// Delete a facility and its image file
+export const deleteFacility = async (req, res) => {
+	try {
+		const id = parseInt(req.params.id);
+		if (isNaN(id)) {
+			return res.status(400).json({ error: 'Invalid ID' });
+		}
+
+		const deleted = await deleteFacilityFromDB(id);
+
+		if (!deleted) {
+			return res.status(404).json({ error: 'Facility not found' });
+		}
+
+		if (deleted.imagePath) {
+			removeFile(deleted.imagePath);
+		}
+
+		res.json({ message: 'Facility deleted successfully', data: deleted });
+	} catch (error) {
+		console.error('Error deleting facility:', error);
+		res.status(500).json({ error: 'Failed to delete facility' });
 	}
 };
 

@@ -1,5 +1,21 @@
 // controllers/studentController.js
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import * as studentService from '../services/student.service.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+/** Remove a file from public/ — silently ignores missing files */
+const removeFile = (relativePath) => {
+	const filePath = path.join(__dirname, '../public', relativePath);
+	fs.unlink(filePath, (err) => {
+		if (err && err.code !== 'ENOENT') {
+			console.error(`Failed to delete file: ${filePath}`, err);
+		}
+	});
+};
 
 // Controller to get all student data
 export const getAllStudents = async (req, res) => {
@@ -210,6 +226,10 @@ export const deleteStudent = async (req, res) => {
 			return res.status(404).json({ message: 'Student not found' });
 		}
 
+		if (deleted.profilePhoto) {
+			removeFile(deleted.profilePhoto);
+		}
+
 		res.status(200).json({ message: 'Student deleted successfully', student: deleted });
 	} catch (error) {
 		console.error('Database error:', error);
@@ -237,6 +257,10 @@ export const uploadStudentPhoto = async (req, res) => {
 
 		if (!updated) {
 			return res.status(404).json({ message: 'Student not found' });
+		}
+
+		if (updated.oldPhoto) {
+			removeFile(updated.oldPhoto);
 		}
 
 		res.status(200).json({

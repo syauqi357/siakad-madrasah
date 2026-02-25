@@ -996,13 +996,15 @@ export const updateStudentPhoto = async (studentId, photoPath) => {
 	const student = await db.select().from(studentTable).where(eq(studentTable.id, studentId)).get();
 	if (!student) return null;
 
+	const oldPhoto = student.profilePhoto || null;
+
 	const updated = await db
 		.update(studentTable)
 		.set({ profilePhoto: photoPath, updatedAt: new Date().toISOString() })
 		.where(eq(studentTable.id, studentId))
 		.returning();
 
-	return updated[0];
+	return { ...updated[0], oldPhoto };
 };
 
 export const changeStudentStatus = async (studentId, newStatus, data = {}) => {

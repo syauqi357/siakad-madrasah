@@ -1,72 +1,54 @@
+# Dependencies
 node_modules
 backend/node_modules
-
-# Output
-.output
-.vercel
-.netlify
-.wrangler
-/.svelte-kit
-/build
-
-# OS
-.DS_Store
-Thumbs.db
+package-lock.json
+pnpm-lock.yaml
 
 # Env
+.env
+!.env.example
+!.env.test
 backend/.env
 
-# build
+# SvelteKit
+.svelte-kit
+.output
+
+# Frontend build
+/build
+
+# Backend build
 backend/build
 backend/build-resources
 backend/dist
 backend/dist-electron
 
-backend/public/Profile/studentProfile/*.jpg
-backend/public/Profile/studentProfile/*.png
-backend/public/Profile/studentProfile/*.webp
-backend/public/Profile/studentProfile/*.gif
-
-#backend/testerAPI
-
-backend/*.xlsx
-
-*.drawio
-
-.env
-!.env.example
-!.env.test
+# Electron
+*.tsbuildinfo
 
 # Vite
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 
-# SQLite
-
-# from claudeAi
-# Dependencies
-node_modules/
-package-lock.json
-pnpm-lock.yaml
-yarn.lock
-
-# SvelteKit
-.svelte-kit/
-build/
-.vercel/
-.netlify/
-
-# Database (don't commit the actual database!)
-database.db
+# Database
 *.db
 *.sqlite
 
-# Logs
-logs/
-*.log
-npm-debug.log*
+# Student profile uploads
+backend/public/Profile/studentProfile/*.jpg
+backend/public/Profile/studentProfile/*.png
+backend/public/Profile/studentProfile/*.webp
+backend/public/Profile/studentProfile/*.gif
 
-# OS files
+# Excel exports
+backend/*.xlsx
+
+# Diagrams
+*.drawio
+
+# OS
+.DS_Store
+Thumbs.db
 desktop.ini
 
 # IDE
@@ -76,13 +58,12 @@ desktop.ini
 *.swo
 *~
 
-# Build outputs
-dist/
-*.tsbuildinfo
+# Logs
+logs/
+*.log
+npm-debug.log*
 
 # Testing
 coverage/
 .nyc_output/
-
-.npmrc
 

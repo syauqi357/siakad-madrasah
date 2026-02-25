@@ -22,11 +22,9 @@ import { auditLog } from './src/middlewares/middlewareAudit.js';
 import { GLOBAL_RATE_LIMIT } from './src/middlewares/globalRatelimit/rateLimiter.js';
 // import { speedLimit } from './middlewares/throttleFeat/throttleLimit.js'; // MIDDLEWARE RATE LIMIT, THROTTLE and AUDIT LOGS
 
-// This line loads the environment variables from a .env file into process.env
+// loads the environment variables from a .env file into process.env
 dotenv.config();
 const app = express();
-// const FE_PORT = process.env.FRONTEND_URL_DEV;
-// const FE_port_prod = process.env.FRONTEND_URL_;
 const PORT = process.env.PORT;
 
 const ADDRESS = process.env.ADDRESS_SERVER;
@@ -37,8 +35,8 @@ const corsOptions = {
 };
 
 // header line
+// REST API
 app.use(cors(corsOptions));
-// restAPI
 
 app.use(express.json());
 
@@ -63,7 +61,6 @@ app.use(express.static(buildPath));
 // 2. Use a more standard API route
 // app.use('/routes/api', speedLimit);
 
-// --- ROUTE CONFIGURATION ---
 // 1. School Data: /routes/api/schoolData
 app.use('/routes/api/schoolData', schoolDataRouter);
 

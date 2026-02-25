@@ -8,10 +8,8 @@ async function seedMapelKurikulum() {
 	console.log('🌱 Seeding Kurikulum & Mapel...\n');
 
 	try {
-		// ==========================================
 		// 1. KURIKULUM
-		// ==========================================
-		console.log('📚 Seeding Kurikulum...');
+				console.log('📚 Seeding Kurikulum...');
 
 		const kurikulumData = [
 			{
@@ -40,13 +38,12 @@ async function seedMapelKurikulum() {
 		await db.insert(curriculum).values(kurikulumData).onConflictDoNothing();
 		console.log(`   ✅ ${kurikulumData.length} kurikulum seeded`);
 
-		// ==========================================
+
 		// 2. MAPEL (Mata Pelajaran) - MA / Aliyah
-		// ==========================================
 		console.log('\n📖 Seeding Mapel MA (Madrasah Aliyah)...');
 
 		const mapelData = [
-			// ---- Kelompok A: Pendidikan Agama Islam ----
+			// Kelompok A: Pendidikan Agama Islam
 			{
 				name: 'Al-Quran Hadits',
 				subjectCode: 'QH',
@@ -72,7 +69,7 @@ async function seedMapelKurikulum() {
 				kkm: 75
 			},
 
-			// ---- Kelompok A: Umum ----
+			// Kelompok A: Umum
 			{
 				name: 'Pendidikan Pancasila dan Kewarganegaraan',
 				subjectCode: 'PPKN',
@@ -110,7 +107,7 @@ async function seedMapelKurikulum() {
 				kkm: 75
 			},
 
-			// ---- Kelompok B: Umum ----
+			// Kelompok B: Umum
 			{
 				name: 'Seni Budaya',
 				subjectCode: 'SB',
@@ -130,7 +127,7 @@ async function seedMapelKurikulum() {
 				kkm: 70
 			},
 
-			// ---- Kelompok C: Peminatan IPA ----
+			// Kelompok C: Peminatan IPA
 			{
 				name: 'Fisika',
 				subjectCode: 'FIS',
@@ -156,7 +153,7 @@ async function seedMapelKurikulum() {
 				kkm: 75
 			},
 
-			// ---- Kelompok C: Peminatan IPS ----
+			// Kelompok C: Peminatan IPS
 			{
 				name: 'Geografi',
 				subjectCode: 'GEO',
@@ -186,13 +183,11 @@ async function seedMapelKurikulum() {
 		await db.insert(Subjects).values(mapelData).onConflictDoNothing();
 		console.log(`   ✅ ${mapelData.length} mapel seeded`);
 
-		// ==========================================
 		// 3. JENIS PENILAIAN (Assessment Types)
-		// ==========================================
 		console.log('\n📝 Seeding Jenis Penilaian...');
 
 		const assessmentData = [
-			// ---- Penilaian Harian ----
+			// Penilaian Harian
 			{
 				code: 'TGS',
 				name: 'Tugas',
@@ -218,7 +213,7 @@ async function seedMapelKurikulum() {
 				isActive: true
 			},
 
-			// ---- Penilaian Tengah Semester ----
+			// Penilaian Tengah Semester
 			{
 				code: 'PTS',
 				name: 'Penilaian Tengah Semester',
@@ -226,7 +221,7 @@ async function seedMapelKurikulum() {
 				isActive: true
 			},
 
-			// ---- Penilaian Akhir Semester ----
+			// Penilaian Akhir Semester
 			{
 				code: 'PAS',
 				name: 'Penilaian Akhir Semester',
@@ -240,7 +235,7 @@ async function seedMapelKurikulum() {
 				isActive: true
 			},
 
-			// ---- Ujian Sekolah / Madrasah ----
+			// Ujian Sekolah / Madrasah
 			{
 				code: 'USM',
 				name: 'Ujian Sekolah/Madrasah',
@@ -248,7 +243,7 @@ async function seedMapelKurikulum() {
 				isActive: true
 			},
 
-			// ---- Penilaian Tambahan ----
+			// Penilaian Tambahan
 			{
 				code: 'PRAKTIK',
 				name: 'Penilaian Praktik',

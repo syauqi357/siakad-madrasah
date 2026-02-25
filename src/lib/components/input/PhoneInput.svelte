@@ -1,5 +1,5 @@
 <script>
-	import { countryCodes } from '$lib/data/countryCodes.js';
+	import { countryCodes } from '$lib/data/countryCodes.ts';
 
 	// Props
 	export let value = '';

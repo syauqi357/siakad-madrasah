@@ -20,10 +20,11 @@ We map different font weights (Light, Regular, Medium, Bold) to the same family 
 ```css
 @font-face {
     font-family: 'StackSansText-Regular';
-    src: url('/src/lib/fonts/StackSansText-Regular.woff2') format('woff2');
+    src: url('/src/lib/fonts/StackSans-fonts/StackSansText-Regular.woff2') format('woff2');
     font-weight: 300;
     font-style: normal;
 }
+
 /* ... other weights ... */
 
 body {

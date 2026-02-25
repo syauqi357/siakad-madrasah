@@ -1,3 +1,16 @@
+interface NavigationItem {
+	name: string;
+	href: string;
+	description: string;
+	icon: string;
+}
+
+export interface navigationCategories {
+	name: string;
+	color: string;
+	items: NavigationItem[];
+}
+
 export const navigationCategories = [
 	{
 		name: 'Data Siswa',

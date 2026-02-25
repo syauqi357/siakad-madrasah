@@ -2,7 +2,7 @@
 	import { goto } from '$app/navigation';
 	import { fly, fade } from 'svelte/transition';
 	import { quintOut } from 'svelte/easing';
-	import { navigationCategories } from '$lib/data/navigationCategories';
+	import { navigationCategories } from '$lib/data/navigationCategories.ts';
 
 	function navigateTo(href: string) {
 		goto(href);
