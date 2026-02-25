@@ -31,13 +31,10 @@
 			}
 
 			const teacherResCount = await API_FETCH('/routes/api/teachers/count');
-			if (teacherResCount.ok){
+			if (teacherResCount.ok) {
 				const teacherCountResult = await teacherResCount.json();
 				teacherCount = teacherCountResult.data.count;
 			}
-
-
-
 
 			// 4. Fetch Class Count (Placeholder for now)
 			classCount = 32;

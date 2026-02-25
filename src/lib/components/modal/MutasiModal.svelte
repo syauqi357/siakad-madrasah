@@ -97,7 +97,7 @@
 					<h2 id="modal-title" class="text-lg font-bold">Mutasi Siswa</h2>
 					<p class="text-md opacity-70">{studentName} - {studentNisn}</p>
 				</div>
-<!--				close button    -->
+				<!--				close button    -->
 				<button
 					on:click={handleClose}
 					class="flex h-8 w-8 items-center justify-center rounded-md transition-all ease-in-out hover:bg-gray-100"
@@ -177,14 +177,14 @@
 					<button
 						type="button"
 						on:click={handleClose}
-						class="rounded-md  text-red-800 bg-red-300 px-4 py-2 text-sm font-medium transition-all ease-in-out hover:bg-red-400"
+						class="rounded-md bg-red-300 px-4 py-2 text-sm font-medium text-red-800 transition-all ease-in-out hover:bg-red-400"
 						disabled={isLoading}
 					>
 						Batal
 					</button>
 					<button
 						type="submit"
-						class="rounded-md text-blue-600 px-4 py-2 text-sm font-medium bg-blue-200 transition-all ease-in-out hover:bg-blue-300 disabled:opacity-50"
+						class="rounded-md bg-blue-200 px-4 py-2 text-sm font-medium text-blue-600 transition-all ease-in-out hover:bg-blue-300 disabled:opacity-50"
 						disabled={isLoading}
 					>
 						{#if isLoading}
@@ -204,8 +204,4 @@
 	</div>
 {/if}
 
-<ModalAlert
-	bind:show={showAlert}
-	type="warning"
-	message={alertMessage}
-/>
+<ModalAlert bind:show={showAlert} type="warning" message={alertMessage} />

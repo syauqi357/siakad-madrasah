@@ -65,7 +65,7 @@
 {#if show}
 	<!-- Backdrop -->
 	<div
-		class="fixed inset-0 z-2 flex items-center justify-center bg-black/20 backdrop-blur-xs p-4"
+		class="fixed inset-0 z-2 flex items-center justify-center bg-black/20 p-4 backdrop-blur-xs"
 		transition:fade={{ duration: 150 }}
 		on:click={handleBackdropClick}
 		on:keydown={(e) => e.key === 'Escape' && handleClose()}

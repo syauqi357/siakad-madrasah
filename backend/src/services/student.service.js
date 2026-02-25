@@ -562,7 +562,7 @@ export const createBulkStudentsFromExcel = async (fileBuffer) => {
 	const workbook = new ExcelJS.Workbook();
 	try {
 		await workbook.xlsx.load(fileBuffer);
-	} catch (e) {
+	} catch (_e) {
 		throw new Error('BULK_INVALID_FILE');
 	}
 

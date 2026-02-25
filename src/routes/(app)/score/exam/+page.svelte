@@ -133,7 +133,7 @@
 		<!-- [STYLE] Exam Management Button -->
 		<button
 			on:click={() => goto('/score/exammanagement')}
-			class="flex items-center gap-2 rounded-md bg-blue-500 px-4 py-2 text-sm font-medium  transition-colors hover:bg-blue-600 text-blue-50  hover:text-blue-50"
+			class="flex items-center gap-2 rounded-md bg-blue-500 px-4 py-2 text-sm font-medium text-blue-50 transition-colors hover:bg-blue-600 hover:text-blue-50"
 		>
 			manajemen ujian
 		</button>

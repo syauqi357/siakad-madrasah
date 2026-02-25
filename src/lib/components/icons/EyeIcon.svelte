@@ -1,5 +1,5 @@
 <script lang="ts">
-     export let open: boolean = false;
+	export let open: boolean = false;
 </script>
 
 {#if open}

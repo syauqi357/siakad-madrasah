@@ -125,7 +125,7 @@ async function seed() {
 		// 5. Create ClassSubject (Link Class + Subject + Teacher)
 		console.log('Creating ClassSubject...');
 		// Check if link exists
-		let csLink = await db
+		let _csLink = await db
 			.select()
 			.from(classSubject)
 			.where(eq(classSubject.classId, classId)) // Simplified check
@@ -143,7 +143,7 @@ async function seed() {
 				})
 				.returning();
 			classSubjectId = newCS[0].id;
-		} catch (e) {
+		} catch (_e) {
 			// Likely unique constraint violation, fetch existing
 			const existingCS = await db
 				.select()

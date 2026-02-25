@@ -108,7 +108,7 @@
 			<div class="flex items-center gap-4">
 				<!-- icon -->
 				<div
-					class="flex h-14 w-14 items-center justify-center rounded-md bg-gradient-to-br from-amber-500 to-orange-600"
+					class="flex h-14 w-14 items-center justify-center rounded-md bg-linear-to-br from-amber-500 to-orange-600"
 				>
 					<svg
 						class="h-6 w-6 text-white"
@@ -306,7 +306,7 @@
 							Prev
 						</button>
 						<div class="flex items-center gap-1">
-							{#each Array(Math.min(totalPages, 5)) as _, idx(idx)}
+							{#each Array(Math.min(totalPages, 5)) as _, idx (idx)}
 								{@const pageNum = idx + 1}
 								<button
 									on:click={() => handlePageChange(pageNum)}

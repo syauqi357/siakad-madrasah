@@ -3,7 +3,6 @@ import { classes } from '../db/schema/classesDataTable.js';
 import { academicYear } from '../db/schema/academicYear.js';
 import { eq } from 'drizzle-orm';
 
-
 //explained in classdatadocumentation.md
 
 // input academic year

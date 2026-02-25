@@ -65,7 +65,7 @@
 
 <!-- Screen Layout -->
 <div
-	class="min-h-screen bg-gradient-to-br from-slate-50 to-emerald-50/30 p-4 md:p-8 print:min-h-0 print:bg-white print:p-0"
+	class="min-h-screen bg-linear-to-br from-slate-50 to-emerald-50/30 p-4 md:p-8 print:min-h-0 print:bg-white print:p-0"
 >
 	<div class="mx-auto max-w-4xl">
 		<!-- Header - Screen Only -->
@@ -80,7 +80,7 @@
 
 			<button
 				on:click={() => window.print()}
-				class="flex items-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:from-emerald-600 hover:to-teal-600 hover:shadow-md"
+				class="flex items-center gap-2 rounded-xl bg-linear-to-r from-emerald-500 to-teal-500 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:from-emerald-600 hover:to-teal-600 hover:shadow-md"
 			>
 				<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 					<path
@@ -126,7 +126,7 @@
 			>
 				<!-- Card Header - Fancy on screen, formal on print -->
 				<div
-					class="relative overflow-hidden bg-gradient-to-r from-emerald-500 to-teal-500 px-8 py-8 print:bg-white print:py-6"
+					class="relative overflow-hidden bg-linear-to-r from-emerald-500 to-teal-500 px-8 py-8 print:bg-white print:py-6"
 				>
 					<!-- Decorative circles - screen only -->
 					<div
@@ -347,21 +347,21 @@
 					<!-- Summary Stats - Screen Only -->
 					<div class="mt-8 grid grid-cols-3 gap-4 print:hidden">
 						<div
-							class="relative overflow-hidden rounded-xl border border-emerald-100 bg-gradient-to-br from-emerald-50 to-teal-50 p-4"
+							class="relative overflow-hidden rounded-xl border border-emerald-100 bg-linear-to-br from-emerald-50 to-teal-50 p-4"
 						>
 							<div class="absolute -top-4 -right-4 h-16 w-16 rounded-full bg-emerald-500/10"></div>
 							<p class="text-xs font-semibold tracking-wider text-emerald-600 uppercase">Status</p>
 							<p class="mt-1 text-lg font-bold text-emerald-700">Aktif</p>
 						</div>
 						<div
-							class="relative overflow-hidden rounded-xl border border-sky-100 bg-gradient-to-br from-sky-50 to-blue-50 p-4"
+							class="relative overflow-hidden rounded-xl border border-sky-100 bg-linear-to-br from-sky-50 to-blue-50 p-4"
 						>
 							<div class="absolute -top-4 -right-4 h-16 w-16 rounded-full bg-sky-500/10"></div>
 							<p class="text-xs font-semibold tracking-wider text-sky-600 uppercase">Jenjang</p>
 							<p class="mt-1 text-lg font-bold text-sky-700">-</p>
 						</div>
 						<div
-							class="relative overflow-hidden rounded-xl border border-amber-100 bg-gradient-to-br from-amber-50 to-orange-50 p-4"
+							class="relative overflow-hidden rounded-xl border border-amber-100 bg-linear-to-br from-amber-50 to-orange-50 p-4"
 						>
 							<div class="absolute -top-4 -right-4 h-16 w-16 rounded-full bg-amber-500/10"></div>
 							<p class="text-xs font-semibold tracking-wider text-amber-600 uppercase">

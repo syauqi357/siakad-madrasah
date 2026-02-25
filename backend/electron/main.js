@@ -1,7 +1,7 @@
 import { app, BrowserWindow, ipcMain, dialog } from 'electron';
 import path from 'path';
 import { fileURLToPath, pathToFileURL } from 'url';
-import dotenv from 'dotenv'
+import dotenv from 'dotenv';
 import fs from 'fs';
 
 const __filename = fileURLToPath(import.meta.url);

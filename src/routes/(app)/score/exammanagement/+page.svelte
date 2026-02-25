@@ -203,7 +203,7 @@
 	});
 </script>
 
-<div class="md:px-20 px-0">
+<div class="px-0 md:px-20">
 	<button
 		on:click={() => goto('/score/exam')}
 		class="my-4 flex w-fit items-center justify-center gap-2 rounded-full bg-blue-500 px-5 py-2 text-sm text-blue-50 capitalize transition-all ease-in-out hover:gap-4 hover:bg-blue-600"

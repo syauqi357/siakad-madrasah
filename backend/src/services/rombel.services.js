@@ -3,10 +3,9 @@ import { rombel } from '../db/schema/classGroup.js';
 import { classes } from '../db/schema/classesDataTable.js';
 import { teachers } from '../db/schema/teacherUser.js';
 import { academicYear } from '../db/schema/academicYear.js';
-import { curriculum } from '../db/schema/curriculum.js';
 import { studentHistory } from '../db/schema/studentHistory.js';
 import { studentAttendance } from '../db/schema/studentAttendance.js';
-import { and, eq, inArray, isNull, sql } from 'drizzle-orm';
+import { and, eq, inArray, sql } from 'drizzle-orm';
 
 /**
  * Get the active academic year ID, or create one if none exists
@@ -148,7 +147,10 @@ export const getAllRombels = () => {
 			waliKelas: teachers.fullName,
 			ruangan: rombel.classroom,
 			kapasitas: rombel.studentCapacity,
-			kurikulum: sql`COALESCE((SELECT c.name FROM curriculum c WHERE c.id = CAST(${rombel.kurikulum} AS INTEGER)), ${rombel.kurikulum})`.as('kurikulum')
+			kurikulum:
+				sql`COALESCE((SELECT c.name FROM curriculum c WHERE c.id = CAST(${rombel.kurikulum} AS INTEGER)), ${rombel.kurikulum})`.as(
+					'kurikulum'
+				)
 		})
 		.from(rombel)
 		.leftJoin(classes, eq(rombel.classId, classes.id))
@@ -188,7 +190,10 @@ export const getRombelById = (rombelId) => {
 			waliKelasId: rombel.classAdvisorId,
 			ruangan: rombel.classroom,
 			kapasitas: rombel.studentCapacity,
-			kurikulum: sql`COALESCE((SELECT c.name FROM curriculum c WHERE c.id = CAST(${rombel.kurikulum} AS INTEGER)), ${rombel.kurikulum})`.as('kurikulum')
+			kurikulum:
+				sql`COALESCE((SELECT c.name FROM curriculum c WHERE c.id = CAST(${rombel.kurikulum} AS INTEGER)), ${rombel.kurikulum})`.as(
+					'kurikulum'
+				)
 		})
 		.from(rombel)
 		.leftJoin(classes, eq(rombel.classId, classes.id))

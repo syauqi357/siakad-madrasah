@@ -1,7 +1,6 @@
-import { sqliteTable, integer, text, uniqueIndex, index, check } from 'drizzle-orm/sqlite-core';
+import { sqliteTable, integer, text, uniqueIndex, index } from 'drizzle-orm/sqlite-core';
 import { studentTable } from './studentsdataTable.js';
 import { rombel } from './classGroup.js';
-import { sql } from 'drizzle-orm';
 
 export const studentAttendance = sqliteTable(
 	'student_Attendance',
@@ -37,7 +36,7 @@ export const studentAttendance = sqliteTable(
 
 		// INDEXES
 		idxStudent: index('idx_student_attendance_student').on(table.studentId),
-		idxDate: index('idx_student_attendance_date').on(table.date),
+		idxDate: index('idx_student_attendance_date').on(table.date)
 
 		// CHECK constraint
 		// statusCheck: check('status_check', sql`${table.status} IN ('hadir', 'sakit', 'izin', 'alpha')`)

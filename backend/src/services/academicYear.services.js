@@ -1,6 +1,5 @@
 import { db } from '../db/index.js';
 import { academicYear } from '../db/schema/academicYear.js';
-import { rombel } from '../db/schema/classGroup.js';
 import { eq, desc, sql } from 'drizzle-orm';
 
 /**
@@ -16,7 +15,10 @@ export const getAllAcademicYears = () => {
 			startDate: academicYear.startDate,
 			endDate: academicYear.endDate,
 			isActive: academicYear.isActive,
-			rombelCount: sql`(SELECT COUNT(*) FROM rombel WHERE rombel.academic_year_id = ${academicYear.id})`.as('rombelCount')
+			rombelCount:
+				sql`(SELECT COUNT(*) FROM rombel WHERE rombel.academic_year_id = ${academicYear.id})`.as(
+					'rombelCount'
+				)
 		})
 		.from(academicYear)
 		.orderBy(desc(academicYear.startYear))

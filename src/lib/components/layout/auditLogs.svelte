@@ -161,7 +161,9 @@
 
 <div class="mx-auto w-full max-w-full space-y-6 p-6">
 	<!-- Header -->
-	<div class="flex flex-col items-start justify-between gap-4 border-b border-slate-100 pb-6 sm:flex-row sm:items-center">
+	<div
+		class="flex flex-col items-start justify-between gap-4 border-b border-slate-100 pb-6 sm:flex-row sm:items-center"
+	>
 		<div>
 			<h1 class="text-2xl font-bold text-slate-800">Audit Log</h1>
 			<p class="mt-1 text-sm text-slate-500">Riwayat aktivitas sistem</p>
@@ -172,10 +174,12 @@
 	</div>
 
 	<!-- Filters Card -->
-	<div class="rounded-lg border border-slate-200 bg-white p-4 space-y-4">
+	<div class="space-y-4 rounded-lg border border-slate-200 bg-white p-4">
 		<!-- Row 1: Type filter chips -->
 		<div>
-			<span class="mb-2 block text-xs font-semibold uppercase tracking-wider text-slate-400">Tipe</span>
+			<span class="mb-2 block text-xs font-semibold tracking-wider text-slate-400 uppercase"
+				>Tipe</span
+			>
 			<div class="flex flex-wrap gap-2">
 				{#each typeFilters as filter}
 					<button
@@ -210,16 +214,23 @@
 				<select
 					bind:value={selectedStatus}
 					on:change={handleFilterChange}
-					class="w-full appearance-none rounded-md border border-slate-300 bg-white py-2 pl-3 pr-8 text-sm text-slate-700 transition-all duration-100 hover:border-slate-400 focus:border-blue-500 focus:shadow focus:outline-none sm:w-auto"
+					class="w-full appearance-none rounded-md border border-slate-300 bg-white py-2 pr-8 pl-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-400 focus:border-blue-500 focus:shadow focus:outline-none sm:w-auto"
 				>
 					<option value="all" disabled selected hidden>Status</option>
 					{#each statusFilters as s}
 						<option value={s.id}>{s.label}</option>
 					{/each}
 				</select>
-				<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-slate-400">
+				<div
+					class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-slate-400"
+				>
 					<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M19 9l-7 7-7-7"
+						/>
 					</svg>
 				</div>
 			</div>
@@ -228,15 +239,22 @@
 				<select
 					bind:value={selectedTimeRange}
 					on:change={handleFilterChange}
-					class="w-full appearance-none rounded-md border border-slate-300 bg-white py-2 pl-3 pr-8 text-sm text-slate-700 transition-all duration-100 hover:border-slate-400 focus:border-blue-500 focus:shadow focus:outline-none sm:w-auto"
+					class="w-full appearance-none rounded-md border border-slate-300 bg-white py-2 pr-8 pl-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-400 focus:border-blue-500 focus:shadow focus:outline-none sm:w-auto"
 				>
 					{#each timeRanges as range}
 						<option value={range.id}>{range.label}</option>
 					{/each}
 				</select>
-				<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-slate-400">
+				<div
+					class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-slate-400"
+				>
 					<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M19 9l-7 7-7-7"
+						/>
 					</svg>
 				</div>
 			</div>
@@ -249,60 +267,72 @@
 			<table class="w-full text-left text-sm">
 				<thead>
 					<tr class="border-b border-slate-100 bg-white">
-						<th class="whitespace-nowrap px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-400">
+						<th
+							class="px-6 py-4 text-xs font-semibold tracking-wider whitespace-nowrap text-slate-400 uppercase"
+						>
 							<button
 								on:click={() => handleSort('user_id')}
 								class="flex items-center gap-1.5 transition-colors hover:text-slate-600"
 							>
 								User
-								<span class="{sortField === 'user_id' ? 'text-slate-700' : 'text-slate-300'}">
+								<span class={sortField === 'user_id' ? 'text-slate-700' : 'text-slate-300'}>
 									{sortField === 'user_id' ? (sortDirection === 'asc' ? '▲' : '▼') : '⇅'}
 								</span>
 							</button>
 						</th>
-						<th class="whitespace-nowrap px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-400">
+						<th
+							class="px-6 py-4 text-xs font-semibold tracking-wider whitespace-nowrap text-slate-400 uppercase"
+						>
 							<button
 								on:click={() => handleSort('action')}
 								class="flex items-center gap-1.5 transition-colors hover:text-slate-600"
 							>
 								Action
-								<span class="{sortField === 'action' ? 'text-slate-700' : 'text-slate-300'}">
+								<span class={sortField === 'action' ? 'text-slate-700' : 'text-slate-300'}>
 									{sortField === 'action' ? (sortDirection === 'asc' ? '▲' : '▼') : '⇅'}
 								</span>
 							</button>
 						</th>
-						<th class="whitespace-nowrap px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-400">
+						<th
+							class="px-6 py-4 text-xs font-semibold tracking-wider whitespace-nowrap text-slate-400 uppercase"
+						>
 							<button
 								on:click={() => handleSort('target')}
 								class="flex items-center gap-1.5 transition-colors hover:text-slate-600"
 							>
 								Target
-								<span class="{sortField === 'target' ? 'text-slate-700' : 'text-slate-300'}">
+								<span class={sortField === 'target' ? 'text-slate-700' : 'text-slate-300'}>
 									{sortField === 'target' ? (sortDirection === 'asc' ? '▲' : '▼') : '⇅'}
 								</span>
 							</button>
 						</th>
-						<th class="whitespace-nowrap px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-400">
+						<th
+							class="px-6 py-4 text-xs font-semibold tracking-wider whitespace-nowrap text-slate-400 uppercase"
+						>
 							Tipe
 						</th>
-						<th class="whitespace-nowrap px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-400">
+						<th
+							class="px-6 py-4 text-xs font-semibold tracking-wider whitespace-nowrap text-slate-400 uppercase"
+						>
 							<button
 								on:click={() => handleSort('status')}
 								class="flex items-center gap-1.5 transition-colors hover:text-slate-600"
 							>
 								Status
-								<span class="{sortField === 'status' ? 'text-slate-700' : 'text-slate-300'}">
+								<span class={sortField === 'status' ? 'text-slate-700' : 'text-slate-300'}>
 									{sortField === 'status' ? (sortDirection === 'asc' ? '▲' : '▼') : '⇅'}
 								</span>
 							</button>
 						</th>
-						<th class="whitespace-nowrap px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-400">
+						<th
+							class="px-6 py-4 text-xs font-semibold tracking-wider whitespace-nowrap text-slate-400 uppercase"
+						>
 							<button
 								on:click={() => handleSort('timestamp')}
 								class="flex items-center gap-1.5 transition-colors hover:text-slate-600"
 							>
 								Waktu
-								<span class="{sortField === 'timestamp' ? 'text-slate-700' : 'text-slate-300'}">
+								<span class={sortField === 'timestamp' ? 'text-slate-700' : 'text-slate-300'}>
 									{sortField === 'timestamp' ? (sortDirection === 'asc' ? '▲' : '▼') : '⇅'}
 								</span>
 							</button>
@@ -314,7 +344,9 @@
 						<tr>
 							<td colspan="6" class="px-6 py-16 text-center">
 								<div class="flex flex-col items-center gap-3">
-									<div class="h-6 w-6 animate-spin rounded-full border-2 border-slate-200 border-t-slate-600"></div>
+									<div
+										class="h-6 w-6 animate-spin rounded-full border-2 border-slate-200 border-t-slate-600"
+									></div>
 									<span class="text-sm text-slate-400">Memuat log...</span>
 								</div>
 							</td>
@@ -342,22 +374,29 @@
 					{:else}
 						{#each filteredLogs as log (log.id)}
 							<tr class="transition-colors hover:bg-slate-50">
-								<td class="whitespace-nowrap px-6 py-4 font-medium text-slate-800">{log.user_id}</td>
+								<td class="px-6 py-4 font-medium whitespace-nowrap text-slate-800">{log.user_id}</td
+								>
 								<td class="max-w-xs truncate px-6 py-4 text-slate-700">{log.action}</td>
-								<td class="max-w-[200px] truncate px-6 py-4 text-slate-600">{log.target || '-'}</td>
-								<td class="whitespace-nowrap px-6 py-4">
-									<span class="inline-block rounded-md px-2 py-0.5 text-xs font-medium {getTypeBadge(log.audit_type)}">
+								<td class="max-w-50 truncate px-6 py-4 text-slate-600">{log.target || '-'}</td>
+								<td class="px-6 py-4 whitespace-nowrap">
+									<span
+										class="inline-block rounded-md px-2 py-0.5 text-xs font-medium {getTypeBadge(
+											log.audit_type
+										)}"
+									>
 										{log.audit_type}
 									</span>
 								</td>
-								<td class="whitespace-nowrap px-6 py-4">
+								<td class="px-6 py-4 whitespace-nowrap">
 									<span
-										class="inline-block rounded-md border px-2 py-0.5 text-xs font-medium capitalize {getStatusColor(log.status)}"
+										class="inline-block rounded-md border px-2 py-0.5 text-xs font-medium capitalize {getStatusColor(
+											log.status
+										)}"
 									>
 										{log.status}
 									</span>
 								</td>
-								<td class="whitespace-nowrap px-6 py-4 text-slate-500">
+								<td class="px-6 py-4 whitespace-nowrap text-slate-500">
 									{new Date(log.timestamp).toLocaleString('id-ID', {
 										dateStyle: 'medium',
 										timeStyle: 'short'

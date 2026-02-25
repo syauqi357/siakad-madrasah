@@ -225,11 +225,7 @@
 		position: absolute;
 		inset: 0;
 		border-radius: inherit;
-		background: linear-gradient(
-			to right,
-			rgb(109 40 217 / 0.35) 0%,
-			transparent 50%
-		);
+		background: linear-gradient(to right, rgb(109 40 217 / 0.35) 0%, transparent 50%);
 		opacity: 0;
 		z-index: -1;
 		transition: opacity 400ms cubic-bezier(0.4, 0, 0.2, 1);

@@ -108,72 +108,72 @@
 		{/if}
 
 		<div class="rounded-lg p-8 sm:border sm:border-slate-200 sm:bg-white sm:shadow-sm">
-		<!-- Header -->
-		<div class="mb-8 text-center">
-			<h1 class="text-2xl font-bold text-slate-900">
-				Login ke platform
-			</h1>
-			<span
-				class="mt-1 inline-block rotate-2 rounded bg-blue-600 px-2.5 py-0.5 text-lg font-bold text-white transition-transform hover:rotate-0"
-			>
-				akademik
-			</span>
-		</div>
-
-		<form on:submit|preventDefault={handleLogin} class="space-y-5">
-			<!-- Username -->
-			<div>
-				<label for="username" class="mb-1.5 block text-sm font-medium text-slate-700">
-					Username
-				</label>
-				<input
-					id="username"
-					bind:value={username}
-					type="text"
-					placeholder="admin"
-					required
-					disabled={loading}
-					class="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 disabled:opacity-60"
-				/>
+			<!-- Header -->
+			<div class="mb-8 text-center">
+				<h1 class="text-2xl font-bold text-slate-900">Login ke platform</h1>
+				<span
+					class="mt-1 inline-block rotate-2 rounded bg-blue-600 px-2.5 py-0.5 text-lg font-bold text-white transition-transform hover:rotate-0"
+				>
+					akademik
+				</span>
 			</div>
 
-			<!-- Password -->
-			<div>
-				<label for="password" class="mb-1.5 block text-sm font-medium text-slate-700">
-					Password
-				</label>
-				<input
-					id="password"
-					bind:value={password}
-					type={showPassword ? 'text' : 'password'}
-					placeholder="admin123"
-					required
-					disabled={loading}
-					class="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 disabled:opacity-60"
-				/>
-				<label class="mt-2 flex items-center gap-2 text-sm text-slate-500 select-none">
+			<form on:submit|preventDefault={handleLogin} class="space-y-5">
+				<!-- Username -->
+				<div>
+					<label for="username" class="mb-1.5 block text-sm font-medium text-slate-700">
+						Username
+					</label>
 					<input
-						type="checkbox"
-						bind:checked={showPassword}
-						class="h-4 w-4 rounded border-slate-300 accent-blue-600"
+						id="username"
+						bind:value={username}
+						type="text"
+						placeholder="admin"
+						required
+						disabled={loading}
+						class="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm transition-colors outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 disabled:opacity-60"
 					/>
-					Tampilkan password
-				</label>
-			</div>
+				</div>
 
-			<!-- Submit -->
-			<button
-				type="submit"
-				disabled={loading}
-				class="flex h-11 w-full items-center justify-center rounded-lg bg-blue-600 text-sm font-medium text-white transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
-			>
-				{#if loading}
-					<div class="h-5 w-5 animate-spin rounded-full border-2 border-white/30 border-t-white"></div>
-				{:else}
-					Login
-				{/if}
-			</button>
-		</form>
+				<!-- Password -->
+				<div>
+					<label for="password" class="mb-1.5 block text-sm font-medium text-slate-700">
+						Password
+					</label>
+					<input
+						id="password"
+						bind:value={password}
+						type={showPassword ? 'text' : 'password'}
+						placeholder="admin123"
+						required
+						disabled={loading}
+						class="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm transition-colors outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 disabled:opacity-60"
+					/>
+					<label class="mt-2 flex items-center gap-2 text-sm text-slate-500 select-none">
+						<input
+							type="checkbox"
+							bind:checked={showPassword}
+							class="h-4 w-4 rounded border-slate-300 accent-blue-600"
+						/>
+						Tampilkan password
+					</label>
+				</div>
+
+				<!-- Submit -->
+				<button
+					type="submit"
+					disabled={loading}
+					class="flex h-11 w-full items-center justify-center rounded-lg bg-blue-600 text-sm font-medium text-white transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
+				>
+					{#if loading}
+						<div
+							class="h-5 w-5 animate-spin rounded-full border-2 border-white/30 border-t-white"
+						></div>
+					{:else}
+						Login
+					{/if}
+				</button>
+			</form>
 		</div>
 	</div>
 </div>

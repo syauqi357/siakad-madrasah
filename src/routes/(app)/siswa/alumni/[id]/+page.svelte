@@ -188,7 +188,7 @@
 </svelte:head>
 
 <!-- Parent container -->
-<div class="min-h-screen bg-gradient-to-br from-slate-50 to-emerald-50/30 print:bg-white">
+<div class="min-h-screen bg-linear-to-br from-slate-50 to-emerald-50/30 print:bg-white">
 	<div class="mx-auto max-w-5xl px-4 py-8 md:px-8">
 		<!-- Back button -->
 		<button
@@ -228,7 +228,7 @@
 				<div class="flex items-center gap-4">
 					<!-- Avatar placeholder -->
 					<div
-						class="flex h-16 w-16 items-center justify-center rounded-md bg-gradient-to-br from-emerald-500 to-teal-600 text-2xl font-bold text-white print:from-emerald-600 print:to-emerald-600"
+						class="flex h-16 w-16 items-center justify-center rounded-md bg-linear-to-br from-emerald-500 to-teal-600 text-2xl font-bold text-white print:from-emerald-600 print:to-emerald-600"
 					>
 						{alumni.name.charAt(0).toUpperCase()}
 					</div>
@@ -322,7 +322,7 @@
 
 				<!-- Graduation Info Card -->
 				<div
-					class="overflow-hidden rounded-md border border-emerald-200 bg-gradient-to-br from-emerald-50 to-teal-50 print:border-slate-300 print:from-white print:to-white"
+					class="overflow-hidden rounded-md border border-emerald-200 bg-linear-to-br from-emerald-50 to-teal-50 print:border-slate-300 print:from-white print:to-white"
 				>
 					<div class="border-b border-emerald-100 bg-emerald-100/50 px-6 py-4 print:bg-slate-100">
 						<h2 class="font-semibold text-emerald-800 print:text-slate-800">Data Kelulusan</h2>
@@ -446,7 +446,7 @@
 					<button
 						on:click={saveChanges}
 						disabled={isSaving}
-						class="flex items-center gap-2 rounded-md bg-gradient-to-r from-emerald-500 to-teal-500 px-5 py-2.5 text-sm font-semibold text-white transition-all hover:from-emerald-600 hover:to-teal-600 disabled:opacity-50"
+						class="flex items-center gap-2 rounded-md bg-linear-to-r from-emerald-500 to-teal-500 px-5 py-2.5 text-sm font-semibold text-white transition-all hover:from-emerald-600 hover:to-teal-600 disabled:opacity-50"
 					>
 						{#if isSaving}
 							<div
@@ -468,65 +468,6 @@
 		{/if}
 	</div>
 </div>
-
-<!--
-
-Done! Here's a summary of the complete Graduate/Alumni feature implementation:
-
-  Backend
-  File: backend/src/db/schema/studentHistory.js
-  Description: Added graduationYear, certificateNumber, finalGrade fields
-  ────────────────────────────────────────
-  File: backend/services/graduate.services.js
-  Description: Complete graduation service with all functions
-  ────────────────────────────────────────
-  File: backend/controllers/graduateController.js
-  Description: Controller for all graduate endpoints
-  ────────────────────────────────────────
-  File: backend/routes/api/graduate.js
-  Description: Route definitions
-  ────────────────────────────────────────
-  File: backend/app.js
-  Description: Registered graduate routes at /routes/api/graduates
-  Frontend
-  File: src/lib/components/modal/GraduateModal.svelte
-  Description: Modal for graduating a student
-  ────────────────────────────────────────
-  File: src/routes/(app)/siswa/alumni/+page.svelte
-  Description: Alumni list with stats, filters, pagination
-  ────────────────────────────────────────
-  File: src/routes/(app)/siswa/alumni/[id]/+page.svelte
-  Description: Alumni detail page
-  ────────────────────────────────────────
-  File: src/routes/(app)/siswa/[id]/+page.svelte
-  Description: Added "Luluskan Siswa" button
-  API Endpoints
-  ┌────────┬─────────────────────────────┬─────────────────────────────────┐
-  │ Method │          Endpoint           │             Purpose             │
-  ├────────┼─────────────────────────────┼─────────────────────────────────┤
-  │ GET    │ /routes/api/graduates       │ List alumni (with ?year=filter) │
-  ├────────┼─────────────────────────────┼─────────────────────────────────┤
-  │ GET    │ /routes/api/graduates/stats │ Get stats (total, by year)      │
-  ├────────┼─────────────────────────────┼─────────────────────────────────┤
-  │ GET    │ /routes/api/graduates/years │ Get years for dropdown          │
-  ├────────┼─────────────────────────────┼─────────────────────────────────┤
-  │ GET    │ /routes/api/graduates/:id   │ Get alumni detail               │
-  ├────────┼─────────────────────────────┼─────────────────────────────────┤
-  │ POST   │ /routes/api/graduates/:id   │ Graduate a student              │
-  ├────────┼─────────────────────────────┼─────────────────────────────────┤
-  │ POST   │ /routes/api/graduates/bulk  │ Bulk graduate                   │
-  ├────────┼─────────────────────────────┼─────────────────────────────────┤
-  │ PUT    │ /routes/api/graduates/:id   │ Update alumni data              │
-  └────────┴─────────────────────────────┴─────────────────────────────────┘
-  SQL Migration Needed
-
-  ALTER TABLE student_history ADD COLUMN graduation_year TEXT;
-  ALTER TABLE student_history ADD COLUMN certificate_number TEXT;
-  ALTER TABLE student_history ADD COLUMN final_grade TEXT;
-
-  Run these 3 statements to add the new columns to your database.
-
--->
 
 <ModalAlert
 	show={alertModal.show}

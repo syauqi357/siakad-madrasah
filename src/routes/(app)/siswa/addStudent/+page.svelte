@@ -239,7 +239,7 @@
 
 		<a
 			href="/siswa"
-			class="my-4 flex w-fit cursor-pointer items-center justify-center gap-2 rounded-full bg-blue-600 px-4 py-2 text-sm hover:gap-4 transition-all ease-in-out text-blue-100 capitalize hover:bg-blue-700 md:text-sm"
+			class="my-4 flex w-fit cursor-pointer items-center justify-center gap-2 rounded-full bg-blue-600 px-4 py-2 text-sm text-blue-100 capitalize transition-all ease-in-out hover:gap-4 hover:bg-blue-700 md:text-sm"
 		>
 			<Arrow_Left /> kembali
 		</a>
@@ -312,7 +312,12 @@
 										class="absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-red-500 text-white hover:bg-red-600"
 									>
 										<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+											<path
+												stroke-linecap="round"
+												stroke-linejoin="round"
+												stroke-width="2"
+												d="M6 18L18 6M6 6l12 12"
+											/>
 										</svg>
 									</button>
 								</div>
@@ -479,7 +484,7 @@
 								<span class="mb-2 block text-sm text-slate-500">Jenis Kelamin</span>
 								<div class="flex gap-4">
 									<label
-										class="flex cursor-pointer items-center gap-2 rounded-lg border border-slate-200 px-4 py-3 transition-colors hover:bg-slate-50 has-[:checked]:border-blue-500 has-[:checked]:bg-blue-50 has-[:checked]:text-blue-700"
+										class="flex cursor-pointer items-center gap-2 rounded-lg border border-slate-200 px-4 py-3 transition-colors hover:bg-slate-50 has-checked:border-blue-500 has-checked:bg-blue-50 has-checked:text-blue-700"
 									>
 										<input
 											type="radio"
@@ -491,7 +496,7 @@
 										<span class="text-sm font-medium">Laki-laki</span>
 									</label>
 									<label
-										class="flex cursor-pointer items-center gap-2 rounded-lg border border-slate-200 px-4 py-3 transition-colors hover:bg-slate-50 has-[:checked]:border-pink-500 has-[:checked]:bg-pink-50 has-[:checked]:text-pink-700"
+										class="flex cursor-pointer items-center gap-2 rounded-lg border border-slate-200 px-4 py-3 transition-colors hover:bg-slate-50 has-checked:border-pink-500 has-checked:bg-pink-50 has-checked:text-pink-700"
 									>
 										<input
 											type="radio"

@@ -80,7 +80,7 @@ Alat Kebersihan & Perawatan: Mesin pemotong rumput dan penyedot debu (vacuum cle
 <div class="min-h-screen p-4">
 	<!-- card	-->
 	<div class="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
-		{#each categories as category(category.id)}
+		{#each categories as category (category.id)}
 			<div class="rounded-xl border border-gray-200 p-4">
 				<h2 class="mb-3 text-xl font-semibold">{category.name}</h2>
 				<div class="grid grid-cols-2 gap-2 md:grid-cols-3">

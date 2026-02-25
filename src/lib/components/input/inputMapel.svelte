@@ -165,8 +165,4 @@
 	</form>
 </div>
 
-<ModalAlert
-	bind:show={showAlert}
-	type="warning"
-	message={alertMessage}
-/>
+<ModalAlert bind:show={showAlert} type="warning" message={alertMessage} />

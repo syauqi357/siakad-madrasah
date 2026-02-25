@@ -9,7 +9,7 @@ async function seedMapelKurikulum() {
 
 	try {
 		// 1. KURIKULUM
-				console.log('📚 Seeding Kurikulum...');
+		console.log('📚 Seeding Kurikulum...');
 
 		const kurikulumData = [
 			{
@@ -37,7 +37,6 @@ async function seedMapelKurikulum() {
 
 		await db.insert(curriculum).values(kurikulumData).onConflictDoNothing();
 		console.log(`   ✅ ${kurikulumData.length} kurikulum seeded`);
-
 
 		// 2. MAPEL (Mata Pelajaran) - MA / Aliyah
 		console.log('\n📖 Seeding Mapel MA (Madrasah Aliyah)...');

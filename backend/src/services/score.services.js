@@ -276,7 +276,7 @@ export const calculateScoreTotals = (scores, typeWeightMap) => {
  * @param {number|null} academicYearId - Optional filter by academic year
  * @returns {Promise<Array<{subjectName: string, scores: Object, total: number, average: number, weightedAverage: number}>>}
  */
-export const getStudentScoreSummary = async (studentId, academicYearId = null) => {
+export const getStudentScoreSummary = async (studentId, _academicYearId = null) => {
 	// Fetch all assessment types for weight calculation
 	const assessmentTypes = await db
 		.select()

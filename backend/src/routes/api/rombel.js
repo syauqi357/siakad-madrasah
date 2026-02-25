@@ -1,5 +1,11 @@
 import express from 'express';
-import { createRombel, getRombelList, getRombelDetail, deleteRombel, addStudentsToExistingRombel } from '../../controllers/rombelController.js';
+import {
+	createRombel,
+	getRombelList,
+	getRombelDetail,
+	deleteRombel,
+	addStudentsToExistingRombel
+} from '../../controllers/rombelController.js';
 
 const router = express.Router();
 

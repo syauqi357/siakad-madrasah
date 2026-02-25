@@ -40,6 +40,17 @@ export default defineConfig(
 				parser: ts.parser,
 				svelteConfig
 			}
+		},
+		rules: {
+			// goto() and href links inside event handlers (not lifecycle hooks) are safe
+			'svelte/no-navigation-without-resolve': 'off'
+		}
+	},
+	{
+		// CommonJS files must use require() — disable ESM-only rule
+		files: ['**/*.cjs'],
+		rules: {
+			'@typescript-eslint/no-require-imports': 'off'
 		}
 	}
 );

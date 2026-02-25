@@ -33,8 +33,8 @@ The process begins at the "Add Student" form.
   ```javascript
   // studentController.js
   export const createStudent = async (req, res) => {
-      const newStudent = await studentService.createStudentData(req.body);
-      res.status(201).json(newStudent);
+  	const newStudent = await studentService.createStudentData(req.body);
+  	res.status(201).json(newStudent);
   };
   ```
 
@@ -67,10 +67,10 @@ This is the core of the mechanism, where the data is safely processed and saved.
 
     ```javascript
     if (payload.address) {
-        await tx.insert(studentAddress).values({
-            studentId: studentId, // Using the new ID
-            ...payload.address
-        });
+    	await tx.insert(studentAddress).values({
+    		studentId: studentId, // Using the new ID
+    		...payload.address
+    	});
     }
     ```
 

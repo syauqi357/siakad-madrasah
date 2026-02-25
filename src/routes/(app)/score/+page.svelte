@@ -261,12 +261,7 @@
 				<div
 					class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 transition-colors group-hover:bg-blue-100"
 				>
-					<svg
-						class="h-5 w-5 text-blue-600"
-						fill="none"
-						viewBox="0 0 24 24"
-						stroke="currentColor"
-					>
+					<svg class="h-5 w-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 						<path
 							stroke-linecap="round"
 							stroke-linejoin="round"
@@ -344,7 +339,9 @@
 			</a>
 
 			<!-- Download Template — spans 1 col on mobile, left side on lg -->
-			<div class="rounded-lg border border-slate-200 bg-white sm:col-span-2 lg:col-span-1 lg:row-span-2">
+			<div
+				class="rounded-lg border border-slate-200 bg-white sm:col-span-2 lg:col-span-1 lg:row-span-2"
+			>
 				<div class="flex items-center gap-2 border-b border-slate-200 px-5 py-3">
 					<svg class="h-4 w-4 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 						<path
@@ -358,7 +355,7 @@
 				</div>
 
 				<div class="flex h-[calc(100%-3rem)] flex-col p-5">
-					<div class="space-y-4 flex-1">
+					<div class="flex-1 space-y-4">
 						<div class="space-y-1.5">
 							<label for="rombel" class="text-sm font-medium text-slate-700">Pilih Rombel</label>
 							<select
@@ -466,7 +463,9 @@
 									{/each}
 								</select>
 								{#if selectedAssessmentTypeId === 0}
-									<p class="text-xs text-blue-600">Upload semua kolom nilai dari template sekaligus</p>
+									<p class="text-xs text-blue-600">
+										Upload semua kolom nilai dari template sekaligus
+									</p>
 								{/if}
 							</div>
 						</div>

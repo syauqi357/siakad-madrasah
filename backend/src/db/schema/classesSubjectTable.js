@@ -1,4 +1,4 @@
-import { integer, sqliteTable, unique } from 'drizzle-orm/sqlite-core';
+import { integer, sqliteTable } from 'drizzle-orm/sqlite-core';
 import { Subjects } from './subjectTable.js';
 import { teachers } from './teacherUser.js';
 import { classes } from './classesDataTable.js';
@@ -15,8 +15,8 @@ export const classSubject = sqliteTable(
 			.references(() => Subjects.id),
 		teacherId: integer('teacher_id').references(() => teachers.id)
 	},
-	(table) => ({
+	(_table) => ({
 		// Composite unique constraint
-		// unq: unique().on(table.classId, table.subjectId)
+		// unq: unique().on(_table.classId, _table.subjectId)
 	})
 );

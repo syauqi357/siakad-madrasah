@@ -4,10 +4,18 @@
 	import { API_FETCH } from '$lib/api';
 	import ModalAlert from '$lib/components/modal/modalalert.svelte';
 
-	let alertModal = { show: false, type: 'success' as 'success' | 'error' | 'warning' | 'info', message: '' };
+	let alertModal = {
+		show: false,
+		type: 'success' as 'success' | 'error' | 'warning' | 'info',
+		message: ''
+	};
 	let alertAction: (() => void) | null = null;
 
-	function showAlert(type: 'success' | 'error' | 'warning' | 'info', message: string, onConfirm?: () => void) {
+	function showAlert(
+		type: 'success' | 'error' | 'warning' | 'info',
+		message: string,
+		onConfirm?: () => void
+	) {
 		alertModal = { show: true, type, message };
 		alertAction = onConfirm || null;
 	}
@@ -129,7 +137,10 @@
 
 	async function handleSubmit() {
 		if (!formData.nama_rombel || !formData.tingkat_kelas || !formData.wali_kelas) {
-			showAlert('warning', 'Mohon lengkapi data wajib: Nama Rombel, Tingkat Kelas, dan Wali Kelas.');
+			showAlert(
+				'warning',
+				'Mohon lengkapi data wajib: Nama Rombel, Tingkat Kelas, dan Wali Kelas.'
+			);
 			return;
 		}
 
@@ -290,7 +301,7 @@
 								class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-700 transition-colors outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
 							>
 								<option value="" disabled>Pilih Kurikulum</option>
-								{#each curricula as curr(curr.id)}
+								{#each curricula as curr (curr.id)}
 									<option value={curr.id}
 										>{curr.name} ({curr.code}) {curr.isActive === 1 ? '- Aktif' : ''}</option
 									>
@@ -406,7 +417,7 @@
 									</td>
 								</tr>
 							{:else}
-								{#each students as student, i(student.id)}
+								{#each students as student, i (student.id)}
 									<tr class="transition-colors hover:bg-slate-50">
 										<td class="px-4 py-2.5 text-center">
 											<input

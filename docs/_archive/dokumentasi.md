@@ -1,6 +1,7 @@
 # Dokumentasi Sistem Manajemen Siklus Hidup Siswa
 
 ## Daftar Isi
+
 1. [Gambaran Umum](#gambaran-umum)
 2. [Arsitektur Sistem](#arsitektur-sistem)
 3. [Siklus Hidup Siswa](#siklus-hidup-siswa)
@@ -107,35 +108,40 @@ Sistem SIAKAD Madrasah adalah aplikasi manajemen akademik yang mengelola siklus 
 
 ### Penjelasan Status
 
-| Status | Deskripsi | Aksi yang Tersedia |
-|--------|-----------|-------------------|
-| **ACTIVE** | Siswa aktif dalam rombel | Promosi, Mutasi, Kelulusan |
-| **MUTASI** | Siswa pindah/keluar sekolah | Lihat riwayat saja |
-| **GRADUATE** | Siswa telah lulus | Lihat riwayat & ijazah |
+| Status       | Deskripsi                   | Aksi yang Tersedia         |
+| ------------ | --------------------------- | -------------------------- |
+| **ACTIVE**   | Siswa aktif dalam rombel    | Promosi, Mutasi, Kelulusan |
+| **MUTASI**   | Siswa pindah/keluar sekolah | Lihat riwayat saja         |
+| **GRADUATE** | Siswa telah lulus           | Lihat riwayat & ijazah     |
 
 ---
 
 ## Fitur-Fitur Utama
 
 ### 1. Manajemen Siswa
+
 - **Daftar Siswa**: Menampilkan semua siswa dengan filter status
 - **Tambah Siswa**: Input data siswa baru
 - **Import Excel**: Upload data siswa secara massal
 - **Detail Siswa**: Informasi lengkap per siswa
 
 ### 2. Kenaikan Kelas (Grade Promotion)
+
 **Lokasi**: `/score/upgrade`
 
 Fitur untuk memindahkan siswa ke kelas/rombel berikutnya:
+
 - Pilih rombel asal
 - Pilih siswa yang akan dipromosikan
 - Pilih rombel tujuan
 - Eksekusi promosi secara transaksional
 
 ### 3. Kelulusan (Graduation)
+
 **Lokasi**: `/siswa/graduate-bulk`
 
 Fitur untuk meluluskan siswa kelas akhir:
+
 - Pilih rombel kelas akhir (XII/IX)
 - Pilih siswa (bisa multiple)
 - Input data kelulusan:
@@ -145,22 +151,27 @@ Fitur untuk meluluskan siswa kelas akhir:
   - Predikat (opsional)
 
 ### 4. Alumni
+
 **Lokasi**: `/siswa/alumni`
 
 Menampilkan daftar siswa yang telah lulus:
+
 - Filter berdasarkan tahun
 - Statistik per tahun kelulusan
 - Detail ijazah dan predikat
 
 ### 5. Mutasi
+
 **Lokasi**: `/siswa/mutasi`
 
 Menampilkan daftar siswa yang telah mutasi/pindah:
+
 - Tanggal mutasi
 - Alasan mutasi
 - Kelas terakhir
 
 ### 6. Navigasi Cepat
+
 - **Dashboard Cards**: Kartu navigasi di halaman dashboard
 - **Navbar Menu**: Modal navigasi dari navbar (tombol "Menu")
 
@@ -175,21 +186,21 @@ Sistem menggunakan **async/await** pattern untuk semua operasi I/O:
 ```typescript
 // Contoh: Fetch data siswa dengan async/await
 async function fetchStudents(page: number) {
-    loading = true;
-    try {
-        const response = await API_FETCH(`/routes/api/studentDataSet?page=${page}`);
+	loading = true;
+	try {
+		const response = await API_FETCH(`/routes/api/studentDataSet?page=${page}`);
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
+		if (!response.ok) {
+			throw new Error(`HTTP error! status: ${response.status}`);
+		}
 
-        const result = await response.json();
-        students = result.data || [];
-    } catch (error) {
-        console.error('Failed to fetch:', error);
-    } finally {
-        loading = false;
-    }
+		const result = await response.json();
+		students = result.data || [];
+	} catch (error) {
+		console.error('Failed to fetch:', error);
+	} finally {
+		loading = false;
+	}
 }
 ```
 
@@ -200,12 +211,12 @@ Express.js menggunakan **event-driven, non-blocking I/O** model:
 ```javascript
 // Controller menggunakan async handler
 export const getAll = async (req, res) => {
-    try {
-        const data = await studentService.getAllStudents();
-        res.json({ success: true, data });
-    } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
-    }
+	try {
+		const data = await studentService.getAllStudents();
+		res.json({ success: true, data });
+	} catch (error) {
+		res.status(500).json({ success: false, message: error.message });
+	}
 };
 ```
 
@@ -216,28 +227,25 @@ Operasi kritis menggunakan **database transaction** untuk menjaga konsistensi:
 ```javascript
 // Contoh: Promosi siswa dengan transaksi
 export function promoteStudents(promotions, targetRombelId) {
-    return db.transaction((tx) => {
-        for (const p of promotions) {
-            // 1. Nonaktifkan assignment lama
-            tx.update(rombelStudents)
-                .set({ isActive: false, leftAt: new Date().toISOString() })
-                .where(and(
-                    eq(rombelStudents.studentId, p.studentId),
-                    eq(rombelStudents.isActive, true)
-                ))
-                .run();
+	return db.transaction((tx) => {
+		for (const p of promotions) {
+			// 1. Nonaktifkan assignment lama
+			tx.update(rombelStudents)
+				.set({ isActive: false, leftAt: new Date().toISOString() })
+				.where(and(eq(rombelStudents.studentId, p.studentId), eq(rombelStudents.isActive, true)))
+				.run();
 
-            // 2. Buat assignment baru
-            tx.insert(rombelStudents)
-                .values({
-                    rombelId: targetRombelId,
-                    studentId: p.studentId,
-                    isActive: true
-                })
-                .run();
-        }
-        return { success: true };
-    });
+			// 2. Buat assignment baru
+			tx.insert(rombelStudents)
+				.values({
+					rombelId: targetRombelId,
+					studentId: p.studentId,
+					isActive: true
+				})
+				.run();
+		}
+		return { success: true };
+	});
 }
 ```
 
@@ -255,6 +263,7 @@ export function promoteStudents(promotions, targetRombelId) {
 ### Tabel Utama
 
 #### 1. `students`
+
 ```sql
 CREATE TABLE students (
     id INTEGER PRIMARY KEY,
@@ -272,6 +281,7 @@ CREATE TABLE students (
 ```
 
 #### 2. `rombel` (Rombongan Belajar)
+
 ```sql
 CREATE TABLE rombel (
     id INTEGER PRIMARY KEY,
@@ -285,6 +295,7 @@ CREATE TABLE rombel (
 ```
 
 #### 3. `rombel_students` (Junction Table)
+
 ```sql
 CREATE TABLE rombel_students (
     id INTEGER PRIMARY KEY,
@@ -297,6 +308,7 @@ CREATE TABLE rombel_students (
 ```
 
 #### 4. `student_history` (Riwayat Status)
+
 ```sql
 CREATE TABLE student_history (
     id INTEGER PRIMARY KEY,
@@ -314,6 +326,7 @@ CREATE TABLE student_history (
 ```
 
 #### 5. `academic_year` (Tahun Ajaran)
+
 ```sql
 CREATE TABLE academic_year (
     id INTEGER PRIMARY KEY,
@@ -343,32 +356,32 @@ students ──────┬───── rombel_students ───── ro
 
 ### Siswa
 
-| Method | Endpoint | Deskripsi |
-|--------|----------|-----------|
-| GET | `/routes/api/studentDataSet` | Daftar semua siswa |
-| GET | `/routes/api/students/active` | Siswa dengan status ACTIVE |
-| GET | `/routes/api/students/graduated` | Siswa dengan status GRADUATE |
-| GET | `/routes/api/students/dropout` | Siswa dengan status MUTASI |
-| POST | `/routes/api/students/:id/status` | Ubah status siswa |
-| GET | `/routes/api/graduates/stats` | Statistik alumni |
+| Method | Endpoint                          | Deskripsi                    |
+| ------ | --------------------------------- | ---------------------------- |
+| GET    | `/routes/api/studentDataSet`      | Daftar semua siswa           |
+| GET    | `/routes/api/students/active`     | Siswa dengan status ACTIVE   |
+| GET    | `/routes/api/students/graduated`  | Siswa dengan status GRADUATE |
+| GET    | `/routes/api/students/dropout`    | Siswa dengan status MUTASI   |
+| POST   | `/routes/api/students/:id/status` | Ubah status siswa            |
+| GET    | `/routes/api/graduates/stats`     | Statistik alumni             |
 
 ### Promosi (Kenaikan Kelas)
 
-| Method | Endpoint | Deskripsi |
-|--------|----------|-----------|
-| GET | `/routes/api/promotion/rombels` | Rombel yang bisa dipromosikan |
-| GET | `/routes/api/promotion/students/:rombelId` | Siswa dalam rombel |
-| GET | `/routes/api/promotion/targets/:classId` | Rombel tujuan |
-| POST | `/routes/api/promotion/promote` | Eksekusi promosi |
+| Method | Endpoint                                   | Deskripsi                     |
+| ------ | ------------------------------------------ | ----------------------------- |
+| GET    | `/routes/api/promotion/rombels`            | Rombel yang bisa dipromosikan |
+| GET    | `/routes/api/promotion/students/:rombelId` | Siswa dalam rombel            |
+| GET    | `/routes/api/promotion/targets/:classId`   | Rombel tujuan                 |
+| POST   | `/routes/api/promotion/promote`            | Eksekusi promosi              |
 
 ### Tahun Ajaran
 
-| Method | Endpoint | Deskripsi |
-|--------|----------|-----------|
-| GET | `/routes/api/academic-years` | Semua tahun ajaran |
-| GET | `/routes/api/academic-years/lite` | Untuk dropdown |
-| GET | `/routes/api/academic-years/active` | Tahun ajaran aktif |
-| POST | `/routes/api/academic-years` | Tambah tahun ajaran |
+| Method | Endpoint                            | Deskripsi           |
+| ------ | ----------------------------------- | ------------------- |
+| GET    | `/routes/api/academic-years`        | Semua tahun ajaran  |
+| GET    | `/routes/api/academic-years/lite`   | Untuk dropdown      |
+| GET    | `/routes/api/academic-years/active` | Tahun ajaran aktif  |
+| POST   | `/routes/api/academic-years`        | Tambah tahun ajaran |
 
 ---
 
@@ -489,14 +502,14 @@ let searchTimeout: ReturnType<typeof setTimeout>;
 const DEBOUNCE_MS = 600;
 
 function handleSearchInput(event: Event) {
-    const value = (event.target as HTMLInputElement).value;
+	const value = (event.target as HTMLInputElement).value;
 
-    clearTimeout(searchTimeout);
+	clearTimeout(searchTimeout);
 
-    searchTimeout = setTimeout(() => {
-        searchQuery = value;
-        fetchStudents(1);
-    }, DEBOUNCE_MS);
+	searchTimeout = setTimeout(() => {
+		searchQuery = value;
+		fetchStudents(1);
+	}, DEBOUNCE_MS);
 }
 ```
 
@@ -507,8 +520,8 @@ Menggunakan reactive statements untuk filter otomatis:
 ```typescript
 // Filter data secara reaktif ketika searchQuery berubah
 $: filteredStudents = students.filter((s) => {
-    if (!searchQuery) return true;
-    return s.name.toLowerCase().includes(searchQuery.toLowerCase());
+	if (!searchQuery) return true;
+	return s.name.toLowerCase().includes(searchQuery.toLowerCase());
 });
 ```
 
@@ -516,29 +529,28 @@ $: filteredStudents = students.filter((s) => {
 
 ```typescript
 try {
-    // Operasi async
-    const response = await API_FETCH(url);
+	// Operasi async
+	const response = await API_FETCH(url);
 
-    if (!response.ok) {
-        throw new Error(`HTTP error: ${response.status}`);
-    }
+	if (!response.ok) {
+		throw new Error(`HTTP error: ${response.status}`);
+	}
 
-    const data = await response.json();
-    // Proses data...
-
+	const data = await response.json();
+	// Proses data...
 } catch (error) {
-    // Log error
-    console.error('Error:', error);
+	// Log error
+	console.error('Error:', error);
 
-    // Tampilkan pesan ke user
-    alertModal = {
-        show: true,
-        type: 'error',
-        message: error instanceof Error ? error.message : 'Terjadi kesalahan'
-    };
+	// Tampilkan pesan ke user
+	alertModal = {
+		show: true,
+		type: 'error',
+		message: error instanceof Error ? error.message : 'Terjadi kesalahan'
+	};
 } finally {
-    // Selalu jalankan (loading state, cleanup, dll)
-    loading = false;
+	// Selalu jalankan (loading state, cleanup, dll)
+	loading = false;
 }
 ```
 
@@ -547,6 +559,7 @@ try {
 ## Pengembangan Selanjutnya
 
 Fitur yang dapat ditambahkan:
+
 1. **Export Data**: Export alumni ke PDF/Excel
 2. **Cetak Ijazah**: Template cetak ijazah
 3. **Statistik Dashboard**: Grafik kelulusan per tahun
@@ -555,5 +568,5 @@ Fitur yang dapat ditambahkan:
 
 ---
 
-*Dokumentasi ini dibuat untuk SIAKAD Madrasah - Sistem Informasi Akademik*
-*Terakhir diperbarui: Januari 2026*
+_Dokumentasi ini dibuat untuk SIAKAD Madrasah - Sistem Informasi Akademik_
+_Terakhir diperbarui: Januari 2026_

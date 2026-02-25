@@ -11,5 +11,7 @@ export const auditTable = sqliteTable('audit_logs', {
 	metadata: text('metadata'),
 	ip_address: text('ip_address'),
 	user_agent: text('user_agent'),
-	timestamp: integer('timestamp').default(sql`(unixepoch())`).notNull()
+	timestamp: integer('timestamp')
+		.default(sql`(unixepoch())`)
+		.notNull()
 });

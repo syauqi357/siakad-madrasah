@@ -381,7 +381,7 @@
 	let assignmentsLoaded = false;
 
 	// Watch for tab changes
-	$: if (activeTab === 'assignments' && !assignmentsLoaded && !isLoading) {
+	$: if (activeTab === 'assignments' && !assignmentsLoaded) {
 		assignmentsLoaded = true;
 		fetchClassSubjects();
 	}
@@ -788,7 +788,7 @@
 <!-- ==================== SUBJECT MODAL ==================== -->
 {#if showModal}
 	<div
-		class="fixed inset-0 z-2 flex items-center justify-center backdrop-blur-sm bg-black/20 p-4"
+		class="fixed inset-0 z-2 flex items-center justify-center bg-black/20 p-4 backdrop-blur-sm"
 		transition:fade={{ duration: 150 }}
 		on:click={handleBackdropClick}
 		on:keydown={handleKeydown}
@@ -797,7 +797,7 @@
 		aria-modal="true"
 	>
 		<div
-			class="w-full max-w-md rounded-lg bg-white border border-slate-400 shadow-sm"
+			class="w-full max-w-md rounded-lg border border-slate-400 bg-white shadow-sm"
 			transition:fly={{ y: 20, duration: 200 }}
 		>
 			<div class="flex items-center justify-between border-b border-slate-400 px-6 py-4">
@@ -904,7 +904,7 @@
 <!-- ==================== ASSIGNMENT MODAL ==================== -->
 {#if showAssignModal}
 	<div
-		class="fixed inset-0 z-20 backdrop-blur-sm flex items-center justify-center bg-black/20 p-4"
+		class="fixed inset-0 z-20 flex items-center justify-center bg-black/20 p-4 backdrop-blur-sm"
 		transition:fade={{ duration: 150 }}
 		on:click={handleAssignBackdropClick}
 		on:keydown={handleKeydown}

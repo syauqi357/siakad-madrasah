@@ -274,7 +274,7 @@
 
 				<!-- About -->
 				<div
-					class="group relative overflow-hidden rounded-lg border border-slate-700 bg-gradient-to-br from-slate-800 to-blue-900 p-5 transition-all duration-75 hover:border-blue-500"
+					class="group relative overflow-hidden rounded-lg border border-slate-700 bg-linear-to-br from-slate-800 to-blue-900 p-5 transition-all duration-75 hover:border-blue-500"
 				>
 					<div
 						class="pointer-events-none absolute inset-0 bg-blue-500/0 transition-all duration-500 group-hover:bg-blue-500/20"

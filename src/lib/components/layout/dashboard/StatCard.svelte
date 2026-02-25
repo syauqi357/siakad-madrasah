@@ -33,7 +33,7 @@
 			{/if}
 		</div>
 		{#if icon}
-			<div class="flex-shrink-0 rounded-lg p-2 {iconBg ?? ''}">
+			<div class="shrink-0 rounded-lg p-2 {iconBg ?? ''}">
 				{@html icon}
 			</div>
 		{/if}

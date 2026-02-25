@@ -755,7 +755,7 @@
 							<h2 class="text-md font-bold tracking-wider text-slate-400 uppercase">Data Ibu</h2>
 							{#if student.mother}
 								<span
-									class="rounded-sm border px-2 py-0.5 text-sm	 font-medium {student.mother.isAlive
+									class="rounded-sm border px-2 py-0.5 text-sm font-medium {student.mother.isAlive
 										? 'border-emerald-200 bg-emerald-50 text-emerald-700'
 										: 'border-red-200 bg-red-50 text-red-500'}"
 								>

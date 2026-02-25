@@ -157,7 +157,11 @@
 	{#if error}
 		<div class="flex items-center justify-between rounded-lg bg-red-50 px-4 py-3">
 			<p class="text-sm text-red-600">{error}</p>
-			<button on:click={() => (error = '')} class="text-red-400 hover:text-red-600" aria-label="Close">
+			<button
+				on:click={() => (error = '')}
+				class="text-red-400 hover:text-red-600"
+				aria-label="Close"
+			>
 				<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 					<path
 						stroke-linecap="round"
@@ -173,7 +177,11 @@
 	{#if success}
 		<div class="flex items-center justify-between rounded-lg bg-green-50 px-4 py-3">
 			<p class="text-sm text-green-600">{success}</p>
-			<button on:click={() => (success = '')} class="text-green-400 hover:text-green-600" aria-label="close">
+			<button
+				on:click={() => (success = '')}
+				class="text-green-400 hover:text-green-600"
+				aria-label="close"
+			>
 				<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 					<path
 						stroke-linecap="round"
@@ -340,9 +348,7 @@
 											Digunakan oleh {curriculum.rombelCount} rombel
 										</p>
 									{:else}
-										<p class="mt-1 text-xs text-slate-400">
-											Belum digunakan rombel
-										</p>
+										<p class="mt-1 text-xs text-slate-400">Belum digunakan rombel</p>
 									{/if}
 								</div>
 								<div class="ml-4 flex items-center gap-1">

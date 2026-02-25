@@ -6,7 +6,10 @@
 		{ label: 'At least one uppercase letter', met: /[A-Z]/.test(password) },
 		{ label: 'At least one lowercase letter', met: /[a-z]/.test(password) },
 		{ label: 'At least one number', met: /[0-9]/.test(password) },
-		{ label: 'At least one special character (!@#$%^&*)', met: /[!@#$%^&*(),.?":{}|<>]/.test(password) }
+		{
+			label: 'At least one special character (!@#$%^&*)',
+			met: /[!@#$%^&*(),.?":{}|<>]/.test(password)
+		}
 	];
 </script>
 

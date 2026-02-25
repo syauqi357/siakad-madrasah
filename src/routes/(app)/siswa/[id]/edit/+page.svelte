@@ -368,7 +368,8 @@
 											class="h-28 w-24 rounded-lg border-2 border-blue-300 object-cover"
 										/>
 										<button
-											type="button" aria-labelledby="select Photo Preview"
+											type="button"
+											aria-labelledby="select Photo Preview"
 											on:click={() => {
 												selectedPhoto = null;
 												photoPreview = null;
@@ -545,7 +546,7 @@
 									<span class="mb-2 block text-sm text-slate-500">Jenis Kelamin</span>
 									<div class="flex gap-4">
 										<label
-											class="flex cursor-pointer items-center gap-2 rounded-lg border border-slate-200 px-4 py-3 transition-colors hover:bg-slate-50 has-[:checked]:border-blue-500 has-[:checked]:bg-blue-50 has-[:checked]:text-blue-700"
+											class="flex cursor-pointer items-center gap-2 rounded-lg border border-slate-200 px-4 py-3 transition-colors hover:bg-slate-50 has-checked:border-blue-500 has-checked:bg-blue-50 has-checked:text-blue-700"
 										>
 											<input
 												type="radio"
@@ -557,7 +558,7 @@
 											<span class="text-sm font-medium">Laki-laki</span>
 										</label>
 										<label
-											class="flex cursor-pointer items-center gap-2 rounded-lg border border-slate-200 px-4 py-3 transition-colors hover:bg-slate-50 has-[:checked]:border-pink-500 has-[:checked]:bg-pink-50 has-[:checked]:text-pink-700"
+											class="flex cursor-pointer items-center gap-2 rounded-lg border border-slate-200 px-4 py-3 transition-colors hover:bg-slate-50 has-checked:border-pink-500 has-checked:bg-pink-50 has-checked:text-pink-700"
 										>
 											<input
 												type="radio"

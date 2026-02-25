@@ -80,8 +80,12 @@
 	<div class="mt-4 space-y-4">
 		<!-- Current Password -->
 		<div class="flex flex-col gap-1.5">
-			<label for="currentPassword" class="text-sm font-medium text-slate-700">Current Password</label>
-			<div class="flex items-center rounded-lg border border-slate-300 transition-colors focus-within:border-slate-500">
+			<label for="currentPassword" class="text-sm font-medium text-slate-700"
+				>Current Password</label
+			>
+			<div
+				class="flex items-center rounded-lg border border-slate-300 transition-colors focus-within:border-slate-500"
+			>
 				<input
 					class="w-full rounded-lg p-2.5 text-sm outline-none"
 					type={showCurrentPassword ? 'text' : 'password'}
@@ -103,7 +107,9 @@
 		<!-- New Password -->
 		<div class="flex flex-col gap-1.5">
 			<label for="newPassword" class="text-sm font-medium text-slate-700">New Password</label>
-			<div class="flex items-center rounded-lg border border-slate-300 transition-colors focus-within:border-slate-500">
+			<div
+				class="flex items-center rounded-lg border border-slate-300 transition-colors focus-within:border-slate-500"
+			>
 				<input
 					type={showNewPassword ? 'text' : 'password'}
 					class="w-full rounded-lg p-2.5 text-sm outline-none"
@@ -125,8 +131,12 @@
 
 		<!-- Confirm New Password -->
 		<div class="flex flex-col gap-1.5">
-			<label for="confirmPassword" class="text-sm font-medium text-slate-700">Confirm New Password</label>
-			<div class="flex items-center rounded-lg border border-slate-300 transition-colors focus-within:border-slate-500">
+			<label for="confirmPassword" class="text-sm font-medium text-slate-700"
+				>Confirm New Password</label
+			>
+			<div
+				class="flex items-center rounded-lg border border-slate-300 transition-colors focus-within:border-slate-500"
+			>
 				<input
 					type={showConfirmPassword ? 'text' : 'password'}
 					id="confirmPassword"
@@ -153,7 +163,9 @@
 		{/if}
 
 		{#if successMessage}
-			<div class="rounded-lg border border-green-200 bg-green-50 px-4 py-2.5 text-sm text-green-700">
+			<div
+				class="rounded-lg border border-green-200 bg-green-50 px-4 py-2.5 text-sm text-green-700"
+			>
 				{successMessage}
 			</div>
 		{/if}
@@ -166,7 +178,9 @@
 		>
 			{#if loading}
 				<span class="flex items-center justify-center gap-2">
-					<div class="h-5 w-5 animate-spin rounded-full border-2 border-white/30 border-t-white"></div>
+					<div
+						class="h-5 w-5 animate-spin rounded-full border-2 border-white/30 border-t-white"
+					></div>
 					Mengubah...
 				</span>
 			{:else}

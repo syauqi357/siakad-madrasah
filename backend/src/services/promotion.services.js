@@ -4,7 +4,7 @@ import { studentTable, rombelStudents } from '../db/index.js';
 import { classes } from '../db/schema/classesDataTable.js';
 import { academicYear } from '../db/schema/academicYear.js';
 // import {  } from '../src/index.js';
-import { eq, and, sql, ne } from 'drizzle-orm';
+import { eq, and, sql } from 'drizzle-orm';
 
 /**
  * Get all class levels ordered by grade

@@ -527,7 +527,7 @@
 					<span class="px-1.5 text-xs text-slate-400">...</span>
 				{:else}
 					<button
-						class="min-w-[28px] rounded-md px-2 py-1 text-xs font-medium {currentPage === page
+						class="min-w-7 rounded-md px-2 py-1 text-xs font-medium {currentPage === page
 							? 'bg-blue-600 text-white'
 							: 'text-slate-600 hover:bg-slate-100'}"
 						on:click={() => handlePageChange(Number(page))}

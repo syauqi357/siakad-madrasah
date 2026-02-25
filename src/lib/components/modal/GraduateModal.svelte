@@ -227,7 +227,9 @@
 				</div>
 
 				<!-- Info box -->
-				<div class="rounded-md border border-emerald-300 bg-emerald-50 p-3 text-sm text-emerald-800">
+				<div
+					class="rounded-md border border-emerald-300 bg-emerald-50 p-3 text-sm text-emerald-800"
+				>
 					<h2 class="font-semibold">Perhatian:</h2>
 					<p>
 						Setelah diluluskan, siswa akan dipindahkan dari kelas aktif dan tidak dapat dikembalikan

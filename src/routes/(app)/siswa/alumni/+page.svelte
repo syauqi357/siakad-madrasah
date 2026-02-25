@@ -144,7 +144,7 @@
 </script>
 
 <!-- Parent container -->
-<div class="min-h-screen bg-gradient-to-br from-slate-50 to-emerald-50/30">
+<div class="min-h-screen bg-linear-to-br from-slate-50 to-emerald-50/30">
 	<div class="mx-auto max-w-7xl px-4 py-8 md:px-8">
 		<!-- Back button -->
 		<button
@@ -160,7 +160,7 @@
 			<div class="flex items-center gap-4">
 				<!-- icon placeholder -->
 				<div
-					class="flex h-14 w-14 items-center justify-center rounded-md bg-gradient-to-br from-emerald-500 to-teal-600"
+					class="flex h-14 w-14 items-center justify-center rounded-md bg-linear-to-br from-emerald-500 to-teal-600"
 				>
 					<!-- svg icon here -->
 				</div>
@@ -204,7 +204,7 @@
 		<div class="mb-8 grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-6">
 			<!-- Total -->
 			<div
-				class="relative overflow-hidden rounded-md border-2 border-emerald-200 bg-gradient-to-br from-emerald-50 to-teal-50 p-5"
+				class="relative overflow-hidden rounded-md border-2 border-emerald-200 bg-linear-to-br from-emerald-50 to-teal-50 p-5"
 			>
 				<div class="absolute -top-4 -right-4 h-20 w-20 rounded-full bg-emerald-500/10"></div>
 				<p class="text-xs font-semibold tracking-wide text-emerald-600 uppercase">Total Alumni</p>

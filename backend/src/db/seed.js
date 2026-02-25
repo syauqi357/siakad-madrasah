@@ -9,7 +9,7 @@ import { users } from './schema/user.js';
 const sqlite = new Database(process.env.DATABASE_URL);
 const db = drizzle(sqlite);
 
-const guruData = JSON.parse(fs.readFileSync('./data/guru.json', 'utf8'))
+const guruData = JSON.parse(fs.readFileSync('./data/guru.json', 'utf8'));
 
 async function seed() {
 	console.log('🌱 Seeding database...');
@@ -17,14 +17,13 @@ async function seed() {
 	// add schooldata
 	// table name in database : schoolAdministrativeData
 	// table name in drizzle is : schoolTable
-	for (const user of guruData){
-
+	for (const user of guruData) {
 		const hashedPassword = await bcrypt.hash(user.password, 10);
-		
+
 		await db.insert(users).values({
 			...user,
-			password:hashedPassword
-		})
+			password: hashedPassword
+		});
 
 		console.log(`user ${user.username}inserted with hashed`);
 	}

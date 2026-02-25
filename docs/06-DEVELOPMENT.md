@@ -66,10 +66,12 @@ Output: `backend/dist-electron/`
 ## Known Issues
 
 ### Student Profile - Missing Class Name
+
 **Problem:** Class name not showing on student detail page.
 **Solution:** Need JOIN with rombel → classes tables.
 
 ### Parent Data
+
 **Current:** Embedded in student-related tables.
 **Future:** May need dedicated parent table for shared parent data.
 
@@ -78,6 +80,7 @@ Output: `backend/dist-electron/`
 ## Roadmap
 
 ### Phase 1: Core Features ✅
+
 - [x] Student CRUD
 - [x] Teacher management
 - [x] Class management
@@ -85,12 +88,14 @@ Output: `backend/dist-electron/`
 - [x] Scoring system
 
 ### Phase 2: Enhancement
+
 - [ ] Report generation (PDF)
 - [ ] Score weighting
 - [ ] Attendance tracking
 - [ ] Dashboard analytics
 
 ### Phase 3: Integration
+
 - [ ] Prisma ORM migration
 - [ ] MySQL/PostgreSQL support
 - [ ] Multi-school support
@@ -100,12 +105,14 @@ Output: `backend/dist-electron/`
 ## Code Style
 
 ### Backend
+
 - Services contain business logic
 - Controllers handle HTTP only
 - Use transactions for multi-table operations
 - Return consistent response format
 
 ### Frontend
+
 - Components are self-contained
 - Use Tailwind for styling
 - Svelte stores for shared state

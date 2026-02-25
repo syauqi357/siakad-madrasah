@@ -7,9 +7,7 @@ import * as classSubjectService from '../services/classSubject.service.js';
 export const getAllClassSubjects = async (req, res) => {
 	try {
 		const { classId } = req.query;
-		const data = await classSubjectService.getAllClassSubjects(
-			classId ? parseInt(classId) : null
-		);
+		const data = await classSubjectService.getAllClassSubjects(classId ? parseInt(classId) : null);
 
 		res.status(200).json({
 			success: true,

@@ -38,12 +38,12 @@ describe('Rombel Services - registerRombel', () => {
 		const mockRombelAll = jest.fn().mockReturnValue([{ id: 101 }]);
 		const mockRombelReturning = jest.fn().mockReturnValue({ all: mockRombelAll });
 		const mockRombelValues = jest.fn().mockReturnValue({ returning: mockRombelReturning });
-		const mockRombelInsert = jest.fn().mockReturnValue({ values: mockRombelValues });
+		const _mockRombelInsert = jest.fn().mockReturnValue({ values: mockRombelValues });
 
 		// Mock for Student Insert: .values(...).run()
 		const mockStudentRun = jest.fn();
 		const mockStudentValues = jest.fn().mockReturnValue({ run: mockStudentRun });
-		const mockStudentInsert = jest.fn().mockReturnValue({ values: mockStudentValues });
+		const _mockStudentInsert = jest.fn().mockReturnValue({ values: mockStudentValues });
 
 		// The transaction callback receives 'tx'. We need to ensure 'tx' has the insert method.
 		// In our mock setup above, db.transaction calls the callback with 'mock-tx'.

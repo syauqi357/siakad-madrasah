@@ -1,9 +1,8 @@
 import { sqliteTable, text, integer, real } from 'drizzle-orm/sqlite-core';
 import { studentTable } from './studentsdataTable.js';
 
-export const studentWali = sqliteTable('student_wali',{
-
-id: integer('id').primaryKey({ autoIncrement: true }),
+export const studentWali = sqliteTable('student_wali', {
+	id: integer('id').primaryKey({ autoIncrement: true }),
 
 	studentId: integer('student_id')
 		.notNull()
@@ -24,5 +23,4 @@ id: integer('id').primaryKey({ autoIncrement: true }),
 
 	phoneNumber: text('phone_number'),
 	isAlive: integer('is_alive').default(1) // BOOLEAN → INTEGER (0/1)
-
 });

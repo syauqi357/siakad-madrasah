@@ -1,4 +1,10 @@
-import { registerRombel, getAllRombels, getRombelById, deleteRombelById, addStudentsToRombel } from '../services/rombel.services.js';
+import {
+	registerRombel,
+	getAllRombels,
+	getRombelById,
+	deleteRombelById,
+	addStudentsToRombel
+} from '../services/rombel.services.js';
 
 /**
  * Controller to handle the creation of a new Rombel (Class Group).

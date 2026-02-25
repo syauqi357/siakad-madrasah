@@ -229,7 +229,7 @@
 	});
 </script>
 
-<div class="min-h-screen bg-gradient-to-br from-slate-50 to-emerald-50/30">
+<div class="min-h-screen bg-linear-to-br from-slate-50 to-emerald-50/30">
 	<div class="mx-auto max-w-7xl px-4 py-8 md:px-8">
 		<!-- Back button -->
 		<button
@@ -245,7 +245,7 @@
 		<div class="mb-8">
 			<div class="mb-2 flex items-center gap-3">
 				<div
-					class="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600"
+					class="flex h-12 w-12 items-center justify-center rounded-xl bg-linear-to-br from-emerald-500 to-teal-600"
 				>
 					<svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path
@@ -339,12 +339,12 @@
 				<!-- Left: Rombel Selection -->
 				<div class="overflow-hidden rounded-md border border-slate-200 bg-white">
 					<div
-						class="border-b border-slate-100 bg-gradient-to-r from-emerald-500 to-teal-500 px-5 py-4"
+						class="border-b border-slate-100 bg-linear-to-r from-emerald-500 to-teal-500 px-5 py-4"
 					>
 						<h3 class="font-semibold text-white">Pilih Kelas</h3>
 						<p class="text-sm text-emerald-100">Hanya kelas akhir yang ditampilkan</p>
 					</div>
-					<div class="max-h-[28rem] overflow-y-auto p-4">
+					<div class="max-h-112 overflow-y-auto p-4">
 						{#if classGroups.length === 0}
 							<div class="flex flex-col items-center py-12 text-center">
 								<div
@@ -431,7 +431,7 @@
 						{/if}
 					</div>
 
-					<div class="max-h-[24rem] overflow-y-auto">
+					<div class="max-h-96 overflow-y-auto">
 						{#if !selectedRombel}
 							<div class="flex flex-col items-center py-20 text-center">
 								<div
@@ -533,7 +533,7 @@
 						<div class="border-t border-slate-100 bg-slate-50 p-4">
 							<button
 								on:click={proceedToConfirm}
-								class="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 px-4 py-3.5 font-semibold text-white transition-all hover:from-emerald-600 hover:to-teal-600"
+								class="flex w-full items-center justify-center gap-2 rounded-xl bg-linear-to-r from-emerald-500 to-teal-500 px-4 py-3.5 font-semibold text-white transition-all hover:from-emerald-600 hover:to-teal-600"
 							>
 								Lanjut ke Konfirmasi
 								<span class="rounded-md bg-white/20 px-2.5 py-0.5 text-sm"
@@ -582,7 +582,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="max-h-[22rem] divide-y divide-slate-100 overflow-y-auto">
+					<div class="max-h-88 divide-y divide-slate-100 overflow-y-auto">
 						{#each selectedStudents as student, i (student.id)}
 							<div
 								class="flex items-center justify-between px-5 py-3.5 transition-colors hover:bg-slate-50"
@@ -620,7 +620,7 @@
 				<div class="space-y-5">
 					<div class="overflow-hidden rounded-md border border-slate-200 bg-white">
 						<div
-							class="border-b border-slate-100 bg-gradient-to-r from-emerald-500 to-teal-500 px-5 py-4"
+							class="border-b border-slate-100 bg-linear-to-r from-emerald-500 to-teal-500 px-5 py-4"
 						>
 							<h3 class="font-semibold text-white">Data Kelulusan</h3>
 							<p class="text-sm text-emerald-100">Lengkapi informasi kelulusan</p>
@@ -663,7 +663,7 @@
 								class="flex items-start gap-3 rounded-xl border border-amber-200 bg-amber-50 p-4"
 							>
 								<svg
-									class="h-5 w-5 flex-shrink-0 text-amber-500"
+									class="h-5 w-5 shrink-0 text-amber-500"
 									fill="none"
 									stroke="currentColor"
 									viewBox="0 0 24 24"
@@ -746,7 +746,7 @@
 						<button
 							on:click={executeBulkGraduation}
 							disabled={isGraduating || !graduationYear || !completionDate}
-							class="flex flex-1 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 px-4 py-3.5 font-semibold text-white transition-all hover:from-emerald-600 hover:to-teal-600 disabled:cursor-not-allowed disabled:opacity-50"
+							class="flex flex-1 items-center justify-center gap-2 rounded-xl bg-linear-to-r from-emerald-500 to-teal-500 px-4 py-3.5 font-semibold text-white transition-all hover:from-emerald-600 hover:to-teal-600 disabled:cursor-not-allowed disabled:opacity-50"
 						>
 							{#if isGraduating}
 								<div
@@ -829,7 +829,7 @@
 										<ul class="space-y-1 pl-4 text-sm text-red-700">
 											{#each graduationResult.failed as f, i (i)}
 												<li class="flex items-start gap-2">
-													<span class="mt-1.5 h-1 w-1 flex-shrink-0 rounded-md bg-red-400"></span>
+													<span class="mt-1.5 h-1 w-1 shrink-0 rounded-md bg-red-400"></span>
 													{f.name || f.studentId}: {f.error}
 												</li>
 											{/each}

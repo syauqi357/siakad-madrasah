@@ -14,7 +14,10 @@ export const getAllCurricula = () => {
 			year: curriculum.year,
 			description: curriculum.description,
 			isActive: curriculum.isActive,
-			rombelCount: sql`(SELECT COUNT(*) FROM rombel WHERE CAST(rombel.kurikulum AS INTEGER) = ${curriculum.id})`.as('rombelCount')
+			rombelCount:
+				sql`(SELECT COUNT(*) FROM rombel WHERE CAST(rombel.kurikulum AS INTEGER) = ${curriculum.id})`.as(
+					'rombelCount'
+				)
 		})
 		.from(curriculum)
 		.orderBy(desc(curriculum.year))

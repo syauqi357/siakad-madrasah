@@ -117,11 +117,7 @@ export const createAssessmentType = async (data) => {
  * @param {string} code - Assessment type code
  */
 export const getAssessmentTypeByCode = async (code) => {
-	return db
-		.select()
-		.from(assessmentType)
-		.where(eq(assessmentType.code, code.toUpperCase()))
-		.get();
+	return db.select().from(assessmentType).where(eq(assessmentType.code, code.toUpperCase())).get();
 };
 
 /**

@@ -43,7 +43,9 @@
 	</div>
 {:else}
 	<div class="flex min-h-screen flex-col items-center justify-center gap-3 bg-slate-50">
-		<div class="h-8 w-8 animate-spin rounded-full border-3 border-slate-200 border-t-blue-600"></div>
+		<div
+			class="h-8 w-8 animate-spin rounded-full border-3 border-slate-200 border-t-blue-600"
+		></div>
 		<p class="text-sm text-slate-500">Loading...</p>
 	</div>
 {/if}

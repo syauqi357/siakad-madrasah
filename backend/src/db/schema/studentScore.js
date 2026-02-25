@@ -22,8 +22,9 @@ export const studentScores = sqliteTable(
 
 		// Assuming assessmentType will be a separate table (e.g., UH1, UTS, UAS)
 		// If not, you can just make this a text field like: text('assessment_type').notNull()
-		assessmentTypeId: integer('assessment_type_id').notNull()
-		.references(() => assessmentType.id),
+		assessmentTypeId: integer('assessment_type_id')
+			.notNull()
+			.references(() => assessmentType.id),
 
 		score: real('score').notNull(),
 		// Note: SQLite check constraints are complex in Drizzle.

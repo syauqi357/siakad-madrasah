@@ -208,15 +208,14 @@
 
 <div class="mx-auto w-full max-w-full space-y-6 p-6">
 	<!-- Top Nav -->
-		<button
-			on:click={backToMain}
-			class="group flex items-center gap-2 rounded-full border border-blue-200 px-5 py-1.5 text-sm font-medium text-blue-600 transition-all hover:border-blue-300 hover:bg-blue-50"
-		>
-			<span class="transition-transform group-hover:-translate-x-1.5"><ArrowLeft /></span>
-			Kembali
-		</button>
+	<button
+		on:click={backToMain}
+		class="group flex items-center gap-2 rounded-full border border-blue-200 px-5 py-1.5 text-sm font-medium text-blue-600 transition-all hover:border-blue-300 hover:bg-blue-50"
+	>
+		<span class="transition-transform group-hover:-translate-x-1.5"><ArrowLeft /></span>
+		Kembali
+	</button>
 	<div class="flex items-center justify-between">
-
 		{#if rombelData}
 			<button
 				on:click={openAddPanel}
@@ -606,9 +605,7 @@
 												? 'bg-blue-50 text-blue-600'
 												: 'bg-pink-50 text-pink-600'}"
 										>
-											{student.gender?.toLowerCase().startsWith('l')
-												? 'Laki-laki'
-												: 'Perempuan'}
+											{student.gender?.toLowerCase().startsWith('l') ? 'Laki-laki' : 'Perempuan'}
 										</span>
 									</td>
 									<td class="px-5 py-3.5">

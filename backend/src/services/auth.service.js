@@ -6,7 +6,6 @@ import { eq } from 'drizzle-orm'; // drizzle-orm for database queries
 import { users } from '../db/schema/user.js'; //schema user
 import { db } from '../db/index.js'; // database connection
 
-
 const JWT_SECRET = process.env.JWT_SECRET;
 
 /**
@@ -23,14 +22,9 @@ const JWT_SECRET = process.env.JWT_SECRET;
  *
  * */
 
-
 export const AUTHENTICATE_USERS = async (username, password) => {
 	// 1. Find user by username only
-	const user = await db
-		.select()
-		.from(users)
-		.where(eq(users.username, username))
-		.limit(1);
+	const user = await db.select().from(users).where(eq(users.username, username)).limit(1);
 
 	if (!user || user.length === 0) return null;
 
@@ -105,7 +99,7 @@ export const VERIFY_TOKEN_SERVICES = (token) => {
 
 	try {
 		return jwt.verify(token, JWT_SECRET);
-	} catch (error) {
+	} catch (_error) {
 		return null;
 	}
 };

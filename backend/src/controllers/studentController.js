@@ -104,7 +104,14 @@ export const getStudentById = async (req, res) => {
 		}
 
 		// Handle BigInt serialization + coerce document numbers to strings
-		const DOC_FIELDS = ['nisn', 'localNis', 'nik', 'bpjs', 'idCardNumber', 'birthCertificateNumber'];
+		const DOC_FIELDS = [
+			'nisn',
+			'localNis',
+			'nik',
+			'bpjs',
+			'idCardNumber',
+			'birthCertificateNumber'
+		];
 		const serializedStudent = JSON.parse(
 			JSON.stringify(student, (key, value) => {
 				if (typeof value === 'bigint') return value.toString();
@@ -127,7 +134,14 @@ export const createStudent = async (req, res) => {
 		const newStudent = await studentService.createStudentData(req.body);
 
 		// Handle BigInt serialization + coerce document numbers to strings
-		const DOC_FIELDS = ['nisn', 'localNis', 'nik', 'bpjs', 'idCardNumber', 'birthCertificateNumber'];
+		const DOC_FIELDS = [
+			'nisn',
+			'localNis',
+			'nik',
+			'bpjs',
+			'idCardNumber',
+			'birthCertificateNumber'
+		];
 		const serializedStudent = JSON.parse(
 			JSON.stringify(newStudent, (key, value) => {
 				if (typeof value === 'bigint') return value.toString();

@@ -1,15 +1,18 @@
 # Backend Functions Documentation
 
 ## 🔐 Authentication Services
+
 **File**: `backend/services/auth.service.js`
 
 ### `getAccounts()`
+
 - **Description**: Reads and parses teacher accounts from `guru.json`
 - **Parameters**: None
 - **Returns**: `Array` - List of account objects or empty array on error
 - **Usage**: Internal helper for authentication
 
 ### `authenticateUser(username, password)`
+
 - **Description**: Validates user credentials and generates JWT token
 - **Parameters**:
   - `username` (string) - User's username
@@ -25,6 +28,7 @@
   5. Returns user data without password
 
 ### `verifyTokenService(token)`
+
 - **Description**: Verifies JWT token validity
 - **Parameters**:
   - `token` (string) - JWT token to verify
@@ -35,9 +39,11 @@
 ---
 
 ## 🎮 Auth Controller
+
 **File**: `backend/controllers/authController.js`
 
 ### `login(req, res)`
+
 - **Route**: `POST /api/auth/login`
 - **Description**: HTTP handler for user login
 - **Request Body**: `{ username, password }`
@@ -53,12 +59,14 @@
   - 500: Server error
 
 ### `logout(req, res)`
+
 - **Route**: `POST /api/auth/logout`
 - **Description**: HTTP handler for user logout
 - **Response**: 200 with success message
 - **Note**: JWT logout handled client-side by removing token
 
 ### `verifyToken(req, res, next)`
+
 - **Type**: Express Middleware
 - **Description**: Validates JWT token on protected routes
 - **Location**: Authorization header (`Bearer <token>`)
@@ -72,9 +80,11 @@
 ---
 
 ## 🏫 School Controller
+
 **File**: `backend/controllers/schoolController.js`
 
 ### `getSchoolData(req, res)`
+
 - **Route**: `GET /api/schoolData`
 - **Description**: Fetches school information and logo
 - **Response**: 200 with school data + logo URL
@@ -83,6 +93,7 @@
 - **Supported Image Types**: `.svg, .png, .jpg, .jpeg, .gif, .webp`
 
 ### `updateSchoolData(req, res)`
+
 - **Route**: `PUT /api/schoolData`
 - **Status**: ⚠️ **NOT IMPLEMENTED**
 - **Description**: Placeholder for future school data update (requires database)
@@ -91,15 +102,18 @@
 ---
 
 ## 👨‍🎓 Student Data Controller
+
 **File**: `backend/controllers/studentController.js`
 
 ### `getAllStudents(req, res)`
+
 - **Route**: `GET /api/studentData`
 - **Description**: Retrieves all students
 - **Response**: 200 with array of student objects
 - **Data Source**: `backend/data/student.json`
 
 ### `getStudentById(req, res)`
+
 - **Route**: `GET /api/studentData/:id`
 - **Description**: Retrieves specific student by ID
 - **Parameters**: `id` (URL param - integer)
@@ -113,18 +127,21 @@
 ## 🛣️ Routes Overview
 
 ### Auth Routes (`api/auth`)
+
 ```
 POST   /api/auth/login     → authController.login()
 POST   /api/auth/logout    → authController.logout()
 ```
 
 ### School Data Routes (`api/schoolData`)
+
 ```
 GET    /api/schoolData     → schoolController.getSchoolData()
 PUT    /api/schoolData     → schoolController.updateSchoolData() [NOT IMPLEMENTED]
 ```
 
 ### Student Routes (`api/studentData`)
+
 ```
 GET    /api/studentData      → getAllStudents()
 GET    /api/studentData/:id  → getStudentById()
@@ -134,11 +151,11 @@ GET    /api/studentData/:id  → getStudentById()
 
 ## 📊 Architecture Summary
 
-| Layer | Files | Purpose |
-|-------|-------|---------|
-| **Service** | `auth.service.js` | Business logic (auth, JWT) |
-| **Controller** | 3 files | HTTP request/response handling |
-| **Route** | 3 files | Route definitions & mounting |
+| Layer          | Files             | Purpose                        |
+| -------------- | ----------------- | ------------------------------ |
+| **Service**    | `auth.service.js` | Business logic (auth, JWT)     |
+| **Controller** | 3 files           | HTTP request/response handling |
+| **Route**      | 3 files           | Route definitions & mounting   |
 
 **Total Functions**: 8 (6 implemented, 1 not implemented, 1 middleware)
 
@@ -169,6 +186,7 @@ Client receives { success, token, user }
 **Current State**: All data from JSON files (guru.json, student.json, lembaga.json)
 
 **To migrate to SQLite/Drizzle**:
+
 1. Update `auth.service.js` to query database instead of reading JSON
 2. Update other controllers similarly
 3. Routes & controllers stay mostly the same (MVC separation maintained)
