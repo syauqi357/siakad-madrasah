@@ -330,7 +330,7 @@
 	{:else if activeTab === 'source'}
 		<!-- Step 1: Source Rombel Selection -->
 		<div class="space-y-4">
-			{#each classGroups as group}
+			{#each classGroups as group (group.classId)}
 				<div class="rounded-lg border border-slate-200 bg-white">
 					<!-- Class header -->
 					<div class="flex items-center gap-3 border-b border-slate-100 px-5 py-3.5">
@@ -349,7 +349,7 @@
 
 					<!-- Rombel cards -->
 					<div class="grid gap-3 p-4 sm:grid-cols-2 lg:grid-cols-3">
-						{#each group.rombels as rom}
+						{#each group.rombels as rom (rom.id)}
 							<button
 								on:click={() => !group.isFinalGrade && selectSourceRombel(rom)}
 								disabled={group.isFinalGrade}

@@ -3,9 +3,9 @@
 	import { API_FETCH } from '$lib/api';
 	import ModalAlert from '$lib/components/modal/modalalert.svelte';
 	import ModalExam from '$lib/components/modal/modalexam.svelte';
-	import AddIcon from '\$lib/components/icons/addIcon.svelte';
+	import AddIcon from '$lib/components/icons/addIcon.svelte';
 	import { goto } from '$app/navigation';
-	import ArrowLeft from '\$lib/components/icons/arrow_left.svelte';
+	import ArrowLeft from '$lib/components/icons/arrow_left.svelte';
 
 	// State
 	let loading = true;

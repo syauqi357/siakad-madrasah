@@ -33,7 +33,7 @@
 			on:change={updateValue}
 			class="h-full appearance-none rounded-l-md border border-r-0 border-slate-200 bg-slate-50 py-3 pr-8 pl-3 text-sm text-slate-700 focus:border-blue-500 focus:ring-0 focus:outline-none"
 		>
-			{#each countryCodes as country}
+			{#each countryCodes as country (country.dial_code)}
 				<option value={country.dial_code}>
 					{country.code} ({country.dial_code})
 				</option>

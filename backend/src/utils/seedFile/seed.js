@@ -143,7 +143,7 @@ async function seed() {
 				})
 				.returning();
 			classSubjectId = newCS[0].id;
-		} catch (_e) {
+		} catch {
 			// Likely unique constraint violation, fetch existing
 			const existingCS = await db
 				.select()

@@ -30,6 +30,16 @@
 		timestamp: string;
 	}
 
+	type AuditLogItems = {
+		id: number;
+		audit_type: string;
+		user_id: string;
+		action: string;
+		target: string;
+		status: string;
+		timestamp: string;
+	};
+
 	// Filter options matching backend audit_type values
 	const typeFilters: FilterOption[] = [
 		{ id: 'all', label: 'Semua' },
@@ -81,6 +91,7 @@
 			}
 
 			auditLogs = await response.json();
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		} catch (e: any) {
 			error = e.message || 'Tidak dapat memuat log audit.';
 			console.error('Gagal mengambil log audit:', e);
@@ -181,7 +192,7 @@
 				>Tipe</span
 			>
 			<div class="flex flex-wrap gap-2">
-				{#each typeFilters as filter}
+				{#each typeFilters as filter (filter.id)}
 					<button
 						on:click={() => {
 							selectedType = filter.id;
@@ -217,7 +228,7 @@
 					class="w-full appearance-none rounded-md border border-slate-300 bg-white py-2 pr-8 pl-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-400 focus:border-blue-500 focus:shadow focus:outline-none sm:w-auto"
 				>
 					<option value="all" disabled selected hidden>Status</option>
-					{#each statusFilters as s}
+					{#each statusFilters as s (s.id)}
 						<option value={s.id}>{s.label}</option>
 					{/each}
 				</select>
@@ -241,7 +252,7 @@
 					on:change={handleFilterChange}
 					class="w-full appearance-none rounded-md border border-slate-300 bg-white py-2 pr-8 pl-3 text-sm text-slate-700 transition-all duration-100 hover:border-slate-400 focus:border-blue-500 focus:shadow focus:outline-none sm:w-auto"
 				>
-					{#each timeRanges as range}
+					{#each timeRanges as range (range.id)}
 						<option value={range.id}>{range.label}</option>
 					{/each}
 				</select>

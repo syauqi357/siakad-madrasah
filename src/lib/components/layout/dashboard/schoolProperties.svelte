@@ -121,7 +121,7 @@
 			</div>
 		{:else}
 			<!-- Main Facilities -->
-			{#each Object.entries(facilityConfig) as [key, config]}
+			{#each Object.entries(facilityConfig) as [key, config] (key)}
 				{@const images = facilities[key as keyof Omit<FacilitiesData, 'lab'>]}
 				{#if Array.isArray(images) && images.length > 0}
 					<div class="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
@@ -134,7 +134,7 @@
 							</span>
 						</div>
 						<div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-							{#each images as image, index}
+							{#each images as image, index (image)}
 								<div class="group relative overflow-hidden rounded-lg">
 									<img
 										src="{apiUrl}{image}"
@@ -153,7 +153,7 @@
 			{/each}
 
 			<!-- Lab Facilities -->
-			{#each Object.entries(labConfig) as [key, config]}
+			{#each Object.entries(labConfig) as [key, config] (key)}
 				{@const images = facilities.lab[key as keyof FacilitiesData['lab']]}
 				{#if Array.isArray(images) && images.length > 0}
 					<div class="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
@@ -166,7 +166,7 @@
 							</span>
 						</div>
 						<div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-							{#each images as image, index}
+							{#each images as image, index (image)}
 								<div class="group relative overflow-hidden rounded-lg">
 									<img
 										src="{apiUrl}{image}"

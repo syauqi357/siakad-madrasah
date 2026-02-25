@@ -96,10 +96,9 @@ export const CHANGE_PASSWORD_SERVICES = async (userId, currentPassword, newPassw
  **/
 export const VERIFY_TOKEN_SERVICES = (token) => {
 	if (!token) return null;
-
-	try {
-		return jwt.verify(token, JWT_SECRET);
-	} catch (_error) {
-		return null;
-	}
+	return jwt.verify(token, JWT_SECRET);
+	// try {
+	// } catch (_error) {
+	// 	return null;
+	// }
 };
