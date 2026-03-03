@@ -389,15 +389,15 @@
 
 <svelte:window on:keydown={handleKeydown} />
 
-<div class="min-h-screen bg-gray-50 p-4 sm:p-6 lg:p-8">
+<main class="min-h-screen bg-gray-50 p-4 sm:p-6 lg:p-8">
 	<div class="mx-auto max-w-7xl">
 		<!-- Header Section -->
-		<div class="flex flex-col gap-2">
+		<header class="flex flex-col gap-2">
 			<h1 class="text-2xl font-bold text-blue-600 sm:text-3xl md:text-4xl">
 				Manajemen Mata Pelajaran
 			</h1>
 			<p class="text-gray-600">Kelola data mata pelajaran dan penugasan guru.</p>
-		</div>
+		</header>
 
 		<!-- Tabs -->
 		<div class="mt-6 border-b border-gray-200">
@@ -435,166 +435,160 @@
 
 		<!-- Tab Content -->
 		{#if activeTab === 'subjects'}
-			<!-- SUBJECTS TAB -->
-			<div class="mt-6">
-				<button
-					on:click={handleAddClick}
-					class="flex w-fit items-center justify-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-blue-50 capitalize transition-all duration-200 hover:bg-blue-700 hover:shadow-lg active:scale-95"
-				>
-					<AddIcon /> tambah mata pelajaran
-				</button>
-			</div>
+			<button
+				on:click={handleAddClick}
+				class="my-4 flex w-fit items-center justify-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-blue-50 capitalize transition-all duration-200 hover:bg-blue-700 hover:shadow-lg active:scale-95"
+			>
+				<AddIcon /> tambah mata pelajaran
+			</button>
 
-			<div class="mt-6">
-				<div class="w-full overflow-hidden rounded-xl border border-gray-300 bg-white">
-					<header class="border-b border-gray-200 bg-gray-50 px-6 py-4">
-						<h2 class="text-lg font-semibold text-gray-900">Daftar Mata Pelajaran</h2>
-					</header>
+			<main class="w-full overflow-hidden rounded-xl border border-gray-300 bg-white">
+				<header class="border-b border-gray-200 bg-gray-50 px-6 py-4">
+					<h2 class="text-lg font-semibold text-gray-900">Daftar Mata Pelajaran</h2>
+					<div class="text-sm text-gray-700">
+						Total <span class="font-bold">{subjects.length}</span> mata pelajaran
+					</div>
+				</header>
 
-					{#if isLoading && subjects.length === 0}
-						<div class="flex items-center justify-center py-12">
-							<svg class="h-8 w-8 animate-spin text-blue-600" viewBox="0 0 24 24">
-								<circle
-									class="opacity-25"
-									cx="12"
-									cy="12"
-									r="10"
-									stroke="currentColor"
-									stroke-width="4"
-									fill="none"
-								/>
-								<path
-									class="opacity-75"
-									fill="currentColor"
-									d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-								/>
-							</svg>
-							<span class="ml-2 text-gray-600">Memuat data...</span>
-						</div>
-					{:else if subjects.length === 0}
-						<div class="py-12 text-center text-gray-500">
-							<svg
-								class="mx-auto h-12 w-12 text-gray-400"
-								fill="none"
-								viewBox="0 0 24 24"
+				{#if isLoading && subjects.length === 0}
+					<div class="flex items-center justify-center py-12">
+						<svg class="h-8 w-8 animate-spin text-blue-600" viewBox="0 0 24 24">
+							<circle
+								class="opacity-25"
+								cx="12"
+								cy="12"
+								r="10"
 								stroke="currentColor"
-							>
-								<path
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									stroke-width="1.5"
-									d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-								/>
-							</svg>
-							<p class="mt-2">Belum ada data mata pelajaran</p>
-							<button on:click={handleAddClick} class="mt-2 text-blue-600 hover:underline">
-								Tambah mata pelajaran pertama
-							</button>
-						</div>
-					{:else}
-						<div class="overflow-x-auto">
-							<table class="w-full text-left text-sm text-gray-600">
-								<thead class="bg-gray-50 text-xs text-gray-700 uppercase">
-									<tr>
-										<th scope="col" class="px-6 py-3 font-medium">No</th>
-										<th scope="col" class="px-6 py-3 font-medium">Kode</th>
-										<th scope="col" class="px-6 py-3 font-medium">Mata Pelajaran</th>
-										<th scope="col" class="px-6 py-3 font-medium">KKM</th>
-										<th scope="col" class="px-6 py-3 font-medium">Deskripsi</th>
-										<th scope="col" class="px-6 py-3 text-right font-medium">Aksi</th>
-									</tr>
-								</thead>
-								<tbody class="divide-y divide-gray-200">
-									{#each subjects as subject, index (subject.id)}
-										<tr
-											class="transition-colors duration-150 hover:bg-gray-50"
-											in:fly={{ y: 20, duration: 300, delay: index * 50 }}
-										>
-											<td class="px-6 py-4 font-medium text-gray-900">{index + 1}</td>
-											<td class="px-6 py-4">
-												{#if subject.subjectCode}
-													<span
-														class="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-blue-700/10 ring-inset"
-													>
-														{subject.subjectCode}
-													</span>
-												{:else}
-													<span class="text-gray-400">-</span>
-												{/if}
-											</td>
-											<td class="px-6 py-4 font-medium text-gray-900">{subject.name}</td>
-											<td class="px-6 py-4">
-												<span
-													class="inline-flex items-center rounded-full bg-green-50 px-2.5 py-0.5 text-xs font-semibold text-green-700"
-												>
-													{subject.kkm}
-												</span>
-											</td>
-											<td class="max-w-xs truncate px-6 py-4" title={subject.description || ''}>
-												{subject.description || '-'}
-											</td>
-											<td class="px-6 py-4 text-right">
-												<div class="flex justify-end gap-2">
-													<button
-														on:click={() => handleEditClick(subject)}
-														class="rounded p-1.5 text-blue-600 transition-all duration-200 hover:scale-110 hover:bg-blue-50 active:scale-95"
-														title="Edit"
-													>
-														<svg
-															xmlns="http://www.w3.org/2000/svg"
-															fill="none"
-															viewBox="0 0 24 24"
-															stroke-width="1.5"
-															stroke="currentColor"
-															class="h-5 w-5"
-														>
-															<path
-																stroke-linecap="round"
-																stroke-linejoin="round"
-																d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
-															/>
-														</svg>
-													</button>
-													<button
-														on:click={() => handleDelete(subject)}
-														class="rounded p-1.5 text-red-600 transition-all duration-200 hover:scale-110 hover:bg-red-50 active:scale-95"
-														title="Hapus"
-													>
-														<svg
-															xmlns="http://www.w3.org/2000/svg"
-															fill="none"
-															viewBox="0 0 24 24"
-															stroke-width="1.5"
-															stroke="currentColor"
-															class="h-5 w-5"
-														>
-															<path
-																stroke-linecap="round"
-																stroke-linejoin="round"
-																d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
-															/>
-														</svg>
-													</button>
-												</div>
-											</td>
-										</tr>
-									{/each}
-								</tbody>
-							</table>
-						</div>
-
-						<div
-							class="flex items-center justify-between border-t border-gray-200 bg-white px-6 py-3"
+								stroke-width="4"
+								fill="none"
+							/>
+							<path
+								class="opacity-75"
+								fill="currentColor"
+								d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+							/>
+						</svg>
+						<span class="ml-2 text-gray-600">Memuat data...</span>
+					</div>
+				{:else if subjects.length === 0}
+					<div class="py-12 text-center text-gray-500">
+						<svg
+							class="mx-auto h-12 w-12 text-gray-400"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke="currentColor"
 						>
-							<div class="text-sm text-gray-500">
-								Total <span class="font-medium">{subjects.length}</span> mata pelajaran
-							</div>
-						</div>
-					{/if}
-				</div>
-			</div>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="1.5"
+								d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+							/>
+						</svg>
+						<p class="mt-2">Belum ada data mata pelajaran</p>
+						<button on:click={handleAddClick} class="mt-2 text-blue-600 hover:underline">
+							Tambah mata pelajaran pertama
+						</button>
+					</div>
+				{:else}
+					<div class="overflow-x-auto">
+						<table class="w-full text-left text-sm text-gray-600">
+							<thead class="bg-gray-50 text-xs text-gray-700 uppercase">
+								<tr>
+									<th scope="col" class="px-6 py-3 font-bold">No</th>
+									<th scope="col" class="px-6 py-3 font-bold">Kode</th>
+									<th scope="col" class="px-6 py-3 font-bold">Mata Pelajaran</th>
+									<th scope="col" class="px-6 py-3 font-bold">KKM</th>
+									<th scope="col" class="px-6 py-3 font-bold">Deskripsi</th>
+									<th scope="col" class="px-6 py-3 text-right font-bold">Aksi</th>
+								</tr>
+							</thead>
+							<tbody class="divide-y divide-gray-200">
+								{#each subjects as subject, index (subject.id)}
+									<tr
+										class="transition-colors duration-150 hover:bg-gray-50"
+										in:fly={{ y: 20, duration: 300, delay: index * 50 }}
+									>
+										<td class="px-6 py-4 font-medium text-gray-900">{index + 1}</td>
+										<td class="px-6 py-4">
+											{#if subject.subjectCode}
+												<span
+													class="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-blue-700/10 ring-inset"
+												>
+													{subject.subjectCode}
+												</span>
+											{:else}
+												<span class="text-gray-400">-</span>
+											{/if}
+										</td>
+										<td class="px-6 py-4 font-medium text-gray-900">{subject.name}</td>
+										<td class="px-6 py-4">
+											<span
+												class="inline-flex items-center rounded-sm bg-emerald-100 px-2.5 py-1 text-xs font-semibold text-emerald-700"
+											>
+												{subject.kkm}
+											</span>
+										</td>
+										<td class="max-w-xs truncate px-6 py-4" title={subject.description || ''}>
+											{subject.description || '-'}
+										</td>
+										<td class="px-6 py-4 text-right">
+											<div class="flex justify-end gap-2">
+												<button
+													on:click={() => handleEditClick(subject)}
+													class="flex gap-2 rounded p-1.5 text-blue-600 transition-all duration-200 hover:scale-110 hover:bg-blue-50 active:scale-95"
+													title="Edit"
+												>
+													<svg
+														xmlns="http://www.w3.org/2000/svg"
+														fill="none"
+														viewBox="0 0 24 24"
+														stroke-width="1.5"
+														stroke="currentColor"
+														class="h-5 w-5"
+													>
+														<path
+															stroke-linecap="round"
+															stroke-linejoin="round"
+															d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
+														/>
+													</svg> <span class="font-bold capitalize">edit</span>
+												</button>
+												<button
+													on:click={() => handleDelete(subject)}
+													class="flex gap-2 rounded p-1.5 text-red-600 transition-all duration-200 hover:scale-110 hover:bg-red-50 active:scale-95"
+													title="Hapus"
+												>
+													<svg
+														xmlns="http://www.w3.org/2000/svg"
+														fill="none"
+														viewBox="0 0 24 24"
+														stroke-width="1.5"
+														stroke="currentColor"
+														class="h-5 w-5"
+													>
+														<path
+															stroke-linecap="round"
+															stroke-linejoin="round"
+															d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
+														/>
+													</svg> <span class="font-bold capitalize">hapus</span>
+												</button>
+											</div>
+										</td>
+									</tr>
+								{/each}
+							</tbody>
+						</table>
+					</div>
+
+					<div
+						class="flex items-center justify-between border-t border-gray-200 bg-white px-6 py-3"
+					></div>
+				{/if}
+			</main>
 		{:else}
-			<!-- ==================== ASSIGNMENTS TAB ==================== -->
+			<!-- ASSIGNMENTS TAB -->
 			<div class="mt-6 flex flex-wrap items-center gap-4">
 				<!-- Class Filter -->
 				<div class="flex items-center gap-2">
@@ -783,7 +777,7 @@
 			</div>
 		{/if}
 	</div>
-</div>
+</main>
 
 <!-- ==================== SUBJECT MODAL ==================== -->
 {#if showModal}

@@ -16,46 +16,6 @@ async function seed() {
 	console.log('🌱 Seeding database...');
 
 	try {
-		// 1. Create User & Teacher (Required for ClassSubject)
-		console.log('Creating Teacher...');
-		// Check if user exists
-		let user = await db.select().from(users).where(eq(users.username, 'teacher1')).limit(1);
-		let userId;
-
-		if (user.length === 0) {
-			const newUser = await db
-				.insert(users)
-				.values({
-					username: 'teacher1',
-					password: 'password123',
-					email: 'teacher@school.com',
-					role: 'teacher',
-					nama_lengkap: 'Pak Budi'
-				})
-				.returning();
-			userId = newUser[0].id;
-		} else {
-			userId = user[0].id;
-		}
-
-		// Check if teacher exists
-		let teacher = await db.select().from(teachers).where(eq(teachers.userId, userId)).limit(1);
-		let teacherId;
-
-		if (teacher.length === 0) {
-			const newTeacher = await db
-				.insert(teachers)
-				.values({
-					userId: userId,
-					fullName: 'Pak Budi Santoso',
-					nip: '198001012005011001'
-				})
-				.returning();
-			teacherId = newTeacher[0].id;
-		} else {
-			teacherId = teacher[0].id;
-		}
-
 		// 2. Create Assessment Types
 		console.log('Creating Assessment Types...');
 		await db

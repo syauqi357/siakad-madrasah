@@ -33,16 +33,12 @@
 			on:change={updateValue}
 			class="h-full appearance-none rounded-l-md border border-r-0 border-slate-200 bg-slate-50 py-3 pr-8 pl-3 text-sm text-slate-700 focus:border-blue-500 focus:ring-0 focus:outline-none"
 		>
-			{#each countryCodes as country (country.dial_code)}
+			{#each countryCodes as country (country)}
 				<option value={country.dial_code}>
 					{country.code} ({country.dial_code})
 				</option>
 			{/each}
 		</select>
-		<!-- Arrow Icon -->
-		<!--        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-slate-500">-->
-		<!--            <svg class="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>-->
-		<!--        </div>-->
 	</div>
 
 	<!-- Phone Number Input -->
