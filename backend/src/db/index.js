@@ -31,7 +31,7 @@ function getDatabasePath() {
 	// For relative paths, resolve from backend directory
 	const __fileName = fileURLToPath(import.meta.url);
 	const __directoryName = path.dirname(__fileName);
-	const BACKEND_EXPRESS_DIRECTORIES = path.join(__directoryName, '..','..');
+	const BACKEND_EXPRESS_DIRECTORIES = path.join(__directoryName, '..', '..');
 
 	return path.join(BACKEND_EXPRESS_DIRECTORIES, DB_URL_POSITIONS);
 }
