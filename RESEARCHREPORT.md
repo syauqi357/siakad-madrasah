@@ -60,6 +60,8 @@ Selanjutnya, pada tahap pengujian sistem, penelitian ini menerapkan metode *Whit
 
 Pengujian dilaksanakan secara terfokus dan terstruktur pada beberapa fungsi kritis tertentu yang bersifat *memory-intensive* dan memiliki kompleksitas pemrosesan data yang tinggi, sehingga berpotensi menyebabkan terjadinya kebocoran memori (*memory leak*) maupun penurunan kinerja sistem (*performance degradation*). Secara spesifik, cakupan pengujian pada penelitian ini difokuskan pada dua fungsi utama, yaitu: (1) fungsi *upload* dan *parsing* data dari *file* Excel, serta (2) proses pembuatan dan *rendering file template* Excel secara dinamis. Pemilihan kedua fungsi tersebut sebagai objek pengujian didasarkan pada temuan empiris berupa *bug* dan *unexpected behavior* yang terjadi ketika pengguna mengunggah *file* Excel dengan format, struktur kolom, atau tipe data yang tidak sesuai dengan ketentuan dan validasi yang telah ditetapkan oleh sistem.
 
+revisi
+
 ![Gambar 3.7 Alur Pengujian Fungsi Upload dan Template Excel](<!-- TODO: ganti path gambar alur pengujian excel -->)
 *Gambar 3.7 Alur Pengujian Fungsi Upload dan Template Excel*
 
