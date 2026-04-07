@@ -6,17 +6,17 @@ this file is provide the research report from users recently and the updated man
 
 Metode pengembangan perangkat lunak yang digunakan dalam penelitian ini adalah metode Agile. Menurut pendekatan Agile, proses pengembangan sistem informasi dilakukan secara iteratif dan inkremental, yang memberikan fleksibilitas tinggi bagi pengembang untuk melakukan perbaikan, penambahan fitur, serta penyesuaian kebutuhan secara berkelanjutan pada setiap siklus pengembangan. Pendekatan ini memungkinkan proses rekayasa perangkat lunak (_software engineering_) bersifat adaptif, responsif terhadap perubahan kebutuhan pengguna, dan tidak terikat pada satu mekanisme pengembangan yang bersifat linier maupun kaku sebagaimana metode konvensional seperti _Waterfall_.
 
-![Gambar 3.1 Diagram Alur Metode Agile](<!-- TODO: ganti path gambar diagram alur agile -->)
+![Gambar 3.1 Diagram Alur Metode Agile](/imageresearch/XP.png)
 _Gambar 3.1 Diagram Alur Metode Agile_
 
 Secara spesifik, metode pengembangan yang diterapkan dalam penelitian ini tergolong dalam varian Personal Extreme Programming (PXP), yang merupakan adaptasi dari metodologi Extreme Programming (XP) untuk konteks pengembangan individu (_solo developer_). Metode PXP dipilih berdasarkan pertimbangan terhadap kebutuhan akan tingkat adaptivitas yang tinggi dalam proses pengembangan yang dilaksanakan secara mandiri oleh satu orang pengembang. Penerapan metode ini bertujuan untuk menghasilkan produk perangkat lunak yang optimal melalui serangkaian praktik inti, antara lain: penerapan pengujian secara berkelanjutan (_continuous testing_), perancangan struktur kode yang terorganisasi (_structured layout_), refaktorisasi kode secara berkala (_code refactoring_), serta perencanaan rilis yang terukur (_release planning_). Praktik-praktik tersebut diterapkan agar sistem yang dikembangkan memiliki tingkat pemeliharaan yang tinggi (_high maintainability_), mudah untuk diperbaiki dan dikembangkan lebih lanjut (_scalable_), serta tidak menimbulkan kerusakan atau regresi terhadap fungsionalitas yang telah berjalan dan teruji sebelumnya.
 
-![Gambar 3.2 Alur Siklus Personal Extreme Programming (PXP)](<!-- TODO: ganti path gambar siklus PXP -->)
+![Gambar 3.2 Alur Siklus Personal Extreme Programming (PXP)](/imageresearch/XP.png)
 _Gambar 3.2 Alur Siklus Personal Extreme Programming (PXP)_
 
 Dalam konteks Personal Extreme Programming, setiap siklus iterasi menghasilkan sebuah _working increment_ yang dapat langsung diuji dan dievaluasi. Pendekatan ini sejalan dengan prinsip dasar Agile Manifesto, yakni mengutamakan perangkat lunak yang berfungsi (_working software_) di atas dokumentasi yang komprehensif, serta merespons perubahan di atas mengikuti rencana yang telah ditetapkan. Setiap iterasi pada metode PXP meliputi tahapan perencanaan (_planning_), perancangan (_design_), pengkodean (_coding_), pengujian (_testing_), dan evaluasi (_review_), yang dilaksanakan secara berulang hingga seluruh kebutuhan fungsional dan non-fungsional sistem terpenuhi.
 
-![Gambar 3.3 Tahapan Iterasi PXP (Planning, Design, Coding, Testing, Review)](<!-- TODO: ganti path gambar tahapan iterasi -->)
+![Gambar 3.3 Tahapan Iterasi PXP (Planning, Design, Coding, Testing, Review)](/imageresearch/XP.png)
 _Gambar 3.3 Tahapan Iterasi PXP (Planning, Design, Coding, Testing, Review)_
 
 Seluruh hasil dari penerapan Agile Development pada penelitian ini didokumentasikan secara sistematis melalui sistem _version control_ menggunakan Git. Penggunaan Git sebagai alat bantu manajemen versi memungkinkan penelusuran terhadap setiap perubahan kode sumber (_source code_) yang terjadi selama proses pengembangan, sekaligus berfungsi sebagai bukti empiris adanya perkembangan dan evolusi sistem pada setiap iterasi. Riwayat perubahan tersebut terekam dalam bentuk _commit history_ yang mencakup identifikasi unik (_SHA hash_), pesan perubahan (_commit message_), serta stempel waktu (_timestamp_) dari setiap modifikasi yang dilakukan, sebagaimana ditunjukkan pada tabel berikut:
@@ -45,13 +45,73 @@ Seluruh hasil dari penerapan Agile Development pada penelitian ini didokumentasi
 
 Berdasarkan data yang disajikan pada tabel di atas, dapat disimpulkan bahwa proses pengembangan aplikasi SIAKAD Madrasah dilaksanakan melalui **12 iterasi** pengembangan dalam kurun waktu kurang lebih 3,5 bulan dengan akumulasi total sebanyak **439 commit** yang tercatat pada repositori Git. Setiap iterasi memiliki ruang lingkup (_scope_) dan fokus pengembangan yang berbeda secara bertahap dan progresif, dimulai dari tahap inisialisasi proyek serta pengembangan antarmuka pengguna (_user interface_) pada sisi _frontend_ (Iterasi 1–2), dilanjutkan dengan pembangunan arsitektur _backend_ dan integrasi sistem basis data (Iterasi 3–5), kemudian implementasi fitur-fitur inti manajemen data siswa dan penilaian akademik (Iterasi 6–8), pengembangan fitur-fitur lanjutan seperti penugasan guru dan proses kelulusan (Iterasi 9), hingga tahap akhir yang meliputi proses _bundling_ aplikasi ke dalam format _desktop application_ serta pemeliharaan dan stabilisasi sistem secara menyeluruh (Iterasi 10–12).
 
-![Gambar 3.4 Grafik Distribusi Commit per Iterasi](<!-- TODO: ganti path gambar grafik distribusi commit -->)
+![Gambar 3.4 Grafik Distribusi Commit per Iterasi](/imageresearch/chart-grafik-iterasi.png)
 _Gambar 3.4 Grafik Distribusi Commit per Iterasi_
+
+```
+Grafik Distribusi Commit per Iterasi
+(setiap █ ≈ 2 commit)
+
+Iterasi  1  |██████████████████████████                          | 51
+Iterasi  2  |████████████████████████████████████                | 64
+Iterasi  3  |██████████                                          | 19
+Iterasi  4  |█████████████████████████████████████████████████   | 89
+Iterasi  5  |████                                                |  8
+Iterasi  6  |████████████████████████████████████████            | 72
+Iterasi  7  |███████████████████████████████                     | 54
+Iterasi  8  |██████████████████████                              | 36
+Iterasi  9  |████████████████████████                            | 40
+Iterasi 10  |██████████████████                                  | 27
+Iterasi 11  |██████████                                          | 19
+Iterasi 12  |██████                                              | 12
+            +---+---+---+---+---+---+---+---+---+---+
+            0  10  20  30  40  50  60  70  80  90 100
+                         Jumlah Commit
+```
+
+Data Excel (copy-paste ke spreadsheet):
+
+```
+Iterasi,Jumlah Commit,Kumulatif,Persentase (%)
+1,51,51,11.62
+2,64,115,14.58
+3,19,134,4.33
+4,89,223,20.27
+5,8,231,1.82
+6,72,303,16.40
+7,54,357,12.30
+8,36,393,8.20
+9,40,433,9.11
+10,27,460,6.15
+11,19,479,4.33
+12,12,491,2.73
+```
+
+Tutorial Excel:
+
+1. Copy data CSV di atas (tanpa baris ```)
+2. Buka Excel → workbook baru
+3. Klik cell A1 → Paste
+4. Select kolom A → tab Data → Text to Columns → Delimited → centang Comma → Finish
+5. Sekarang ada 4 kolom: Iterasi | Jumlah Commit | Kumulatif | Persentase (%)
+6. Select A1:C13 (kolom Iterasi + Jumlah Commit + Kumulatif, termasuk header)
+7. Tab Insert → Chart → Combo Chart (atau Insert → Chart → pilih sembarang, lalu klik kanan → Change Chart Type → Combo)
+8. Set Jumlah Commit = Clustered Column (primary axis)
+9. Set Kumulatif = Line, centang Secondary Axis
+10. Klik kanan salah satu bar → Add Data Labels → angka commit muncul di tiap bar
+11. Klik judul chart → ganti jadi "Grafik Distribusi Commit per Iterasi"
+12. Untuk Persentase: buat chart terpisah → select A1:A13 lalu tahan Ctrl + select D1:D13 → Insert → Pie Chart
+13. Klik kanan pie → Add Data Labels → centang Category Name + Percentage
+14. Kalau cuma mau bar chart saja tanpa line: select A1:B13 saja → Insert → Clustered Column
+15. Klik kanan chart → Save as Picture → simpan .png ke folder imageresearch/
+16. Update path TODO di line 48 dengan path gambar yang baru
 
 Pola pengembangan yang bersifat iteratif dan inkremental tersebut menunjukkan penerapan metode Personal Extreme Programming (PXP) secara konsisten sepanjang siklus hidup pengembangan perangkat lunak (_Software Development Life Cycle / SDLC_). Pada setiap iterasi, pengembang menghasilkan _working increment_ yang bersifat fungsional, dapat diuji secara langsung, serta siap untuk dievaluasi dan divalidasi terhadap kebutuhan pengguna. Pendekatan ini memastikan bahwa setiap penambahan fitur maupun perbaikan dilakukan secara terukur, terdokumentasi, dan tidak menimbulkan dampak regresi (_regression_) terhadap modul-modul yang telah berfungsi dengan baik pada iterasi sebelumnya.
 
-![Gambar 3.5 Diagram Alur Version Control dengan Git](<!-- TODO: ganti path gambar diagram git flow -->)
+![Gambar 3.5 Diagram Alur Version Control dengan Git](https://i.redd.it/nm1w0gnf2zh11.png)
 _Gambar 3.5 Diagram Alur Version Control dengan Git_
+
+menambah git revert dan release bar di akhir diagram sequential, perlu di ingat
 
 Selanjutnya, pada tahap pengujian sistem, penelitian ini menerapkan metode _White-Box Testing_ sebagai pendekatan verifikasi terhadap kualitas internal perangkat lunak. _White-Box Testing_, yang juga dikenal sebagai _structural testing_ atau _glass-box testing_, merupakan metode pengujian yang dilakukan terhadap fungsi-fungsi spesifik pada level kode sumber (_source code level_) yang tidak terlihat secara langsung oleh pengguna akhir (_end-user_). Pengujian ini mencakup evaluasi terhadap logika internal program (_internal logic_), struktur percabangan kode (_branching structure_), alur eksekusi program (_execution flow_), serta penanganan kondisi batas (_boundary condition handling_). Penerapan metode _White-Box Testing_ bertujuan untuk memastikan bahwa setiap komponen dan modul kode berfungsi sesuai dengan spesifikasi kebutuhan fungsional yang telah ditetapkan, terbebas dari _bug_ maupun kesalahan logika (_logic error_), serta memberikan mekanisme pencegahan secara dini (_early defect detection_) terhadap potensi _error_ yang mungkin muncul sebelum sistem memasuki fase _productionizing_ dalam siklus Agile Extreme Programming.
 
