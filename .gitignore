@@ -19,7 +19,6 @@ backend/.env
 
 # Backend build
 backend/build
-backend/build-resources
 backend/dist
 backend/dist-electron
 
@@ -66,4 +65,3 @@ npm-debug.log*
 # Testing
 coverage/
 .nyc_output/
-
