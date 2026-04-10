@@ -38,6 +38,52 @@ BAB 3 METODE PENELITIAN
 └── Referensi Bab 3
 ```
 
+<!-- ============================================================
+  📝 CATATAN SEMENTARA — RELASI BAB 3 DENGAN AGILE EXTREME PROGRAMMING
+  (hapus sebelum submit ke dosen)
+  ============================================================
+
+  BAB 3 ini secara keseluruhan membuktikan penerapan Agile XP melalui
+  4 sudut pandang yang saling berkaitan:
+
+  ┌─────────────────────────────────────────────────────────────────┐
+  │ 3.1 → METODOLOGI                                               │
+  │   Menjawab: "Kenapa XP? Kenapa PXP?"                           │
+  │   XP Practice yang dicakup:                                    │
+  │   • Small releases        → iterasi pendek & inkremental       │
+  │   • Simple design         → [27] Abrahamsson                   │
+  │   • Coding standards      → [27] Abrahamsson                   │
+  │   • Continuous testing    → [17] Pezze & Young                 │
+  │   • Refactoring           → [11] Fowler                        │
+  │   • Release planning      → [18] Humble & Farley               │
+  ├─────────────────────────────────────────────────────────────────┤
+  │ 3.2 → BUKTI EMPIRIS ITERASI                                    │
+  │   Menjawab: "Di mana bukti bahwa XP benar-benar diterapkan?"   │
+  │   XP Practice yang dicakup:                                    │
+  │   • Small releases        → 12 iterasi dengan SHA boundaries   │
+  │   • Continuous integration→ 491 commit terdokumentasi di Git   │
+  │   • Sustainable pace      → variasi commit/iterasi wajar (PXP) │
+  ├─────────────────────────────────────────────────────────────────┤
+  │ 3.3 → PENGUJIAN                                                │
+  │   Menjawab: "Bagaimana kualitas kode dijaga tiap iterasi?"     │
+  │   XP Practice yang dicakup:                                    │
+  │   • Test-first / testing  → white-box unit testing dengan Jest │
+  │   • Refactoring safely    → mock isolation mencegah regression │
+  │   • Simple design         → fungsi diuji secara terisolasi     │
+  ├─────────────────────────────────────────────────────────────────┤
+  │ 3.4 → UMPAN BALIK PENGGUNA                                     │
+  │   Menjawab: "Bagaimana XP merespons perubahan kebutuhan?"      │
+  │   XP Practice yang dicakup:                                    │
+  │   • Customer collaboration→ feedback via WhatsApp → hotfix     │
+  │   • Small releases        → tooltip fix & Electron migration   │
+  │   • Continuous improvement→ setiap feedback → iterasi baru     │
+  └─────────────────────────────────────────────────────────────────┘
+
+  KESIMPULAN: Bab 3 bukan hanya menyebut XP, tapi membuktikannya
+  secara struktural — metodologi (3.1) → bukti (3.2) → kualitas (3.3)
+  → responsivitas (3.4). Ini adalah argumentasi XP yang utuh.
+  ============================================================ -->
+
 ---
 
 ## 3.1 Metode Pengembangan Perangkat Lunak
@@ -46,7 +92,7 @@ Metode pengembangan perangkat lunak yang digunakan dalam penelitian ini adalah m
 
 ### 3.1.1 Personal Extreme Programming (PXP)
 
-Secara spesifik, metode pengembangan yang diterapkan dalam penelitian ini tergolong dalam varian Personal Extreme Programming (PXP) [[3]](#ref-3), yang merupakan adaptasi dari metodologi Extreme Programming (XP) [[2]](#ref-2) untuk konteks pengembangan individu (_solo developer_). Metode PXP dipilih berdasarkan pertimbangan terhadap beberapa faktor utama. Pertama, pengembangan sistem dilaksanakan secara mandiri oleh satu orang pengembang (_solo developer_) [[22]](#ref-22), sehingga metodologi berbasis tim seperti Scrum maupun Kanban yang mensyaratkan adanya peran _Product Owner_, _Scrum Master_, serta pelaksanaan _ceremony_ kolaboratif seperti _daily standup_, _sprint review_, dan _retrospective_ [[10]](#ref-10) dinilai tidak sesuai dengan konteks pengembangan individu. Kedua, selama proses pengembangan berlangsung, pengembang seringkali menerima umpan balik secara langsung dan informal dari pengguna melalui media komunikasi seperti WhatsApp, yang memerlukan respons cepat berupa _hotfix_ maupun perbaikan minor tanpa harus menunggu siklus sprint formal [[23]](#ref-23). Ketiga, metode PXP memberikan fleksibilitas yang lebih tinggi dalam hal perencanaan dan eksekusi iterasi, di mana pengembang dapat menyesuaikan ruang lingkup dan durasi setiap iterasi secara dinamis sesuai dengan kebutuhan dan prioritas yang berkembang di lapangan [[9]](#ref-9). Karakteristik-karakteristik tersebut menjadikan PXP sebagai metode yang paling adaptif dan relevan untuk konteks pengembangan pada penelitian ini. Penerapan metode ini bertujuan untuk menghasilkan produk perangkat lunak yang optimal melalui serangkaian praktik inti, antara lain: penerapan pengujian secara berkelanjutan (_continuous testing_) [[17]](#ref-17), perancangan struktur kode yang terorganisasi (_structured layout_) [[7]](#ref-7), refaktorisasi kode secara berkala (_code refactoring_) [[11]](#ref-11), serta perencanaan rilis yang terukur (_release planning_) [[18]](#ref-18). Praktik-praktik tersebut diterapkan agar sistem yang dikembangkan memiliki tingkat pemeliharaan yang tinggi (_high maintainability_) [[4]](#ref-4), mudah untuk diperbaiki dan dikembangkan lebih lanjut (_scalable_), serta tidak menimbulkan kerusakan atau regresi terhadap fungsionalitas yang telah berjalan dan teruji sebelumnya.
+Secara spesifik, metode pengembangan yang diterapkan dalam penelitian ini tergolong dalam varian Personal Extreme Programming (PXP) [[3]](#ref-3), yang merupakan adaptasi dari metodologi Extreme Programming (XP) [[2]](#ref-2) untuk konteks pengembangan individu (_solo developer_). Metode PXP dipilih berdasarkan pertimbangan terhadap beberapa faktor utama. Pertama, pengembangan sistem dilaksanakan secara mandiri oleh satu orang pengembang (_solo developer_) [[22]](#ref-22), sehingga metodologi berbasis tim seperti Scrum maupun Kanban yang mensyaratkan adanya peran _Product Owner_, _Scrum Master_, serta pelaksanaan _ceremony_ kolaboratif seperti _daily standup_, _sprint review_, dan _retrospective_ [[10]](#ref-10) dinilai tidak sesuai dengan konteks pengembangan individu. Kedua, selama proses pengembangan berlangsung, pengembang seringkali menerima umpan balik secara langsung dan informal dari pengguna melalui media komunikasi seperti WhatsApp, yang memerlukan respons cepat berupa _hotfix_ maupun perbaikan minor tanpa harus menunggu siklus sprint formal [[23]](#ref-23). Ketiga, metode PXP memberikan fleksibilitas yang lebih tinggi dalam hal perencanaan dan eksekusi iterasi, di mana pengembang dapat menyesuaikan ruang lingkup dan durasi setiap iterasi secara dinamis sesuai dengan kebutuhan dan prioritas yang berkembang di lapangan [[9]](#ref-9). Karakteristik-karakteristik tersebut menjadikan PXP sebagai metode yang paling adaptif dan relevan untuk konteks pengembangan pada penelitian ini. Penerapan metode ini bertujuan untuk menghasilkan produk perangkat lunak yang optimal melalui serangkaian praktik inti, antara lain: penerapan pengujian secara berkelanjutan (_continuous testing_) [[17]](#ref-17), perancangan struktur kode yang terorganisasi (_structured layout_) [[7]](#ref-7), refaktorisasi kode secara berkala (_code refactoring_) [[11]](#ref-11), desain sistem yang sederhana dan tidak _over-engineered_ (_simple design_) [[27]](#ref-27), penerapan standar penulisan kode yang konsisten (_coding standards_) [[27]](#ref-27), serta perencanaan rilis yang terukur (_release planning_) [[18]](#ref-18). Praktik-praktik tersebut diterapkan agar sistem yang dikembangkan memiliki tingkat pemeliharaan yang tinggi (_high maintainability_) [[4]](#ref-4), mudah untuk diperbaiki dan dikembangkan lebih lanjut (_scalable_), serta tidak menimbulkan kerusakan atau regresi terhadap fungsionalitas yang telah berjalan dan teruji sebelumnya.
 
 ![Gambar 3.2 Alur Siklus Personal Extreme Programming (PXP)](/imageresearch/XP.png)
 _Gambar 3.2 Alur Siklus Personal Extreme Programming (PXP)_
@@ -111,7 +157,7 @@ Iterasi 12  |██████                                              | 1
                          Jumlah Commit
 ```
 
-Pola pengembangan yang bersifat iteratif dan inkremental tersebut menunjukkan penerapan metode Personal Extreme Programming (PXP) [[2]](#ref-2) secara konsisten sepanjang siklus hidup pengembangan perangkat lunak (_Software Development Life Cycle / SDLC_) [[5]](#ref-5), dengan mempertimbangkan kompleksitas dalam sistem penyimpanan data [[26]](#ref-26). Pada setiap iterasi, pengembang menghasilkan _working increment_ yang bersifat fungsional, dapat diuji secara langsung, serta siap untuk dievaluasi dan divalidasi terhadap kebutuhan pengguna. Pendekatan ini memastikan bahwa setiap penambahan fitur maupun perbaikan dilakukan secara terukur, terdokumentasi, dan tidak menimbulkan dampak regresi (_regression_) terhadap modul-modul yang telah berfungsi dengan baik pada iterasi sebelumnya.
+Pola pengembangan yang bersifat iteratif dan inkremental tersebut menunjukkan penerapan metode Personal Extreme Programming (PXP) [[2]](#ref-2) secara konsisten sepanjang siklus hidup pengembangan perangkat lunak (_Software Development Life Cycle / SDLC_) [[5]](#ref-5), dengan mempertimbangkan kompleksitas dalam sistem penyimpanan data [[26]](#ref-26). Pada setiap iterasi, pengembang menghasilkan _working increment_ yang bersifat fungsional, dapat diuji secara langsung, serta siap untuk dievaluasi dan divalidasi terhadap kebutuhan pengguna. Variasi jumlah commit antar iterasi — termasuk iterasi pendek seperti Iterasi 3 (19 commit) dan Iterasi 5 (8 commit) — merupakan hal yang wajar dalam metode PXP [[27]](#ref-27), di mana durasi dan ruang lingkup setiap iterasi disesuaikan secara dinamis dengan kompleksitas fitur yang sedang dikembangkan, bukan ditentukan oleh panjang siklus sprint yang bersifat tetap. Pendekatan ini memastikan bahwa setiap penambahan fitur maupun perbaikan dilakukan secara terukur, terdokumentasi, dan tidak menimbulkan dampak regresi (_regression_) terhadap modul-modul yang telah berfungsi dengan baik pada iterasi sebelumnya.
 
 ### 3.2.3 Alur Version Control
 
@@ -488,3 +534,5 @@ Kedua umpan balik tersebut menunjukkan bahwa penerapan metode Agile [[1]](#ref-1
 <a id="ref-25"></a>**[25]** Krug, S. (2014). _Don't Make Me Think: A Common Sense Approach to Web Usability_ (3rd ed.). New Riders. [ref](https://dn790002.ca.archive.org/0/items/SteveKrugDontMakeMeThink/Steve_Krug_Don%E2%80%99t_Make_Me_Think%2C.pdf)
 
 <a id="ref-26"></a>**[26]** Kleppmann, M. (2017). _Designing Data-Intensive Applications: The Big Ideas Behind Reliable, Scalable, and Maintainable Systems_. O'Reilly Media. [ref](https://repo.darmajaya.ac.id/4191/1/Designing%20Data-Intensive%20Applications_%20The%20Big%20Ideas%20Behind%20Reliable%2C%20Scalable%2C%20and%20Maintainable%20Systems%20%28%20PDFDrive%20%29.pdf)
+
+<a id="ref-27"></a>**[27]** Abrahamsson, P., Salo, O., Ronkainen, J., & Warsta, J. (2002). _Agile Software Development Methods: Review and Analysis_. VTT Publications 478. VTT Technical Research Centre of Finland. <!-- TODO: verify details & add ref link -->
