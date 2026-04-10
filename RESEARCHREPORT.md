@@ -8,33 +8,38 @@ this file is provide the research report from users recently and the updated man
 
 ```
 BAB 3 METODE PENELITIAN
-├── 3.1 Metode Pengembangan Perangkat Lunak
-│   ├── 3.1.1 Personal Extreme Programming (PXP)
-│   │         Gambar 3.2 — Alur Siklus Personal Extreme Programming (PXP)
-│   └── 3.1.2 Tahapan Iterasi PXP
-├── 3.2 Dokumentasi Pengembangan dengan Version Control
-│   ├── 3.2.1 Riwayat Iterasi Pengembangan
-│   │         Tabel  3.1 — Riwayat Iterasi Pengembangan
-│   ├── 3.2.2 Analisis Distribusi Commit
-│   │         Gambar 3.4 — Grafik Distribusi Commit per Iterasi
-│   └── 3.2.3 Alur Version Control
-│             Gambar 3.5 — Diagram Alur Version Control dengan Git
-├── 3.3 Metode Pengujian Sistem
-│   │         Gambar 3.6 — Ilustrasi Metode White-Box Testing
-│   ├── 3.3.1 Cakupan Pengujian
-│   │         Gambar 3.7 — Alur Pengujian Fungsi Upload dan Template Excel
-│   ├── 3.3.2 Skenario dan Hasil Pengujian
-│   │         Tabel  3.2 — Unit Test: createBulkStudentsFromExcel()
-│   │         Tabel  3.3 — Unit Test: createStudentData() & BulkGenerator()
-│   │         Tabel  3.4 — Unit Test: registerRombel()
-│   │         Tabel  3.5 — Unit Test: generateBulkScoreTemplate()
-│   └── 3.3.3 Tujuan Pengujian
-├── 3.4 Perubahan dan Umpan Balik Pengguna
-│   ├── 3.4.1 Umpan Balik Fitur Upload Excel
-│   │         Gambar 3.8 — Perubahan Label Fitur Upload Excel (Sebelum & Sesudah)
-│   ├── 3.4.2 Umpan Balik Mekanisme Instalasi Aplikasi
-│   │         Gambar 3.9 — Perubahan Mekanisme Distribusi (Batch File → Electron)
-│   └── 3.4.3 Kesimpulan Umpan Balik
+├── 3.1 Penerapan Metode Personal Extreme Programming (PXP)
+│   ├── 3.1.1 Dasar Pemilihan Metode PXP
+│   │         [img] Gambar 3.2 — Alur Siklus Personal Extreme Programming (PXP)
+│   └── 3.1.2 Fase Pengembangan dan Pemetaan Iterasi
+├── 3.2 Analisis dan Perancangan Kebutuhan Sistem   [fase: exploration]
+│   ├── 3.2.1 Identifikasi Aktor Sistem
+│   ├── 3.2.2 Pemodelan Use Case Diagram
+│   │         [img] Gambar 3.3 — Use Case Diagram Sistem Informasi Akademik Madrasah
+│   └── 3.2.3 Deskripsi Fungsionalitas Sistem
+├── 3.3 Dokumentasi Iterasi Pengembangan            [fase: iterations to release]
+│   ├── 3.3.1 Riwayat Iterasi Pengembangan
+│   │         [tbl] Tabel  3.1 — Riwayat Iterasi Pengembangan
+│   ├── 3.3.2 Analisis Distribusi Commit
+│   │         [img] Gambar 3.4 — Grafik Distribusi Commit per Iterasi
+│   └── 3.3.3 Alur Version Control
+│             [img] Gambar 3.5 — Diagram Alur Version Control dengan Git
+├── 3.4 Pengujian Sistem                            [fase: productionizing]
+│   │         [img] Gambar 3.6 — Ilustrasi Metode White-Box Testing
+│   ├── 3.4.1 Cakupan Pengujian
+│   │         [img] Gambar 3.7 — Alur Pengujian Fungsi Upload dan Template Excel
+│   ├── 3.4.2 Skenario dan Hasil Pengujian
+│   │         [tbl] Tabel  3.2 — Unit Test: createBulkStudentsFromExcel()
+│   │         [tbl] Tabel  3.3 — Unit Test: createStudentData() & BulkGenerator()
+│   │         [tbl] Tabel  3.4 — Unit Test: registerRombel()
+│   │         [tbl] Tabel  3.5 — Unit Test: generateBulkScoreTemplate()
+│   └── 3.4.3 Tujuan Pengujian
+├── 3.5 Pemeliharaan dan Umpan Balik Pengguna       [fase: maintenance]
+│   ├── 3.5.1 Umpan Balik Fitur Upload Excel
+│   │         [img] Gambar 3.8 — Perubahan Label Fitur Upload Excel (Sebelum & Sesudah)
+│   ├── 3.5.2 Umpan Balik Mekanisme Instalasi Aplikasi
+│   │         [img] Gambar 3.9 — Perubahan Mekanisme Distribusi (Batch File → Electron)
+│   └── 3.5.3 Kesimpulan Umpan Balik
 └── Referensi Bab 3
 ```
 
@@ -44,10 +49,10 @@ BAB 3 METODE PENELITIAN
   ============================================================
 
   BAB 3 ini secara keseluruhan membuktikan penerapan Agile XP melalui
-  4 sudut pandang yang saling berkaitan:
+  5 sudut pandang yang saling berkaitan:
 
   ┌─────────────────────────────────────────────────────────────────┐
-  │ 3.1 → METODOLOGI                                               │
+  │ 3.1 → METODOLOGI  (Penerapan Metode PXP)                       │
   │   Menjawab: "Kenapa XP? Kenapa PXP?"                           │
   │   XP Practice yang dicakup:                                    │
   │   • Small releases        → iterasi pendek & inkremental       │
@@ -57,21 +62,28 @@ BAB 3 METODE PENELITIAN
   │   • Refactoring           → [11] Fowler                        │
   │   • Release planning      → [18] Humble & Farley               │
   ├─────────────────────────────────────────────────────────────────┤
-  │ 3.2 → BUKTI EMPIRIS ITERASI                                    │
+  │ 3.2 → ANALISIS KEBUTUHAN  (Use Case Diagram & Aktor)           │
+  │   Menjawab: "Apa ruang lingkup & kebutuhan fungsional sistem?" │
+  │   XP Practice yang dicakup:                                    │
+  │   • Exploration phase     → identifikasi aktor & use case      │
+  │   • Simple design         → single-actor architecture          │
+  │   • Customer stories      → fungsionalitas dari kebutuhan riil │
+  ├─────────────────────────────────────────────────────────────────┤
+  │ 3.3 → BUKTI EMPIRIS ITERASI  (Dokumentasi Iterasi)             │
   │   Menjawab: "Di mana bukti bahwa XP benar-benar diterapkan?"   │
   │   XP Practice yang dicakup:                                    │
   │   • Small releases        → 12 iterasi dengan SHA boundaries   │
   │   • Continuous integration→ 491 commit terdokumentasi di Git   │
   │   • Sustainable pace      → variasi commit/iterasi wajar (PXP) │
   ├─────────────────────────────────────────────────────────────────┤
-  │ 3.3 → PENGUJIAN                                                │
+  │ 3.4 → PENGUJIAN  (Pengujian Sistem)                            │
   │   Menjawab: "Bagaimana kualitas kode dijaga tiap iterasi?"     │
   │   XP Practice yang dicakup:                                    │
   │   • Test-first / testing  → white-box unit testing dengan Jest │
   │   • Refactoring safely    → mock isolation mencegah regression │
   │   • Simple design         → fungsi diuji secara terisolasi     │
   ├─────────────────────────────────────────────────────────────────┤
-  │ 3.4 → UMPAN BALIK PENGGUNA                                     │
+  │ 3.5 → UMPAN BALIK PENGGUNA  (Pemeliharaan & Umpan Balik)       │
   │   Menjawab: "Bagaimana XP merespons perubahan kebutuhan?"      │
   │   XP Practice yang dicakup:                                    │
   │   • Customer collaboration→ feedback via WhatsApp → hotfix     │
@@ -80,39 +92,116 @@ BAB 3 METODE PENELITIAN
   └─────────────────────────────────────────────────────────────────┘
 
   KESIMPULAN: Bab 3 bukan hanya menyebut XP, tapi membuktikannya
-  secara struktural — metodologi (3.1) → bukti (3.2) → kualitas (3.3)
-  → responsivitas (3.4). Ini adalah argumentasi XP yang utuh.
+  secara struktural — metodologi (3.1) → analisis kebutuhan (3.2)
+  → bukti iterasi (3.3) → kualitas (3.4) → responsivitas (3.5).
+  Ini adalah argumentasi XP yang utuh.
+
+  ============================================================
+  📌 PEMETAAN 6 FASE XP (Beck [2] + Abrahamsson [27]) → 12 ITERASI
+  ============================================================
+
+  Metodologi XP mendefinisikan 6 fase makro dalam siklus hidup proyek.
+  Berikut pemetaannya ke iterasi dan subbab BAB 3:
+
+  ┌────────────────────────┬────────────────┬─────────────────────────┐
+  │ Fase XP                │ Iterasi        │ Dicakup di              │
+  ├────────────────────────┼────────────────┼─────────────────────────┤
+  │ 1. Exploration         │ Iterasi 1–3    │ 3.2 Analisis Kebutuhan  │
+  │    (teknologi dijajaki,│ Nov 2025       │ + 3.3.1 Riwayat Iterasi │
+  │    arsitektur dibentuk,│                │ (use case, aktor, tech  │
+  │    use case dirancang) │                │  stack, routing)        │
+  ├────────────────────────┼────────────────┼─────────────────────────┤
+  │ 2. Planning            │ embedded tiap  │ 3.1.2 Fase Pengembangan │
+  │    (rilis direncanakan,│ iterasi        │ (Tabel 3.1 kolom        │
+  │    scope ditetapkan)   │                │  "Fokus Pengembangan")  │
+  ├────────────────────────┼────────────────┼─────────────────────────┤
+  │ 3. Iterations to       │ Iterasi 4–9    │ 3.3.1 Riwayat Iterasi   │
+  │    Release             │ Des 2025–      │ (auth, ORM, Excel,      │
+  │    (fitur inti dibangun│ Jan 2026       │  nilai, rombel, guru)   │
+  ├────────────────────────┼────────────────┼─────────────────────────┤
+  │ 4. Productionizing     │ Iterasi 10     │ 3.4 Pengujian Sistem    │
+  │    (sistem disiapkan   │ Feb 1–5 2026   │ (unit test + Electron   │
+  │    untuk produksi)     │                │  bundling & build .exe) │
+  ├────────────────────────┼────────────────┼─────────────────────────┤
+  │ 5. Maintenance         │ Iterasi 11–12  │ 3.5 Pemeliharaan &      │
+  │    (bug fix, stabilize,│ Feb 7–25 2026  │ Umpan Balik Pengguna    │
+  │    user feedback loop) │                │ (tooltip fix, Electron) │
+  ├────────────────────────┼────────────────┼─────────────────────────┤
+  │ 6. Death               │ belum tercapai │ N/A — proyek masih      │
+  │    (sistem pensiun)    │                │ aktif digunakan         │
+  └────────────────────────┴────────────────┴─────────────────────────┘
+
+  NOTE: Fase Planning (fase 2) tidak memiliki iterasi tersendiri karena
+  dalam PXP [3] perencanaan dilakukan secara personal & embedded di awal
+  setiap iterasi — bukan sebagai fase terpisah seperti di XP tim besar.
+
+  → Pemetaan ini bisa dijadikan dasar untuk memperkuat 3.1.2 jika
+    dosen meminta penjelasan lebih dalam tentang fase XP.
   ============================================================ -->
 
 ---
 
-## 3.1 Metode Pengembangan Perangkat Lunak
+## 3.1 Penerapan Metode Personal Extreme Programming (PXP)
 
 Metode pengembangan perangkat lunak yang digunakan dalam penelitian ini adalah metode Agile [[1]](#ref-1). Menurut pendekatan Agile, proses pengembangan sistem informasi dilakukan secara iteratif dan inkremental, yang memberikan fleksibilitas tinggi bagi pengembang untuk melakukan perbaikan, penambahan fitur, serta penyesuaian kebutuhan secara berkelanjutan pada setiap siklus pengembangan. Pendekatan ini memungkinkan proses rekayasa perangkat lunak (_software engineering_) bersifat adaptif, responsif terhadap perubahan kebutuhan pengguna, dan tidak terikat pada satu mekanisme pengembangan yang bersifat linier maupun kaku sebagaimana metode konvensional seperti _Waterfall_.
 
-### 3.1.1 Personal Extreme Programming (PXP)
+### 3.1.1 Dasar Pemilihan Metode PXP
 
 Secara spesifik, metode pengembangan yang diterapkan dalam penelitian ini tergolong dalam varian Personal Extreme Programming (PXP) [[3]](#ref-3), yang merupakan adaptasi dari metodologi Extreme Programming (XP) [[2]](#ref-2) untuk konteks pengembangan individu (_solo developer_). Metode PXP dipilih berdasarkan pertimbangan terhadap beberapa faktor utama. Pertama, pengembangan sistem dilaksanakan secara mandiri oleh satu orang pengembang (_solo developer_) [[22]](#ref-22), sehingga metodologi berbasis tim seperti Scrum maupun Kanban yang mensyaratkan adanya peran _Product Owner_, _Scrum Master_, serta pelaksanaan _ceremony_ kolaboratif seperti _daily standup_, _sprint review_, dan _retrospective_ [[10]](#ref-10) dinilai tidak sesuai dengan konteks pengembangan individu. Kedua, selama proses pengembangan berlangsung, pengembang seringkali menerima umpan balik secara langsung dan informal dari pengguna melalui media komunikasi seperti WhatsApp, yang memerlukan respons cepat berupa _hotfix_ maupun perbaikan minor tanpa harus menunggu siklus sprint formal [[23]](#ref-23). Ketiga, metode PXP memberikan fleksibilitas yang lebih tinggi dalam hal perencanaan dan eksekusi iterasi, di mana pengembang dapat menyesuaikan ruang lingkup dan durasi setiap iterasi secara dinamis sesuai dengan kebutuhan dan prioritas yang berkembang di lapangan [[9]](#ref-9). Karakteristik-karakteristik tersebut menjadikan PXP sebagai metode yang paling adaptif dan relevan untuk konteks pengembangan pada penelitian ini. Penerapan metode ini bertujuan untuk menghasilkan produk perangkat lunak yang optimal melalui serangkaian praktik inti, antara lain: penerapan pengujian secara berkelanjutan (_continuous testing_) [[17]](#ref-17), perancangan struktur kode yang terorganisasi (_structured layout_) [[7]](#ref-7), refaktorisasi kode secara berkala (_code refactoring_) [[11]](#ref-11), desain sistem yang sederhana dan tidak _over-engineered_ (_simple design_) [[27]](#ref-27), penerapan standar penulisan kode yang konsisten (_coding standards_) [[27]](#ref-27), serta perencanaan rilis yang terukur (_release planning_) [[18]](#ref-18). Praktik-praktik tersebut diterapkan agar sistem yang dikembangkan memiliki tingkat pemeliharaan yang tinggi (_high maintainability_) [[4]](#ref-4), mudah untuk diperbaiki dan dikembangkan lebih lanjut (_scalable_), serta tidak menimbulkan kerusakan atau regresi terhadap fungsionalitas yang telah berjalan dan teruji sebelumnya.
 
 ![Gambar 3.2 Alur Siklus Personal Extreme Programming (PXP)](/imageresearch/XP.png)
 _Gambar 3.2 Alur Siklus Personal Extreme Programming (PXP)_
 
-### 3.1.2 Tahapan Iterasi PXP
+### 3.1.2 Fase Pengembangan dan Pemetaan Iterasi
 
 Dalam konteks Personal Extreme Programming, setiap siklus iterasi menghasilkan sebuah _working increment_ yang dapat langsung diuji dan dievaluasi. Pendekatan ini sejalan dengan prinsip dasar Agile Manifesto [[1]](#ref-1), yakni mengutamakan perangkat lunak yang berfungsi (_working software_) di atas dokumentasi yang komprehensif, serta merespons perubahan di atas mengikuti rencana yang telah ditetapkan. Setiap iterasi pada metode PXP meliputi tahapan perencanaan (_planning_), perancangan (_design_), pengkodean (_coding_), pengujian (_testing_), dan evaluasi (_review_), yang dilaksanakan secara berulang hingga seluruh kebutuhan fungsional dan non-fungsional sistem terpenuhi.
 
-## 3.2 Dokumentasi Pengembangan dengan Version Control
+## 3.2 Analisis dan Perancangan Kebutuhan Sistem
+
+Sebelum memasuki tahap implementasi iteratif secara penuh, dilaksanakan proses analisis kebutuhan sistem (_system requirements_) serta perancangan awal arsitektur perangkat lunak (_preliminary software design_) sebagai bagian dari fase _exploration_ dalam siklus Personal Extreme Programming [[3]](#ref-3). Tahapan ini bertujuan untuk memperoleh pemahaman holistik terhadap kebutuhan fungsional (_functional requirements_) maupun kebutuhan non-fungsional (_non-functional requirements_) [[4]](#ref-4), sekaligus menetapkan batasan ruang lingkup sistem (_system boundary demarcation_) yang akan dikembangkan. Proses analisis ini dilaksanakan melalui metode wawancara tidak terstruktur (_unstructured interview_) serta observasi langsung (_direct observation_) [[24]](#ref-24) terhadap alur kerja operasional tenaga administrasi di lingkungan madrasah, guna mengidentifikasi poin permasalahan atau _pain points_, kebutuhan aktual (_actual user needs_), serta _user stories_ yang merepresentasikan nilai fungsional bagi pengguna akhir (_end-user value proposition_). Hasil dari proses analisis kebutuhan tersebut kemudian direpresentasikan secara visual melalui sebuah _Use Case Diagram_ yang disusun mengikuti notasi standar _Unified Modeling Language_ (UML) versi 2.x [[21]](#ref-21), sebagai bentuk artefak perancangan perangkat lunak (_software design artifact_) yang dapat dijadikan acuan utama (_single source of truth_) selama seluruh siklus hidup pengembangan perangkat lunak berlangsung.
+
+### 3.2.1 Identifikasi Aktor Sistem
+
+Berdasarkan hasil analisis terhadap karakteristik pengguna serta pemetaan alur kerja administratif (_administrative workflow mapping_) pada lingkungan institusi pendidikan madrasah, sistem SIAKAD Madrasah dirancang dengan pendekatan _single-actor architecture_ (arsitektur aktor tunggal), di mana sistem hanya memiliki satu jenis aktor utama, yaitu **Admin Sekolah**. Aktor tersebut bertindak sebagai _super user_ sekaligus _system custodian_ dengan kewenangan akses penuh (_full-privilege access_) terhadap seluruh modul dan fungsionalitas yang disediakan oleh sistem. Pemilihan pendekatan aktor tunggal ini didasarkan pada beberapa pertimbangan tertentu. Pertama, hasil observasi lapangan menunjukkan bahwa sebagian besar proses administrasi akademik di lingkungan madrasah dikelola secara tersentralisasi (_centralized management model_) oleh tenaga tata usaha atau operator sekolah yang berperan sebagai _single point of management_ untuk seluruh aktivitas operasional sekolah. Kedua, penyederhanaan model hak akses (_access control simplification_) ke dalam satu aktor tunggal dinilai lebih sesuai dengan konteks operasional pengguna sasaran dibandingkan implementasi _Role-Based Access Control_ (RBAC) berlapis yang cenderung memerlukan struktur organisasi yang lebih kompleks [[4]](#ref-4). Ketiga, pendekatan ini sejalan dengan prinsip _simple design_ dalam Extreme Programming [[27]](#ref-27) yang secara eksplisit menekankan untuk menghindari _over-engineering_ terhadap kebutuhan yang belum tervalidasi (_unvalidated requirements_) maupun skenario penggunaan yang bersifat spekulatif (_speculative use cases_) pada fase awal pengembangan perangkat lunak. Dengan demikian, arsitektur aktor tunggal menjadi model yang paling _lean_, _maintainable_, dan selaras dengan prinsip _You Ain't Gonna Need It_ (YAGNI) [[2]](#ref-2) yang diperkenalkan oleh Kent Beck sebagai salah satu pilar utama dalam metodologi Extreme Programming.
+
+### 3.2.2 Pemodelan Use Case Diagram
+
+Pemodelan kebutuhan fungsional sistem direpresentasikan dalam bentuk _Use Case Diagram_ yang menggambarkan interaksi antara aktor Admin Sekolah dengan seluruh fungsionalitas inti (_core functionality_) yang disediakan oleh sistem SIAKAD Madrasah. Diagram ini disusun menggunakan notasi standar UML 2.x [[21]](#ref-21) yang meliputi elemen aktor (_stick figure notation_), _use case_ (_ellipse notation_), batas sistem (_system boundary rectangle_), asosiasi antar aktor dan _use case_ (_association line_), serta relasi antar _use case_ berupa `«include»` dan `«extend»` untuk merepresentasikan dependensi fungsional antar kebutuhan sistem. Relasi `«include»` digunakan untuk menggambarkan fungsionalitas yang bersifat wajib (_mandatory sub-flow_), sedangkan relasi `«extend»` digunakan untuk menggambarkan fungsionalitas yang bersifat opsional atau kondisional (_conditional sub-flow_). Pemetaan lengkap kebutuhan fungsional yang berhasil diidentifikasi dari tahap analisis kebutuhan ditunjukkan pada Gambar 3.3 berikut.
+
+![Gambar 3.3 Use Case Diagram Sistem Informasi Akademik Madrasah](/imageresearch/use-case-diagram-siakad-sekolah-rev.png)
+_Gambar 3.3 Use Case Diagram Platform Akademik Madrasah_
+
+### 3.2.3 Deskripsi Fungsionalitas Sistem
+
+Berdasarkan _Use Case Diagram_ yang telah dirancang, fungsionalitas inti sistem SIAKAD Madrasah dapat dikelompokkan secara hierarkis (_hierarchical decomposition_) ke dalam tiga domain fungsional utama, yaitu: (1) modul _Authentication and Authorization_ sebagai lapisan keamanan sistem, (2) modul _Dashboard_ sebagai _central navigation hub_ dan _unified workspace_, serta (3) modul _Academic Data Management_ yang mencakup seluruh operasi CRUD (_Create, Read, Update, Delete_) terhadap entitas akademik yang ada dalam sistem. Penjabaran masing-masing domain fungsional tersebut dijelaskan sebagai berikut.
+
+**1) Modul Autentikasi dan Otorisasi (_Authentication & Authorization Layer_).**
+Sebelum memperoleh akses ke dalam sistem, setiap Admin Sekolah diwajibkan untuk melalui proses autentikasi (_login_) sebagai mekanisme verifikasi identitas (_identity verification gate_) terhadap _credentials_ yang telah terdaftar pada basis data sistem. Proses autentikasi tersebut bersifat mandatori melalui relasi `«include»` terhadap _use case_ login, yang berarti bahwa seluruh upaya akses ke dalam sistem selalu melalui alur autentikasi tanpa terkecuali, sehingga secara arsitektural tidak dimungkinkan adanya _bypass authentication_, _backdoor access_, maupun akses anonim (_anonymous access_) ke dalam sistem. Mekanisme ini mengimplementasikan prinsip _zero-trust security model_ di mana setiap permintaan akses (_access request_) harus selalu diverifikasi terlebih dahulu sebelum diteruskan ke modul-modul inti sistem. Selain itu, sistem juga menyediakan fungsionalitas _signup_ (pendaftaran akun baru) yang memiliki relasi `«extend»` terhadap _use case_ login, yang berarti bahwa _use case_ signup hanya teraktivasi secara kondisional (_conditional activation_) pada saat belum terdapat akun Admin yang terdaftar di dalam sistem. Mekanisme _conditional signup_ ini memastikan bahwa proses inisialisasi akun (_account bootstrap_) hanya dapat dilakukan sekali pada tahap awal penggunaan sistem (_first-run initialization_), dan setelah akun pertama berhasil terbuat, _use case_ signup akan otomatis dinonaktifkan (_auto-disabled_) guna mencegah terjadinya _unauthorized account creation_ oleh pihak yang tidak berwenang.
+
+**2) Modul Dashboard Utama (_Central Navigation Hub_).**
+Setelah berhasil melalui proses autentikasi, admin akan secara otomatis diarahkan (_auto-redirect_) ke halaman _dashboard_ utama yang berfungsi sebagai pusat kendali navigasi sistem (_central control plane_) sekaligus _unified workspace_ untuk seluruh aktivitas administratif. Halaman _dashboard_ menyajikan ringkasan informasi agregat (_aggregated summary_) seputar data operasional sekolah secara _near-real-time_, serta berperan sebagai _primary entry point_ menuju seluruh modul pengelolaan data yang tersedia di dalam sistem. Desain tata letak _dashboard_ mengikuti prinsip _information hierarchy_ serta _progressive disclosure_ [[6]](#ref-6), di mana elemen-elemen informasi yang paling sering diakses oleh pengguna (_high-frequency interactions_) ditempatkan pada posisi yang paling mudah dijangkau secara visual maupun kinestetik, sejalan dengan prinsip _Fitts' Law_ dalam _human-computer interaction_ [[24]](#ref-24). Pendekatan ini bertujuan untuk meminimalkan _cognitive load_ pengguna serta memaksimalkan efisiensi alur kerja administratif harian (_daily administrative workflow efficiency_).
+
+**3) Modul Pengelolaan Data Akademik (_Academic Data Management Module_).**
+Dari halaman _dashboard_ utama, admin dapat mengakses seluruh modul pengelolaan data yang mencakup operasi CRUD terhadap entitas-entitas akademik berikut: (a) **kelola data sekolah** manajemen profil institusi, _logo_ sekolah, alamat, dan informasi kontak; (b) **kelola data siswa** manajemen data demografis siswa, data orang tua, data alamat, serta fitur _bulk upload_ melalui _file_ Excel; (c) **kelola data guru** manajemen profil guru, penugasan mengajar, serta pemetaan mata pelajaran yang diampu; (d) **kelola mata pelajaran** manajemen _master data_ kurikulum akademik; (e) **kelola nilai siswa** _input_ nilai per mata pelajaran serta _bulk upload_ nilai melalui template Excel terstruktur; (f) **kelola tahun ajaran** manajemen periode akademik aktif dan pengaturan kalender akademik; (g) **kelola kelas dan rombongan belajar** _class grouping_ dan _student-class assignment_; (h) **cetak laporan** _report generation_ ke format PDF maupun Excel untuk kebutuhan pelaporan eksternal; (i) **audit log** pencatatan jejak aktivitas sistem (_system activity trail_) untuk keperluan _traceability_, _accountability_, serta _forensic analysis_; (j) **manajemen akun** perubahan _username_ dan _password_ sebagai bagian dari _credential lifecycle management_; serta (k) **logout** sebagai mekanisme terminasi sesi (_session termination mechanism_) yang memastikan tidak adanya _residual session state_ tertinggal pada sisi _client_.
+
+Ketiga domain fungsional tersebut saling terhubung secara kohesif melalui alur navigasi yang konsisten dan dapat diprediksi (_predictable navigation flow_), sehingga admin dapat menjalankan seluruh aktivitas administratif dalam satu lingkungan aplikasi yang terintegrasi (_integrated unified workspace_) tanpa perlu berpindah antar aplikasi eksternal. Pemodelan _Use Case Diagram_ ini selanjutnya menjadi acuan utama (_blueprint_) bagi pengembang dalam menetapkan ruang lingkup pengembangan (_development scope_) pada setiap iterasi Personal Extreme Programming.
+
+## 3.3 Dokumentasi Iterasi Pengembangan
 
 Seluruh hasil dari penerapan Agile Development pada penelitian ini didokumentasikan secara sistematis melalui sistem _version control_ menggunakan Git [[13]](#ref-13). Penggunaan Git sebagai alat bantu manajemen versi memungkinkan penelusuran terhadap setiap perubahan kode sumber (_source code_) yang terjadi selama proses pengembangan, sekaligus berfungsi sebagai bukti empiris adanya perkembangan dan evolusi sistem pada setiap iterasi. Riwayat perubahan tersebut terekam dalam bentuk _commit history_ yang mencakup identifikasi unik (_SHA hash_), pesan perubahan (_commit message_), serta stempel waktu (_timestamp_) dari setiap modifikasi yang dilakukan, sebagaimana ditunjukkan pada tabel berikut:
 
 **Ringkasan Proyek:**
 
 - Total commit: **491**
-- Periode pengembangan: **15 November 2025 - 25 Februari 2026** (± 3.5 bulan)
-- Kontributor: **syauqi** (developer tunggal — Personal Extreme Programming)
+- Periode pengembangan: **15 November 2025 - 25 Februari 2026** (sekitar 3.5 bulan)
+- Kontributor: **syauqi** (developer tunggal - Personal Extreme Programming)
 - First commit SHA: `61714e4` | Latest commit SHA: `9ce922c`
 
-### 3.2.1 Riwayat Iterasi Pengembangan
+### 3.3.1 Riwayat Iterasi Pengembangan
+
+Riwayat iterasi pengembangan aplikasi SIAKAD Madrasah disusun berdasarkan hasil penelusuran retrospektif (_retrospective trace analysis_) terhadap seluruh _commit history_ yang tercatat pada repositori Git sepanjang siklus hidup pengembangan perangkat lunak. Pengelompokan _commit_ ke dalam iterasi dilakukan berdasarkan dua kriteria utama, yaitu: (1) kedekatan temporal (_temporal proximity_) antar _commit_ yang direpresentasikan melalui kontinuitas tanggal aktivitas _push_, serta (2) kesamaan tematik (_thematic cohesion_) terhadap fokus pengembangan fitur yang sedang dikerjakan pada periode tersebut. Pendekatan segmentasi ini sejalan dengan karakteristik _iteration boundary_ dalam Personal Extreme Programming [[3]](#ref-3), di mana batas antar iterasi ditentukan secara dinamis berdasarkan _working increment_ yang dihasilkan, bukan berdasarkan durasi sprint tetap layaknya Scrum [[10]](#ref-10). Setiap iterasi yang teridentifikasi kemudian didokumentasikan melalui enam atribut utama, yaitu: **nomor iterasi**, **periode waktu pelaksanaan**, **jumlah commit** yang dihasilkan, **SHA awal** (_initial commit hash_) yang menandai titik mulai iterasi, **SHA akhir** (_terminal commit hash_) yang menandai titik akhir iterasi, serta **fokus pengembangan** (_development focus_) yang merangkum tema fungsional yang dikerjakan pada iterasi tersebut. Atribut SHA hash ini berperan penting sebagai _immutable identifier_ yang memungkinkan dilakukannya _audit trail_ serta reproduksi _state_ repositori pada titik waktu tertentu (_point-in-time reproducibility_) [[13]](#ref-13), sehingga keseluruhan riwayat pengembangan dapat diverifikasi kembali secara independen oleh pihak ketiga (_third-party verifiability_). Hasil pengelompokan tersebut disajikan pada Tabel 3.1 berikut.
+
+**Tabel 3.1 Riwayat Iterasi Pengembangan Aplikasi SIAKAD Madrasah**
 
 | No  | Iterasi    | Periode             | Jumlah Commit | SHA Awal  | SHA Akhir | Fokus Pengembangan                                                                                                                                |
 | --- | ---------- | ------------------- | :-----------: | --------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -129,13 +218,13 @@ Seluruh hasil dari penerapan Agile Development pada penelitian ini didokumentasi
 | 11  | Iterasi 11 | 7 — 14 Feb 2026     |      19       | `da9942d` | `397d1cd` | Perbaikan bug, redesain halaman rombel & mutasi, class diagram UML, integrasi API tahun ajaran & kurikulum, seed data                             |
 | 12  | Iterasi 12 | 22 — 25 Feb 2026    |      12       | `5e6ffdd` | `9ce922c` | Manajemen aset sekolah, migrasi database, seedfile auth, refactoring struktur folder, perbaikan file handler                                      |
 
-### 3.2.2 Analisis Distribusi Commit
+### 3.3.2 Analisis Distribusi Commit
 
 Berdasarkan data yang disajikan pada tabel di atas, dapat disimpulkan bahwa proses pengembangan aplikasi SIAKAD Madrasah dilaksanakan melalui **12 iterasi** pengembangan dalam kurun waktu kurang lebih 3,5 bulan dengan akumulasi total sebanyak **491 commit** yang tercatat pada repositori Git. Setiap iterasi memiliki ruang lingkup (_scope_) dan fokus pengembangan yang berbeda secara bertahap dan progresif, dimulai dari tahap inisialisasi proyek serta pengembangan antarmuka pengguna (_user interface_) pada sisi _frontend_ (Iterasi 1–2), dilanjutkan dengan pembangunan arsitektur _backend_ dan integrasi sistem basis data (Iterasi 3–5), kemudian implementasi fitur-fitur inti manajemen data siswa dan penilaian akademik (Iterasi 6–8), pengembangan fitur-fitur lanjutan seperti penugasan guru dan proses kelulusan (Iterasi 9), hingga tahap akhir yang meliputi proses _bundling_ aplikasi ke dalam format _desktop application_ serta pemeliharaan dan stabilisasi sistem secara menyeluruh (Iterasi 10–12).
 
 ![Gambar 3.4 Grafik Distribusi Commit per Iterasi](/imageresearch/chart-grafik-iterasi.png)
 _Gambar 3.4 Grafik Distribusi Commit per Iterasi_
-
+<!-- 
 ```
 Grafik Distribusi Commit per Iterasi
 (setiap █ ≈ 2 commit)
@@ -155,23 +244,23 @@ Iterasi 12  |██████                                              | 1
             +---+---+---+---+---+---+---+---+---+---+
             0  10  20  30  40  50  60  70  80  90 100
                          Jumlah Commit
-```
+``` -->
 
 Pola pengembangan yang bersifat iteratif dan inkremental tersebut menunjukkan penerapan metode Personal Extreme Programming (PXP) [[2]](#ref-2) secara konsisten sepanjang siklus hidup pengembangan perangkat lunak (_Software Development Life Cycle / SDLC_) [[5]](#ref-5), dengan mempertimbangkan kompleksitas dalam sistem penyimpanan data [[26]](#ref-26). Pada setiap iterasi, pengembang menghasilkan _working increment_ yang bersifat fungsional, dapat diuji secara langsung, serta siap untuk dievaluasi dan divalidasi terhadap kebutuhan pengguna. Variasi jumlah commit antar iterasi — termasuk iterasi pendek seperti Iterasi 3 (19 commit) dan Iterasi 5 (8 commit) — merupakan hal yang wajar dalam metode PXP [[27]](#ref-27), di mana durasi dan ruang lingkup setiap iterasi disesuaikan secara dinamis dengan kompleksitas fitur yang sedang dikembangkan, bukan ditentukan oleh panjang siklus sprint yang bersifat tetap. Pendekatan ini memastikan bahwa setiap penambahan fitur maupun perbaikan dilakukan secara terukur, terdokumentasi, dan tidak menimbulkan dampak regresi (_regression_) terhadap modul-modul yang telah berfungsi dengan baik pada iterasi sebelumnya.
 
-### 3.2.3 Alur Version Control
+### 3.3.3 Alur Version Control
 
 ![Gambar 3.5 Diagram Alur Version Control dengan Git](https://i.redd.it/nm1w0gnf2zh11.png)
 _Gambar 3.5 Diagram Alur Version Control dengan Git_
 
-## 3.3 Metode Pengujian Sistem
+## 3.4 Pengujian Sistem
 
 Selanjutnya, pada tahap pengujian sistem, penelitian ini menerapkan metode _White-Box Testing_ [[7]](#ref-7) sebagai pendekatan verifikasi terhadap kualitas internal perangkat lunak. _White-Box Testing_, yang juga dikenal sebagai _structural testing_ atau _glass-box testing_ [[7]](#ref-7), merupakan metode pengujian yang dilakukan terhadap fungsi-fungsi spesifik pada level kode sumber (_source code level_) yang tidak terlihat secara langsung oleh pengguna akhir (_end-user_). Pengujian ini mencakup evaluasi terhadap logika internal program (_internal logic_), struktur percabangan kode (_branching structure_) [[14]](#ref-14), alur eksekusi program (_execution flow_), serta penanganan kondisi batas (_boundary condition handling_) [[15]](#ref-15). Penerapan metode _White-Box Testing_ [[8]](#ref-8) bertujuan untuk memastikan bahwa setiap komponen dan modul kode berfungsi sesuai dengan spesifikasi kebutuhan fungsional yang telah ditetapkan, terbebas dari _bug_ maupun kesalahan logika (_logic error_), serta memberikan mekanisme pencegahan secara dini (_early defect detection_) terhadap potensi _error_ yang mungkin muncul sebelum sistem memasuki fase _productionizing_ dalam siklus Agile Extreme Programming.
 
 ![Gambar 3.6 Ilustrasi Metode White-Box Testing](/imageresearch/testingdiffcomparison.png)
 _Gambar 3.6 Ilustrasi Metode White-Box Testing_
 
-### 3.3.1 Cakupan Pengujian
+### 3.4.1 Cakupan Pengujian
 
 Pengujian dilaksanakan secara terfokus dan terstruktur pada beberapa fungsi kritis tertentu yang bersifat _memory-intensive_ dan memiliki kompleksitas pemrosesan data yang tinggi [[26]](#ref-26), sehingga berpotensi menyebabkan terjadinya kebocoran memori (_memory leak_) maupun penurunan kinerja sistem (_performance degradation_) [[16]](#ref-16). Secara spesifik, cakupan pengujian pada penelitian ini difokuskan pada dua fungsi utama, yaitu: (1) fungsi _upload_ dan _parsing_ data dari _file_ Excel, serta (2) proses pembuatan dan _rendering file template_ Excel secara dinamis. Pemilihan kedua fungsi tersebut sebagai objek pengujian didasarkan pada temuan empiris berupa _bug_ dan _unexpected behavior_ yang terjadi ketika pengguna mengunggah _file_ Excel dengan format, struktur kolom, atau tipe data yang tidak sesuai dengan ketentuan dan validasi yang telah ditetapkan oleh sistem.
 
@@ -261,7 +350,7 @@ Jenis Flowchart ini:
 • Decision node (diamond) sebelum terminal PASS/FAIL
 ```
 
-### 3.3.2 Skenario dan Hasil Pengujian
+### 3.4.2 Skenario dan Hasil Pengujian
 
 Pengujian dilaksanakan menggunakan _framework_ Jest sebagai _test runner_ dan _assertion library_. Pendekatan _white-box testing_ [[8]](#ref-8) diterapkan melalui teknik _mocking_ terhadap dependensi internal seperti koneksi _database_ (Drizzle ORM) dan _library_ ExcelJS, sehingga setiap _unit function_ dapat diuji secara terisolasi tanpa bergantung pada _state_ eksternal. Teknik ini memungkinkan pengujian terhadap logika internal fungsi, pemetaan _field_ (_field mapping_), serta alur percabangan kode (_branching logic_) secara langsung pada level _source code_.
 
@@ -302,11 +391,11 @@ Berikut adalah skenario pengujian _white-box_ yang dilaksanakan beserta hasil ya
 
 Seluruh pengujian dieksekusi melalui Jest pada _Command Line Interface_ (CLI) dengan perintah `npx jest` pada lingkungan pengembangan lokal. Dependensi eksternal (database dan _library_ ExcelJS) di-_mock_ menggunakan `jest.unstable_mockModule()` agar pengujian bersifat deterministik dan tidak bergantung pada koneksi database aktif [[15]](#ref-15).
 
-### 3.3.3 Tujuan Pengujian
+### 3.4.3 Tujuan Pengujian
 
 Dengan demikian, pengujian dalam penelitian ini dilaksanakan secara preventif (_preventive testing_) [[17]](#ref-17) sebagai bagian integral dari praktik _quality assurance_ [[4]](#ref-4) dalam metodologi Personal Extreme Programming, guna mencegah terjadinya _defect_ dan _bug_ pada fase _productionizing_, meminimalkan risiko kegagalan sistem pada lingkungan produksi (_production environment_), sekaligus memastikan bahwa keseluruhan basis kode (_codebase_) yang dihasilkan tetap memenuhi standar kualitas, dapat dipelihara dengan baik (_maintainable_) [[8]](#ref-8), serta mudah dikembangkan lebih lanjut (_extensible_) dalam jangka panjang [[21]](#ref-21).
 
-## 3.4 Perubahan dan Umpan Balik Pengguna
+## 3.5 Pemeliharaan dan Umpan Balik Pengguna
 
 Dalam penerapan metode Agile, proses pengembangan perangkat lunak tidak bersifat statis melainkan selalu terbuka terhadap adanya revisi, perubahan, maupun umpan balik (_feedback_) dari pengguna. Hal ini merupakan bagian yang wajar dan bahkan diharapkan dalam siklus Agile, karena salah satu nilai inti dari Agile Manifesto adalah kolaborasi dengan pengguna serta kemampuan untuk merespons perubahan secara cepat. Pada penelitian ini, umpan balik yang diterima dari pengguna memiliki dampak yang cukup signifikan terhadap arah pengembangan perangkat lunak, karena setiap masukan dan keluhan yang ditemukan perlu segera ditindaklanjuti dan diintegrasikan ke dalam sistem pada iterasi berikutnya, agar aplikasi tetap sesuai dengan kebutuhan nyata pengguna di lapangan serta tetap memenuhi spesifikasi teknis yang telah ditetapkan sebelumnya.
 
@@ -314,13 +403,13 @@ Pengumpulan umpan balik pada penelitian ini dilakukan melalui metode wawancara t
 
 Selama proses pengembangan berlangsung, terdapat dua kategori utama umpan balik yang diterima dari pengguna, yaitu: (1) kesulitan dalam memahami dan menggunakan fitur tertentu pada aplikasi, serta (2) kendala pada proses instalasi dan penggunaan awal aplikasi. Kedua kategori umpan balik tersebut menjadi bahan evaluasi yang penting bagi pengembang untuk melakukan perbaikan pada iterasi selanjutnya.
 
-### 3.4.1 Umpan Balik Fitur Upload Excel
+### 3.5.1 Umpan Balik Fitur Upload Excel
 
 Umpan balik pertama berkaitan dengan fitur _upload_ Excel pada halaman Data Siswa yang pada versi awal tidak dilengkapi dengan keterangan atau petunjuk penggunaan yang memadai [[25]](#ref-25). Tombol-tombol yang tersedia pada antarmuka tidak memiliki _tooltip_ maupun penjelasan tambahan mengenai fungsinya, sehingga pengguna awam, khususnya tenaga administrasi sekolah yang menjadi pengguna utama aplikasi ini, merasa kesulitan dalam memahami alur penggunaan fitur tersebut [[24]](#ref-24). Pengguna tidak mengetahui tombol mana yang harus ditekan terlebih dahulu, apa yang perlu diunduh, dan bagaimana cara mengunggah data siswa melalui _file_ Excel. Berdasarkan umpan balik tersebut, pengembang kemudian melakukan perbaikan pada sisi _frontend_ di halaman Data Siswa (`siswa/+page.svelte`) dengan menambahkan _tooltip_ pada tombol "Unduh Template" yang berisi keterangan tambahan berupa penjelasan singkat mengenai fungsi tombol, yaitu mengunduh _file_ template `.xlsx` kosong yang telah diformat sesuai struktur data sistem, untuk kemudian diisi dan diunggah kembali melalui tombol "Upload Excel". Dengan penambahan _tooltip_ tersebut, pengguna dapat memahami alur penggunaan fitur secara mandiri tanpa memerlukan panduan eksternal. Perubahan ini dilakukan sebagai bentuk penerapan prinsip _user-centered design_ [[6]](#ref-6), di mana antarmuka aplikasi harus dirancang berdasarkan sudut pandang dan tingkat pemahaman pengguna akhir.
 
 ![Gambar 3.8 Perubahan Label Fitur Upload Excel (Sebelum dan Sesudah)](/imageresearch/imagea11y.png)
 _Gambar 3.8 Perubahan Label Fitur Upload Excel (Sebelum dan Sesudah)_
-
+<!-- 
 **Spesifikasi Gambar 3.8:**
 
 ```
@@ -371,15 +460,16 @@ Elemen yang harus ada:
 - Improvement list (✓) untuk SESUDAH
 - Score/metric di bawah setiap kolom
 - Warna berbeda: SEBELUM = red/orange, SESUDAH = green
-```
+``` -->
 
-### 3.4.2 Umpan Balik Mekanisme Instalasi Aplikasi
+### 3.5.2 Umpan Balik Mekanisme Instalasi Aplikasi
 
 Umpan balik kedua berkaitan dengan proses instalasi aplikasi pada versi rilis awal (versi 1.0). Pada versi tersebut, aplikasi dijalankan melalui sebuah _batch file_ (.bat) yang harus ditemukan dan dieksekusi secara manual oleh pengguna. Mekanisme ini menimbulkan kesulitan bagi pengguna awam di pihak sekolah, karena mereka tidak terbiasa mencari dan menjalankan _file_ dengan ekstensi .bat di dalam struktur folder komputer. Selain itu, tampilan _command prompt_ yang muncul saat menjalankan _batch file_ juga memberikan kesan yang kurang ramah dan membingungkan bagi pengguna non-teknis. Berdasarkan temuan tersebut, pengembang kemudian melakukan perubahan pada mekanisme distribusi aplikasi dengan beralih menggunakan Electron.js sebagai _runtime environment_ untuk membungkus (_bundling_) aplikasi web ke dalam format aplikasi desktop [[18]](#ref-18). Proses distribusi selanjutnya menggunakan NSIS (_Nullsoft Scriptable Install System_) sebagai _installer builder_, yang menghasilkan sebuah _file_ Setup .exe yang dapat diinstal oleh pengguna melalui proses instalasi standar layaknya aplikasi desktop pada umumnya. Dengan pendekatan ini, pengguna tidak lagi perlu mencari dan menjalankan _batch file_ secara manual, melainkan cukup melakukan instalasi sekali melalui _installer_ yang telah disediakan, kemudian menjalankan aplikasi melalui _shortcut_ yang secara otomatis tersedia pada desktop maupun menu Start Windows. Perubahan ini secara signifikan meningkatkan kemudahan penggunaan (_usability_) dan pengalaman pengguna (_user experience_) dalam mengakses aplikasi, khususnya bagi pengguna non-teknis di lingkungan sekolah.
 
 ![Gambar 3.9 Perubahan Mekanisme Distribusi Aplikasi (Batch File ke Electron Installer)](/imageresearch/deploymentdiagram.png)
 _Gambar 3.9 Perubahan Mekanisme Distribusi Aplikasi (Batch File ke Electron Installer)_
 
+<!-- 
 **Spesifikasi Gambar 3.9 (UML DEPLOYMENT DIAGRAM):**
 
 ```
@@ -459,7 +549,7 @@ NOTASI UML DEPLOYMENT DIAGRAM:
   ───►  «access»          = komponen mengakses artifact (baca/tulis)
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-```
+``` -->
 
 **Tabel Perbandingan Mekanisme Deployment v1.0 vs v2.0+**
 
@@ -473,7 +563,7 @@ NOTASI UML DEPLOYMENT DIAGRAM:
 | Setup Time | 5-10 minutes | ~2 minutes |
 | Success Rate | ~30% | ~95% |
 
-### 3.4.3 Kesimpulan Umpan Balik
+### 3.5.3 Kesimpulan Umpan Balik
 
 Kedua umpan balik tersebut menunjukkan bahwa penerapan metode Agile [[1]](#ref-1), khususnya Personal Extreme Programming [[3]](#ref-3), memungkinkan pengembang untuk merespons kebutuhan dan keluhan pengguna secara cepat dan tepat sasaran. Setiap perubahan yang dilakukan berdasarkan umpan balik pengguna langsung diimplementasikan pada iterasi berikutnya, sehingga aplikasi terus mengalami peningkatan kualitas secara bertahap sesuai dengan prinsip _continuous improvement_ dalam metodologi Agile [[1]](#ref-1).
 
@@ -485,7 +575,7 @@ Kedua umpan balik tersebut menunjukkan bahwa penerapan metode Agile [[1]](#ref-1
 
 <a id="ref-1"></a>**[1]** Beck, K., et al. (2001). _Manifesto for Agile Software Development_. Agile Alliance. [ref](https://agilemanifesto.org/)
 
-<a id="ref-2"></a>**[2]** Beck, K. (1999). _Extreme Programming Explained: Embrace Change_. Addison-Wesley.
+<a id="ref-2"></a>**[2]** Beck, K. (1999). _Extreme Programming Explained: Embrace Change_. Addison-Wesley. [ref](https://ptgmedia.pearsoncmg.com/images/9780321278654/samplepages/9780321278654.pdf)
 
 <a id="ref-3"></a>**[3]** Dzhurov, Y., Krasteva, I., & Huber, S. (2009). _Personal Extreme Programming – An Agile Process for Autonomous Developers_. Proceedings of the International Conference on Software, Services & Semantic Technologies.
 
@@ -536,3 +626,6 @@ Kedua umpan balik tersebut menunjukkan bahwa penerapan metode Agile [[1]](#ref-1
 <a id="ref-26"></a>**[26]** Kleppmann, M. (2017). _Designing Data-Intensive Applications: The Big Ideas Behind Reliable, Scalable, and Maintainable Systems_. O'Reilly Media. [ref](https://repo.darmajaya.ac.id/4191/1/Designing%20Data-Intensive%20Applications_%20The%20Big%20Ideas%20Behind%20Reliable%2C%20Scalable%2C%20and%20Maintainable%20Systems%20%28%20PDFDrive%20%29.pdf)
 
 <a id="ref-27"></a>**[27]** Abrahamsson, P., Salo, O., Ronkainen, J., & Warsta, J. (2002). _Agile Software Development Methods: Review and Analysis_. VTT Publications 478. VTT Technical Research Centre of Finland. <!-- TODO: verify details & add ref link -->
+
+Fitur Lihat Nilai Siswa
+Terdapat fitur lihat nilai siswa yang bersifat extend dari access dashboard. Fitur ini bersifat kondisional dan dapat diakses langsung oleh admin sesuai kebutuhan tanpa harus melalui alur navigasi utama.
