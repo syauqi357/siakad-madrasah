@@ -43,101 +43,23 @@ BAB 3 METODE PENELITIAN
 └── Referensi Bab 3
 ```
 
-<!-- ============================================================
-  📝 CATATAN SEMENTARA  RELASI BAB 3 DENGAN AGILE EXTREME PROGRAMMING
-  (hapus sebelum submit ke dosen)
-  ============================================================
+<!-- CATATAN: hapus sebelum submit ke dosen
 
-  BAB 3 ini secara keseluruhan membuktikan penerapan Agile XP melalui
-  5 sudut pandang yang saling berkaitan:
+  BAB 3 & XP — Quick Reference
+  3.1 Metodologi    → small releases, simple design, refactoring, coding standards
+  3.2 Analisis      → exploration phase, customer stories, simple design
+  3.3 Bukti Iterasi → small releases (12 iterasi), CI (491 commit), sustainable pace
+  3.4 Pengujian     → test-first (Jest), mock isolation, refactoring safely
+  3.5 Umpan Balik   → customer collaboration (WhatsApp→hotfix), continuous improvement
 
-  ┌─────────────────────────────────────────────────────────────────┐
-  │ 3.1 → METODOLOGI  (Penerapan Metode PXP)                       │
-  │   Menjawab: "Kenapa XP? Kenapa PXP?"                           │
-  │   XP Practice yang dicakup:                                    │
-  │   • Small releases        → iterasi pendek & inkremental       │
-  │   • Simple design         → [27] Abrahamsson                   │
-  │   • Coding standards      → [27] Abrahamsson                   │
-  │   • Continuous testing    → [17] Pezze & Young                 │
-  │   • Refactoring           → [11] Fowler                        │
-  │   • Release planning      → [18] Humble & Farley               │
-  ├─────────────────────────────────────────────────────────────────┤
-  │ 3.2 → ANALISIS KEBUTUHAN  (Use Case Diagram & Aktor)           │
-  │   Menjawab: "Apa ruang lingkup & kebutuhan fungsional sistem?" │
-  │   XP Practice yang dicakup:                                    │
-  │   • Exploration phase     → identifikasi aktor & use case      │
-  │   • Simple design         → single-actor architecture          │
-  │   • Customer stories      → fungsionalitas dari kebutuhan riil │
-  ├─────────────────────────────────────────────────────────────────┤
-  │ 3.3 → BUKTI EMPIRIS ITERASI  (Dokumentasi Iterasi)             │
-  │   Menjawab: "Di mana bukti bahwa XP benar-benar diterapkan?"   │
-  │   XP Practice yang dicakup:                                    │
-  │   • Small releases        → 12 iterasi dengan SHA boundaries   │
-  │   • Continuous integration→ 491 commit terdokumentasi di Git   │
-  │   • Sustainable pace      → variasi commit/iterasi wajar (PXP) │
-  ├─────────────────────────────────────────────────────────────────┤
-  │ 3.4 → PENGUJIAN  (Pengujian Sistem)                            │
-  │   Menjawab: "Bagaimana kualitas kode dijaga tiap iterasi?"     │
-  │   XP Practice yang dicakup:                                    │
-  │   • Test-first / testing  → white-box unit testing dengan Jest │
-  │   • Refactoring safely    → mock isolation mencegah regression │
-  │   • Simple design         → fungsi diuji secara terisolasi     │
-  ├─────────────────────────────────────────────────────────────────┤
-  │ 3.5 → UMPAN BALIK PENGGUNA  (Pemeliharaan & Umpan Balik)       │
-  │   Menjawab: "Bagaimana XP merespons perubahan kebutuhan?"      │
-  │   XP Practice yang dicakup:                                    │
-  │   • Customer collaboration→ feedback via WhatsApp → hotfix     │
-  │   • Small releases        → tooltip fix & Electron migration   │
-  │   • Continuous improvement→ setiap feedback → iterasi baru     │
-  └─────────────────────────────────────────────────────────────────┘
-
-  KESIMPULAN: Bab 3 bukan hanya menyebut XP, tapi membuktikannya
-  secara struktural  metodologi (3.1) → analisis kebutuhan (3.2)
-  → bukti iterasi (3.3) → kualitas (3.4) → responsivitas (3.5).
-  Ini adalah argumentasi XP yang utuh.
-
-  ============================================================
-  📌 PEMETAAN 6 FASE XP (Beck [2] + Abrahamsson [27]) → 12 ITERASI
-  ============================================================
-
-  Metodologi XP mendefinisikan 6 fase makro dalam siklus hidup proyek.
-  Berikut pemetaannya ke iterasi dan subbab BAB 3:
-
-  ┌────────────────────────┬────────────────┬─────────────────────────┐
-  │ Fase XP                │ Iterasi        │ Dicakup di              │
-  ├────────────────────────┼────────────────┼─────────────────────────┤
-  │ 1. Exploration         │ Iterasi 1–3    │ 3.2 Analisis Kebutuhan  │
-  │    (teknologi dijajaki,│ Nov 2025       │ + 3.3.1 Riwayat Iterasi │
-  │    arsitektur dibentuk,│                │ (use case, aktor, tech  │
-  │    use case dirancang) │                │  stack, routing)        │
-  ├────────────────────────┼────────────────┼─────────────────────────┤
-  │ 2. Planning            │ embedded tiap  │ 3.1.2 Fase Pengembangan │
-  │    (rilis direncanakan,│ iterasi        │ (Tabel 3.1 kolom        │
-  │    scope ditetapkan)   │                │  "Fokus Pengembangan")  │
-  ├────────────────────────┼────────────────┼─────────────────────────┤
-  │ 3. Iterations to       │ Iterasi 4–9    │ 3.3.1 Riwayat Iterasi   │
-  │    Release             │ Des 2025–      │ (auth, ORM, Excel,      │
-  │    (fitur inti dibangun│ Jan 2026       │  nilai, rombel, guru)   │
-  ├────────────────────────┼────────────────┼─────────────────────────┤
-  │ 4. Productionizing     │ Iterasi 10     │ 3.4 Pengujian Sistem    │
-  │    (sistem disiapkan   │ Feb 1–5 2026   │ (unit test + Electron   │
-  │    untuk produksi)     │                │  bundling & build .exe) │
-  ├────────────────────────┼────────────────┼─────────────────────────┤
-  │ 5. Maintenance         │ Iterasi 11–12  │ 3.5 Pemeliharaan &      │
-  │    (bug fix, stabilize,│ Feb 7–25 2026  │ Umpan Balik Pengguna    │
-  │    user feedback loop) │                │ (tooltip fix, Electron) │
-  ├────────────────────────┼────────────────┼─────────────────────────┤
-  │ 6. Death               │ belum tercapai │ N/A  proyek masih      │
-  │    (sistem pensiun)    │                │ aktif digunakan         │
-  └────────────────────────┴────────────────┴─────────────────────────┘
-
-  NOTE: Fase Planning (fase 2) tidak memiliki iterasi tersendiri karena
-  dalam PXP [3] perencanaan dilakukan secara personal & embedded di awal
-  setiap iterasi  bukan sebagai fase terpisah seperti di XP tim besar.
-
-  → Pemetaan ini bisa dijadikan dasar untuk memperkuat 3.1.2 jika
-    dosen meminta penjelasan lebih dalam tentang fase XP.
-  ============================================================ -->
+  Pemetaan 6 Fase XP → Iterasi:
+  1. Exploration     → Iter 1-3 (Nov 2025)     → 3.2 + 3.3.1
+  2. Planning        → embedded tiap iterasi   → 3.1.2 (Tabel 3.1)
+  3. Iter to Release → Iter 4-9 (Des-Jan)      → 3.3.1
+  4. Productionizing → Iter 10 (Feb 1-5)       → 3.4
+  5. Maintenance     → Iter 11-12 (Feb 7-25)   → 3.5
+  6. Death           → belum (proyek masih aktif)
+  Note: Planning embedded di awal tiap iterasi (PXP), bukan fase terpisah. -->
 
 ---
 

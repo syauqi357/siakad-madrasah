@@ -51,7 +51,7 @@ Bab ini menyajikan hasil implementasi aplikasi SIAKAD Madrasah yang telah dikemb
 
 ### 4.1.1 Halaman Landing Page
 
-<!-- ![Gambar 4.1 Halaman Landing Page Aplikasi SIAKAD Madrasah](/imageresearch/TODO.png) -->
+![Gambar 4.1 Halaman Landing Page Aplikasi SIAKAD Madrasah](/imageresearch/bab-4/Screenshot%202026-04-12%20160107.png)
 _Gambar 4.1 Halaman Landing Page Aplikasi SIAKAD Madrasah_
 
 Halaman _landing page_ merupakan halaman pertama yang ditampilkan ketika pengguna mengakses aplikasi. Halaman ini bersifat publik dan dapat diakses tanpa autentikasi. Bagian atas halaman menampilkan _hero section_ dengan judul "Platform Akademik Madrasah" beserta deskripsi singkat sistem, tombol "Masuk ke Dashboard" yang mengarahkan ke halaman _login_, dan tautan menuju repositori GitHub proyek.
@@ -62,14 +62,14 @@ Pada bagian bawah halaman terdapat fitur **Preview Data Nilai** yang menampilkan
 
 ### 4.1.2 Halaman Login
 
-<!-- ![Gambar 4.2 Halaman Login Aplikasi SIAKAD Madrasah](/imageresearch/TODO.png) -->
+![Gambar 4.2 Halaman Login Aplikasi SIAKAD Madrasah](</imageresearch/bab-4/Screenshot%20(103).png>)
 _Gambar 4.2 Halaman Login Aplikasi SIAKAD Madrasah_
 
 Halaman _login_ diakses melalui tombol "Masuk ke Dashboard" pada halaman _landing page_. Halaman ini menampilkan formulir autentikasi yang terdiri dari _field_ _username_ dan _password_ dengan opsi _checkbox_ untuk menampilkan _password_. Proses autentikasi dilakukan melalui API `POST /login` yang memvalidasi _credentials_ menggunakan bcryptjs dan menghasilkan _token_ JWT dengan masa berlaku 24 jam. Apabila autentikasi berhasil, _token_ dan data pengguna disimpan pada `localStorage` _browser_ dan pengguna diarahkan ke halaman _dashboard_. Apabila gagal, sistem menampilkan notifikasi _toast error_ yang otomatis hilang setelah 5 detik.
 
 ### 4.1.3 Halaman Dashboard
 
-<!-- ![Gambar 4.3 Halaman Dashboard Utama](/imageresearch/TODO.png) -->
+![Gambar 4.3 Halaman Dashboard Utama](/imageresearch/bab-4/Screenshot%202026-04-12%20160131.png)
 _Gambar 4.3 Halaman Dashboard Utama_
 
 Setelah berhasil _login_, pengguna diarahkan ke halaman _dashboard_ utama yang menampilkan pesan sambutan dengan nama pengguna dan peran yang sedang aktif. Halaman ini berfungsi sebagai pusat navigasi dengan menyajikan beberapa elemen utama:
@@ -85,7 +85,7 @@ Tata letak _dashboard_ menggunakan sistem _grid_ yang responsif dan menyesuaikan
 
 #### Daftar Siswa
 
-<!-- ![Gambar 4.4 Halaman Daftar Siswa](/imageresearch/TODO.png) -->
+![Gambar 4.4 Halaman Daftar Siswa](/imageresearch/bab-4/Screenshot%202026-04-12%20160243.png)
 _Gambar 4.4 Halaman Daftar Siswa_
 
 Halaman daftar siswa menampilkan seluruh data siswa dalam bentuk kartu yang memuat informasi nama, NISN, kelas, jenis kelamin, asal sekolah, dan _badge_ status. Status siswa ditampilkan dengan kode warna: hijau untuk AKTIF, kuning untuk MUTASI, dan biru untuk LULUS. Halaman ini dilengkapi dengan beberapa fitur pengelolaan data:
@@ -100,7 +100,7 @@ Apabila belum terdapat data siswa, halaman menampilkan _empty state_ dengan pand
 
 #### Tambah Siswa
 
-<!-- ![Gambar 4.5 Halaman Tambah Siswa](/imageresearch/TODO.png) -->
+![Gambar 4.5 Halaman Tambah Siswa](/imageresearch/bab-4/Screenshot%202026-04-12%20160400.png)
 _Gambar 4.5 Halaman Tambah Siswa_
 
 Halaman tambah siswa menggunakan formulir bertab yang terbagi menjadi tiga bagian: data siswa, data orang tua (ayah dan ibu), dan data wali. Pada tab pertama, pengguna mengisi identitas siswa yang mencakup nama lengkap, NISN, NIS lokal, jenis kelamin, agama, tempat dan tanggal lahir, sekolah asal, nomor telepon, data kewarganegaraan, serta data alamat yang terstruktur (jalan, RT/RW, kelurahan, kecamatan, kode pos). Formulir juga menyediakan fitur unggah foto siswa dengan validasi format (JPG, PNG, WebP) dan pratinjau gambar sebelum disimpan.
@@ -110,6 +110,7 @@ Tab kedua dan ketiga menggunakan komponen `ParentBiodata` yang menampilkan _fiel
 #### Detail Siswa
 
 <!-- ![Gambar 4.6 Halaman Detail Siswa](/imageresearch/TODO.png) -->
+
 _Gambar 4.6 Halaman Detail Siswa_
 
 Halaman detail siswa menampilkan seluruh informasi yang tersimpan untuk satu siswa, mencakup data pribadi, data orang tua, data wali, dan data alamat. Halaman ini menyediakan empat tombol aksi:
@@ -121,7 +122,7 @@ d. **Kelulusan**, menampilkan modal formulir untuk mengubah status siswa menjadi
 
 #### Upload Excel Siswa
 
-<!-- ![Gambar 4.7 Modal Upload Excel Siswa](/imageresearch/TODO.png) -->
+![Gambar 4.7 Modal Upload Excel Siswa](/imageresearch/bab-4/Screenshot%202026-04-12%20160259.png)
 _Gambar 4.7 Modal Upload Excel Siswa_
 
 Fitur _bulk upload_ memungkinkan pengguna mengunggah data banyak siswa sekaligus melalui _file_ Excel. Proses ini terdiri dari dua langkah: pertama, pengguna mengunduh _template_ Excel yang telah diformat oleh sistem melalui tombol "Unduh Template"; kedua, pengguna mengisi data pada _template_ tersebut dan mengunggahnya kembali melalui tombol "Upload Excel".
@@ -140,6 +141,7 @@ Apabila terdapat kesalahan pada data yang diunggah, sistem menampilkan tabel _er
 #### Daftar Rombel
 
 <!-- ![Gambar 4.8 Halaman Daftar Rombel](/imageresearch/TODO.png) -->
+
 _Gambar 4.8 Halaman Daftar Rombel_
 
 Halaman rombongan belajar (rombel) menampilkan daftar kelas dalam bentuk _grid_ kartu. Setiap kartu menampilkan nama rombel, tingkat kelas, nama wali kelas, ruangan, dan kurikulum yang digunakan. Pada setiap kartu terdapat _progress bar_ yang menunjukkan persentase kapasitas siswa dengan kode warna: hijau untuk 0-70%, biru untuk 70-90%, dan kuning untuk di atas 90%.
@@ -149,6 +151,7 @@ Setiap kartu rombel menyediakan tombol untuk mengunduh _template_ nilai dan tomb
 #### Tambah Rombel
 
 <!-- ![Gambar 4.9 Halaman Tambah Rombel](/imageresearch/TODO.png) -->
+
 _Gambar 4.9 Halaman Tambah Rombel_
 
 Halaman tambah rombel menampilkan formulir dengan _field_ tahun ajaran, tingkat kelas, nama rombel, wali kelas, ruangan, kurikulum, dan kapasitas siswa (default 30). Pada bagian bawah formulir terdapat daftar siswa yang dapat dipilih untuk ditugaskan ke rombel tersebut. Data tahun ajaran, kurikulum, dan daftar guru dimuat dari API sehingga selalu menampilkan data terbaru.
@@ -158,6 +161,7 @@ Halaman tambah rombel menampilkan formulir dengan _field_ tahun ajaran, tingkat 
 #### Halaman Utama Nilai
 
 <!-- ![Gambar 4.10 Halaman Utama Nilai](/imageresearch/TODO.png) -->
+
 _Gambar 4.10 Halaman Utama Nilai_
 
 Halaman utama nilai menggunakan tata letak _bento grid_ yang menampilkan tiga kartu navigasi cepat: Nilai Tugas, Nilai Ujian, dan Nilai Per Mata Pelajaran. Di bawah kartu navigasi terdapat dua bagian utama:
@@ -170,6 +174,7 @@ Apabila terdapat kesalahan saat pemrosesan _file_, sistem menampilkan tabel _err
 #### Nilai Ujian
 
 <!-- ![Gambar 4.11 Halaman Nilai Ujian](/imageresearch/TODO.png) -->
+
 _Gambar 4.11 Halaman Nilai Ujian_
 
 Halaman nilai ujian menampilkan tabel nilai siswa dengan kolom nama siswa, NISN, dan kolom nilai berdasarkan jenis penilaian (UH, UTS, UAS, dan sebagainya). Header kolom penilaian dihasilkan secara dinamis dari data jenis penilaian yang terdaftar di sistem. Pengguna memilih kelas dan mata pelajaran melalui _dropdown_ untuk menampilkan data nilai yang sesuai.
@@ -177,6 +182,7 @@ Halaman nilai ujian menampilkan tabel nilai siswa dengan kolom nama siswa, NISN,
 ### 4.1.7 Halaman Manajemen Guru dan Tenaga Kependidikan
 
 <!-- ![Gambar 4.12 Halaman Daftar Guru](/imageresearch/TODO.png) -->
+
 _Gambar 4.12 Halaman Daftar Guru_
 
 Halaman manajemen guru menggunakan antarmuka dua tab: tab "Daftar Guru" menampilkan tabel berisi NIP, nama lengkap, jenis kelamin, nomor telepon, email, dan tombol aksi (edit dan hapus); tab "Tambah Guru Baru" menampilkan formulir pendaftaran guru dengan _field_ NIP, nama lengkap, jenis kelamin, agama, tempat dan tanggal lahir, nomor telepon, dan email.
@@ -186,6 +192,7 @@ Pengeditan data dilakukan secara _inline_ pada tab yang sama, di mana formulir t
 ### 4.1.8 Halaman Data Lembaga
 
 <!-- ![Gambar 4.13 Halaman Data Sekolah](/imageresearch/TODO.png) -->
+
 _Gambar 4.13 Halaman Data Sekolah_
 
 Halaman data lembaga menampilkan informasi profil sekolah yang terdiri dari logo, nama sekolah, NPSN, NSM, akreditasi, kota, alamat, dan negara. Secara _default_, halaman ini menampilkan data dalam mode baca saja. Pengguna dapat mengaktifkan mode edit melalui tombol "Edit" untuk mengubah data, atau membatalkan perubahan melalui tombol "Batal".
@@ -197,6 +204,7 @@ Fitur unggah logo mendukung format JPG, PNG, GIF, SVG, dan WebP dengan batas uku
 #### Tahun Ajaran
 
 <!-- ![Gambar 4.14 Halaman Tahun Ajaran](/imageresearch/TODO.png) -->
+
 _Gambar 4.14 Halaman Tahun Ajaran_
 
 Halaman tahun ajaran menampilkan daftar tahun ajaran yang terdaftar, masing-masing dengan nama, rentang tahun, status aktif, dan jumlah rombel yang menggunakan tahun ajaran tersebut. Pengguna dapat menambah tahun ajaran baru melalui formulir yang secara otomatis menghasilkan nama dari rentang tahun yang dimasukkan. Sistem memastikan hanya satu tahun ajaran yang aktif pada satu waktu; saat satu tahun ajaran diaktifkan, tahun ajaran lainnya otomatis dinonaktifkan.
@@ -204,6 +212,7 @@ Halaman tahun ajaran menampilkan daftar tahun ajaran yang terdaftar, masing-masi
 #### Kurikulum
 
 <!-- ![Gambar 4.15 Halaman Kurikulum](/imageresearch/TODO.png) -->
+
 _Gambar 4.15 Halaman Kurikulum_
 
 Halaman kurikulum menampilkan daftar kurikulum dengan nama, kode, tahun, dan status aktif. Sama seperti tahun ajaran, hanya satu kurikulum yang dapat aktif pada satu waktu. Setiap kurikulum menampilkan jumlah rombel yang menggunakannya sebagai indikator penggunaan.
@@ -211,6 +220,7 @@ Halaman kurikulum menampilkan daftar kurikulum dengan nama, kode, tahun, dan sta
 ### 4.1.10 Halaman Audit Log
 
 <!-- ![Gambar 4.16 Halaman Audit Log](/imageresearch/TODO.png) -->
+
 _Gambar 4.16 Halaman Audit Log_
 
 Halaman _audit log_ menampilkan riwayat seluruh aktivitas yang terjadi di dalam sistem. Setiap catatan _log_ memuat informasi aksi yang dilakukan (Created, Updated, Deleted, Viewed), jenis data yang terpengaruh (siswa, guru, nilai, dan sebagainya), pengguna yang melakukan aksi, status keberhasilan, alamat IP, _user-agent_, serta _timestamp_. Halaman ini menyediakan fitur filter berdasarkan jenis aksi, pengguna, status, rentang waktu, dan pencarian teks.
@@ -235,33 +245,33 @@ Berikut adalah daftar _endpoint_ API utama yang tersedia dalam sistem:
 
 **Tabel 4.1 Daftar Endpoint API Utama**
 
-| No | Modul | Endpoint | Metode | Deskripsi |
-| --- | --- | --- | --- | --- |
-| 1 | Autentikasi | `/login` | POST | Login pengguna |
-| 2 | Autentikasi | `/logout` | POST | Logout pengguna |
-| 3 | Autentikasi | `/change-password` | POST | Ubah password |
-| 4 | Siswa | `/studentDataSet` | GET | Daftar siswa dengan paginasi |
-| 5 | Siswa | `/studentDataSet/search` | GET | Pencarian siswa |
-| 6 | Siswa | `/students` | POST | Tambah siswa |
-| 7 | Siswa | `/students/:id` | PUT | Edit siswa |
-| 8 | Siswa | `/students/:id` | DELETE | Hapus siswa |
-| 9 | Siswa | `/students/upload-bulk` | POST | Upload Excel siswa |
-| 10 | Siswa | `/students/download-template` | GET | Unduh template Excel |
-| 11 | Rombel | `/rombel` | GET, POST | Daftar dan tambah rombel |
-| 12 | Rombel | `/rombel/:id` | GET, DELETE | Detail dan hapus rombel |
-| 13 | Nilai | `/scores` | POST | Simpan nilai |
-| 14 | Nilai | `/upload` | POST | Upload nilai dari Excel |
-| 15 | Nilai | `/upload-bulk` | POST | Upload nilai format pivot |
-| 16 | Nilai | `/template/:rombelId` | GET | Unduh template nilai |
-| 17 | Guru | `/teachers` | GET, POST | Daftar dan tambah guru |
-| 18 | Guru | `/teachers/:id` | GET, PUT, DELETE | Detail, edit, dan hapus guru |
-| 19 | Sekolah | `/schoolData` | GET, POST, PUT | Data sekolah |
-| 20 | Mata Pelajaran | `/subjects` | GET, POST | Daftar dan tambah mapel |
-| 21 | Tahun Ajaran | `/academic-years` | GET, POST | Daftar dan tambah tahun ajaran |
-| 22 | Kurikulum | `/curriculum` | GET, POST | Daftar dan tambah kurikulum |
-| 23 | Audit Log | `/audit-logs` | GET | Riwayat aktivitas sistem |
-| 24 | Alumni | `/graduates` | GET, POST | Daftar dan proses kelulusan |
-| 25 | Kenaikan Kelas | `/promotion/promote` | POST | Proses kenaikan kelas |
+| No  | Modul          | Endpoint                      | Metode           | Deskripsi                      |
+| --- | -------------- | ----------------------------- | ---------------- | ------------------------------ |
+| 1   | Autentikasi    | `/login`                      | POST             | Login pengguna                 |
+| 2   | Autentikasi    | `/logout`                     | POST             | Logout pengguna                |
+| 3   | Autentikasi    | `/change-password`            | POST             | Ubah password                  |
+| 4   | Siswa          | `/studentDataSet`             | GET              | Daftar siswa dengan paginasi   |
+| 5   | Siswa          | `/studentDataSet/search`      | GET              | Pencarian siswa                |
+| 6   | Siswa          | `/students`                   | POST             | Tambah siswa                   |
+| 7   | Siswa          | `/students/:id`               | PUT              | Edit siswa                     |
+| 8   | Siswa          | `/students/:id`               | DELETE           | Hapus siswa                    |
+| 9   | Siswa          | `/students/upload-bulk`       | POST             | Upload Excel siswa             |
+| 10  | Siswa          | `/students/download-template` | GET              | Unduh template Excel           |
+| 11  | Rombel         | `/rombel`                     | GET, POST        | Daftar dan tambah rombel       |
+| 12  | Rombel         | `/rombel/:id`                 | GET, DELETE      | Detail dan hapus rombel        |
+| 13  | Nilai          | `/scores`                     | POST             | Simpan nilai                   |
+| 14  | Nilai          | `/upload`                     | POST             | Upload nilai dari Excel        |
+| 15  | Nilai          | `/upload-bulk`                | POST             | Upload nilai format pivot      |
+| 16  | Nilai          | `/template/:rombelId`         | GET              | Unduh template nilai           |
+| 17  | Guru           | `/teachers`                   | GET, POST        | Daftar dan tambah guru         |
+| 18  | Guru           | `/teachers/:id`               | GET, PUT, DELETE | Detail, edit, dan hapus guru   |
+| 19  | Sekolah        | `/schoolData`                 | GET, POST, PUT   | Data sekolah                   |
+| 20  | Mata Pelajaran | `/subjects`                   | GET, POST        | Daftar dan tambah mapel        |
+| 21  | Tahun Ajaran   | `/academic-years`             | GET, POST        | Daftar dan tambah tahun ajaran |
+| 22  | Kurikulum      | `/curriculum`                 | GET, POST        | Daftar dan tambah kurikulum    |
+| 23  | Audit Log      | `/audit-logs`                 | GET              | Riwayat aktivitas sistem       |
+| 24  | Alumni         | `/graduates`                  | GET, POST        | Daftar dan proses kelulusan    |
+| 25  | Kenaikan Kelas | `/promotion/promote`          | POST             | Proses kenaikan kelas          |
 
 ### 4.2.2 Middleware dan Keamanan Sistem
 
@@ -290,36 +300,37 @@ Saat pengguna mengunggah _file_ Excel, sistem membaca _buffer file_ menggunakan 
 Basis data aplikasi SIAKAD Madrasah diimplementasikan menggunakan SQLite yang diakses melalui Drizzle ORM. Pemilihan SQLite didasarkan pada kebutuhan aplikasi yang berjalan secara lokal sebagai aplikasi _desktop_ tanpa memerlukan server basis data terpisah. Drizzle ORM digunakan untuk mendefinisikan skema tabel dalam bentuk kode JavaScript, sehingga struktur basis data terdokumentasi dan dapat dilacak perubahannya melalui _version control_.
 
 <!-- ![Gambar 4.17 Skema Relasi Tabel Basis Data](/imageresearch/TODO.png) -->
+
 _Gambar 4.17 Skema Relasi Tabel Basis Data_
 
 ### 4.3.1 Daftar Tabel dan Fungsinya
 
 **Tabel 4.2 Daftar Tabel Basis Data**
 
-| No | Nama Tabel | Fungsi |
-| --- | --- | --- |
-| 1 | `users` | Data akun pengguna (username, password hash, role) |
-| 2 | `studentTable` | Data identitas siswa (nama, NISN, NIS, status) |
-| 3 | `studentFather` | Data ayah siswa |
-| 4 | `studentMother` | Data ibu siswa |
-| 5 | `studentWali` | Data wali siswa |
-| 6 | `studentAddress` | Data alamat siswa |
-| 7 | `studentScore` | Data nilai siswa per mata pelajaran dan jenis penilaian |
-| 8 | `studentHistory` | Riwayat perubahan status siswa (mutasi, kelulusan) |
-| 9 | `studentAttendance` | Data kehadiran siswa |
-| 10 | `rombel` | Data rombongan belajar (nama, tingkat, wali kelas, kapasitas) |
-| 11 | `rombelStudents` | Tabel relasi siswa-rombel (junction table) |
-| 12 | `classes` | Data tingkat kelas (VII, VIII, IX, X, XI, XII) |
-| 13 | `teachers` | Data guru (NIP, nama, kontak) |
-| 14 | `subjects` | Data mata pelajaran (nama, kode, KKM) |
-| 15 | `classSubject` | Penugasan mata pelajaran ke kelas dan guru |
-| 16 | `assessmentType` | Jenis penilaian (UH, UTS, UAS) dengan bobot |
-| 17 | `academicYear` | Data tahun ajaran |
-| 18 | `curriculum` | Data kurikulum |
-| 19 | `schoolDataTable` | Data profil sekolah |
-| 20 | `schoolFacilities` | Data fasilitas sekolah |
-| 21 | `buildingsSchool` | Data gedung dan aset tetap |
-| 22 | `auditLog` | Catatan aktivitas sistem |
+| No  | Nama Tabel          | Fungsi                                                        |
+| --- | ------------------- | ------------------------------------------------------------- |
+| 1   | `users`             | Data akun pengguna (username, password hash, role)            |
+| 2   | `studentTable`      | Data identitas siswa (nama, NISN, NIS, status)                |
+| 3   | `studentFather`     | Data ayah siswa                                               |
+| 4   | `studentMother`     | Data ibu siswa                                                |
+| 5   | `studentWali`       | Data wali siswa                                               |
+| 6   | `studentAddress`    | Data alamat siswa                                             |
+| 7   | `studentScore`      | Data nilai siswa per mata pelajaran dan jenis penilaian       |
+| 8   | `studentHistory`    | Riwayat perubahan status siswa (mutasi, kelulusan)            |
+| 9   | `studentAttendance` | Data kehadiran siswa                                          |
+| 10  | `rombel`            | Data rombongan belajar (nama, tingkat, wali kelas, kapasitas) |
+| 11  | `rombelStudents`    | Tabel relasi siswa-rombel (junction table)                    |
+| 12  | `classes`           | Data tingkat kelas (VII, VIII, IX, X, XI, XII)                |
+| 13  | `teachers`          | Data guru (NIP, nama, kontak)                                 |
+| 14  | `subjects`          | Data mata pelajaran (nama, kode, KKM)                         |
+| 15  | `classSubject`      | Penugasan mata pelajaran ke kelas dan guru                    |
+| 16  | `assessmentType`    | Jenis penilaian (UH, UTS, UAS) dengan bobot                   |
+| 17  | `academicYear`      | Data tahun ajaran                                             |
+| 18  | `curriculum`        | Data kurikulum                                                |
+| 19  | `schoolDataTable`   | Data profil sekolah                                           |
+| 20  | `schoolFacilities`  | Data fasilitas sekolah                                        |
+| 21  | `buildingsSchool`   | Data gedung dan aset tetap                                    |
+| 22  | `auditLog`          | Catatan aktivitas sistem                                      |
 
 Relasi antar tabel diimplementasikan melalui _foreign key_ yang menghubungkan entitas-entitas yang saling berkaitan. Sebagai contoh, tabel `studentFather`, `studentMother`, `studentWali`, dan `studentAddress` terhubung ke tabel `studentTable` melalui kolom `studentId`. Tabel `rombelStudents` berfungsi sebagai _junction table_ yang menghubungkan tabel `studentTable` dengan tabel `rombel` dalam relasi _many-to-many_. Tabel `studentScore` terhubung ke tabel `studentTable`, `classSubject`, dan `assessmentType` untuk mencatat nilai siswa berdasarkan mata pelajaran dan jenis penilaian.
 
