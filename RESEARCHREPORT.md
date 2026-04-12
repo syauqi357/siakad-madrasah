@@ -63,6 +63,31 @@ BAB 3 METODE PENELITIAN
 
 ---
 
+Penelitian ini dilaksanakan di MTs. Al-Hasyimiy yang berlokasi di Kampung Baru, RT.004/RW.002, Raci, Kecamatan Bangil, Kabupaten Pasuruan, Jawa Timur 67153. Proses pengembangan platform akademik madrasah dilakukan di kantor sekolah dengan periode penelitian selama 6 bulan atau 1 semester, menyesuaikan dengan target penelitian serta jadwal Penerimaan Peserta Didik Baru (PPDB) madrasah.
+
+Spesifikasi perangkat yang digunakan selama proses pengembangan platform akademik madrasah adalah sebagai berikut:
+
+**Perangkat Keras Komputasi (PC Rakitan):**
+
+a. Penyimpanan: 1TB SSD
+b. Prosesor: Intel Core i5-12400F
+c. RAM: 16GB
+
+**Perangkat Laptop (Acer Nitro AN715-51):**
+
+a. Penyimpanan: 512GB SSD
+b. Prosesor: Intel Core i7-9750H
+
+**Perangkat Lunak Pengembangan:**
+
+a. Sistem Operasi: Windows 11
+b. Manajemen Basis Data: DataGrip
+c. Basis Data: SQLite
+d. Lingkungan Pengembangan: JetBrains WebStorm (untuk SvelteKit dan Node.js)
+e. _Version Control_: Git
+
+---
+
 ## 3.1 Penerapan Metode Personal Extreme Programming (PXP)
 
 Metode pengembangan perangkat lunak yang digunakan dalam penelitian ini adalah metode Agile [[1]](#ref-1). Menurut pendekatan Agile, proses pengembangan sistem informasi dilakukan secara iteratif dan inkremental, yang memberikan fleksibilitas tinggi bagi pengembang untuk melakukan perbaikan, penambahan fitur, serta penyesuaian kebutuhan secara berkelanjutan pada setiap siklus pengembangan. Pendekatan ini memungkinkan proses rekayasa perangkat lunak (_software engineering_) bersifat adaptif, responsif terhadap perubahan kebutuhan pengguna, dan tidak terikat pada satu mekanisme pengembangan yang bersifat linier maupun kaku sebagaimana metode konvensional seperti _Waterfall_.
@@ -209,89 +234,6 @@ Pada tahap pemrosesan, fungsi tersebut menjalankan tiga operasi secara berurutan
 ![Gambar 3.7 Alur Pengujian Fungsi Upload dan Template Excel](/imageresearch/flowchart-unittestflow.drawio.png)
 _Gambar 3.7 Alur Pengujian Fungsi Upload dan Template Excel_
 
-**Spesifikasi Gambar 3.7 (FLOWCHART):**
-<!-- 
-```
-SIMPLE FLOWCHART: Unit Test Execution Flow
-
-                         ╭───────────╮
-                         │   START   │  ← OVAL | color: green
-                         ╰─────┬─────╯
-                               │
-                               ▼
-                    ┌──────────────────┐
-                    │ Mock Dependencies│  ← RECTANGLE | color: blue
-                    │ (DB, ExcelJS)    │
-                    └────────┬─────────┘
-                             │
-                             ▼
-                    ┌──────────────────┐
-                    │ Load Test Data   │  ← RECTANGLE | color: blue
-                    │ (*.xlsx file)    │
-                    └────────┬─────────┘
-                             │
-                             ▼
-              ┌──────────────────────────────┐
-              │ Execute Function Under Test  │  ← RECTANGLE | color: blue
-              │ createBulkStudentsFromExcel()│
-              └────────┬─────────────────────┘
-                       │
-         ┌─────────────┼─────────────┐
-         │             │             │
-         ▼             ▼             ▼
-    ┌────────┐  ┌─────────┐  ┌────────────┐
-    │ Parse  │  │ Extract │  │ Map Fields │  ← RECTANGLE | color: blue
-    │ Excel  │  │Student  │  │(job→occup.)│
-    │Sheets  │  │(18 flds)│  │            │
-    └────┬───┘  └────┬────┘  └─────┬──────┘
-         │           │             │
-         └───────────┼─────────────┘
-                     │
-                     ▼
-          ┌────────────────────────┐
-          │ Verify Function Calls  │  ← RECTANGLE | color: orange
-          │ • insert() called 3x   │
-          │ • Field mapping check  │
-          │ • studentId validation │
-          └────────┬───────────────┘
-                   │
-                   ▼
-             ╱─────────────────────╲
-            ╱   Check Output Data?  ╲  ← DIAMOND | color: yellow
-           ╱  • Student data OK?     ╲
-           ╲  • Parent data OK?      ╱
-            ╲  • Address data OK?   ╱
-             ╲─────────────────────╱
-                       │
-               ┌───────┴───────┐
-            [YES]           [NO]
-               │               │
-               ▼               ▼
-        ┌─────────────┐  ┌──────────────┐
-        │    PASS     │  │     FAIL     │  ← RECTANGLE | green / red
-        │      ✓      │  │       ✗      │
-        └──────┬──────┘  └──────┬───────┘
-               │                │
-               └───────┬────────┘
-                        │
-                        ▼
-                  ╭───────────╮
-                  │    END    │  ← OVAL | color: gray
-                  ╰───────────╯
-
-Elemen Flowchart:
-- ╭──╮ Oval/rounded  = START / END        → color: green (start), gray (end)
-- ┌──┐ Rectangle     = Process / Action   → color: blue (proses), orange (verifikasi)
-- ╱  ╲ Diamond       = Decision / Branch  → color: yellow
-- ┌──┐ Rectangle     = Result terminal    → color: green (PASS), red (FAIL)
-- Arrows = Flow direction
-
-Jenis Flowchart ini:
-• Vertical flow (top to bottom)
-• Parallel processing (3 cabang tengah = Parse, Extract, Map)
-• Decision node (diamond) sebelum terminal PASS/FAIL
-``` -->
-
 ### 3.4.2 Skenario dan Hasil Pengujian
 
 Seluruh skenario pengujian dieksekusi menggunakan _framework_ Jest sebagai _test runner_ dan _assertion library_. Dengan teknik _mocking_ yang telah diuraikan pada subbab 3.4.1, setiap fungsi diuji terhadap tiga aspek utama _white-box testing_ [[8]](#ref-8): logika internal fungsi, ketepatan pemetaan _field_ dari kolom Excel ke kolom _database_, serta alur percabangan kode (_branching logic_) ketika menerima variasi input yang berbeda.
@@ -351,58 +293,6 @@ Umpan balik pertama berkaitan dengan fitur _upload_ Excel pada halaman Data Sisw
 
 ![Gambar 3.8 Perubahan Label Fitur Upload Excel (Sebelum dan Sesudah)](/imageresearch/imagea11y.png)
 _Gambar 3.8 Perubahan Label Fitur Upload Excel (Sebelum dan Sesudah)_
-<!-- 
-**Spesifikasi Gambar 3.8:**
-
-```
-SIDE-BY-SIDE COMPARISON: User Interface Improvement
-
-┌─────────────────────────────┬─────────────────────────────┐
-│       SEBELUM (v1.0)        │       SESUDAH (v2.0+)       │
-├─────────────────────────────┼─────────────────────────────┤
-│                             │                             │
-│  📋 Data Siswa             │  📋 Data Siswa              │
-│  ─────────────             │  ─────────────              │
-│                             │                             │
-│  [Unduh Template] ❓       │  [Unduh Template] ℹ️        │
-│  (No explanation)           │  (With hover tooltip)       │
-│                             │                             │
-│  Problem:                   │  ┌──────────────────────┐   │
-│  ✗ Users confused          │  │ 📌 TOOLTIP:          │   │
-│  ✗ No guidance             │  │                      │   │
-│  ✗ High abandonment        │  │ Unduh file template  │   │
-│  ✗ Support tickets         │  │ .xlsx yang sudah     │   │
-│                             │  │ diformat sesuai      │   │
-│  [Upload Excel] ❓         │  │ struktur sistem.     │   │
-│  (No explanation)           │  │ Isi data dan unggah  │   │
-│                             │  │ kembali via tombol   │   │
-│                             │  │ "Upload Excel"       │   │
-│                             │  └──────────────────────┘   │
-│                             │                             │
-│                             │  [Upload Excel] ℹ️         │
-│                             │  (With tooltip on hover)    │
-│                             │                             │
-│                             │  Improvement:              │
-│                             │  ✓ Clear instruction       │
-│                             │  ✓ Self-guided usage       │
-│                             │  ✓ Reduced confusion       │
-│                             │  ✓ Fewer support tickets   │
-│                             │                             │
-├─────────────────────────────┼─────────────────────────────┤
-│ User Experience Score: 2/5  │ User Experience Score: 4/5  │
-│ Completion Rate: ~30%       │ Completion Rate: ~85%       │
-└─────────────────────────────┴─────────────────────────────┘
-
-Elemen yang harus ada:
-- Dua kolom terpisah jelas (SEBELUM | SESUDAH)
-- Button dengan icon (Unduh Template / Upload Excel)
-- Tooltip box dengan text (gunakan rounded corner)
-- Icon indikator (❓ untuk tidak jelas, ℹ️ untuk jelas)
-- Problem list (✗) untuk SEBELUM
-- Improvement list (✓) untuk SESUDAH
-- Score/metric di bawah setiap kolom
-- Warna berbeda: SEBELUM = red/orange, SESUDAH = green
-``` -->
 
 ### 3.5.2 Umpan Balik Mekanisme Instalasi Aplikasi
 
@@ -410,88 +300,6 @@ Umpan balik kedua berkaitan dengan proses instalasi aplikasi pada versi rilis aw
 
 ![Gambar 3.9 Perubahan Mekanisme Distribusi Aplikasi (Batch File ke Electron Installer)](/imageresearch/deploymentdiagram.png)
 _Gambar 3.9 Perubahan Mekanisme Distribusi Aplikasi (Batch File ke Electron Installer)_
-
-<!-- 
-**Spesifikasi Gambar 3.9 (UML DEPLOYMENT DIAGRAM):**
-
-```
-UML DEPLOYMENT DIAGRAM  «deployment diagram»  System Deployment Evolution
-Diagram Type : Deployment Diagram (UML 2.x)
-Purpose      : Menunjukkan STRUKTUR deployment  di mana artifacts berada,
-               di dalam execution environment apa, dan bagaimana relasi antar node
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  VERSION 1.0  BATCH FILE                VERSION 2.0+  ELECTRON INSTALLER
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-  ╔══════════════════════════════╗        ╔══════════════════════════════════╗
-  ║  «device»                    ║        ║  «device»                        ║
-  ║  User PC (Windows)           ║        ║  User PC (Windows)               ║
-  ║                              ║        ║                                  ║
-  ║  ┌──────────────────────┐    ║        ║  ┌────────────────────────────┐  ║
-  ║  │ «execution env»      │    ║        ║  │ «execution env»            │  ║
-  ║  │ File System          │    ║        ║  │ Windows OS                 │  ║
-  ║  │                      │    ║        ║  │                            │  ║
-  ║  │  ┌────────────────┐  │    ║        ║  │  ┌──────────────────────┐  │  ║
-  ║  │  │ «artifact»     │  │    ║        ║  │  │ «artifact»           │  │  ║
-  ║  │  │ run.bat        │  │    ║        ║  │  │ Setup.exe (NSIS)     │  │  ║
-  ║  │  └───────┬────────┘  │    ║        ║  │  └──────────┬───────────┘  │  ║
-  ║  │          │ «execute» │    ║        ║  │             │ «deploy»     │  ║
-  ║  │          ▼           │    ║        ║  │             ▼              │  ║
-  ║  │  ┌────────────────┐  │    ║        ║  │  ┌──────────────────────┐  │  ║
-  ║  │  │ «execution env»│  │    ║        ║  │  │ «execution env»      │  │  ║
-  ║  │  │ Node.js Runtime│  │    ║        ║  │  │ Electron Runtime     │  │  ║
-  ║  │  │                │  │    ║        ║  │  │                      │  │  ║
-  ║  │  │ ┌────────────┐ │  │    ║        ║  │  │ ┌──────────────────┐ │  │  ║
-  ║  │  │ │«component» │ │  │    ║        ║  │  │ │ «component»      │ │  │  ║
-  ║  │  │ │Express     │ │  │    ║        ║  │  │ │ Electron Main    │ │  │  ║
-  ║  │  │ │Server      │ │  │    ║        ║  │  │ │ Process          │ │  │  ║
-  ║  │  │ └─────┬──────┘ │  │    ║        ║  │  │ │                  │ │  │  ║
-  ║  │  │       │        │  │    ║        ║  │  │ │ ┌──────────────┐ │ │  │  ║
-  ║  │  │  visible via   │  │    ║        ║  │  │ │ │ «component»  │ │ │  │  ║
-  ║  │  │  browser only  │  │    ║        ║  │  │ │ │ Express API  │ │ │  │  ║
-  ║  │  └────────────────┘  │    ║        ║  │  │ │ └──────┬───────┘ │ │  │  ║
-  ║  └──────────────────────┘    ║        ║  │  │ │        │         │ │  │  ║
-  ║                              ║        ║  │  │ │ ┌──────────────┐ │ │  │  ║
-  ║  ┌──────────────────────┐    ║        ║  │  │ │ │ «component»  │ │ │  │  ║
-  ║  │ «artifact»           │    ║        ║  │  │ │ │ SvelteKit UI │ │ │  │  ║
-  ║  │ siakad.db            │◄───╫──────  ║  │  │ │ └──────────────┘ │ │  │  ║
-  ║  │ (project folder)     │    ║  access║  │  │ └──────────────────┘ │  │  ║
-  ║  └──────────────────────┘    ║        ║  │  └──────────┬───────────┘  │  ║
-  ║                              ║        ║  └─────────────┼──────────────┘  ║
-  ╚══════════════════════════════╝        ║                │ «access»         ║
-                                          ║                ▼                  ║
-                                          ║  ┌────────────────────────────┐  ║
-                                          ║  │ «artifact»                 │  ║
-                                          ║  │ siakad.db                  │  ║
-                                          ║  │ (%APPDATA%/SIAKAD Madrasah)│  ║
-                                          ║  └────────────────────────────┘  ║
-                                          ╚══════════════════════════════════╝
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-PERBEDAAN MEKANISME:
-
-  v1.0  run.bat dieksekusi manual → Node.js runtime terbuka di terminal →
-        Express Server berjalan di background → user akses via browser
-        (siakad.db tersimpan di folder project, tidak terstruktur)
-
-  v2.0+ Setup.exe dijalankan sekali → Electron Runtime ter-install sebagai
-        native app → Electron membundle Express + SvelteKit dalam satu proses
-        → app tampil sebagai window desktop, tanpa browser/terminal terpisah
-        (siakad.db tersimpan di %APPDATA%, terpisah dari instalasi app)
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-NOTASI UML DEPLOYMENT DIAGRAM:
-  ╔══╗  «device»          = physical node (hardware/OS environment)
-  ┌──┐  «execution env»   = runtime environment di dalam node
-  ┌──┐  «component»       = software komponen yang berjalan di dalam env
-  ┌──┐  «artifact»        = file fisik yang di-deploy (.exe, .bat, .db)
-  ───►  «deploy»          = artifact di-deploy ke execution environment
-  ───►  «execute»         = artifact dijalankan/dieksekusi
-  ───►  «access»          = komponen mengakses artifact (baca/tulis)
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-``` -->
 
 **Tabel Perbandingan Mekanisme Deployment v1.0 vs v2.0+**
 
@@ -568,6 +376,3 @@ Kedua umpan balik tersebut menunjukkan bahwa penerapan metode Agile [[1]](#ref-1
 <a id="ref-26"></a>**[26]** Kleppmann, M. (2017). _Designing Data-Intensive Applications: The Big Ideas Behind Reliable, Scalable, and Maintainable Systems_. O'Reilly Media. [ref](https://repo.darmajaya.ac.id/4191/1/Designing%20Data-Intensive%20Applications_%20The%20Big%20Ideas%20Behind%20Reliable%2C%20Scalable%2C%20and%20Maintainable%20Systems%20%28%20PDFDrive%20%29.pdf)
 
 <a id="ref-27"></a>**[27]** Abrahamsson, P., Salo, O., Ronkainen, J., & Warsta, J. (2002). _Agile Software Development Methods: Review and Analysis_. VTT Publications 478. VTT Technical Research Centre of Finland. <!-- TODO: verify details & add ref link -->
-
-Fitur Lihat Nilai Siswa
-Terdapat fitur lihat nilai siswa yang bersifat extend dari access dashboard. Fitur ini bersifat kondisional dan dapat diakses langsung oleh admin sesuai kebutuhan tanpa harus melalui alur navigasi utama.
