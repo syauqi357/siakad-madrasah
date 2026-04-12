@@ -10,41 +10,41 @@ this file is provide the research report from users recently and the updated man
 BAB 3 METODE PENELITIAN
 ├── 3.1 Penerapan Metode Personal Extreme Programming (PXP)
 │   ├── 3.1.1 Dasar Pemilihan Metode PXP
-│   │         [img] Gambar 3.2 — Alur Siklus Personal Extreme Programming (PXP)
+│   │         [img] Gambar 3.2  Alur Siklus Personal Extreme Programming (PXP)
 │   └── 3.1.2 Fase Pengembangan dan Pemetaan Iterasi
 ├── 3.2 Analisis dan Perancangan Kebutuhan Sistem   [fase: exploration]
 │   ├── 3.2.1 Identifikasi Aktor Sistem
 │   ├── 3.2.2 Pemodelan Use Case Diagram
-│   │         [img] Gambar 3.3 — Use Case Diagram Sistem Informasi Akademik Madrasah
+│   │         [img] Gambar 3.3  Use Case Diagram Sistem Informasi Akademik Madrasah
 │   └── 3.2.3 Deskripsi Fungsionalitas Sistem
 ├── 3.3 Dokumentasi Iterasi Pengembangan            [fase: iterations to release]
 │   ├── 3.3.1 Riwayat Iterasi Pengembangan
-│   │         [tbl] Tabel  3.1 — Riwayat Iterasi Pengembangan
+│   │         [tbl] Tabel  3.1  Riwayat Iterasi Pengembangan
 │   ├── 3.3.2 Analisis Distribusi Commit
-│   │         [img] Gambar 3.4 — Grafik Distribusi Commit per Iterasi
+│   │         [img] Gambar 3.4  Grafik Distribusi Commit per Iterasi
 │   └── 3.3.3 Alur Version Control
-│             [img] Gambar 3.5 — Diagram Alur Version Control dengan Git
+│             [img] Gambar 3.5  Diagram Alur Version Control dengan Git
 ├── 3.4 Pengujian Sistem                            [fase: productionizing]
-│   │         [img] Gambar 3.6 — Ilustrasi Metode White-Box Testing
+│   │         [img] Gambar 3.6  Ilustrasi Metode White-Box Testing
 │   ├── 3.4.1 Cakupan Pengujian
-│   │         [img] Gambar 3.7 — Alur Pengujian Fungsi Upload dan Template Excel
+│   │         [img] Gambar 3.7  Alur Pengujian Fungsi Upload dan Template Excel
 │   ├── 3.4.2 Skenario dan Hasil Pengujian
-│   │         [tbl] Tabel  3.2 — Unit Test: createBulkStudentsFromExcel()
-│   │         [tbl] Tabel  3.3 — Unit Test: createStudentData() & BulkGenerator()
-│   │         [tbl] Tabel  3.4 — Unit Test: registerRombel()
-│   │         [tbl] Tabel  3.5 — Unit Test: generateBulkScoreTemplate()
+│   │         [tbl] Tabel  3.2  Unit Test: createBulkStudentsFromExcel()
+│   │         [tbl] Tabel  3.3  Unit Test: createStudentData() & BulkGenerator()
+│   │         [tbl] Tabel  3.4  Unit Test: registerRombel()
+│   │         [tbl] Tabel  3.5  Unit Test: generateBulkScoreTemplate()
 │   └── 3.4.3 Tujuan Pengujian
 ├── 3.5 Pemeliharaan dan Umpan Balik Pengguna       [fase: maintenance]
 │   ├── 3.5.1 Umpan Balik Fitur Upload Excel
-│   │         [img] Gambar 3.8 — Perubahan Label Fitur Upload Excel (Sebelum & Sesudah)
+│   │         [img] Gambar 3.8  Perubahan Label Fitur Upload Excel (Sebelum & Sesudah)
 │   ├── 3.5.2 Umpan Balik Mekanisme Instalasi Aplikasi
-│   │         [img] Gambar 3.9 — Perubahan Mekanisme Distribusi (Batch File → Electron)
+│   │         [img] Gambar 3.9  Perubahan Mekanisme Distribusi (Batch File → Electron)
 │   └── 3.5.3 Kesimpulan Umpan Balik
 └── Referensi Bab 3
 ```
 
 <!-- ============================================================
-  📝 CATATAN SEMENTARA — RELASI BAB 3 DENGAN AGILE EXTREME PROGRAMMING
+  📝 CATATAN SEMENTARA  RELASI BAB 3 DENGAN AGILE EXTREME PROGRAMMING
   (hapus sebelum submit ke dosen)
   ============================================================
 
@@ -92,7 +92,7 @@ BAB 3 METODE PENELITIAN
   └─────────────────────────────────────────────────────────────────┘
 
   KESIMPULAN: Bab 3 bukan hanya menyebut XP, tapi membuktikannya
-  secara struktural — metodologi (3.1) → analisis kebutuhan (3.2)
+  secara struktural  metodologi (3.1) → analisis kebutuhan (3.2)
   → bukti iterasi (3.3) → kualitas (3.4) → responsivitas (3.5).
   Ini adalah argumentasi XP yang utuh.
 
@@ -127,13 +127,13 @@ BAB 3 METODE PENELITIAN
   │    (bug fix, stabilize,│ Feb 7–25 2026  │ Umpan Balik Pengguna    │
   │    user feedback loop) │                │ (tooltip fix, Electron) │
   ├────────────────────────┼────────────────┼─────────────────────────┤
-  │ 6. Death               │ belum tercapai │ N/A — proyek masih      │
+  │ 6. Death               │ belum tercapai │ N/A  proyek masih      │
   │    (sistem pensiun)    │                │ aktif digunakan         │
   └────────────────────────┴────────────────┴─────────────────────────┘
 
   NOTE: Fase Planning (fase 2) tidak memiliki iterasi tersendiri karena
   dalam PXP [3] perencanaan dilakukan secara personal & embedded di awal
-  setiap iterasi — bukan sebagai fase terpisah seperti di XP tim besar.
+  setiap iterasi  bukan sebagai fase terpisah seperti di XP tim besar.
 
   → Pemetaan ini bisa dijadikan dasar untuk memperkuat 3.1.2 jika
     dosen meminta penjelasan lebih dalam tentang fase XP.
@@ -158,33 +158,49 @@ Dalam konteks Personal Extreme Programming, setiap siklus iterasi menghasilkan s
 
 ## 3.2 Analisis dan Perancangan Kebutuhan Sistem
 
-Sebelum memasuki tahap implementasi iteratif secara penuh, dilaksanakan proses analisis kebutuhan sistem (_system requirements_) serta perancangan awal arsitektur perangkat lunak (_preliminary software design_) sebagai bagian dari fase _exploration_ dalam siklus Personal Extreme Programming [[3]](#ref-3). Tahapan ini bertujuan untuk memperoleh pemahaman holistik terhadap kebutuhan fungsional (_functional requirements_) maupun kebutuhan non-fungsional (_non-functional requirements_) [[4]](#ref-4), sekaligus menetapkan batasan ruang lingkup sistem (_system boundary demarcation_) yang akan dikembangkan. Proses analisis ini dilaksanakan melalui metode wawancara tidak terstruktur (_unstructured interview_) serta observasi langsung (_direct observation_) [[24]](#ref-24) terhadap alur kerja operasional tenaga administrasi di lingkungan madrasah, guna mengidentifikasi poin permasalahan atau _pain points_, kebutuhan aktual (_actual user needs_), serta _user stories_ yang merepresentasikan nilai fungsional bagi pengguna akhir (_end-user value proposition_). Hasil dari proses analisis kebutuhan tersebut kemudian direpresentasikan secara visual melalui sebuah _Use Case Diagram_ yang disusun mengikuti notasi standar _Unified Modeling Language_ (UML) versi 2.x [[21]](#ref-21), sebagai bentuk artefak perancangan perangkat lunak (_software design artifact_) yang dapat dijadikan acuan utama (_single source of truth_) selama seluruh siklus hidup pengembangan perangkat lunak berlangsung.
+Sebelum memasuki tahap implementasi iteratif secara penuh, dilaksanakan proses analisis kebutuhan sistem serta perancangan awal arsitektur perangkat lunak sebagai bagian dari fase _exploration_ dalam siklus Personal Extreme Programming [[3]](#ref-3). Tahapan ini bertujuan untuk memperoleh pemahaman terhadap kebutuhan fungsional (_functional requirements_) maupun kebutuhan non-fungsional (_non-functional requirements_) [[4]](#ref-4), sekaligus menetapkan batasan ruang lingkup sistem yang akan dikembangkan. Proses analisis ini dilaksanakan melalui metode wawancara tidak terstruktur (_unstructured interview_) serta observasi langsung (_direct observation_) [[24]](#ref-24) terhadap alur kerja operasional tenaga administrasi di lingkungan madrasah, guna mengidentifikasi _pain points_, kebutuhan aktual, serta _user stories_ yang merepresentasikan nilai fungsional bagi pengguna akhir. Hasil dari proses analisis tersebut kemudian direpresentasikan melalui sebuah _Use Case Diagram_ yang disusun mengikuti notasi standar _Unified Modeling Language_ (UML) versi 2.x [[21]](#ref-21), sebagai acuan utama selama siklus pengembangan berlangsung.
 
 ### 3.2.1 Identifikasi Aktor Sistem
 
-Berdasarkan hasil analisis terhadap karakteristik pengguna serta pemetaan alur kerja administratif (_administrative workflow mapping_) pada lingkungan institusi pendidikan madrasah, sistem SIAKAD Madrasah dirancang dengan pendekatan _single-actor architecture_ (arsitektur aktor tunggal), di mana sistem hanya memiliki satu jenis aktor utama, yaitu **Admin Sekolah**. Aktor tersebut bertindak sebagai _super user_ sekaligus _system custodian_ dengan kewenangan akses penuh (_full-privilege access_) terhadap seluruh modul dan fungsionalitas yang disediakan oleh sistem. Pemilihan pendekatan aktor tunggal ini didasarkan pada beberapa pertimbangan tertentu. Pertama, hasil observasi lapangan menunjukkan bahwa sebagian besar proses administrasi akademik di lingkungan madrasah dikelola secara tersentralisasi (_centralized management model_) oleh tenaga tata usaha atau operator sekolah yang berperan sebagai _single point of management_ untuk seluruh aktivitas operasional sekolah. Kedua, penyederhanaan model hak akses (_access control simplification_) ke dalam satu aktor tunggal dinilai lebih sesuai dengan konteks operasional pengguna sasaran dibandingkan implementasi _Role-Based Access Control_ (RBAC) berlapis yang cenderung memerlukan struktur organisasi yang lebih kompleks [[4]](#ref-4). Ketiga, pendekatan ini sejalan dengan prinsip _simple design_ dalam Extreme Programming [[27]](#ref-27) yang secara eksplisit menekankan untuk menghindari _over-engineering_ terhadap kebutuhan yang belum tervalidasi (_unvalidated requirements_) maupun skenario penggunaan yang bersifat spekulatif (_speculative use cases_) pada fase awal pengembangan perangkat lunak. Dengan demikian, arsitektur aktor tunggal menjadi model yang paling _lean_, _maintainable_, dan selaras dengan prinsip _You Ain't Gonna Need It_ (YAGNI) [[2]](#ref-2) yang diperkenalkan oleh Kent Beck sebagai salah satu pilar utama dalam metodologi Extreme Programming.
+Berdasarkan hasil analisis terhadap karakteristik pengguna serta pemetaan alur kerja administratif pada lingkungan institusi pendidikan madrasah, sistem SIAKAD Madrasah mengidentifikasi dua jenis aktor, yaitu **Admin Sekolah** sebagai aktor utama dan **Client/Wali Murid/Guru** sebagai aktor sekunder dengan akses terbatas. Admin Sekolah bertindak sebagai _super user_ dengan kewenangan akses penuh terhadap seluruh modul dan fungsionalitas yang disediakan oleh sistem, termasuk pengelolaan data, konfigurasi sistem, serta seluruh operasi yang memerlukan autentikasi. Sementara itu, aktor Client/Wali Murid/Guru memiliki akses terbatas hanya pada fitur lihat nilai siswa yang dapat diakses tanpa melalui proses _login_, sebagaimana kebutuhan yang teridentifikasi di lapangan agar guru, wali murid, atau pihak sekolah lainnya dapat melihat data nilai secara langsung, misalnya untuk keperluan presentasi atau pengecekan cepat, tanpa harus masuk ke dalam sistem secara penuh.
+
+Meskipun terdapat dua aktor, arsitektur sistem tetap dirancang secara sederhana tanpa menerapkan _Role-Based Access Control_ (RBAC) berlapis yang memerlukan struktur organisasi yang lebih kompleks [[4]](#ref-4). Pemisahan akses cukup dilakukan melalui satu fitur kondisional (`«extend»`) pada _Use Case Diagram_, bukan melalui sistem manajemen peran yang terpisah. Pendekatan ini sejalan dengan prinsip _simple design_ dalam Extreme Programming [[27]](#ref-27) yang menekankan untuk menghindari _over-engineering_ terhadap kebutuhan yang belum tervalidasi pada fase awal pengembangan, serta prinsip _You Ain't Gonna Need It_ (YAGNI) [[2]](#ref-2) dalam metodologi Extreme Programming.
 
 ### 3.2.2 Pemodelan Use Case Diagram
 
-Pemodelan kebutuhan fungsional sistem direpresentasikan dalam bentuk _Use Case Diagram_ yang menggambarkan interaksi antara aktor Admin Sekolah dengan seluruh fungsionalitas inti (_core functionality_) yang disediakan oleh sistem SIAKAD Madrasah. Diagram ini disusun menggunakan notasi standar UML 2.x [[21]](#ref-21) yang meliputi elemen aktor (_stick figure notation_), _use case_ (_ellipse notation_), batas sistem (_system boundary rectangle_), asosiasi antar aktor dan _use case_ (_association line_), serta relasi antar _use case_ berupa `«include»` dan `«extend»` untuk merepresentasikan dependensi fungsional antar kebutuhan sistem. Relasi `«include»` digunakan untuk menggambarkan fungsionalitas yang bersifat wajib (_mandatory sub-flow_), sedangkan relasi `«extend»` digunakan untuk menggambarkan fungsionalitas yang bersifat opsional atau kondisional (_conditional sub-flow_). Pemetaan lengkap kebutuhan fungsional yang berhasil diidentifikasi dari tahap analisis kebutuhan ditunjukkan pada Gambar 3.3 berikut.
+Pemodelan kebutuhan fungsional sistem direpresentasikan dalam bentuk _Use Case Diagram_ yang menggambarkan interaksi antara aktor Admin Sekolah dengan seluruh fungsionalitas inti yang disediakan oleh sistem SIAKAD Madrasah. Diagram ini disusun menggunakan notasi standar UML 2.x [[21]](#ref-21) yang meliputi elemen aktor, _use case_, batas sistem, asosiasi antar aktor dan _use case_, serta relasi `«include»` dan `«extend»`. Relasi `«include»` digunakan untuk menggambarkan fungsionalitas yang bersifat wajib, sedangkan relasi `«extend»` digunakan untuk menggambarkan fungsionalitas yang bersifat opsional atau kondisional. Pemetaan lengkap kebutuhan fungsional yang berhasil diidentifikasi dari tahap analisis kebutuhan ditunjukkan pada Gambar 3.3 berikut.
 
-![Gambar 3.3 Use Case Diagram Sistem Informasi Akademik Madrasah](/imageresearch/use-case-diagram-siakad-sekolah-rev.png)
+![Gambar 3.3 Use Case Diagram Sistem Informasi Akademik Madrasah](/imageresearch/use-case-diagram-siakad-sekolahv3.png)
 _Gambar 3.3 Use Case Diagram Platform Akademik Madrasah_
 
 ### 3.2.3 Deskripsi Fungsionalitas Sistem
 
-Berdasarkan _Use Case Diagram_ yang telah dirancang, fungsionalitas inti sistem SIAKAD Madrasah dapat dikelompokkan secara hierarkis (_hierarchical decomposition_) ke dalam tiga domain fungsional utama, yaitu: (1) modul _Authentication and Authorization_ sebagai lapisan keamanan sistem, (2) modul _Dashboard_ sebagai _central navigation hub_ dan _unified workspace_, serta (3) modul _Academic Data Management_ yang mencakup seluruh operasi CRUD (_Create, Read, Update, Delete_) terhadap entitas akademik yang ada dalam sistem. Penjabaran masing-masing domain fungsional tersebut dijelaskan sebagai berikut.
+Berdasarkan _Use Case Diagram_ yang telah dirancang, fungsionalitas inti sistem SIAKAD Madrasah dapat dikelompokkan ke dalam tiga domain fungsional utama, yaitu: (1) modul autentikasi dan otorisasi sebagai lapisan keamanan sistem, (2) modul _dashboard_ sebagai pusat navigasi utama, serta (3) modul pengelolaan data akademik yang mencakup seluruh operasi CRUD (_Create, Read, Update, Delete_) terhadap entitas akademik yang ada dalam sistem. Penjabaran masing-masing domain fungsional tersebut dijelaskan sebagai berikut.
 
-**1) Modul Autentikasi dan Otorisasi (_Authentication & Authorization Layer_).**
-Sebelum memperoleh akses ke dalam sistem, setiap Admin Sekolah diwajibkan untuk melalui proses autentikasi (_login_) sebagai mekanisme verifikasi identitas (_identity verification gate_) terhadap _credentials_ yang telah terdaftar pada basis data sistem. Proses autentikasi tersebut bersifat mandatori melalui relasi `«include»` terhadap _use case_ login, yang berarti bahwa seluruh upaya akses ke dalam sistem selalu melalui alur autentikasi tanpa terkecuali, sehingga secara arsitektural tidak dimungkinkan adanya _bypass authentication_, _backdoor access_, maupun akses anonim (_anonymous access_) ke dalam sistem. Mekanisme ini mengimplementasikan prinsip _zero-trust security model_ di mana setiap permintaan akses (_access request_) harus selalu diverifikasi terlebih dahulu sebelum diteruskan ke modul-modul inti sistem. Selain itu, sistem juga menyediakan fungsionalitas _signup_ (pendaftaran akun baru) yang memiliki relasi `«extend»` terhadap _use case_ login, yang berarti bahwa _use case_ signup hanya teraktivasi secara kondisional (_conditional activation_) pada saat belum terdapat akun Admin yang terdaftar di dalam sistem. Mekanisme _conditional signup_ ini memastikan bahwa proses inisialisasi akun (_account bootstrap_) hanya dapat dilakukan sekali pada tahap awal penggunaan sistem (_first-run initialization_), dan setelah akun pertama berhasil terbuat, _use case_ signup akan otomatis dinonaktifkan (_auto-disabled_) guna mencegah terjadinya _unauthorized account creation_ oleh pihak yang tidak berwenang.
+**1) Modul Autentikasi dan Otorisasi.**
+Sebelum memperoleh akses penuh ke dalam sistem, setiap Admin Sekolah diwajibkan untuk melalui proses autentikasi (_login_) sebagai mekanisme verifikasi identitas terhadap _credentials_ yang telah terdaftar pada basis data sistem. Proses autentikasi tersebut bersifat mandatori melalui relasi `«include»` terhadap _use case_ login, yang berarti bahwa seluruh akses terhadap modul pengelolaan data selalu melalui alur autentikasi. Pengecualian dari mekanisme ini adalah fitur lihat nilai siswa yang dapat diakses oleh aktor Client/Wali Murid/Guru tanpa autentikasi, sebagaimana dijelaskan pada deskripsi aktor di subbab 3.2.1. Pembuatan akun Admin dilakukan melalui mekanisme _seed data_ pada saat aplikasi pertama kali diinisialisasi, sehingga tidak terdapat halaman pendaftaran akun yang dapat diakses dari antarmuka pengguna.
 
-**2) Modul Dashboard Utama (_Central Navigation Hub_).**
-Setelah berhasil melalui proses autentikasi, admin akan secara otomatis diarahkan (_auto-redirect_) ke halaman _dashboard_ utama yang berfungsi sebagai pusat kendali navigasi sistem (_central control plane_) sekaligus _unified workspace_ untuk seluruh aktivitas administratif. Halaman _dashboard_ menyajikan ringkasan informasi agregat (_aggregated summary_) seputar data operasional sekolah secara _near-real-time_, serta berperan sebagai _primary entry point_ menuju seluruh modul pengelolaan data yang tersedia di dalam sistem. Desain tata letak _dashboard_ mengikuti prinsip _information hierarchy_ serta _progressive disclosure_ [[6]](#ref-6), di mana elemen-elemen informasi yang paling sering diakses oleh pengguna (_high-frequency interactions_) ditempatkan pada posisi yang paling mudah dijangkau secara visual maupun kinestetik, sejalan dengan prinsip _Fitts' Law_ dalam _human-computer interaction_ [[24]](#ref-24). Pendekatan ini bertujuan untuk meminimalkan _cognitive load_ pengguna serta memaksimalkan efisiensi alur kerja administratif harian (_daily administrative workflow efficiency_).
+**2) Modul Dashboard Utama.**
+Setelah berhasil melalui proses autentikasi, admin akan diarahkan ke halaman _dashboard_ utama yang berfungsi sebagai pusat navigasi sistem untuk seluruh aktivitas administratif. Halaman _dashboard_ menyajikan ringkasan informasi seputar data operasional sekolah, serta berperan sebagai titik masuk menuju seluruh modul pengelolaan data yang tersedia di dalam sistem. Desain tata letak _dashboard_ mengikuti prinsip _information hierarchy_ serta _progressive disclosure_ [[6]](#ref-6), di mana elemen-elemen informasi yang paling sering diakses oleh pengguna ditempatkan pada posisi yang paling mudah dijangkau [[24]](#ref-24). Pendekatan ini bertujuan untuk meminimalkan beban kognitif pengguna serta memaksimalkan efisiensi alur kerja administratif harian.
 
-**3) Modul Pengelolaan Data Akademik (_Academic Data Management Module_).**
-Dari halaman _dashboard_ utama, admin dapat mengakses seluruh modul pengelolaan data yang mencakup operasi CRUD terhadap entitas-entitas akademik berikut: (a) **kelola data sekolah** manajemen profil institusi, _logo_ sekolah, alamat, dan informasi kontak; (b) **kelola data siswa** manajemen data demografis siswa, data orang tua, data alamat, serta fitur _bulk upload_ melalui _file_ Excel; (c) **kelola data guru** manajemen profil guru, penugasan mengajar, serta pemetaan mata pelajaran yang diampu; (d) **kelola mata pelajaran** manajemen _master data_ kurikulum akademik; (e) **kelola nilai siswa** _input_ nilai per mata pelajaran serta _bulk upload_ nilai melalui template Excel terstruktur; (f) **kelola tahun ajaran** manajemen periode akademik aktif dan pengaturan kalender akademik; (g) **kelola kelas dan rombongan belajar** _class grouping_ dan _student-class assignment_; (h) **cetak laporan** _report generation_ ke format PDF maupun Excel untuk kebutuhan pelaporan eksternal; (i) **audit log** pencatatan jejak aktivitas sistem (_system activity trail_) untuk keperluan _traceability_, _accountability_, serta _forensic analysis_; (j) **manajemen akun** perubahan _username_ dan _password_ sebagai bagian dari _credential lifecycle management_; serta (k) **logout** sebagai mekanisme terminasi sesi (_session termination mechanism_) yang memastikan tidak adanya _residual session state_ tertinggal pada sisi _client_.
+**3) Modul Pengelolaan Data Akademik.**
+Dari halaman _dashboard_ utama, admin dapat mengakses seluruh modul pengelolaan data yang mencakup operasi CRUD terhadap entitas-entitas akademik berikut:
 
-Ketiga domain fungsional tersebut saling terhubung secara kohesif melalui alur navigasi yang konsisten dan dapat diprediksi (_predictable navigation flow_), sehingga admin dapat menjalankan seluruh aktivitas administratif dalam satu lingkungan aplikasi yang terintegrasi (_integrated unified workspace_) tanpa perlu berpindah antar aplikasi eksternal. Pemodelan _Use Case Diagram_ ini selanjutnya menjadi acuan utama (_blueprint_) bagi pengembang dalam menetapkan ruang lingkup pengembangan (_development scope_) pada setiap iterasi Personal Extreme Programming.
+a. **Kelola data sekolah**, profil institusi, logo, alamat, dan informasi kontak.
+b. **Kelola data siswa**, data demografis siswa, data orang tua, data alamat, serta fitur _bulk upload_ melalui _file_ Excel.
+c. **Kelola data guru**, profil guru, penugasan mengajar, serta pemetaan mata pelajaran yang diampu.
+d. **Kelola mata pelajaran**, _master data_ kurikulum akademik.
+e. **Kelola nilai siswa**, _input_ nilai per mata pelajaran serta _bulk upload_ nilai melalui template Excel.
+f. **Kelola tahun ajaran**, periode akademik aktif dan pengaturan kalender akademik.
+g. **Kelola kelas dan rombongan belajar**, pengelompokan kelas dan penempatan siswa.
+h. **Cetak laporan**, ekspor data ke format PDF maupun Excel untuk kebutuhan pelaporan.
+i. **Audit log**, pencatatan jejak aktivitas sistem untuk keperluan penelusuran dan akuntabilitas.
+j. **Manajemen akun**, perubahan _username_ dan _password_.
+k. **Logout**, terminasi sesi pengguna.
+
+Selain fungsionalitas yang hanya dapat diakses oleh Admin Sekolah melalui autentikasi, terdapat satu _use case_ tambahan yang bersifat kondisional, yaitu **lihat nilai siswa**. Fitur ini memiliki relasi `«extend»` terhadap _use case_ _kelola nilai siswa_ dan dapat diakses oleh aktor Client/Wali Murid/Guru tanpa melalui proses _login_. Fitur ini disediakan berdasarkan kebutuhan di lapangan agar guru, wali murid, atau pihak sekolah lainnya dapat melihat data nilai siswa secara langsung untuk keperluan seperti presentasi atau pengecekan cepat tanpa harus masuk ke dalam sistem pengelolaan data secara penuh.
+
+Seluruh domain fungsional tersebut saling terhubung melalui alur navigasi yang konsisten, sehingga admin dapat menjalankan seluruh aktivitas administratif dalam satu lingkungan aplikasi yang terintegrasi tanpa perlu berpindah antar aplikasi eksternal, sementara aktor Client/Wali Murid/Guru tetap dapat mengakses informasi nilai yang dibutuhkan secara langsung. Pemodelan _Use Case Diagram_ ini selanjutnya menjadi acuan utama bagi pengembang dalam menetapkan ruang lingkup pengembangan pada setiap iterasi Personal Extreme Programming.
 
 ## 3.3 Dokumentasi Iterasi Pengembangan
 
@@ -195,7 +211,7 @@ Seluruh hasil dari penerapan Agile Development pada penelitian ini didokumentasi
 - Total commit: **491**
 - Periode pengembangan: **15 November 2025 - 25 Februari 2026** (sekitar 3.5 bulan)
 - Kontributor: **syauqi** (developer tunggal - Personal Extreme Programming)
-- First commit SHA: `61714e4` | Latest commit SHA: `9ce922c`
+- First commit SHA: `61714e4`, Latest commit SHA: `9ce922c`
 
 ### 3.3.1 Riwayat Iterasi Pengembangan
 
@@ -205,18 +221,18 @@ Riwayat iterasi pengembangan aplikasi SIAKAD Madrasah disusun berdasarkan hasil 
 
 | No  | Iterasi    | Periode             | Jumlah Commit | SHA Awal  | SHA Akhir | Fokus Pengembangan                                                                                                                                |
 | --- | ---------- | ------------------- | :-----------: | --------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1   | Iterasi 1  | 15 — 16 Nov 2025    |      51       | `61714e4` | `4bc80eb` | Inisialisasi proyek SvelteKit, pembuatan komponen navbar & sidebar, layout halaman utama, setup Express server, routing frontend, rombel sprint 1 |
-| 2   | Iterasi 2  | 17 — 21 Nov 2025    |      64       | `97dd77d` | `0e16540` | Halaman data siswa, skeleton loader, fitur audit logs awal, perbaikan layout & styling, konfigurasi adapter Node.js                               |
-| 3   | Iterasi 3  | 28 Nov — 8 Des 2025 |      19       | `442c441` | `2add81a` | Fitur dropdown sidebar, koneksi data siswa ke backend, penambahan ikon & route, setup concurrently.js                                             |
-| 4   | Iterasi 4  | 10 — 17 Des 2025    |      89       | `ca677d4` | `a33b61a` | Sistem autentikasi (login), integrasi database Drizzle ORM + SQLite, environment variable, fitur audit logs lengkap, layout dashboard             |
-| 5   | Iterasi 5  | 20 — 21 Des 2025    |       8       | `fe59d6e` | `e8b9530` | Fitur kalender dashboard, pengaturan username, perbaikan UI                                                                                       |
-| 6   | Iterasi 6  | 1 — 12 Jan 2026     |      72       | `d89fdeb` | `030b905` | Restrukturisasi data JSON, layout detail siswa, form input siswa, upload Excel (multer + exceljs), migrasi pnpm, schema relasional                |
-| 7   | Iterasi 7  | 13 — 18 Jan 2026    |      54       | `ffff8c2` | `9685b74` | Desain schema nilai & mata pelajaran, rate limiter middleware, JWT auth, fitur template Excel, formulir alamat siswa                              |
-| 8   | Iterasi 8  | 19 — 27 Jan 2026    |      36       | `e02df2c` | `fc65667` | Manajemen rombel (CRUD), manajemen nilai, bulk upload siswa, services rombel & kelas, komponen modal                                              |
-| 9   | Iterasi 9  | 28 — 31 Jan 2026    |      40       | `386e53d` | `730df0e` | Fitur guru & penugasan, manajemen ujian, fitur kelulusan siswa, profil sekolah dengan upload logo, halaman error                                  |
-| 10  | Iterasi 10 | 1 — 5 Feb 2026      |      27       | `ee1c24f` | `19478b2` | Refactoring kode & layout, bundling Electron.js untuk desktop app, build executable Windows, dokumentasi                                          |
-| 11  | Iterasi 11 | 7 — 14 Feb 2026     |      19       | `da9942d` | `397d1cd` | Perbaikan bug, redesain halaman rombel & mutasi, class diagram UML, integrasi API tahun ajaran & kurikulum, seed data                             |
-| 12  | Iterasi 12 | 22 — 25 Feb 2026    |      12       | `5e6ffdd` | `9ce922c` | Manajemen aset sekolah, migrasi database, seedfile auth, refactoring struktur folder, perbaikan file handler                                      |
+| 1   | Iterasi 1  | 15  16 Nov 2025    |      51       | `61714e4` | `4bc80eb` | Inisialisasi proyek SvelteKit, pembuatan komponen navbar & sidebar, layout halaman utama, setup Express server, routing frontend, rombel sprint 1 |
+| 2   | Iterasi 2  | 17  21 Nov 2025    |      64       | `97dd77d` | `0e16540` | Halaman data siswa, skeleton loader, fitur audit logs awal, perbaikan layout & styling, konfigurasi adapter Node.js                               |
+| 3   | Iterasi 3  | 28 Nov  8 Des 2025 |      19       | `442c441` | `2add81a` | Fitur dropdown sidebar, koneksi data siswa ke backend, penambahan ikon & route, setup concurrently.js                                             |
+| 4   | Iterasi 4  | 10  17 Des 2025    |      89       | `ca677d4` | `a33b61a` | Sistem autentikasi (login), integrasi database Drizzle ORM + SQLite, environment variable, fitur audit logs lengkap, layout dashboard             |
+| 5   | Iterasi 5  | 20  21 Des 2025    |       8       | `fe59d6e` | `e8b9530` | Fitur kalender dashboard, pengaturan username, perbaikan UI                                                                                       |
+| 6   | Iterasi 6  | 1  12 Jan 2026     |      72       | `d89fdeb` | `030b905` | Restrukturisasi data JSON, layout detail siswa, form input siswa, upload Excel (multer + exceljs), migrasi pnpm, schema relasional                |
+| 7   | Iterasi 7  | 13  18 Jan 2026    |      54       | `ffff8c2` | `9685b74` | Desain schema nilai & mata pelajaran, rate limiter middleware, JWT auth, fitur template Excel, formulir alamat siswa                              |
+| 8   | Iterasi 8  | 19  27 Jan 2026    |      36       | `e02df2c` | `fc65667` | Manajemen rombel (CRUD), manajemen nilai, bulk upload siswa, services rombel & kelas, komponen modal                                              |
+| 9   | Iterasi 9  | 28  31 Jan 2026    |      40       | `386e53d` | `730df0e` | Fitur guru & penugasan, manajemen ujian, fitur kelulusan siswa, profil sekolah dengan upload logo, halaman error                                  |
+| 10  | Iterasi 10 | 1  5 Feb 2026      |      27       | `ee1c24f` | `19478b2` | Refactoring kode & layout, bundling Electron.js untuk desktop app, build executable Windows, dokumentasi                                          |
+| 11  | Iterasi 11 | 7  14 Feb 2026     |      19       | `da9942d` | `397d1cd` | Perbaikan bug, redesain halaman rombel & mutasi, class diagram UML, integrasi API tahun ajaran & kurikulum, seed data                             |
+| 12  | Iterasi 12 | 22  25 Feb 2026    |      12       | `5e6ffdd` | `9ce922c` | Manajemen aset sekolah, migrasi database, seedfile auth, refactoring struktur folder, perbaikan file handler                                      |
 
 ### 3.3.2 Analisis Distribusi Commit
 
@@ -246,7 +262,7 @@ Iterasi 12  |██████                                              | 1
                          Jumlah Commit
 ``` -->
 
-Pola pengembangan yang bersifat iteratif dan inkremental tersebut menunjukkan penerapan metode Personal Extreme Programming (PXP) [[2]](#ref-2) secara konsisten sepanjang siklus hidup pengembangan perangkat lunak (_Software Development Life Cycle / SDLC_) [[5]](#ref-5), dengan mempertimbangkan kompleksitas dalam sistem penyimpanan data [[26]](#ref-26). Pada setiap iterasi, pengembang menghasilkan _working increment_ yang bersifat fungsional, dapat diuji secara langsung, serta siap untuk dievaluasi dan divalidasi terhadap kebutuhan pengguna. Variasi jumlah commit antar iterasi — termasuk iterasi pendek seperti Iterasi 3 (19 commit) dan Iterasi 5 (8 commit) — merupakan hal yang wajar dalam metode PXP [[27]](#ref-27), di mana durasi dan ruang lingkup setiap iterasi disesuaikan secara dinamis dengan kompleksitas fitur yang sedang dikembangkan, bukan ditentukan oleh panjang siklus sprint yang bersifat tetap. Pendekatan ini memastikan bahwa setiap penambahan fitur maupun perbaikan dilakukan secara terukur, terdokumentasi, dan tidak menimbulkan dampak regresi (_regression_) terhadap modul-modul yang telah berfungsi dengan baik pada iterasi sebelumnya.
+Pola pengembangan yang bersifat iteratif dan inkremental tersebut menunjukkan penerapan metode Personal Extreme Programming (PXP) [[2]](#ref-2) secara konsisten sepanjang siklus hidup pengembangan perangkat lunak (_Software Development Life Cycle / SDLC_) [[5]](#ref-5), dengan mempertimbangkan kompleksitas dalam sistem penyimpanan data [[26]](#ref-26). Pada setiap iterasi, pengembang menghasilkan _working increment_ yang bersifat fungsional, dapat diuji secara langsung, serta siap untuk dievaluasi dan divalidasi terhadap kebutuhan pengguna. Variasi jumlah commit antar iterasi  termasuk iterasi pendek seperti Iterasi 3 (19 commit) dan Iterasi 5 (8 commit)  merupakan hal yang wajar dalam metode PXP [[27]](#ref-27), di mana durasi dan ruang lingkup setiap iterasi disesuaikan secara dinamis dengan kompleksitas fitur yang sedang dikembangkan, bukan ditentukan oleh panjang siklus sprint yang bersifat tetap. Pendekatan ini memastikan bahwa setiap penambahan fitur maupun perbaikan dilakukan secara terukur, terdokumentasi, dan tidak menimbulkan dampak regresi (_regression_) terhadap modul-modul yang telah berfungsi dengan baik pada iterasi sebelumnya.
 
 ### 3.3.3 Alur Version Control
 
@@ -264,11 +280,15 @@ _Gambar 3.6 Ilustrasi Metode White-Box Testing_
 
 Pengujian dilaksanakan secara terfokus dan terstruktur pada beberapa fungsi kritis tertentu yang bersifat _memory-intensive_ dan memiliki kompleksitas pemrosesan data yang tinggi [[26]](#ref-26), sehingga berpotensi menyebabkan terjadinya kebocoran memori (_memory leak_) maupun penurunan kinerja sistem (_performance degradation_) [[16]](#ref-16). Secara spesifik, cakupan pengujian pada penelitian ini difokuskan pada dua fungsi utama, yaitu: (1) fungsi _upload_ dan _parsing_ data dari _file_ Excel, serta (2) proses pembuatan dan _rendering file template_ Excel secara dinamis. Pemilihan kedua fungsi tersebut sebagai objek pengujian didasarkan pada temuan empiris berupa _bug_ dan _unexpected behavior_ yang terjadi ketika pengguna mengunggah _file_ Excel dengan format, struktur kolom, atau tipe data yang tidak sesuai dengan ketentuan dan validasi yang telah ditetapkan oleh sistem.
 
-![Gambar 3.7 Alur Pengujian Fungsi Upload dan Template Excel](/imageresearch/gambar-3.7-excel-test-flow.png)
+Alur pengujian untuk fungsi _upload_ Excel diilustrasikan pada Gambar 3.7. Proses dimulai dengan menyiapkan _mock_ terhadap dependensi yang dibutuhkan, yaitu koneksi _database_ melalui Drizzle ORM beserta definisi skema tabelnya, serta _library_ ExcelJS yang digunakan untuk membaca _file_ Excel. Tujuan dari _mocking_ ini adalah agar pengujian berjalan secara terisolasi tanpa bergantung pada _database_ atau _file_ yang sebenarnya. Setelah dependensi disiapkan, data uji berupa _buffer file_ Excel dimuat dan fungsi `createBulkStudentsFromExcel()` dieksekusi.
+
+Pada tahap pemrosesan, fungsi tersebut menjalankan tiga operasi secara berurutan di dalam satu transaksi: membaca isi _sheet_ Excel, mengekstrak 18 _field_ data siswa dari setiap baris, dan memetakan nama kolom Excel ke nama _field_ yang sesuai di _database_ misalnya kolom "Pekerjaan Ayah" dipetakan menjadi _field_ `occupation`, bukan `job`. Setelah pemrosesan selesai, hasil keluaran diverifikasi melalui beberapa pengecekan: apakah fungsi `insert()` dipanggil dengan jumlah yang benar untuk setiap tabel (data siswa, data orang tua, dan data alamat), apakah pemetaan _field_ sudah tepat, dan apakah `studentId` yang dihasilkan terhubung dengan benar antar tabel. Jika seluruh pengecekan terpenuhi, pengujian dinyatakan _pass_; jika tidak, pengujian dinyatakan _fail_ dan proses dihentikan.
+
+![Gambar 3.7 Alur Pengujian Fungsi Upload dan Template Excel](/imageresearch/flowchart-unittestflow.drawio.png)
 _Gambar 3.7 Alur Pengujian Fungsi Upload dan Template Excel_
 
 **Spesifikasi Gambar 3.7 (FLOWCHART):**
-
+<!-- 
 ```
 SIMPLE FLOWCHART: Unit Test Execution Flow
 
@@ -348,25 +368,25 @@ Jenis Flowchart ini:
 • Vertical flow (top to bottom)
 • Parallel processing (3 cabang tengah = Parse, Extract, Map)
 • Decision node (diamond) sebelum terminal PASS/FAIL
-```
+``` -->
 
 ### 3.4.2 Skenario dan Hasil Pengujian
 
-Pengujian dilaksanakan menggunakan _framework_ Jest sebagai _test runner_ dan _assertion library_. Pendekatan _white-box testing_ [[8]](#ref-8) diterapkan melalui teknik _mocking_ terhadap dependensi internal seperti koneksi _database_ (Drizzle ORM) dan _library_ ExcelJS, sehingga setiap _unit function_ dapat diuji secara terisolasi tanpa bergantung pada _state_ eksternal. Teknik ini memungkinkan pengujian terhadap logika internal fungsi, pemetaan _field_ (_field mapping_), serta alur percabangan kode (_branching logic_) secara langsung pada level _source code_.
+Seluruh skenario pengujian dieksekusi menggunakan _framework_ Jest sebagai _test runner_ dan _assertion library_. Dengan teknik _mocking_ yang telah diuraikan pada subbab 3.4.1, setiap fungsi diuji terhadap tiga aspek utama _white-box testing_ [[8]](#ref-8): logika internal fungsi, ketepatan pemetaan _field_ dari kolom Excel ke kolom _database_, serta alur percabangan kode (_branching logic_) ketika menerima variasi input yang berbeda.
 
 Berikut adalah skenario pengujian _white-box_ yang dilaksanakan beserta hasil yang diperoleh:
 
-**Tabel 3.2 Unit Test — Fungsi `createBulkStudentsFromExcel()`**
+**Tabel 3.2 Unit Test  Fungsi `createBulkStudentsFromExcel()`**
 
 | No  | Test Case                                                          | Fungsi yang Diuji               | Aspek White-Box yang Diverifikasi                                                                                                                                                                                                                                                                                           | Status |
 | --- | ------------------------------------------------------------------ | ------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ |
-| 1   | Parsing Excel dan insert seluruh field data siswa                  | `createBulkStudentsFromExcel()` | Verifikasi bahwa seluruh 18 field siswa (termasuk `previousSchool`, `phoneNumber`, `childOrder`, `siblingsCount`, `nationality`, `livingWith`, `transportation`, `bpjs`, `idCardNumber`, `birthCertificateNumber`) ter-_mapping_ dengan benar dari kolom Excel ke parameter `insert()` database — bukan hanya 7 field dasar | Pass   |
+| 1   | Parsing Excel dan insert seluruh field data siswa                  | `createBulkStudentsFromExcel()` | Verifikasi bahwa seluruh 18 field siswa (termasuk `previousSchool`, `phoneNumber`, `childOrder`, `siblingsCount`, `nationality`, `livingWith`, `transportation`, `bpjs`, `idCardNumber`, `birthCertificateNumber`) ter-_mapping_ dengan benar dari kolom Excel ke parameter `insert()` database  bukan hanya 7 field dasar | Pass   |
 | 2   | Pemetaan field Ayah: `job` → `occupation`, `phone` → `phoneNumber` | `createBulkStudentsFromExcel()` | Verifikasi bahwa logika _field mapping_ internal mengonversi nama field Excel (`Ayah - Pekerjaan`, `Ayah - No. HP`) ke nama kolom database (`occupation`, `phoneNumber`) secara benar, termasuk `nik`, `birthPlace`, `birthYear`, `education`, `monthlyIncome`, `isAlive`                                                   | Pass   |
 | 3   | Pemetaan field Ibu: `job` → `occupation`, `phone` → `phoneNumber`  | `createBulkStudentsFromExcel()` | Verifikasi logika _field mapping_ yang sama untuk data Ibu, memastikan tidak terjadi _regression_ pada _mapping_ yang identik dengan data Ayah                                                                                                                                                                              | Pass   |
 | 4   | Insert data alamat dari kolom Excel                                | `createBulkStudentsFromExcel()` | Verifikasi bahwa field alamat (`street`, `houseNumber`, `rt`, `rw`, `village`, `subDistrict`, `postalCode`) ter-_insert_ ke tabel alamat dengan `studentId` yang benar dari hasil _returning_ insert siswa                                                                                                                  | Pass   |
 
 
-**Tabel 3.3 Unit Test — Fungsi `createStudentData()` dan `createStudentdataInputExcelBulkGenerator()`**
+**Tabel 3.3 Unit Test  Fungsi `createStudentData()` dan `createStudentdataInputExcelBulkGenerator()`**
 
 | No  | Test Case                                                    | Fungsi yang Diuji                            | Aspek White-Box yang Diverifikasi                                                                                                                                                                                                               | Status |
 | --- | ------------------------------------------------------------ | -------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ |
@@ -374,7 +394,7 @@ Berikut adalah skenario pengujian _white-box_ yang dilaksanakan beserta hasil ya
 | 2   | Generate template Excel dengan header dan styling yang benar | `createStudentdataInputExcelBulkGenerator()` | Verifikasi struktur internal _workbook_: keberadaan worksheet `Data Siswa Bulk Upload`, header kolom (`Nama Siswa`, `NISN`, `Alamat - Jalan`, `Ayah - Nama`, `Ibu - Nama`), serta properti styling (`font.bold`, `fill.type`) pada baris header | Pass   |
 
 
-**Tabel 3.4 Unit Test — Fungsi `registerRombel()`**
+**Tabel 3.4 Unit Test  Fungsi `registerRombel()`**
 
 | No  | Test Case                                       | Fungsi yang Diuji  | Aspek White-Box yang Diverifikasi                                                                                                                                                                                                                                    | Status |
 | --- | ----------------------------------------------- | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ |
@@ -382,7 +402,7 @@ Berikut adalah skenario pengujian _white-box_ yang dilaksanakan beserta hasil ya
 | 2   | Register rombel tanpa data siswa (array kosong) | `registerRombel()` | Verifikasi alur percabangan: ketika `payload.siswa` berupa array kosong, fungsi hanya memanggil `insert()` tepat 1 kali (hanya insert rombel, tanpa insert siswa)                                                                                                    | Pass   |
 
 
-**Tabel 3.5 Unit Test — Fungsi `generateBulkScoreTemplate()`**
+**Tabel 3.5 Unit Test  Fungsi `generateBulkScoreTemplate()`**
 
 | No  | Test Case                                                          | Fungsi yang Diuji             | Aspek White-Box yang Diverifikasi                                                                                                                                                                                                                                           | Status |
 | --- | ------------------------------------------------------------------ | ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ |
@@ -399,7 +419,7 @@ Dengan demikian, pengujian dalam penelitian ini dilaksanakan secara preventif (_
 
 Dalam penerapan metode Agile, proses pengembangan perangkat lunak tidak bersifat statis melainkan selalu terbuka terhadap adanya revisi, perubahan, maupun umpan balik (_feedback_) dari pengguna. Hal ini merupakan bagian yang wajar dan bahkan diharapkan dalam siklus Agile, karena salah satu nilai inti dari Agile Manifesto adalah kolaborasi dengan pengguna serta kemampuan untuk merespons perubahan secara cepat. Pada penelitian ini, umpan balik yang diterima dari pengguna memiliki dampak yang cukup signifikan terhadap arah pengembangan perangkat lunak, karena setiap masukan dan keluhan yang ditemukan perlu segera ditindaklanjuti dan diintegrasikan ke dalam sistem pada iterasi berikutnya, agar aplikasi tetap sesuai dengan kebutuhan nyata pengguna di lapangan serta tetap memenuhi spesifikasi teknis yang telah ditetapkan sebelumnya.
 
-Pengumpulan umpan balik pada penelitian ini dilakukan melalui metode wawancara tidak terstruktur (_unstructured interview_) [[3]](#ref-3) dan observasi langsung (_direct observation_) [[24]](#ref-24). Wawancara tidak terstruktur dilaksanakan secara informal melalui media komunikasi WhatsApp dengan pengguna aplikasi, yaitu tenaga administrasi sekolah yang menggunakan aplikasi SIAKAD Madrasah dalam kegiatan operasional sehari-hari. Metode ini dipilih karena memungkinkan pengguna untuk menyampaikan keluhan, kendala, maupun saran secara spontan dan natural tanpa terikat pada format kuesioner yang kaku, sehingga informasi yang diperoleh bersifat autentik dan mencerminkan pengalaman nyata pengguna di lapangan. Selain itu, observasi langsung dilakukan oleh pengembang dengan mengamati secara langsung bagaimana pengguna berinteraksi dengan aplikasi pada saat proses instalasi maupun penggunaan fitur-fitur tertentu, guna mengidentifikasi kendala-kendala yang mungkin tidak tersampaikan secara verbal oleh pengguna.
+Pengumpulan umpan balik dilakukan menggunakan metode yang sama dengan tahap analisis kebutuhan pada subbab 3.2, yaitu wawancara tidak terstruktur dan observasi langsung. Pada konteks pemeliharaan ini, wawancara dilaksanakan melalui komunikasi informal melalui WhatsApp dengan tenaga administrasi sekolah yang menggunakan aplikasi SIAKAD Madrasah dalam kegiatan operasional sehari-hari. Media ini memungkinkan pengguna menyampaikan keluhan dan saran secara langsung tanpa terikat pada format kuesioner, sehingga informasi yang diperoleh mencerminkan pengalaman nyata di lapangan. Selain itu, pengembang juga mengamati langsung bagaimana pengguna berinteraksi dengan aplikasi pada saat proses instalasi maupun penggunaan fitur tertentu, guna mengidentifikasi kendala yang mungkin tidak tersampaikan secara verbal.
 
 Selama proses pengembangan berlangsung, terdapat dua kategori utama umpan balik yang diterima dari pengguna, yaitu: (1) kesulitan dalam memahami dan menggunakan fitur tertentu pada aplikasi, serta (2) kendala pada proses instalasi dan penggunaan awal aplikasi. Kedua kategori umpan balik tersebut menjadi bahan evaluasi yang penting bagi pengembang untuk melakukan perbaikan pada iterasi selanjutnya.
 
@@ -464,7 +484,7 @@ Elemen yang harus ada:
 
 ### 3.5.2 Umpan Balik Mekanisme Instalasi Aplikasi
 
-Umpan balik kedua berkaitan dengan proses instalasi aplikasi pada versi rilis awal (versi 1.0). Pada versi tersebut, aplikasi dijalankan melalui sebuah _batch file_ (.bat) yang harus ditemukan dan dieksekusi secara manual oleh pengguna. Mekanisme ini menimbulkan kesulitan bagi pengguna awam di pihak sekolah, karena mereka tidak terbiasa mencari dan menjalankan _file_ dengan ekstensi .bat di dalam struktur folder komputer. Selain itu, tampilan _command prompt_ yang muncul saat menjalankan _batch file_ juga memberikan kesan yang kurang ramah dan membingungkan bagi pengguna non-teknis. Berdasarkan temuan tersebut, pengembang kemudian melakukan perubahan pada mekanisme distribusi aplikasi dengan beralih menggunakan Electron.js sebagai _runtime environment_ untuk membungkus (_bundling_) aplikasi web ke dalam format aplikasi desktop [[18]](#ref-18). Proses distribusi selanjutnya menggunakan NSIS (_Nullsoft Scriptable Install System_) sebagai _installer builder_, yang menghasilkan sebuah _file_ Setup .exe yang dapat diinstal oleh pengguna melalui proses instalasi standar layaknya aplikasi desktop pada umumnya. Dengan pendekatan ini, pengguna tidak lagi perlu mencari dan menjalankan _batch file_ secara manual, melainkan cukup melakukan instalasi sekali melalui _installer_ yang telah disediakan, kemudian menjalankan aplikasi melalui _shortcut_ yang secara otomatis tersedia pada desktop maupun menu Start Windows. Perubahan ini secara signifikan meningkatkan kemudahan penggunaan (_usability_) dan pengalaman pengguna (_user experience_) dalam mengakses aplikasi, khususnya bagi pengguna non-teknis di lingkungan sekolah.
+Umpan balik kedua berkaitan dengan proses instalasi aplikasi pada versi rilis awal (versi 1.0). Pada versi tersebut, aplikasi dijalankan melalui sebuah _batch file_ (.bat) yang harus ditemukan dan dieksekusi secara manual oleh pengguna. Mekanisme ini menimbulkan kesulitan bagi pengguna awam di pihak sekolah, karena tidak terbiasa mencari dan menjalankan _file_ dengan ekstensi .bat di dalam struktur folder komputer. Selain itu, tampilan _command prompt_ yang muncul saat menjalankan _batch file_ juga memberikan kesan yang kurang ramah dan membingungkan bagi pengguna non-teknis. Berdasarkan temuan tersebut, kemudian diberlakukan perubahan terhadap mekanisme distribusi aplikasi dengan beralih menggunakan Electron.js sebagai _runtime environment_ untuk membungkus (_bundling_) aplikasi web ke dalam format aplikasi desktop [[18]](#ref-18). Proses distribusi selanjutnya menggunakan NSIS (_Nullsoft Scriptable Install System_) sebagai _installer builder_, yang menghasilkan sebuah _file_ Setup .exe yang dapat diinstal oleh pengguna melalui proses instalasi standar layaknya aplikasi desktop pada umumnya. Dengan pendekatan ini, pengguna tidak lagi perlu mencari dan menjalankan _batch file_ secara manual, melainkan cukup melakukan instalasi sekali melalui _installer_ yang telah disediakan, kemudian menjalankan aplikasi melalui _shortcut_ yang secara otomatis tersedia pada desktop maupun menu Start Windows. Perubahan ini secara signifikan meningkatkan kemudahan penggunaan (_usability_) dan pengalaman pengguna (_user experience_) dalam mengakses aplikasi, khususnya bagi pengguna non-teknis di lingkungan sekolah.
 
 ![Gambar 3.9 Perubahan Mekanisme Distribusi Aplikasi (Batch File ke Electron Installer)](/imageresearch/deploymentdiagram.png)
 _Gambar 3.9 Perubahan Mekanisme Distribusi Aplikasi (Batch File ke Electron Installer)_
@@ -473,13 +493,13 @@ _Gambar 3.9 Perubahan Mekanisme Distribusi Aplikasi (Batch File ke Electron Inst
 **Spesifikasi Gambar 3.9 (UML DEPLOYMENT DIAGRAM):**
 
 ```
-UML DEPLOYMENT DIAGRAM — «deployment diagram» — System Deployment Evolution
+UML DEPLOYMENT DIAGRAM  «deployment diagram»  System Deployment Evolution
 Diagram Type : Deployment Diagram (UML 2.x)
-Purpose      : Menunjukkan STRUKTUR deployment — di mana artifacts berada,
+Purpose      : Menunjukkan STRUKTUR deployment  di mana artifacts berada,
                di dalam execution environment apa, dan bagaimana relasi antar node
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  VERSION 1.0 — BATCH FILE                VERSION 2.0+ — ELECTRON INSTALLER
+  VERSION 1.0  BATCH FILE                VERSION 2.0+  ELECTRON INSTALLER
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
   ╔══════════════════════════════╗        ╔══════════════════════════════════╗
