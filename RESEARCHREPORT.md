@@ -63,31 +63,6 @@ BAB 3 METODE PENELITIAN
 
 ---
 
-Penelitian ini dilaksanakan di MTs. Al-Hasyimiy yang berlokasi di Kampung Baru, RT.004/RW.002, Raci, Kecamatan Bangil, Kabupaten Pasuruan, Jawa Timur 67153. Proses pengembangan platform akademik madrasah dilakukan di kantor sekolah dengan periode penelitian selama 6 bulan atau 1 semester, menyesuaikan dengan target penelitian serta jadwal Penerimaan Peserta Didik Baru (PPDB) madrasah.
-
-Spesifikasi perangkat yang digunakan selama proses pengembangan platform akademik madrasah adalah sebagai berikut:
-
-**Perangkat Keras Komputasi (PC Rakitan):**
-
-a. Penyimpanan: 1TB SSD
-b. Prosesor: Intel Core i5-12400F
-c. RAM: 16GB
-
-**Perangkat Laptop (Acer Nitro AN715-51):**
-
-a. Penyimpanan: 512GB SSD
-b. Prosesor: Intel Core i7-9750H
-
-**Perangkat Lunak Pengembangan:**
-
-a. Sistem Operasi: Windows 11
-b. Manajemen Basis Data: DataGrip
-c. Basis Data: SQLite
-d. Lingkungan Pengembangan: JetBrains WebStorm (untuk SvelteKit dan Node.js)
-e. _Version Control_: Git
-
----
-
 ## 3.1 Penerapan Metode Personal Extreme Programming (PXP)
 
 Metode pengembangan perangkat lunak yang digunakan dalam penelitian ini adalah metode Agile [[1]](#ref-1). Menurut pendekatan Agile, proses pengembangan sistem informasi dilakukan secara iteratif dan inkremental, yang memberikan fleksibilitas tinggi bagi pengembang untuk melakukan perbaikan, penambahan fitur, serta penyesuaian kebutuhan secara berkelanjutan pada setiap siklus pengembangan. Pendekatan ini memungkinkan proses rekayasa perangkat lunak (_software engineering_) bersifat adaptif, responsif terhadap perubahan kebutuhan pengguna, dan tidak terikat pada satu mekanisme pengembangan yang bersifat linier maupun kaku sebagaimana metode konvensional seperti _Waterfall_.
@@ -105,7 +80,7 @@ Dalam konteks Personal Extreme Programming, setiap siklus iterasi menghasilkan s
 
 ## 3.2 Analisis dan Perancangan Kebutuhan Sistem
 
-Sebelum memasuki tahap implementasi iteratif secara penuh, dilaksanakan proses analisis kebutuhan sistem serta perancangan awal arsitektur perangkat lunak sebagai bagian dari fase _exploration_ dalam siklus Personal Extreme Programming [[3]](#ref-3). Tahapan ini bertujuan untuk memperoleh pemahaman terhadap kebutuhan fungsional (_functional requirements_) maupun kebutuhan non-fungsional (_non-functional requirements_) [[4]](#ref-4), sekaligus menetapkan batasan ruang lingkup sistem yang akan dikembangkan. Proses analisis ini dilaksanakan melalui metode wawancara tidak terstruktur (_unstructured interview_) serta observasi langsung (_direct observation_) [[24]](#ref-24) terhadap alur kerja operasional tenaga administrasi di lingkungan madrasah, guna mengidentifikasi _pain points_, kebutuhan aktual, serta _user stories_ yang merepresentasikan nilai fungsional bagi pengguna akhir. Hasil dari proses analisis tersebut kemudian direpresentasikan melalui sebuah _Use Case Diagram_ yang disusun mengikuti notasi standar _Unified Modeling Language_ (UML) versi 2.x [[21]](#ref-21), sebagai acuan utama selama siklus pengembangan berlangsung.
+Pada fase _Exploration Phase_ dan _Planning Phase_ dalam siklus Agile Extreme Programming [[27]](#ref-27), fokus utama diarahkan pada permasalahan operator dan sistem tata akademik pada MTs. Al-Hasyimiy yang berlokasi di Kampung Baru, RT.004/RW.002, Raci, Kecamatan Bangil, Kabupaten Pasuruan, Jawa Timur 67153, serta memberikan prioritas tertentu untuk sebuah platform yang dikembangkan secara iteratif pada _Iterations to Release Phase_. Fase perencanaan memerlukan fondasi untuk mengembangkan platform dengan memperhatikan penyimpanan melalui basis data serta klasifikasi entitas melalui pemodelan _class diagram_. Sebelum memasuki tahap implementasi iteratif secara penuh, dilaksanakan proses analisis kebutuhan sistem serta perancangan awal arsitektur perangkat lunak sebagai bagian dari fase _exploration_ dalam siklus Personal Extreme Programming [[3]](#ref-3). Tahapan ini bertujuan untuk memperoleh pemahaman terhadap kebutuhan fungsional (_functional requirements_) maupun kebutuhan non-fungsional (_non-functional requirements_) [[4]](#ref-4), sekaligus menetapkan batasan ruang lingkup sistem yang akan dikembangkan. Proses analisis ini dilaksanakan melalui metode wawancara tidak terstruktur (_unstructured interview_) serta observasi langsung (_direct observation_) [[24]](#ref-24) terhadap alur kerja operasional tenaga administrasi di lingkungan madrasah, guna mengidentifikasi _pain points_, kebutuhan aktual, serta _user stories_ yang merepresentasikan nilai fungsional bagi pengguna akhir. Hasil dari proses analisis tersebut kemudian direpresentasikan melalui sebuah _Use Case Diagram_ yang disusun mengikuti notasi standar _Unified Modeling Language_ (UML) versi 2.x [[21]](#ref-21), sebagai acuan utama selama siklus pengembangan berlangsung.
 
 ### 3.2.1 Identifikasi Aktor Sistem
 
@@ -151,12 +126,14 @@ Seluruh domain fungsional tersebut saling terhubung melalui alur navigasi yang k
 
 ## 3.3 Dokumentasi Iterasi Pengembangan
 
+Berdasarkan pengembangan berbasis Agile pada tahap _Iterations to Release Phase_ dalam metode Agile Extreme Programming [[27]](#ref-27), arsitektur sistem dikembangkan menggunakan _framework_ Express.js dan Node.js untuk bagian _backend_, serta Svelte.js untuk pengembangan _frontend_. Kerangka kerja ini dipilih dengan pertimbangan pengembangan yang lebih fleksibel dan lebih mudah untuk dirilis, mengingat Svelte.js mengompilasi kode menjadi JavaScript murni dengan ukuran dan _runtime_ yang lebih efisien, yang menjadi dasar bagi _Single Page Application_ (SPA) pada platform akademik madrasah. Sistem arsitektur dan fondasi _backend_ menggunakan pola MVCS (_Model View Controller Services_) pada Express.js yang secara mekanisme bersifat _unopinionated_ dalam mengatur layering _services_ [[21]](#ref-21). Basis data yang digunakan pada pengembangan platform ini adalah SQLite dengan tujuan meminimalisir instalasi dan konfigurasi karena bersifat berbasis _file_, sehingga mudah di-_backup_ dan digunakan sewaktu-waktu jika terjadi masalah pada aplikasi.
+
 Seluruh hasil dari penerapan Agile Development pada penelitian ini didokumentasikan secara sistematis melalui sistem _version control_ menggunakan Git [[13]](#ref-13). Penggunaan Git sebagai alat bantu manajemen versi memungkinkan penelusuran terhadap setiap perubahan kode sumber (_source code_) yang terjadi selama proses pengembangan, sekaligus berfungsi sebagai bukti empiris adanya perkembangan dan evolusi sistem pada setiap iterasi. Riwayat perubahan tersebut terekam dalam bentuk _commit history_ yang mencakup identifikasi unik (_SHA hash_), pesan perubahan (_commit message_), serta stempel waktu (_timestamp_) dari setiap modifikasi yang dilakukan, sebagaimana ditunjukkan pada tabel berikut:
 
 **Ringkasan Proyek:**
 
 - Total commit: **491**
-- Periode pengembangan: **15 November 2025 - 25 Februari 2026** (sekitar 3.5 bulan)
+- Periode pengembangan: **15 November 2025 - 25 Februari 2026** (sekitar 3.5 bulan dari total 6 bulan atau 1 semester periode penelitian, menyesuaikan dengan target penelitian serta jadwal Penerimaan Peserta Didik Baru/PPDB madrasah)
 - Kontributor: **syauqi** (developer tunggal - Personal Extreme Programming)
 - First commit SHA: `61714e4`, Latest commit SHA: `9ce922c`
 
@@ -217,6 +194,8 @@ Pola pengembangan yang bersifat iteratif dan inkremental tersebut menunjukkan pe
 _Gambar 3.5 Diagram Alur Version Control dengan Git_
 
 ## 3.4 Pengujian Sistem
+
+Pada tahap _Productionizing Phase_ dalam siklus Agile Extreme Programming [[27]](#ref-27), dilakukan rilis dan penyerahan hasil pengembangan secara berkala sesuai dengan prinsip _short and small release_. Hal ini bertujuan agar dapat menjadi tolok ukur tingkat penerimaan sistem yang telah dikembangkan dan diprioritaskan berdasarkan _story card_ oleh madrasah serta fase perencanaan yang telah dirancang sebelumnya. Adapun perubahan yang diminta oleh madrasah akan dimasukkan dan disesuaikan dengan fase iteratif dan inkremental dalam _Planning Phase_. Sebelum setiap rilis dapat diserahkan, diperlukan pengujian ekstra dan pengecekan performa sistem untuk memastikan kualitas perangkat lunak yang dihasilkan.
 
 Selanjutnya, pada tahap pengujian sistem, penelitian ini menerapkan metode _White-Box Testing_ [[7]](#ref-7) sebagai pendekatan verifikasi terhadap kualitas internal perangkat lunak. _White-Box Testing_, yang juga dikenal sebagai _structural testing_ atau _glass-box testing_ [[7]](#ref-7), merupakan metode pengujian yang dilakukan terhadap fungsi-fungsi spesifik pada level kode sumber (_source code level_) yang tidak terlihat secara langsung oleh pengguna akhir (_end-user_). Pengujian ini mencakup evaluasi terhadap logika internal program (_internal logic_), struktur percabangan kode (_branching structure_) [[14]](#ref-14), alur eksekusi program (_execution flow_), serta penanganan kondisi batas (_boundary condition handling_) [[15]](#ref-15). Penerapan metode _White-Box Testing_ [[8]](#ref-8) bertujuan untuk memastikan bahwa setiap komponen dan modul kode berfungsi sesuai dengan spesifikasi kebutuhan fungsional yang telah ditetapkan, terbebas dari _bug_ maupun kesalahan logika (_logic error_), serta memberikan mekanisme pencegahan secara dini (_early defect detection_) terhadap potensi _error_ yang mungkin muncul sebelum sistem memasuki fase _productionizing_ dalam siklus Agile Extreme Programming.
 
@@ -280,6 +259,8 @@ Seluruh pengujian dieksekusi melalui Jest pada _Command Line Interface_ (CLI) de
 Dengan demikian, pengujian dalam penelitian ini dilaksanakan secara preventif (_preventive testing_) [[17]](#ref-17) sebagai bagian integral dari praktik _quality assurance_ [[4]](#ref-4) dalam metodologi Personal Extreme Programming, guna mencegah terjadinya _defect_ dan _bug_ pada fase _productionizing_, meminimalkan risiko kegagalan sistem pada lingkungan produksi (_production environment_), sekaligus memastikan bahwa keseluruhan basis kode (_codebase_) yang dihasilkan tetap memenuhi standar kualitas, dapat dipelihara dengan baik (_maintainable_) [[8]](#ref-8), serta mudah dikembangkan lebih lanjut (_extensible_) dalam jangka panjang [[21]](#ref-21).
 
 ## 3.5 Pemeliharaan dan Umpan Balik Pengguna
+
+Fase _Maintenance Phase_ dalam siklus Agile Extreme Programming [[27]](#ref-27) memberikan jaminan perawatan terhadap platform akademik agar tetap berada dalam pengawasan, termasuk melakukan penanganan terhadap _bug_ yang muncul saat _runtime_, permasalahan _error_ yang belum disesuaikan dengan hak pengguna seperti desain _alert popup_, serta penyediaan pembaruan berdasarkan permintaan madrasah. Fase perawatan ini berjalan kurang lebih selama 1 bulan dengan penggunaan sederhana hingga intensif, sebagaimana dijelaskan pada Gambar 3.2 (_Alur Siklus Personal Extreme Programming_) pada bagian _maintenance phase_.
 
 Dalam penerapan metode Agile, proses pengembangan perangkat lunak tidak bersifat statis melainkan selalu terbuka terhadap adanya revisi, perubahan, maupun umpan balik (_feedback_) dari pengguna. Hal ini merupakan bagian yang wajar dan bahkan diharapkan dalam siklus Agile, karena salah satu nilai inti dari Agile Manifesto adalah kolaborasi dengan pengguna serta kemampuan untuk merespons perubahan secara cepat. Pada penelitian ini, umpan balik yang diterima dari pengguna memiliki dampak yang cukup signifikan terhadap arah pengembangan perangkat lunak, karena setiap masukan dan keluhan yang ditemukan perlu segera ditindaklanjuti dan diintegrasikan ke dalam sistem pada iterasi berikutnya, agar aplikasi tetap sesuai dengan kebutuhan nyata pengguna di lapangan serta tetap memenuhi spesifikasi teknis yang telah ditetapkan sebelumnya.
 
