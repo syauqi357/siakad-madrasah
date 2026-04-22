@@ -160,7 +160,7 @@ Riwayat iterasi pengembangan aplikasi SIAKAD Madrasah disusun berdasarkan hasil 
 
 ### 3.3.2 Analisis Distribusi Commit
 
-Berdasarkan data yang disajikan pada tabel di atas, dapat disimpulkan bahwa proses pengembangan aplikasi SIAKAD Madrasah dilaksanakan melalui **12 iterasi** pengembangan dalam kurun waktu kurang lebih 3,5 bulan dengan akumulasi total sebanyak **491 commit** yang tercatat pada repositori Git. Setiap iterasi memiliki ruang lingkup (_scope_) dan fokus pengembangan yang berbeda secara bertahap dan progresif, dimulai dari tahap inisialisasi proyek serta pengembangan antarmuka pengguna (_user interface_) pada sisi _frontend_ (Iterasi 1–2), dilanjutkan dengan pembangunan arsitektur _backend_ dan integrasi sistem basis data (Iterasi 3–5), kemudian implementasi fitur-fitur inti manajemen data siswa dan penilaian akademik (Iterasi 6–8), pengembangan fitur-fitur lanjutan seperti penugasan guru dan proses kelulusan (Iterasi 9), hingga tahap akhir yang meliputi proses _bundling_ aplikasi ke dalam format _desktop application_ serta pemeliharaan dan stabilisasi sistem secara menyeluruh (Iterasi 10–12).
+Berdasarkan data yang disajikan pada tabel di atas, dapat disimpulkan bahwa proses pengembangan aplikasi SIAKAD Madrasah dilaksanakan melalui **12 iterasi** pengembangan dalam kurun waktu kurang lebih 3,5 bulan dengan akumulasi total sebanyak **491 commit** yang tercatat pada repositori Git. Setiap iterasi memiliki ruang lingkup (_scope_) dan fokus pengembangan yang berbeda secara bertahap dan progresif, dimulai dari tahap inisialisasi proyek serta pengembangan antarmuka pengguna (_user interface_) pada sisi _frontend_ (Iterasi 1-2), dilanjutkan dengan pembangunan arsitektur _backend_ dan integrasi sistem basis data (Iterasi 3-5), kemudian implementasi fitur-fitur inti manajemen data siswa dan penilaian akademik (Iterasi 6-8), pengembangan fitur-fitur lanjutan seperti penugasan guru dan proses kelulusan (Iterasi 9), hingga tahap akhir yang meliputi proses _bundling_ aplikasi ke dalam format _desktop application_ serta pemeliharaan dan stabilisasi sistem secara menyeluruh (Iterasi 10-12).
 
 ![Gambar 3.4 Grafik Distribusi Commit per Iterasi](/imageresearch/chart-grafik-iterasi.png)
 _Gambar 3.4 Grafik Distribusi Commit per Iterasi_
@@ -308,7 +308,7 @@ Kedua umpan balik tersebut menunjukkan bahwa penerapan metode Agile [[1]](#ref-1
 
 <a id="ref-2"></a>**[2]** Beck, K. (1999). _Extreme Programming Explained: Embrace Change_. Addison-Wesley. [ref](https://ptgmedia.pearsoncmg.com/images/9780321278654/samplepages/9780321278654.pdf)
 
-<a id="ref-3"></a>**[3]** Dzhurov, Y., Krasteva, I., & Huber, S. (2009). _Personal Extreme Programming – An Agile Process for Autonomous Developers_. Proceedings of the International Conference on Software, Services & Semantic Technologies.
+<a id="ref-3"></a>**[3]** Dzhurov, Y., Krasteva, I., & Huber, S. (2009). _Personal Extreme Programming - An Agile Process for Autonomous Developers_. Proceedings of the International Conference on Software, Services & Semantic Technologies.
 
 <a id="ref-4"></a>**[4]** Pressman, R. S. (2014). _Software Engineering: A Practitioner's Approach_ (8th ed.). McGraw-Hill Education. [ref](https://whyphi.staff.telkomuniversity.ac.id/files/2016/01/ebook-pressman-sw-engineering.pdf)
 
@@ -342,7 +342,7 @@ Kedua umpan balik tersebut menunjukkan bahwa penerapan metode Agile [[1]](#ref-1
 
 <a id="ref-19"></a>**[19]** Sommerville, I. (2010). _Software Engineering_ (9th ed.). Addison-Wesley. [ref](https://www.mlsu.ac.in/econtents/16_EBOOK-7th_ed_software_engineering_a_practitioners_approach_by_roger_s._pressman_.pdf)
 
-<a id="ref-20"></a>**[20]** Boehm, B. W. (1988). _A Spiral Model of Software Development and Enhancement_. IEEE Computer, 21(5), 61–72. [ref](https://cse.msu.edu/~cse435/Homework/HW3/boehm.pdf)
+<a id="ref-20"></a>**[20]** Boehm, B. W. (1988). _A Spiral Model of Software Development and Enhancement_. IEEE Computer, 21(5), 61-72. [ref](https://cse.msu.edu/~cse435/Homework/HW3/boehm.pdf)
 
 <a id="ref-21"></a>**[21]** Gamma, E., Helm, R., Johnson, R., & Vlissides, J. (1994). _Design Patterns: Elements of Reusable Object-Oriented Software_. Addison-Wesley. [ref](https://www.javier8a.com/itc/bd1/articulo.pdf)
 
