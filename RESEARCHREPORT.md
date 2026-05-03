@@ -43,101 +43,23 @@ BAB 3 METODE PENELITIAN
 └── Referensi Bab 3
 ```
 
-<!-- ============================================================
-  📝 CATATAN SEMENTARA  RELASI BAB 3 DENGAN AGILE EXTREME PROGRAMMING
-  (hapus sebelum submit ke dosen)
-  ============================================================
+<!-- CATATAN: hapus sebelum submit ke dosen
 
-  BAB 3 ini secara keseluruhan membuktikan penerapan Agile XP melalui
-  5 sudut pandang yang saling berkaitan:
+  BAB 3 & XP — Quick Reference
+  3.1 Metodologi    → small releases, simple design, refactoring, coding standards
+  3.2 Analisis      → exploration phase, customer stories, simple design
+  3.3 Bukti Iterasi → small releases (12 iterasi), CI (491 commit), sustainable pace
+  3.4 Pengujian     → test-first (Jest), mock isolation, refactoring safely
+  3.5 Umpan Balik   → customer collaboration (WhatsApp→hotfix), continuous improvement
 
-  ┌─────────────────────────────────────────────────────────────────┐
-  │ 3.1 → METODOLOGI  (Penerapan Metode PXP)                       │
-  │   Menjawab: "Kenapa XP? Kenapa PXP?"                           │
-  │   XP Practice yang dicakup:                                    │
-  │   • Small releases        → iterasi pendek & inkremental       │
-  │   • Simple design         → [27] Abrahamsson                   │
-  │   • Coding standards      → [27] Abrahamsson                   │
-  │   • Continuous testing    → [17] Pezze & Young                 │
-  │   • Refactoring           → [11] Fowler                        │
-  │   • Release planning      → [18] Humble & Farley               │
-  ├─────────────────────────────────────────────────────────────────┤
-  │ 3.2 → ANALISIS KEBUTUHAN  (Use Case Diagram & Aktor)           │
-  │   Menjawab: "Apa ruang lingkup & kebutuhan fungsional sistem?" │
-  │   XP Practice yang dicakup:                                    │
-  │   • Exploration phase     → identifikasi aktor & use case      │
-  │   • Simple design         → single-actor architecture          │
-  │   • Customer stories      → fungsionalitas dari kebutuhan riil │
-  ├─────────────────────────────────────────────────────────────────┤
-  │ 3.3 → BUKTI EMPIRIS ITERASI  (Dokumentasi Iterasi)             │
-  │   Menjawab: "Di mana bukti bahwa XP benar-benar diterapkan?"   │
-  │   XP Practice yang dicakup:                                    │
-  │   • Small releases        → 12 iterasi dengan SHA boundaries   │
-  │   • Continuous integration→ 491 commit terdokumentasi di Git   │
-  │   • Sustainable pace      → variasi commit/iterasi wajar (PXP) │
-  ├─────────────────────────────────────────────────────────────────┤
-  │ 3.4 → PENGUJIAN  (Pengujian Sistem)                            │
-  │   Menjawab: "Bagaimana kualitas kode dijaga tiap iterasi?"     │
-  │   XP Practice yang dicakup:                                    │
-  │   • Test-first / testing  → white-box unit testing dengan Jest │
-  │   • Refactoring safely    → mock isolation mencegah regression │
-  │   • Simple design         → fungsi diuji secara terisolasi     │
-  ├─────────────────────────────────────────────────────────────────┤
-  │ 3.5 → UMPAN BALIK PENGGUNA  (Pemeliharaan & Umpan Balik)       │
-  │   Menjawab: "Bagaimana XP merespons perubahan kebutuhan?"      │
-  │   XP Practice yang dicakup:                                    │
-  │   • Customer collaboration→ feedback via WhatsApp → hotfix     │
-  │   • Small releases        → tooltip fix & Electron migration   │
-  │   • Continuous improvement→ setiap feedback → iterasi baru     │
-  └─────────────────────────────────────────────────────────────────┘
-
-  KESIMPULAN: Bab 3 bukan hanya menyebut XP, tapi membuktikannya
-  secara struktural  metodologi (3.1) → analisis kebutuhan (3.2)
-  → bukti iterasi (3.3) → kualitas (3.4) → responsivitas (3.5).
-  Ini adalah argumentasi XP yang utuh.
-
-  ============================================================
-  📌 PEMETAAN 6 FASE XP (Beck [2] + Abrahamsson [27]) → 12 ITERASI
-  ============================================================
-
-  Metodologi XP mendefinisikan 6 fase makro dalam siklus hidup proyek.
-  Berikut pemetaannya ke iterasi dan subbab BAB 3:
-
-  ┌────────────────────────┬────────────────┬─────────────────────────┐
-  │ Fase XP                │ Iterasi        │ Dicakup di              │
-  ├────────────────────────┼────────────────┼─────────────────────────┤
-  │ 1. Exploration         │ Iterasi 1–3    │ 3.2 Analisis Kebutuhan  │
-  │    (teknologi dijajaki,│ Nov 2025       │ + 3.3.1 Riwayat Iterasi │
-  │    arsitektur dibentuk,│                │ (use case, aktor, tech  │
-  │    use case dirancang) │                │  stack, routing)        │
-  ├────────────────────────┼────────────────┼─────────────────────────┤
-  │ 2. Planning            │ embedded tiap  │ 3.1.2 Fase Pengembangan │
-  │    (rilis direncanakan,│ iterasi        │ (Tabel 3.1 kolom        │
-  │    scope ditetapkan)   │                │  "Fokus Pengembangan")  │
-  ├────────────────────────┼────────────────┼─────────────────────────┤
-  │ 3. Iterations to       │ Iterasi 4–9    │ 3.3.1 Riwayat Iterasi   │
-  │    Release             │ Des 2025–      │ (auth, ORM, Excel,      │
-  │    (fitur inti dibangun│ Jan 2026       │  nilai, rombel, guru)   │
-  ├────────────────────────┼────────────────┼─────────────────────────┤
-  │ 4. Productionizing     │ Iterasi 10     │ 3.4 Pengujian Sistem    │
-  │    (sistem disiapkan   │ Feb 1–5 2026   │ (unit test + Electron   │
-  │    untuk produksi)     │                │  bundling & build .exe) │
-  ├────────────────────────┼────────────────┼─────────────────────────┤
-  │ 5. Maintenance         │ Iterasi 11–12  │ 3.5 Pemeliharaan &      │
-  │    (bug fix, stabilize,│ Feb 7–25 2026  │ Umpan Balik Pengguna    │
-  │    user feedback loop) │                │ (tooltip fix, Electron) │
-  ├────────────────────────┼────────────────┼─────────────────────────┤
-  │ 6. Death               │ belum tercapai │ N/A  proyek masih      │
-  │    (sistem pensiun)    │                │ aktif digunakan         │
-  └────────────────────────┴────────────────┴─────────────────────────┘
-
-  NOTE: Fase Planning (fase 2) tidak memiliki iterasi tersendiri karena
-  dalam PXP [3] perencanaan dilakukan secara personal & embedded di awal
-  setiap iterasi  bukan sebagai fase terpisah seperti di XP tim besar.
-
-  → Pemetaan ini bisa dijadikan dasar untuk memperkuat 3.1.2 jika
-    dosen meminta penjelasan lebih dalam tentang fase XP.
-  ============================================================ -->
+  Pemetaan 6 Fase XP → Iterasi:
+  1. Exploration     → Iter 1-3 (Nov 2025)     → 3.2 + 3.3.1
+  2. Planning        → embedded tiap iterasi   → 3.1.2 (Tabel 3.1)
+  3. Iter to Release → Iter 4-9 (Des-Jan)      → 3.3.1
+  4. Productionizing → Iter 10 (Feb 1-5)       → 3.4
+  5. Maintenance     → Iter 11-12 (Feb 7-25)   → 3.5
+  6. Death           → belum (proyek masih aktif)
+  Note: Planning embedded di awal tiap iterasi (PXP), bukan fase terpisah. -->
 
 ---
 
@@ -158,7 +80,7 @@ Dalam konteks Personal Extreme Programming, setiap siklus iterasi menghasilkan s
 
 ## 3.2 Analisis dan Perancangan Kebutuhan Sistem
 
-Sebelum memasuki tahap implementasi iteratif secara penuh, dilaksanakan proses analisis kebutuhan sistem serta perancangan awal arsitektur perangkat lunak sebagai bagian dari fase _exploration_ dalam siklus Personal Extreme Programming [[3]](#ref-3). Tahapan ini bertujuan untuk memperoleh pemahaman terhadap kebutuhan fungsional (_functional requirements_) maupun kebutuhan non-fungsional (_non-functional requirements_) [[4]](#ref-4), sekaligus menetapkan batasan ruang lingkup sistem yang akan dikembangkan. Proses analisis ini dilaksanakan melalui metode wawancara tidak terstruktur (_unstructured interview_) serta observasi langsung (_direct observation_) [[24]](#ref-24) terhadap alur kerja operasional tenaga administrasi di lingkungan madrasah, guna mengidentifikasi _pain points_, kebutuhan aktual, serta _user stories_ yang merepresentasikan nilai fungsional bagi pengguna akhir. Hasil dari proses analisis tersebut kemudian direpresentasikan melalui sebuah _Use Case Diagram_ yang disusun mengikuti notasi standar _Unified Modeling Language_ (UML) versi 2.x [[21]](#ref-21), sebagai acuan utama selama siklus pengembangan berlangsung.
+Pada fase _Exploration Phase_ dan _Planning Phase_ dalam siklus Agile Extreme Programming [[27]](#ref-27), fokus utama diarahkan pada permasalahan operator dan sistem tata akademik pada MTs. Al-Hasyimiy yang berlokasi di Kampung Baru, RT.004/RW.002, Raci, Kecamatan Bangil, Kabupaten Pasuruan, Jawa Timur 67153, serta memberikan prioritas tertentu untuk sebuah platform yang dikembangkan secara iteratif pada _Iterations to Release Phase_. Fase perencanaan memerlukan fondasi untuk mengembangkan platform dengan memperhatikan penyimpanan melalui basis data serta klasifikasi entitas melalui pemodelan _class diagram_. Sebelum memasuki tahap implementasi iteratif secara penuh, dilaksanakan proses analisis kebutuhan sistem serta perancangan awal arsitektur perangkat lunak sebagai bagian dari fase _exploration_ dalam siklus Personal Extreme Programming [[3]](#ref-3). Tahapan ini bertujuan untuk memperoleh pemahaman terhadap kebutuhan fungsional (_functional requirements_) maupun kebutuhan non-fungsional (_non-functional requirements_) [[4]](#ref-4), sekaligus menetapkan batasan ruang lingkup sistem yang akan dikembangkan. Proses analisis ini dilaksanakan melalui metode wawancara tidak terstruktur (_unstructured interview_) serta observasi langsung (_direct observation_) [[24]](#ref-24) terhadap alur kerja operasional tenaga administrasi di lingkungan madrasah, guna mengidentifikasi _pain points_, kebutuhan aktual, serta _user stories_ yang merepresentasikan nilai fungsional bagi pengguna akhir. Hasil dari proses analisis tersebut kemudian direpresentasikan melalui sebuah _Use Case Diagram_ yang disusun mengikuti notasi standar _Unified Modeling Language_ (UML) versi 2.x [[21]](#ref-21), sebagai acuan utama selama siklus pengembangan berlangsung.
 
 ### 3.2.1 Identifikasi Aktor Sistem
 
@@ -204,12 +126,14 @@ Seluruh domain fungsional tersebut saling terhubung melalui alur navigasi yang k
 
 ## 3.3 Dokumentasi Iterasi Pengembangan
 
+Berdasarkan pengembangan berbasis Agile pada tahap _Iterations to Release Phase_ dalam metode Agile Extreme Programming [[27]](#ref-27), arsitektur sistem dikembangkan menggunakan _framework_ Express.js dan Node.js untuk bagian _backend_, serta Svelte.js untuk pengembangan _frontend_. Kerangka kerja ini dipilih dengan pertimbangan pengembangan yang lebih fleksibel dan lebih mudah untuk dirilis, mengingat Svelte.js mengompilasi kode menjadi JavaScript murni dengan ukuran dan _runtime_ yang lebih efisien, yang menjadi dasar bagi _Single Page Application_ (SPA) pada platform akademik madrasah. Sistem arsitektur dan fondasi _backend_ menggunakan pola MVCS (_Model View Controller Services_) pada Express.js yang secara mekanisme bersifat _unopinionated_ dalam mengatur layering _services_ [[21]](#ref-21). Basis data yang digunakan pada pengembangan platform ini adalah SQLite dengan tujuan meminimalisir instalasi dan konfigurasi karena bersifat berbasis _file_, sehingga mudah di-_backup_ dan digunakan sewaktu-waktu jika terjadi masalah pada aplikasi.
+
 Seluruh hasil dari penerapan Agile Development pada penelitian ini didokumentasikan secara sistematis melalui sistem _version control_ menggunakan Git [[13]](#ref-13). Penggunaan Git sebagai alat bantu manajemen versi memungkinkan penelusuran terhadap setiap perubahan kode sumber (_source code_) yang terjadi selama proses pengembangan, sekaligus berfungsi sebagai bukti empiris adanya perkembangan dan evolusi sistem pada setiap iterasi. Riwayat perubahan tersebut terekam dalam bentuk _commit history_ yang mencakup identifikasi unik (_SHA hash_), pesan perubahan (_commit message_), serta stempel waktu (_timestamp_) dari setiap modifikasi yang dilakukan, sebagaimana ditunjukkan pada tabel berikut:
 
 **Ringkasan Proyek:**
 
 - Total commit: **491**
-- Periode pengembangan: **15 November 2025 - 25 Februari 2026** (sekitar 3.5 bulan)
+- Periode pengembangan: **15 November 2025 - 25 Februari 2026** (sekitar 3.5 bulan dari total 6 bulan atau 1 semester periode penelitian, menyesuaikan dengan target penelitian serta jadwal Penerimaan Peserta Didik Baru/PPDB madrasah)
 - Kontributor: **syauqi** (developer tunggal - Personal Extreme Programming)
 - First commit SHA: `61714e4`, Latest commit SHA: `9ce922c`
 
@@ -236,7 +160,7 @@ Riwayat iterasi pengembangan aplikasi SIAKAD Madrasah disusun berdasarkan hasil 
 
 ### 3.3.2 Analisis Distribusi Commit
 
-Berdasarkan data yang disajikan pada tabel di atas, dapat disimpulkan bahwa proses pengembangan aplikasi SIAKAD Madrasah dilaksanakan melalui **12 iterasi** pengembangan dalam kurun waktu kurang lebih 3,5 bulan dengan akumulasi total sebanyak **491 commit** yang tercatat pada repositori Git. Setiap iterasi memiliki ruang lingkup (_scope_) dan fokus pengembangan yang berbeda secara bertahap dan progresif, dimulai dari tahap inisialisasi proyek serta pengembangan antarmuka pengguna (_user interface_) pada sisi _frontend_ (Iterasi 1–2), dilanjutkan dengan pembangunan arsitektur _backend_ dan integrasi sistem basis data (Iterasi 3–5), kemudian implementasi fitur-fitur inti manajemen data siswa dan penilaian akademik (Iterasi 6–8), pengembangan fitur-fitur lanjutan seperti penugasan guru dan proses kelulusan (Iterasi 9), hingga tahap akhir yang meliputi proses _bundling_ aplikasi ke dalam format _desktop application_ serta pemeliharaan dan stabilisasi sistem secara menyeluruh (Iterasi 10–12).
+Berdasarkan data yang disajikan pada tabel di atas, dapat disimpulkan bahwa proses pengembangan aplikasi SIAKAD Madrasah dilaksanakan melalui **12 iterasi** pengembangan dalam kurun waktu kurang lebih 3,5 bulan dengan akumulasi total sebanyak **491 commit** yang tercatat pada repositori Git. Setiap iterasi memiliki ruang lingkup (_scope_) dan fokus pengembangan yang berbeda secara bertahap dan progresif, dimulai dari tahap inisialisasi proyek serta pengembangan antarmuka pengguna (_user interface_) pada sisi _frontend_ (Iterasi 1-2), dilanjutkan dengan pembangunan arsitektur _backend_ dan integrasi sistem basis data (Iterasi 3-5), kemudian implementasi fitur-fitur inti manajemen data siswa dan penilaian akademik (Iterasi 6-8), pengembangan fitur-fitur lanjutan seperti penugasan guru dan proses kelulusan (Iterasi 9), hingga tahap akhir yang meliputi proses _bundling_ aplikasi ke dalam format _desktop application_ serta pemeliharaan dan stabilisasi sistem secara menyeluruh (Iterasi 10-12).
 
 ![Gambar 3.4 Grafik Distribusi Commit per Iterasi](/imageresearch/chart-grafik-iterasi.png)
 _Gambar 3.4 Grafik Distribusi Commit per Iterasi_
@@ -271,6 +195,8 @@ _Gambar 3.5 Diagram Alur Version Control dengan Git_
 
 ## 3.4 Pengujian Sistem
 
+Pada tahap _Productionizing Phase_ dalam siklus Agile Extreme Programming [[27]](#ref-27), dilakukan rilis dan penyerahan hasil pengembangan secara berkala sesuai dengan prinsip _short and small release_. Hal ini bertujuan agar dapat menjadi tolok ukur tingkat penerimaan sistem yang telah dikembangkan dan diprioritaskan berdasarkan _story card_ oleh madrasah serta fase perencanaan yang telah dirancang sebelumnya. Adapun perubahan yang diminta oleh madrasah akan dimasukkan dan disesuaikan dengan fase iteratif dan inkremental dalam _Planning Phase_. Sebelum setiap rilis dapat diserahkan, diperlukan pengujian ekstra dan pengecekan performa sistem untuk memastikan kualitas perangkat lunak yang dihasilkan.
+
 Selanjutnya, pada tahap pengujian sistem, penelitian ini menerapkan metode _White-Box Testing_ [[7]](#ref-7) sebagai pendekatan verifikasi terhadap kualitas internal perangkat lunak. _White-Box Testing_, yang juga dikenal sebagai _structural testing_ atau _glass-box testing_ [[7]](#ref-7), merupakan metode pengujian yang dilakukan terhadap fungsi-fungsi spesifik pada level kode sumber (_source code level_) yang tidak terlihat secara langsung oleh pengguna akhir (_end-user_). Pengujian ini mencakup evaluasi terhadap logika internal program (_internal logic_), struktur percabangan kode (_branching structure_) [[14]](#ref-14), alur eksekusi program (_execution flow_), serta penanganan kondisi batas (_boundary condition handling_) [[15]](#ref-15). Penerapan metode _White-Box Testing_ [[8]](#ref-8) bertujuan untuk memastikan bahwa setiap komponen dan modul kode berfungsi sesuai dengan spesifikasi kebutuhan fungsional yang telah ditetapkan, terbebas dari _bug_ maupun kesalahan logika (_logic error_), serta memberikan mekanisme pencegahan secara dini (_early defect detection_) terhadap potensi _error_ yang mungkin muncul sebelum sistem memasuki fase _productionizing_ dalam siklus Agile Extreme Programming.
 
 ![Gambar 3.6 Ilustrasi Metode White-Box Testing](/imageresearch/testingdiffcomparison.png)
@@ -286,89 +212,6 @@ Pada tahap pemrosesan, fungsi tersebut menjalankan tiga operasi secara berurutan
 
 ![Gambar 3.7 Alur Pengujian Fungsi Upload dan Template Excel](/imageresearch/flowchart-unittestflow.drawio.png)
 _Gambar 3.7 Alur Pengujian Fungsi Upload dan Template Excel_
-
-**Spesifikasi Gambar 3.7 (FLOWCHART):**
-<!-- 
-```
-SIMPLE FLOWCHART: Unit Test Execution Flow
-
-                         ╭───────────╮
-                         │   START   │  ← OVAL | color: green
-                         ╰─────┬─────╯
-                               │
-                               ▼
-                    ┌──────────────────┐
-                    │ Mock Dependencies│  ← RECTANGLE | color: blue
-                    │ (DB, ExcelJS)    │
-                    └────────┬─────────┘
-                             │
-                             ▼
-                    ┌──────────────────┐
-                    │ Load Test Data   │  ← RECTANGLE | color: blue
-                    │ (*.xlsx file)    │
-                    └────────┬─────────┘
-                             │
-                             ▼
-              ┌──────────────────────────────┐
-              │ Execute Function Under Test  │  ← RECTANGLE | color: blue
-              │ createBulkStudentsFromExcel()│
-              └────────┬─────────────────────┘
-                       │
-         ┌─────────────┼─────────────┐
-         │             │             │
-         ▼             ▼             ▼
-    ┌────────┐  ┌─────────┐  ┌────────────┐
-    │ Parse  │  │ Extract │  │ Map Fields │  ← RECTANGLE | color: blue
-    │ Excel  │  │Student  │  │(job→occup.)│
-    │Sheets  │  │(18 flds)│  │            │
-    └────┬───┘  └────┬────┘  └─────┬──────┘
-         │           │             │
-         └───────────┼─────────────┘
-                     │
-                     ▼
-          ┌────────────────────────┐
-          │ Verify Function Calls  │  ← RECTANGLE | color: orange
-          │ • insert() called 3x   │
-          │ • Field mapping check  │
-          │ • studentId validation │
-          └────────┬───────────────┘
-                   │
-                   ▼
-             ╱─────────────────────╲
-            ╱   Check Output Data?  ╲  ← DIAMOND | color: yellow
-           ╱  • Student data OK?     ╲
-           ╲  • Parent data OK?      ╱
-            ╲  • Address data OK?   ╱
-             ╲─────────────────────╱
-                       │
-               ┌───────┴───────┐
-            [YES]           [NO]
-               │               │
-               ▼               ▼
-        ┌─────────────┐  ┌──────────────┐
-        │    PASS     │  │     FAIL     │  ← RECTANGLE | green / red
-        │      ✓      │  │       ✗      │
-        └──────┬──────┘  └──────┬───────┘
-               │                │
-               └───────┬────────┘
-                        │
-                        ▼
-                  ╭───────────╮
-                  │    END    │  ← OVAL | color: gray
-                  ╰───────────╯
-
-Elemen Flowchart:
-- ╭──╮ Oval/rounded  = START / END        → color: green (start), gray (end)
-- ┌──┐ Rectangle     = Process / Action   → color: blue (proses), orange (verifikasi)
-- ╱  ╲ Diamond       = Decision / Branch  → color: yellow
-- ┌──┐ Rectangle     = Result terminal    → color: green (PASS), red (FAIL)
-- Arrows = Flow direction
-
-Jenis Flowchart ini:
-• Vertical flow (top to bottom)
-• Parallel processing (3 cabang tengah = Parse, Extract, Map)
-• Decision node (diamond) sebelum terminal PASS/FAIL
-``` -->
 
 ### 3.4.2 Skenario dan Hasil Pengujian
 
@@ -417,6 +260,8 @@ Dengan demikian, pengujian dalam penelitian ini dilaksanakan secara preventif (_
 
 ## 3.5 Pemeliharaan dan Umpan Balik Pengguna
 
+Fase _Maintenance Phase_ dalam siklus Agile Extreme Programming [[27]](#ref-27) memberikan jaminan perawatan terhadap platform akademik agar tetap berada dalam pengawasan, termasuk melakukan penanganan terhadap _bug_ yang muncul saat _runtime_, permasalahan _error_ yang belum disesuaikan dengan hak pengguna seperti desain _alert popup_, serta penyediaan pembaruan berdasarkan permintaan madrasah. Fase perawatan ini berjalan kurang lebih selama 1 bulan dengan penggunaan sederhana hingga intensif, sebagaimana dijelaskan pada Gambar 3.2 (_Alur Siklus Personal Extreme Programming_) pada bagian _maintenance phase_.
+
 Dalam penerapan metode Agile, proses pengembangan perangkat lunak tidak bersifat statis melainkan selalu terbuka terhadap adanya revisi, perubahan, maupun umpan balik (_feedback_) dari pengguna. Hal ini merupakan bagian yang wajar dan bahkan diharapkan dalam siklus Agile, karena salah satu nilai inti dari Agile Manifesto adalah kolaborasi dengan pengguna serta kemampuan untuk merespons perubahan secara cepat. Pada penelitian ini, umpan balik yang diterima dari pengguna memiliki dampak yang cukup signifikan terhadap arah pengembangan perangkat lunak, karena setiap masukan dan keluhan yang ditemukan perlu segera ditindaklanjuti dan diintegrasikan ke dalam sistem pada iterasi berikutnya, agar aplikasi tetap sesuai dengan kebutuhan nyata pengguna di lapangan serta tetap memenuhi spesifikasi teknis yang telah ditetapkan sebelumnya.
 
 Pengumpulan umpan balik dilakukan menggunakan metode yang sama dengan tahap analisis kebutuhan pada subbab 3.2, yaitu wawancara tidak terstruktur dan observasi langsung. Pada konteks pemeliharaan ini, wawancara dilaksanakan melalui komunikasi informal melalui WhatsApp dengan tenaga administrasi sekolah yang menggunakan aplikasi SIAKAD Madrasah dalam kegiatan operasional sehari-hari. Media ini memungkinkan pengguna menyampaikan keluhan dan saran secara langsung tanpa terikat pada format kuesioner, sehingga informasi yang diperoleh mencerminkan pengalaman nyata di lapangan. Selain itu, pengembang juga mengamati langsung bagaimana pengguna berinteraksi dengan aplikasi pada saat proses instalasi maupun penggunaan fitur tertentu, guna mengidentifikasi kendala yang mungkin tidak tersampaikan secara verbal.
@@ -429,58 +274,6 @@ Umpan balik pertama berkaitan dengan fitur _upload_ Excel pada halaman Data Sisw
 
 ![Gambar 3.8 Perubahan Label Fitur Upload Excel (Sebelum dan Sesudah)](/imageresearch/imagea11y.png)
 _Gambar 3.8 Perubahan Label Fitur Upload Excel (Sebelum dan Sesudah)_
-<!-- 
-**Spesifikasi Gambar 3.8:**
-
-```
-SIDE-BY-SIDE COMPARISON: User Interface Improvement
-
-┌─────────────────────────────┬─────────────────────────────┐
-│       SEBELUM (v1.0)        │       SESUDAH (v2.0+)       │
-├─────────────────────────────┼─────────────────────────────┤
-│                             │                             │
-│  📋 Data Siswa             │  📋 Data Siswa              │
-│  ─────────────             │  ─────────────              │
-│                             │                             │
-│  [Unduh Template] ❓       │  [Unduh Template] ℹ️        │
-│  (No explanation)           │  (With hover tooltip)       │
-│                             │                             │
-│  Problem:                   │  ┌──────────────────────┐   │
-│  ✗ Users confused          │  │ 📌 TOOLTIP:          │   │
-│  ✗ No guidance             │  │                      │   │
-│  ✗ High abandonment        │  │ Unduh file template  │   │
-│  ✗ Support tickets         │  │ .xlsx yang sudah     │   │
-│                             │  │ diformat sesuai      │   │
-│  [Upload Excel] ❓         │  │ struktur sistem.     │   │
-│  (No explanation)           │  │ Isi data dan unggah  │   │
-│                             │  │ kembali via tombol   │   │
-│                             │  │ "Upload Excel"       │   │
-│                             │  └──────────────────────┘   │
-│                             │                             │
-│                             │  [Upload Excel] ℹ️         │
-│                             │  (With tooltip on hover)    │
-│                             │                             │
-│                             │  Improvement:              │
-│                             │  ✓ Clear instruction       │
-│                             │  ✓ Self-guided usage       │
-│                             │  ✓ Reduced confusion       │
-│                             │  ✓ Fewer support tickets   │
-│                             │                             │
-├─────────────────────────────┼─────────────────────────────┤
-│ User Experience Score: 2/5  │ User Experience Score: 4/5  │
-│ Completion Rate: ~30%       │ Completion Rate: ~85%       │
-└─────────────────────────────┴─────────────────────────────┘
-
-Elemen yang harus ada:
-- Dua kolom terpisah jelas (SEBELUM | SESUDAH)
-- Button dengan icon (Unduh Template / Upload Excel)
-- Tooltip box dengan text (gunakan rounded corner)
-- Icon indikator (❓ untuk tidak jelas, ℹ️ untuk jelas)
-- Problem list (✗) untuk SEBELUM
-- Improvement list (✓) untuk SESUDAH
-- Score/metric di bawah setiap kolom
-- Warna berbeda: SEBELUM = red/orange, SESUDAH = green
-``` -->
 
 ### 3.5.2 Umpan Balik Mekanisme Instalasi Aplikasi
 
@@ -488,88 +281,6 @@ Umpan balik kedua berkaitan dengan proses instalasi aplikasi pada versi rilis aw
 
 ![Gambar 3.9 Perubahan Mekanisme Distribusi Aplikasi (Batch File ke Electron Installer)](/imageresearch/deploymentdiagram.png)
 _Gambar 3.9 Perubahan Mekanisme Distribusi Aplikasi (Batch File ke Electron Installer)_
-
-<!-- 
-**Spesifikasi Gambar 3.9 (UML DEPLOYMENT DIAGRAM):**
-
-```
-UML DEPLOYMENT DIAGRAM  «deployment diagram»  System Deployment Evolution
-Diagram Type : Deployment Diagram (UML 2.x)
-Purpose      : Menunjukkan STRUKTUR deployment  di mana artifacts berada,
-               di dalam execution environment apa, dan bagaimana relasi antar node
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  VERSION 1.0  BATCH FILE                VERSION 2.0+  ELECTRON INSTALLER
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-  ╔══════════════════════════════╗        ╔══════════════════════════════════╗
-  ║  «device»                    ║        ║  «device»                        ║
-  ║  User PC (Windows)           ║        ║  User PC (Windows)               ║
-  ║                              ║        ║                                  ║
-  ║  ┌──────────────────────┐    ║        ║  ┌────────────────────────────┐  ║
-  ║  │ «execution env»      │    ║        ║  │ «execution env»            │  ║
-  ║  │ File System          │    ║        ║  │ Windows OS                 │  ║
-  ║  │                      │    ║        ║  │                            │  ║
-  ║  │  ┌────────────────┐  │    ║        ║  │  ┌──────────────────────┐  │  ║
-  ║  │  │ «artifact»     │  │    ║        ║  │  │ «artifact»           │  │  ║
-  ║  │  │ run.bat        │  │    ║        ║  │  │ Setup.exe (NSIS)     │  │  ║
-  ║  │  └───────┬────────┘  │    ║        ║  │  └──────────┬───────────┘  │  ║
-  ║  │          │ «execute» │    ║        ║  │             │ «deploy»     │  ║
-  ║  │          ▼           │    ║        ║  │             ▼              │  ║
-  ║  │  ┌────────────────┐  │    ║        ║  │  ┌──────────────────────┐  │  ║
-  ║  │  │ «execution env»│  │    ║        ║  │  │ «execution env»      │  │  ║
-  ║  │  │ Node.js Runtime│  │    ║        ║  │  │ Electron Runtime     │  │  ║
-  ║  │  │                │  │    ║        ║  │  │                      │  │  ║
-  ║  │  │ ┌────────────┐ │  │    ║        ║  │  │ ┌──────────────────┐ │  │  ║
-  ║  │  │ │«component» │ │  │    ║        ║  │  │ │ «component»      │ │  │  ║
-  ║  │  │ │Express     │ │  │    ║        ║  │  │ │ Electron Main    │ │  │  ║
-  ║  │  │ │Server      │ │  │    ║        ║  │  │ │ Process          │ │  │  ║
-  ║  │  │ └─────┬──────┘ │  │    ║        ║  │  │ │                  │ │  │  ║
-  ║  │  │       │        │  │    ║        ║  │  │ │ ┌──────────────┐ │ │  │  ║
-  ║  │  │  visible via   │  │    ║        ║  │  │ │ │ «component»  │ │ │  │  ║
-  ║  │  │  browser only  │  │    ║        ║  │  │ │ │ Express API  │ │ │  │  ║
-  ║  │  └────────────────┘  │    ║        ║  │  │ │ └──────┬───────┘ │ │  │  ║
-  ║  └──────────────────────┘    ║        ║  │  │ │        │         │ │  │  ║
-  ║                              ║        ║  │  │ │ ┌──────────────┐ │ │  │  ║
-  ║  ┌──────────────────────┐    ║        ║  │  │ │ │ «component»  │ │ │  │  ║
-  ║  │ «artifact»           │    ║        ║  │  │ │ │ SvelteKit UI │ │ │  │  ║
-  ║  │ siakad.db            │◄───╫──────  ║  │  │ │ └──────────────┘ │ │  │  ║
-  ║  │ (project folder)     │    ║  access║  │  │ └──────────────────┘ │  │  ║
-  ║  └──────────────────────┘    ║        ║  │  └──────────┬───────────┘  │  ║
-  ║                              ║        ║  └─────────────┼──────────────┘  ║
-  ╚══════════════════════════════╝        ║                │ «access»         ║
-                                          ║                ▼                  ║
-                                          ║  ┌────────────────────────────┐  ║
-                                          ║  │ «artifact»                 │  ║
-                                          ║  │ siakad.db                  │  ║
-                                          ║  │ (%APPDATA%/SIAKAD Madrasah)│  ║
-                                          ║  └────────────────────────────┘  ║
-                                          ╚══════════════════════════════════╝
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-PERBEDAAN MEKANISME:
-
-  v1.0  run.bat dieksekusi manual → Node.js runtime terbuka di terminal →
-        Express Server berjalan di background → user akses via browser
-        (siakad.db tersimpan di folder project, tidak terstruktur)
-
-  v2.0+ Setup.exe dijalankan sekali → Electron Runtime ter-install sebagai
-        native app → Electron membundle Express + SvelteKit dalam satu proses
-        → app tampil sebagai window desktop, tanpa browser/terminal terpisah
-        (siakad.db tersimpan di %APPDATA%, terpisah dari instalasi app)
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-NOTASI UML DEPLOYMENT DIAGRAM:
-  ╔══╗  «device»          = physical node (hardware/OS environment)
-  ┌──┐  «execution env»   = runtime environment di dalam node
-  ┌──┐  «component»       = software komponen yang berjalan di dalam env
-  ┌──┐  «artifact»        = file fisik yang di-deploy (.exe, .bat, .db)
-  ───►  «deploy»          = artifact di-deploy ke execution environment
-  ───►  «execute»         = artifact dijalankan/dieksekusi
-  ───►  «access»          = komponen mengakses artifact (baca/tulis)
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-``` -->
 
 **Tabel Perbandingan Mekanisme Deployment v1.0 vs v2.0+**
 
@@ -597,7 +308,7 @@ Kedua umpan balik tersebut menunjukkan bahwa penerapan metode Agile [[1]](#ref-1
 
 <a id="ref-2"></a>**[2]** Beck, K. (1999). _Extreme Programming Explained: Embrace Change_. Addison-Wesley. [ref](https://ptgmedia.pearsoncmg.com/images/9780321278654/samplepages/9780321278654.pdf)
 
-<a id="ref-3"></a>**[3]** Dzhurov, Y., Krasteva, I., & Huber, S. (2009). _Personal Extreme Programming – An Agile Process for Autonomous Developers_. Proceedings of the International Conference on Software, Services & Semantic Technologies.
+<a id="ref-3"></a>**[3]** Dzhurov, Y., Krasteva, I., & Huber, S. (2009). _Personal Extreme Programming - An Agile Process for Autonomous Developers_. Proceedings of the International Conference on Software, Services & Semantic Technologies.
 
 <a id="ref-4"></a>**[4]** Pressman, R. S. (2014). _Software Engineering: A Practitioner's Approach_ (8th ed.). McGraw-Hill Education. [ref](https://whyphi.staff.telkomuniversity.ac.id/files/2016/01/ebook-pressman-sw-engineering.pdf)
 
@@ -631,7 +342,7 @@ Kedua umpan balik tersebut menunjukkan bahwa penerapan metode Agile [[1]](#ref-1
 
 <a id="ref-19"></a>**[19]** Sommerville, I. (2010). _Software Engineering_ (9th ed.). Addison-Wesley. [ref](https://www.mlsu.ac.in/econtents/16_EBOOK-7th_ed_software_engineering_a_practitioners_approach_by_roger_s._pressman_.pdf)
 
-<a id="ref-20"></a>**[20]** Boehm, B. W. (1988). _A Spiral Model of Software Development and Enhancement_. IEEE Computer, 21(5), 61–72. [ref](https://cse.msu.edu/~cse435/Homework/HW3/boehm.pdf)
+<a id="ref-20"></a>**[20]** Boehm, B. W. (1988). _A Spiral Model of Software Development and Enhancement_. IEEE Computer, 21(5), 61-72. [ref](https://cse.msu.edu/~cse435/Homework/HW3/boehm.pdf)
 
 <a id="ref-21"></a>**[21]** Gamma, E., Helm, R., Johnson, R., & Vlissides, J. (1994). _Design Patterns: Elements of Reusable Object-Oriented Software_. Addison-Wesley. [ref](https://www.javier8a.com/itc/bd1/articulo.pdf)
 
@@ -646,6 +357,3 @@ Kedua umpan balik tersebut menunjukkan bahwa penerapan metode Agile [[1]](#ref-1
 <a id="ref-26"></a>**[26]** Kleppmann, M. (2017). _Designing Data-Intensive Applications: The Big Ideas Behind Reliable, Scalable, and Maintainable Systems_. O'Reilly Media. [ref](https://repo.darmajaya.ac.id/4191/1/Designing%20Data-Intensive%20Applications_%20The%20Big%20Ideas%20Behind%20Reliable%2C%20Scalable%2C%20and%20Maintainable%20Systems%20%28%20PDFDrive%20%29.pdf)
 
 <a id="ref-27"></a>**[27]** Abrahamsson, P., Salo, O., Ronkainen, J., & Warsta, J. (2002). _Agile Software Development Methods: Review and Analysis_. VTT Publications 478. VTT Technical Research Centre of Finland. <!-- TODO: verify details & add ref link -->
-
-Fitur Lihat Nilai Siswa
-Terdapat fitur lihat nilai siswa yang bersifat extend dari access dashboard. Fitur ini bersifat kondisional dan dapat diakses langsung oleh admin sesuai kebutuhan tanpa harus melalui alur navigasi utama.
