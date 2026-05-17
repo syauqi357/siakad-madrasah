@@ -68,3 +68,5 @@ coverage/
 
 *.bib
 *.pdf
+
+backend/public/uploads/Profile/

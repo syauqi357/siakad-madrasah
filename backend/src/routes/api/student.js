@@ -21,9 +21,11 @@ import {
 	getGraduatedStudents,
 	changeStudentStatus
 } from '../../controllers/studentController.js';
+import fs from 'fs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const photo_upload_path = '../../../public/upload/Profile/studentProfile'
 
 const router = express.Router();
 
@@ -33,7 +35,22 @@ const upload = multer({ storage: multer.memoryStorage() });
 // Multer for student photo upload (disk storage)
 const photoStorage = multer.diskStorage({
 	destination: (req, file, cb) => {
-		cb(null, path.join(__dirname, '../../public/upload/Profile/studentProfile'));
+		// issues opened in 2026.
+		/*
+		explanation for this path:
+		- __dirname points to the current directory of this file, which is backend/src/routes/api
+		- We need to go up three levels to reach the root of the project (backend/)
+		- Then we navigate to public/upload/Profile/studentProfile where we want to store the photos
+		fucking shit took me 2 hours to figure out the path, god damn it
+		*/ 
+		const dir = path.join(__dirname, photo_upload_path);
+
+		// Periksa dan buat direktori jika belum ada (beserta subdirektorinya)
+		if (!fs.existsSync(dir)) {
+			fs.mkdirSync(dir, { recursive: true });
+		}
+
+		cb(null, dir);
 	},
 	filename: (req, file, cb) => {
 		const studentId = req.params.id || 'new';

@@ -112,11 +112,28 @@ Dorato, N. (2026). Comparative Analysis of React, Svelte, and Solid.js in Data-I
 
 ### 2.5.4 ES Modules (ECMAScript Modules)
 
-ES Modules atau ESM merupakan sistem modul standar yang diperkenalkan secara resmi dalam spesifikasi ECMAScript 2015 (ES6) sebagai mekanisme native untuk mengorganisasi dan membagi kode JavaScript ke dalam unit-unit yang dapat digunakan kembali (reusable). Sebelum ESM distandarisasi, ekosistem JavaScript bergantung pada sistem modul pihak ketiga seperti CommonJS yang menggunakan sintaks `require()` dan `module.exports`, serta AMD (Asynchronous Module Definition). CommonJS menjadi standar de facto pada lingkungan Node.js sejak awal kemunculannya, namun memiliki keterbatasan karena bersifat sinkron dan tidak dirancang untuk analisis statis pada tahap kompilasi (Wirfs-Brock & Eich, 2020).
+ES Modules (ESM) merupakan sistem modul standar yang diperkenalkan secara resmi dalam spesifikasi ECMAScript 2015 (ES6) sebagai mekanisme native untuk mengorganisasi dan membagi kode JavaScript ke dalam unit-unit yang dapat digunakan kembali (reusable). Sebelum ESM distandarisasi, ekosistem JavaScript sangat bergantung pada sistem modul pihak ketiga seperti CommonJS (CJS) yang menggunakan sintaks require() dan module.exports, serta AMD (Asynchronous Module Definition). Meskipun CommonJS menjadi standar de facto pada lingkungan Node.js sejak awal kemunculannya, sistem ini memiliki keterbatasan karena bersifat sinkron dan tidak dirancang untuk analisis statis pada tahap kompilasi (Wirfs-Brock & Eich, 2020).
 
-ESM menggunakan sintaks deklaratif melalui kata kunci `import` dan `export` yang memungkinkan JavaScript engine melakukan analisis statis terhadap dependensi modul sebelum kode dieksekusi. Keunggulan ini memungkinkan optimasi seperti tree-shaking, yaitu penghapusan kode yang tidak digunakan dari bundel akhir, sehingga menghasilkan ukuran aplikasi yang lebih kecil dan performa yang lebih baik. Node.js secara resmi mendukung ESM mulai versi 12 dengan penanda `"type": "module"` pada file `package.json`, dan dukungan stabil tersedia sejak versi 14 ke atas (Wirfs-Brock & Eich, 2020).
+Keterbatasan desain CommonJS ini bahkan diakui secara retrospektif oleh Ryan Dahl, pencipta asli Node.js, dalam presentasinya "10 Things I Regret About Node.js" pada tahun 2018. Dahl menekankan bahwa keputusan untuk menggunakan CommonJS daripada standar modul yang lebih modern telah memicu kompleksitas yang tidak perlu dalam sistem resolusi dependensi dan manajemen modul. Hal ini menjadi salah satu motivasi utama lahirnya runtime generasi baru seperti Deno, yang sejak awal dirancang untuk meninggalkan CommonJS demi adopsi penuh terhadap ESM dan standar web native. (Laakso, 2025) 
 
-Dalam konteks pengembangan platform akademik madrasah, penggunaan ES Modules diterapkan pada seluruh kode backend Express.js dan frontend SvelteKit. Pendekatan ini memberikan konsistensi sintaks antara sisi server dan sisi client, mempermudah pengelolaan dependensi antar modul seperti controllers, services, dan routes, serta memungkinkan pemanfaatan fitur-fitur modern JavaScript secara penuh.
+Mekanisme dan Optimasi Performa 
+Berbeda dengan CommonJS yang memuat modul saat runtime, ESM menggunakan sintaks deklaratif melalui kata kunci import dan export yang memungkinkan JavaScript engine melakukan analisis statis terhadap dependensi modul sebelum kode dieksekusi. Karakteristik ini memungkinkan optimasi tingkat lanjut seperti tree-shaking, yaitu proses penghapusan kode yang tidak digunakan (dead code) dari bundel akhir. Hasilnya adalah ukuran aplikasi yang lebih kecil dan waktu muat yang lebih efisien. Node.js sendiri telah memberikan dukungan resmi untuk ESM mulai versi 12 melalui penanda "type": "module" pada file package.json, dengan dukungan stabil tersedia sepenuhnya sejak versi 14 ke atas (Wirfs-Brock & Eich, 2020).
+
+Tren performa ini semakin diperkuat oleh kemunculan runtime performa-tinggi seperti Bun. Berdasarkan data eksperimen, pemanfaatan standar ESM yang terintegrasi memungkinkan runtime modern mencapai kecepatan startup hingga tiga kali lebih cepat dibandingkan Node.js tradisional dalam berbagai skenario beban kerja (Laakso, 2025). Hal ini membuktikan bahwa efisiensi kode tidak hanya bergantung pada logika algoritma, tetapi juga pada bagaimana sistem modul dikelola oleh runtime yang mendasarinya.
+
+Keamanan dan Ekosistem Modern
+Dari sisi keamanan, transisi menuju ESM juga berkaitan erat dengan upaya mitigasi serangan rantai pasokan (supply chain attacks). Sistem modul tradisional yang sangat bergantung pada repositori NPM seringkali terpapar risiko paket berbahaya; sebagai contoh, insiden kompromi paket pada Desember 2024 yang menginjeksi malware penambangan kripto ke dalam ribuan perangkat pengembang (Laakso, 2025). Standar ESM memungkinkan pengembangan ekosistem yang lebih terkurasi dan aman, seperti yang diterapkan pada JSR (JavaScript Registry) yang diluncurkan pada 2025 (Laakso, 2025). JSR dirancang khusus untuk modul ESM dan TypeScript, dengan penekanan pada dokumentasi otomatis dan penegakan standar kualitas paket yang jauh lebih ketat dibandingkan standar NPM konvensional (Laakso, 2025). 
+
+Implementasi pada Platform Akademik
+Dalam konteks pengembangan platform akademik madrasah ini, penggunaan ES Modules diterapkan secara menyeluruh pada sisi backend Express.js maupun frontend SvelteKit. Pendekatan full-stack ESM ini memberikan beberapa keuntungan strategis:
+
+Konsistensi Sintaks: Meminimalkan hambatan kognitif bagi pengembang karena menggunakan standar kode yang sama di sisi server dan klien.  
+
+Efisiensi Pengembangan: Mempermudah pengelolaan dependensi antar modul internal seperti controllers, services, dan routes tanpa perlu konfigurasi transpiler tambahan yang rumit.  
+
+Keberlanjutan Sistem: Dengan mengadopsi ESM, aplikasi ini memiliki jalur migrasi yang lebih mudah jika di masa depan organisasi memutuskan untuk berpindah ke runtime yang lebih berperforma tinggi seperti Bun atau Deno, mengingat keduanya menempatkan ESM sebagai prioritas utama. 
+
+Secara keseluruhan, pemilihan ESM bukan sekadar mengikuti tren sintaksis, melainkan sebuah keputusan teknis yang krusial untuk memastikan sistem memiliki performa yang optimal, keamanan yang lebih terjaga, dan relevansi terhadap perkembangan ekosistem JavaScript di masa depan (Laakso, 2025).
 
 ---
 
