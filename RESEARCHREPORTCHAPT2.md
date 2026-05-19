@@ -30,7 +30,7 @@ Selanjutnya pada penelitian yang di lakukan pada tahun 2023 oleh jurnal Testing 
 
 Pada penelitian yang di lakukan oleh jurnal BIIKMA : Buletin Ilmiah Ilmu Komputer dan Multimedia Volume 2, No. 1 oleh Salsa Khoirunnisa, Muhammad Adlan El Fatih, Bagus Sadjiwo, dan Saprudin dengan penelitian Perancangan Sistem Informasi Dan Pendaftaran Online Di SMK IQRO Berbasis Web Dengan Metode Agile pada Juni Tahun 2024 yang telah berhasil merancang dan mengimplementasikan sistem informasi dan pendaftaran online berbasis web di SMK Iqro menggunakan metode Agile. Metode Agile dipilih dalam jurnal ini karena kemampuan fleksibilitas dalam mengakomodasi perubahan dan feedback atau timbal balik secara cepat serta berfokus pada kebutuhan pengguna. Sistem ini dirancang untuk mempermudah proses pendaftaran siswa baru, mengelola data siswa, dan menyediakan informasi secara real-time kepada pihak sekolah dan calon siswa. Pengembangan sistem melibatkan beberapa tahap, termasuk perencanaan, desain, pengkodean, pengujian, dan implementasi. Hasil dari penelitian ini menunjukkan bahwa penerapan sistem informasi dan pendaftaran online dapat meningkatkan efisiensi operasional sekolah, meminimalisir kesalahan data, serta memberikan kemudahan akses informasi bagi semua pihak terkait. hasil penelitian ini mampu menjadi salah satu referensi yang relevan dan cocok untuk permasalahan agile dalam pengembangan platform akademik madrasah yang sering berubah dan membutuhkan maintenance dan adaptif secara iterative. (Khoirunnisa et al., 2024).
 
-Pada pengembangan sebuah aplikasi tentu membutuhkan metode untuk memberikan solusi, masalah yang dimiliki oleh MTs. Al-Hasyimiy adalah manajemen siswa yang sering tidak beraturan dan hilang secara tiba2, maka platform akademik madrasah ini di buat untuk menjadi solusi dari masalah kehilangan data yang dapat dikerjakan secara iteratif dan fleksible, melihat masalah yang muncul serta permintaan dari MTs. Al-Hasyimiy menggunakan metode pendekatan agile dapat menjadi pertimbangan.
+Pada pengembangan sebuah aplikasi tentu membutuhkan metode untuk memberikan solusi, masalah yang dimiliki oleh MTs. Al-Hasyimiy adalah manajemen siswa yang sering tidak beraturan dan hilang secara tiba-tiba, maka platform akademik madrasah ini di buat untuk menjadi solusi dari masalah kehilangan data yang dapat dikerjakan secara iteratif dan fleksible, melihat masalah yang muncul serta permintaan dari MTs. Al-Hasyimiy menggunakan metode pendekatan agile dapat menjadi pertimbangan.
 
 ---
 
@@ -44,12 +44,15 @@ Sistem informasi menurut Ananda et al. merupakan suatu kesatuan yang terorganisi
 
 Menurut Dr. Anshu Malhotra (2023) sistem manajemen akademik merupakan solusi perangkat lunak komprehensif yang dirancang untuk menyederhanakan dan mengoptimalkan proses administratif serta akademik di dalam institusi pendidikan. Seiring dengan meningkatnya kompleksitas pengelolaan akademik, sistem ini telah muncul sebagai instrumen yang berharga untuk meningkatkan efisiensi, memperbaiki komunikasi, dan mengotomatisasi berbagai tugas. Melalui digitalisasi dan sentralisasi informasi, sistem manajemen akademik menyediakan platform terintegrasi bagi administrator, guru, dan staf untuk mengelola dan mengakses data serta sumber daya yang krusial (Sethi & Malhotra, 2023).
 
+Sejalan dengan definisi tersebut, Sistem Informasi Manajemen (SIM) kelembagaan pendidikan dapat didefinisikan sebagai suatu sistem terintegrasi yang mengumpulkan, memproses, menyimpan, menganalisis, dan menyebarkan data serta informasi yang dibutuhkan untuk mendukung pengelolaan lembaga pendidikan ([Penulis], [Tahun]).
+
 ---
 
 ## 2.4 Definisi Agile Extreme Programming
 
 Menurut pekka Abrahamson pada tahun 2002 agile memiliki 8 jenis konsep seperti scrum, crystal, Kanban dan berbagai macam konsep agile, untuk kasus ini konsep agile yang di adopsi dari awal pengembangan adalah extreme programming, konsep ini memiliki pendekatan dan teknis yang lebih mudah di fahami serta lebih fleksibel dan dapat di gunakan untuk single developer yang langsung B to B atau Business To Business dengan client, konsep Agile Extreme Programming sesuai dengan kondisi dari sekolah yang meminta untuk pengembangan platform akademik madrasah secara lokal.
 
+![gambar agile extreme programming](/imageresearch/XP.png)
 Gambar 1 : Agile Extreme Programming berdasarkan penelitian P. Abrahamson
 
 Agile memiliki arti sebagai lincah, gesit, dan siap bergerak cepat merupakan sebuah metode pengembangan perangkat lunak yang iteratif serta menginginkan proses pengembangan yang lebih ringan, lebih cepat, dan lebih fleksibel. Kebutuhan ini sangat terasa di industri perangkat lunak untuk Internet yang berkembang sangat cepat dan sering berubah, serta platform web yang sedang tumbuh pesat. Metode Agile ini telah membuka dan memicu banyak diskusi dan perdebatan dalam berbagai literatur. (P. Abrahamson et al., 2002).
@@ -80,6 +83,17 @@ Node.js merupakan sebuah kerangka kerja Javascript untuk backend yang beroperasi
 
 Efisiensi waktu komunikasi jaringan merupakan faktor penting yang perlu untuk dipertimbangkan. optimalisasi waktu komunikasi lintas jaringan diperlukan untuk meningkatkan efisiensi. Hal ini dapat melibatkan pengurangan latensi, peningkatan bandwidth dan kapasitas jaringan, atau minimalisasi kemacetan jaringan, di antara aspek-aspek lainnya. Secara umum, waktu komunikasi jaringan sangat berperan penting dalam menentukan seberapa efisien keseluruhan sistem dapat berfungsi.
 
+Dalam penelitian yang dilakukan oleh Kovvuri (2025) memberikan bukti bahwa Node.js memiliki kecepatan dalam memberikan data dan konkurensi yang signifikan dengan membawa I/O yang lebih efisien sehingga mampu memberikan output tanpa menunggu data lain selesai diproses. Temuan ini diperkuat oleh penelitian lain yang secara spesifik menguji skalabilitas dan konkurensi Node.js dalam skenario beban tinggi.
+
+Dalam uji beban konkuren, server Node.js mampu menangani hingga 8.000 koneksi WebSocket secara bersamaan dengan penurunan kinerja yang minimal, sementara Flask mencapai ambang batas kritis pada sekitar 3.500 koneksi, dan LAMP stack gagal mempertahankan stabilitas di atas 2.000 pengguna bersamaan. Selisih yang signifikan ini disebabkan oleh loop peristiwa non-blok tunggal-benang Node.js yang secara efektif memisahkan penanganan koneksi dari pemrosesan permintaan. Penggunaan CPU dan memori Node.js menunjukkan efisiensi yang baik, dengan rata-rata konsumsi 42% CPU dan 380 MB RAM di bawah beban, dibandingkan dengan Flask yang menggunakan 67% CPU dan 520 MB RAM, serta LAMP yang menggunakan 75% CPU dan 690 MB RAM. Mesin V8 Node dan rutinitas pengumpulan sampah internalnya berkontribusi pada overhead dan jejak memori yang lebih rendah, sehingga memungkinkan kinerja yang lebih tahan lama dalam kondisi throughput tinggi ((Kovvuri, 2025)).
+<!-- 
+Kovvuri, V. (2025). Optimizing 
+Real-Time Web Applications in 2025: A Performance 
+and Scalability Study of Node.js Backend with Angular 
+Frontend Architectures. Journal of Data Analysis and Critical 
+ -->
+
+
 ### 2.5.2 Express.js
 
 Express.js, yang umumnya disebut sebagai Express, merupakan salah satu kerangka kerja aplikasi web yang paling banyak digunakan untuk Node.js. Kerangka kerja ini dirancang untuk menyederhanakan proses pengembangan dengan mengabstraksi sebagian besar kompleksitas yang terlibat dalam penanganan permintaan dan respons HTTP, sehingga memungkinkan pengembang untuk lebih fokus pada pembangunan fungsionalitas inti dan logika bisnis dari aplikasi mereka. Sebagai kerangka kerja yang minimal dan unopinionated.
@@ -90,13 +104,36 @@ Express menyediakan struktur yang fleksibel dan dapat disesuaikan serta diperlua
 
 Svelte merupakan kerangka kerja pengembangan untuk frontend berbasis javascript yang diperkenalkan oleh Rich Harris pada tahun 2016 dengan menghadirkan paradigma inovatif dalam pengembangan aplikasi web melalui pendekatan kompilasi kode menjadi JavaScript murni yang efisien pada tahap pengembangan. Kerangka kerja ini mengeliminasi kebutuhan runtime yang berat dengan melakukan kompilasi di waktu pengembangan, sehingga menghasilkan kinerja teknis yang superior, cepat dan reaktif. Pendekatan kompilasi ini menghasilkan waktu rendering yang lebih cepat, ukuran bundel yang lebih kecil, penggunaan memori yang lebih efisien, serta operasi DOM yang lebih optimal. Keunggulan teknis tersebut menjadikan Svelte merupakan pilihan yang tepat untuk aplikasi dengan kecepatan tinggi dan kinerja maksimal, karena berdampak langsung terhadap pengalaman pengguna melalui waktu pemuatan yang lebih cepat dan latensi yang lebih rendah. (Putra et al., 2025)
 
+selanjutnya, pendekatan kompiler ini memberikan keuntungan signifikan dalam hal ukuran berkas dan kinerja pemuatan awal. Di antara kerangka kerja frontend sejenis, Svelte memiliki ukuran berkas terkecil, yaitu sekitar 2 KB, yang secara langsung mempercepat pemuatan halaman, terutama pada koneksi internet yang lambat. Implementasi TodoMVC dengan Svelte berukuran 3,6 KB (terkompresi gzip), dibandingkan dengan React plus ReactDOM yang berukuran sekitar 45 KB (terkompresi gzip) tanpa kode aplikasi apa pun. Sintaks Svelte sering dipuji karena lebih intuitif, membutuhkan lebih sedikit kode boilerplate, serta dilengkapi animasi dan transisi bawaan sebagai primitif tingkat pertama (Dorato, 2026).
+
+<!-- REFERENSI UNTUK BIBLIOGRAFI BAB 2:
+Dorato, N. (2026). Comparative Analysis of React, Svelte, and Solid.js in Data-Intensive Applications [Bachelor's Thesis, Metropolia University of Applied Sciences]. Information and Communications Technology, Software Engineering. Supervisor: Ilkka Kylmäniemi. -->
+
+
 ### 2.5.4 ES Modules (ECMAScript Modules)
 
-ES Modules atau ESM merupakan sistem modul standar yang diperkenalkan secara resmi dalam spesifikasi ECMAScript 2015 (ES6) sebagai mekanisme native untuk mengorganisasi dan membagi kode JavaScript ke dalam unit-unit yang dapat digunakan kembali (reusable). Sebelum ESM distandarisasi, ekosistem JavaScript bergantung pada sistem modul pihak ketiga seperti CommonJS yang menggunakan sintaks `require()` dan `module.exports`, serta AMD (Asynchronous Module Definition). CommonJS menjadi standar de facto pada lingkungan Node.js sejak awal kemunculannya, namun memiliki keterbatasan karena bersifat sinkron dan tidak dirancang untuk analisis statis pada tahap kompilasi (Wirfs-Brock & Eich, 2020).
+ES Modules (ESM) merupakan sistem modul standar yang diperkenalkan secara resmi dalam spesifikasi ECMAScript 2015 (ES6) sebagai mekanisme native untuk mengorganisasi dan membagi kode JavaScript ke dalam unit-unit yang dapat digunakan kembali (reusable). Sebelum ESM distandarisasi, ekosistem JavaScript sangat bergantung pada sistem modul pihak ketiga seperti CommonJS (CJS) yang menggunakan sintaks require() dan module.exports, serta AMD (Asynchronous Module Definition). Meskipun CommonJS menjadi standar de facto pada lingkungan Node.js sejak awal kemunculannya, sistem ini memiliki keterbatasan karena bersifat sinkron dan tidak dirancang untuk analisis statis pada tahap kompilasi (Wirfs-Brock & Eich, 2020).
 
-ESM menggunakan sintaks deklaratif melalui kata kunci `import` dan `export` yang memungkinkan JavaScript engine melakukan analisis statis terhadap dependensi modul sebelum kode dieksekusi. Keunggulan ini memungkinkan optimasi seperti tree-shaking, yaitu penghapusan kode yang tidak digunakan dari bundel akhir, sehingga menghasilkan ukuran aplikasi yang lebih kecil dan performa yang lebih baik. Node.js secara resmi mendukung ESM mulai versi 12 dengan penanda `"type": "module"` pada file `package.json`, dan dukungan stabil tersedia sejak versi 14 ke atas (Wirfs-Brock & Eich, 2020).
+Keterbatasan desain CommonJS ini bahkan diakui secara retrospektif oleh Ryan Dahl, pencipta asli Node.js, dalam presentasinya "10 Things I Regret About Node.js" pada tahun 2018. Dahl menekankan bahwa keputusan untuk menggunakan CommonJS daripada standar modul yang lebih modern telah memicu kompleksitas yang tidak perlu dalam sistem resolusi dependensi dan manajemen modul. Hal ini menjadi salah satu motivasi utama lahirnya runtime generasi baru seperti Deno, yang sejak awal dirancang untuk meninggalkan CommonJS demi adopsi penuh terhadap ESM dan standar web native. (Laakso, 2025) 
 
-Dalam konteks pengembangan platform akademik madrasah, penggunaan ES Modules diterapkan pada seluruh kode backend Express.js dan frontend SvelteKit. Pendekatan ini memberikan konsistensi sintaks antara sisi server dan sisi client, mempermudah pengelolaan dependensi antar modul seperti controllers, services, dan routes, serta memungkinkan pemanfaatan fitur-fitur modern JavaScript secara penuh.
+Mekanisme dan Optimasi Performa 
+Berbeda dengan CommonJS yang memuat modul saat runtime, ESM menggunakan sintaks deklaratif melalui kata kunci import dan export yang memungkinkan JavaScript engine melakukan analisis statis terhadap dependensi modul sebelum kode dieksekusi. Karakteristik ini memungkinkan optimasi tingkat lanjut seperti tree-shaking, yaitu proses penghapusan kode yang tidak digunakan (dead code) dari bundel akhir. Hasilnya adalah ukuran aplikasi yang lebih kecil dan waktu muat yang lebih efisien. Node.js sendiri telah memberikan dukungan resmi untuk ESM mulai versi 12 melalui penanda "type": "module" pada file package.json, dengan dukungan stabil tersedia sepenuhnya sejak versi 14 ke atas (Wirfs-Brock & Eich, 2020).
+
+Tren performa ini semakin diperkuat oleh kemunculan runtime performa-tinggi seperti Bun. Berdasarkan data eksperimen, pemanfaatan standar ESM yang terintegrasi memungkinkan runtime modern mencapai kecepatan startup hingga tiga kali lebih cepat dibandingkan Node.js tradisional dalam berbagai skenario beban kerja (Laakso, 2025). Hal ini membuktikan bahwa efisiensi kode tidak hanya bergantung pada logika algoritma, tetapi juga pada bagaimana sistem modul dikelola oleh runtime yang mendasarinya.
+
+Keamanan dan Ekosistem Modern
+Dari sisi keamanan, transisi menuju ESM juga berkaitan erat dengan upaya mitigasi serangan rantai pasokan (supply chain attacks). Sistem modul tradisional yang sangat bergantung pada repositori NPM seringkali terpapar risiko paket berbahaya; sebagai contoh, insiden kompromi paket pada Desember 2024 yang menginjeksi malware penambangan kripto ke dalam ribuan perangkat pengembang (Laakso, 2025). Standar ESM memungkinkan pengembangan ekosistem yang lebih terkurasi dan aman, seperti yang diterapkan pada JSR (JavaScript Registry) yang diluncurkan pada 2025 (Laakso, 2025). JSR dirancang khusus untuk modul ESM dan TypeScript, dengan penekanan pada dokumentasi otomatis dan penegakan standar kualitas paket yang jauh lebih ketat dibandingkan standar NPM konvensional (Laakso, 2025). 
+
+Implementasi pada Platform Akademik
+Dalam konteks pengembangan platform akademik madrasah ini, penggunaan ES Modules diterapkan secara menyeluruh pada sisi backend Express.js maupun frontend SvelteKit. Pendekatan full-stack ESM ini memberikan beberapa keuntungan strategis:
+
+Konsistensi Sintaks: Meminimalkan hambatan kognitif bagi pengembang karena menggunakan standar kode yang sama di sisi server dan klien.  
+
+Efisiensi Pengembangan: Mempermudah pengelolaan dependensi antar modul internal seperti controllers, services, dan routes tanpa perlu konfigurasi transpiler tambahan yang rumit.  
+
+Keberlanjutan Sistem: Dengan mengadopsi ESM, aplikasi ini memiliki jalur migrasi yang lebih mudah jika di masa depan organisasi memutuskan untuk berpindah ke runtime yang lebih berperforma tinggi seperti Bun atau Deno, mengingat keduanya menempatkan ESM sebagai prioritas utama. 
+
+Secara keseluruhan, pemilihan ESM bukan sekadar mengikuti tren sintaksis, melainkan sebuah keputusan teknis yang krusial untuk memastikan sistem memiliki performa yang optimal, keamanan yang lebih terjaga, dan relevansi terhadap perkembangan ekosistem JavaScript di masa depan (Laakso, 2025).
 
 ---
 
@@ -170,4 +207,61 @@ Dalam konteks pengembangan platform akademik madrasah, flowchart digunakan untuk
 
 ## Referensi Bab 2
 
-<!-- Tambahkan referensi yang relevan sesuai format kampus -->
+<!-- Daftar referensi disusun berdasarkan urutan kemunculan sitasi pada Bab 2.
+     Tanda [LENGKAPI] menandai entri yang masih perlu dilengkapi info bibliografi (nama jurnal lengkap, volume, halaman, DOI, dsb). -->
+
+**2.1 Penelitian Sebelumnya**
+
+[1] Ayunandita, N., & Dadi Riskiono, S. (2021). Permodelan Sistem Informasi Akademik Menggunakan Extreme Programming Pada Madrasah Aliyah (MA) Mambaul Ulum Tanggamus. *Jurnal Informatika dan Rekayasa Perangkat Lunak (JATIKA)*, 2(2). [LENGKAPI: halaman, DOI/URL]
+
+[2] Pertiwi, T. A., Luchia, N. T., Sinta, P., Aprinastya, R., Dahlia, A., & Fachrezi, I. R. (2023). Perancangan Dan Implementasi Sistem Informasi Absensi Berbasis Web Menggunakan Metode Agile Software Development Web-Based. *Jurnal Testing dan Implementasi Sistem Informasi*, 1(1), 53–66. [LENGKAPI: penerbit, DOI/URL]
+
+[3] Khoirunnisa, S., El Fatih, M. A., Sadjiwo, B., & Saprudin. (2024). Perancangan Sistem Informasi Dan Pendaftaran Online Di SMK IQRO Berbasis Web Dengan Metode Agile. *BIIKMA: Buletin Ilmiah Ilmu Komputer dan Multimedia*, 2(1). [LENGKAPI: halaman, DOI/URL]
+
+**2.2 Pengertian Sistem Informasi**
+
+[4] Ananda, [LENGKAPI: inisial], dkk. (2024). [LENGKAPI: judul artikel]. [LENGKAPI: nama jurnal, volume(nomor), halaman]. — *cari di Google Scholar / SINTA dengan kata kunci: "sistem informasi" + "Ananda" + 2024*
+
+**2.3 Definisi Sistem Manajemen Akademik**
+
+[5] Sethi, [LENGKAPI: inisial], & Malhotra, A. (2023). [LENGKAPI: judul tentang Academic Management System]. [LENGKAPI: jurnal/penerbit]. — *cari: "Anshu Malhotra" academic management system 2023*
+
+[6] [LENGKAPI: Penulis SIM Lembaga Pendidikan]. ([LENGKAPI: tahun]). [LENGKAPI: judul tentang Sistem Informasi Manajemen kelembagaan pendidikan]. [LENGKAPI: sumber]. — *paragraf di [RESEARCHREPORTCHAPT2.md:47](RESEARCHREPORTCHAPT2.md#L47) masih placeholder*
+
+**2.4 Definisi Agile Extreme Programming**
+
+[7] Abrahamsson, P., Salo, O., Ronkainen, J., & Warsta, J. (2002). *Agile Software Development Methods: Review and Analysis*. VTT Publications 478, VTT Technical Research Centre of Finland.
+
+**2.5 Javascript**
+
+[8] Wirfs-Brock, A., & Eich, B. (2020). JavaScript: the first 20 years. *Proceedings of the ACM on Programming Languages*, 4(HOPL), 1–189. https://doi.org/10.1145/3386327
+
+**2.5.1 Node.js**
+
+[9] Jadhav, [LENGKAPI: inisial], & Gonsalves, [LENGKAPI: inisial]. (2020). [LENGKAPI: judul artikel tentang Node.js]. [LENGKAPI: jurnal, vol, hal]. — *cari: "Jadhav Gonsalves Node.js 2020"*
+
+[10] Kovvuri, V. (2025). Optimizing Real-Time Web Applications in 2025: A Performance and Scalability Study of Node.js Backend with Angular Frontend Architectures. *Journal of Data Analysis and Critical [LENGKAPI: nama jurnal lengkap]*, [LENGKAPI: vol(no), halaman, DOI/URL].
+
+**2.5.2 Express.js**
+
+[11]Vesanto, [LENGKAPI: inisial]. (2024). [LENGKAPI: judul artikel tentang Express.js]. [LENGKAPI: jurnal/thesis/penerbit]. — *cari: "Vesanto Express.js 2024" — kemungkinan thesis Finlandia*
+
+**2.5.3 Svelte.js**
+
+[12] Putra, [LENGKAPI: inisial], dkk. (2025). [LENGKAPI: judul artikel tentang Svelte]. [LENGKAPI: jurnal, vol, hal]. — *cari: "Putra Svelte 2025" di Garuda/SINTA*
+
+[13] Dorato, N. (2026). *Comparative Analysis of React, Svelte, and Solid.js in Data-Intensive Applications* [Bachelor's Thesis, Metropolia University of Applied Sciences]. Information and Communications Technology, Software Engineering. Supervisor: Ilkka Kylmäniemi. [LENGKAPI: URL Theseus.fi]
+
+**2.6 SQLite**
+
+[14] Bharadwaj, [LENGKAPI: inisial], dkk. (2019). [LENGKAPI: judul artikel tentang SQLite embedded database]. [LENGKAPI: jurnal, vol, hal]. — *cari: "Bharadwaj SQLite embedded 2019"*
+
+**2.7 Unified Modeling Language (UML)**
+
+[15] Booch, G., Rumbaugh, J., & Jacobson, I. (2005). *The Unified Modeling Language User Guide* (2nd ed.). Addison-Wesley Professional.
+
+[16] Rumbaugh, J., Jacobson, I., & Booch, G. (2008). *The Unified Modeling Language Reference Manual* (2nd ed.). Addison-Wesley.
+
+**2.7.2 Flowchart**
+
+[17] International Organization for Standardization. (1985). *ISO 5807:1985 — Information processing — Documentation symbols and conventions for data, program and system flowcharts, program network charts and system resources charts*. ISO. https://www.iso.org/standard/11955.html

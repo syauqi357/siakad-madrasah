@@ -48,15 +48,16 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // static middleware for upload data or images
-app.use(express.static(path.join(__dirname, 'public')));
-app.use('/upload', express.static(path.join(__dirname, 'upload')));
-app.use(auditLog);
-app.use(GLOBAL_RATE_LIMIT);
-
 // Serve static files from the '(public)' directory
 // Serve static files from the build directory (Svelte SPA)
 const buildPath = path.join(__dirname, 'build');
 app.use(express.static(buildPath));
+app.use(express.static(path.join(__dirname, 'public')));
+app.use('/upload', express.static(path.join(__dirname, 'upload')));
+
+app.use(auditLog);
+app.use(GLOBAL_RATE_LIMIT);
+
 
 // 2. Use a more standard API route
 // app.use('/routes/api', speedLimit);

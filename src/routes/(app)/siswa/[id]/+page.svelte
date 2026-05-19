@@ -134,7 +134,7 @@
 				nationality: d(data.nationality),
 				livingWith: d(data.livingWith),
 				transportation: d(data.transportation),
-				profilePhoto: data.profilePhoto || null,
+				profilePhoto: data.profilePhoto,
 				status: data.status || 'ACTIVE',
 				class: data.class || 'Belum Masuk Kelas',
 				address: data.address
@@ -430,7 +430,7 @@
 				<div class="rounded-md border border-slate-200 bg-white p-6">
 					<div class="flex gap-6">
 						<div
-							class="h-36 w-36 flex-shrink-0 overflow-hidden rounded-md border border-slate-200 bg-slate-100"
+							class="h-36 w-36 shrink-0 overflow-hidden rounded-md border border-slate-200 bg-slate-100"
 						>
 							{#if student.profilePhoto}
 								<img
