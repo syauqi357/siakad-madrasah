@@ -2,6 +2,7 @@ import express from 'express';
 import multer from 'multer';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import fs from 'fs';
 import {
 	getAllStudents,
 	getStudentsLite,
@@ -13,15 +14,12 @@ import {
 	searchStudents,
 	createBulkStudent,
 	downloadStudentBulkTemplate,
-	// Photo upload
 	uploadStudentPhoto,
-	// Status management
 	getActiveStudents,
 	getDropoutStudents,
 	getGraduatedStudents,
 	changeStudentStatus
 } from '../../controllers/studentController.js';
-import fs from 'fs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -44,8 +42,7 @@ const photoStorage = multer.diskStorage({
 		fucking shit took me 2 hours to figure out the path, god damn it
 		*/ 
 		const dir = path.join(__dirname, photo_upload_path);
-
-		// Periksa dan buat direktori jika belum ada (beserta subdirektorinya)
+		
 		if (!fs.existsSync(dir)) {
 			fs.mkdirSync(dir, { recursive: true });
 		}

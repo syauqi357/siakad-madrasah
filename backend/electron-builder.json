@@ -1,7 +1,7 @@
 {
 	"$schema": "https://raw.githubusercontent.com/electron-userland/electron-builder/master/packages/app-builder-lib/scheme.json",
 	"appId": "com.siakad.madrasah",
-	"productName": "SIAKAD Madrasah",
+	"productName": "Platform Akademik Madrasah",
 	"directories": {
 		"output": "dist-electron",
 		"buildResources": "build-resources"
@@ -42,8 +42,7 @@
 		"allowToChangeInstallationDirectory": true,
 		"createDesktopShortcut": true,
 		"createStartMenuShortcut": true,
-		"shortcutName": "Platform SIAKAD Madrasah",
-		"include": "build-resources/uninstaller.nsh"
+		"shortcutName": "Platform SIAKAD Madrasah"
 	},
 	"mac": {
 		"target": ["dmg", "zip"],
