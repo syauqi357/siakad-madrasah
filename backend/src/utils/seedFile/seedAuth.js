@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import bcrypt from 'bcryptjs';
-import { db } from '../../src/index.js';
+import { db } from '../../db/index.js';
 import { users } from '../../db/schema/user.js';
 import { eq } from 'drizzle-orm';
 
@@ -12,8 +12,8 @@ async function seedAuth() {
 
 		const usersData = [
 			{
-				username: 'admin',
-				password: await bcrypt.hash('admin123', saltRounds),
+				username: 'Admin',
+				password: await bcrypt.hash('password123', saltRounds),
 				email: 'admin@madrasah.sch.id',
 				role: 'admin',
 				nama_lengkap: 'Administrator',
@@ -46,7 +46,7 @@ async function seedAuth() {
 		}
 
 		console.log('\n📋 Login credentials:');
-		console.log('   Admin  → username: admin  | password: admin123');
+		console.log('   Admin  → username: Admin  | password: password123');
 		console.log('   Guru   → username: guru1  | password: guru123');
 		console.log('\n🎉 Auth seeding selesai!');
 	} catch (error) {
