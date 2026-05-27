@@ -47,7 +47,7 @@
 		transportation: string;
 		profilePhoto: string | null;
 		status: 'ACTIVE' | 'MUTASI' | 'GRADUATE';
-		class: string;
+		className: string;
 		address: {
 			province: string;
 			regency: string;
@@ -114,6 +114,20 @@
 
 			const data = await response.json();
 
+			let studentClass = 'Belum Masuk Rombel';
+			if (data.rombelId) {
+				try {
+					const rombelResponse = await API_FETCH(`/routes/api/rombel/${data.rombelId}`);
+					if (rombelResponse.ok) {
+						const rombelData = await rombelResponse.json();
+						// The rombel controller returns rombel details in 'data'
+						studentClass = rombelData.data?.namaRombel || 'Belum Masuk Rombel';
+					}
+				} catch (rombelErr) {
+					console.error('Failed to fetch rombel name:', rombelErr);
+				}
+			}
+
 			student = {
 				id: data.id,
 				studentName: d(data.studentName),
@@ -136,7 +150,7 @@
 				transportation: d(data.transportation),
 				profilePhoto: data.profilePhoto,
 				status: data.status || 'ACTIVE',
-				class: data.class || 'Belum Masuk Kelas',
+				className: studentClass,
 				address: data.address
 					? {
 							province: d(data.address.province),
@@ -469,7 +483,7 @@
 									{statusConfig[student.status]?.label || student.status}
 								</span>
 							</div>
-							<p class="mt-1 text-slate-500">{student.class}</p>
+							<p class="mt-1 text-slate-500">{student.className}</p>
 
 							<div class="mt-5 flex items-center gap-10 border-t border-slate-100 pt-5">
 								<div>

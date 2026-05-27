@@ -148,7 +148,7 @@
 	<div class="mx-auto max-w-7xl px-4 py-8 md:px-8">
 		<!-- Back button -->
 		<button
-			on:click={() => goto('/siswa')}
+			on:click={() => history.back()}
 			class="group mb-6 flex w-fit items-center gap-2 rounded-full border border-slate-200 bg-white px-5 py-2 text-sm font-medium text-slate-700 transition-all hover:border-emerald-300 hover:bg-emerald-50"
 		>
 			<span class="transition-transform group-hover:-translate-x-1"><ArrowLeft /></span>

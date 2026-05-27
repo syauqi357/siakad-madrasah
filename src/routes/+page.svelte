@@ -38,6 +38,44 @@
 		}
 	}
 
+	// prototype for school data fetching
+
+	/**
+	  
+	  type SchoolData = {
+		name: string;
+		npsn: string;
+		nsm: string;
+	};
+
+	let setSchoolData: SchoolData = {
+		name: '',
+		npsn: '',
+		nsm: ''
+	};
+
+	async function fetchSchoolData() {
+		try {
+			const schoolDataResponseAPI = await API_FETCH('/routes/api/schoolData/');
+
+			if (!schoolDataResponseAPI.ok) {
+				throw new Error(`HTTP error! status: ${schoolDataResponseAPI.status}`);
+			}
+			const responseData = await schoolDataResponseAPI.json();
+			schoolData = {
+				name: responseData.name,
+				npsn: responseData.npsn,
+				nsm: responseData.nsm
+			};
+		} catch (err) {
+			console.error('Failed to fetch school data:', err);
+			error = true;
+			loading = false;
+		}
+	}
+	 * 
+	 * */
+
 	async function fetchScores(classId: number | null) {
 		if (!classId) return;
 
@@ -156,7 +194,7 @@
 							/>
 						</svg>
 					</div>
-					<h3 class="mt-4 text-lg font-semibold text-slate-900">Data Siswa</h3>
+					<h3 class="mt-4 text-lg font-semibold text-slate-900">Data Sekolah</h3>
 					<p class="mt-2 text-sm leading-relaxed text-slate-500">
 						Kelola data siswa secara terpusat. Input, edit, dan cari data dengan mudah. Mendukung
 						import dan export data.
@@ -165,6 +203,7 @@
 				<div class="mt-6 grid grid-cols-2 gap-2">
 					<div class="rounded-md bg-slate-50 px-3 py-2 text-center">
 						<p class="text-lg font-bold text-slate-900">NISN</p>
+
 						<p class="text-xs text-slate-400">Tracking</p>
 					</div>
 					<div class="rounded-md bg-slate-50 px-3 py-2 text-center">

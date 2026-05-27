@@ -105,10 +105,6 @@ export const createSchoolDataInDB = async (data) => {
 	return createSchool;
 };
 
-// =====================================================
-// DATABASE-BASED FACILITY FUNCTIONS (using schema)
-// =====================================================
-
 /**
  * Get all facilities from database
  * Returns same JSON format as getFacilitiesData() for compatibility

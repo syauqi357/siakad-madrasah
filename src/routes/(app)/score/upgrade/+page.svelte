@@ -233,6 +233,14 @@
 		});
 	}
 
+	function gotoRombels() {
+		goto('/rombel/addrombel');
+	}
+
+	function gotoPromoting() {
+		goto('/siswa/graduate-bulk');
+	}
+
 	onMount(() => {
 		fetchRombels();
 	});
@@ -252,7 +260,7 @@
 		<div class="flex items-center gap-4">
 			<div>
 				<h1 class="text-2xl font-bold text-slate-800">Kenaikan Kelas</h1>
-				<p class="mt-0.5 text-sm text-slate-500">Promosikan siswa ke tingkat kelas berikutnya</p>
+				<p class="mt-0.5 text-sm text-slate-500">Naikkan siswa ke tingkat kelas berikutnya</p>
 			</div>
 		</div>
 	</div>
@@ -378,10 +386,13 @@
 						<div class="border-t border-slate-100 px-5 py-3">
 							<p class="text-xs text-amber-600">
 								Siswa kelas akhir harus diluluskan melalui menu
-								<a
-									href="/siswa/alumni"
-									class="font-medium underline underline-offset-2 hover:text-amber-700">Alumni</a
+								<button
+									type="button"
+									on:click={gotoPromoting}
+									class="font-medium underline underline-offset-2 hover:text-amber-700"
 								>
+									Alumni
+								</button>
 							</p>
 						</div>
 					{/if}
@@ -523,7 +534,15 @@
 						{:else if targetRombels.length === 0}
 							<div class="flex flex-col items-center py-8">
 								<p class="text-sm text-slate-400">Tidak ada rombel tujuan</p>
-								<p class="mt-1 text-xs text-slate-300">Buat rombel baru untuk tingkat berikutnya</p>
+								<p class="mt-1 text-xs text-slate-300">
+									Buat rombel baru untuk tingkat berikutnya
+									<button
+										on:click={gotoRombels}
+										class="mx-1.5 rounded-sm bg-blue-500 px-3 py-1.5 text-white transition-all ease-in-out hover:bg-blue-600"
+									>
+										+ tambah rombel</button
+									>
+								</p>
 							</div>
 						{:else}
 							<div class="space-y-2">

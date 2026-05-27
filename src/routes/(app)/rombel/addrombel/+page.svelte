@@ -183,7 +183,7 @@
 		<div class="mb-6 flex items-center justify-between">
 			<div>
 				<button
-					on:click={() => goto('/rombel')}
+					on:click={()=> history.back()}
 					class="mb-4 inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3.5 py-2 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-50 hover:text-slate-800"
 				>
 					<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

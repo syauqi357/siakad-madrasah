@@ -48,10 +48,10 @@ export const navigationConfig: Record<UserRole, NavItem[]> = {
 				{ name: 'daftar siswa', icon: '', href: '/siswa' },
 				{ name: 'Alumni', href: '/siswa/alumni' },
 				{ name: 'Mutasi keluar', href: '/siswa/mutasi' },
-				{ name: 'Mutasi masuk', href: '/siswa/mutasi-masuk' },
+				// { name: 'Mutasi masuk', href: '/siswa/mutasi-masuk' },
 				{ name: 'manajemen Kelas', href: '/siswa/Kelas' },
-				{ name: 'Siswa Ganda', href: '/siswa/siswa-ganda' },
-				{ name: 'PIP/KIP-K/Beasiswa', href: '/siswa/beasiswa' }
+				// { name: 'Siswa Ganda', href: '/siswa/siswa-ganda' },
+				// { name: 'PIP/KIP-K/Beasiswa', href: '/siswa/beasiswa' }
 			]
 		},
 		{
@@ -66,9 +66,9 @@ export const navigationConfig: Record<UserRole, NavItem[]> = {
 			hasDropdown: true,
 			children: [
 				{ name: 'daftar GTK', href: '/gurutendik/daftar-gtk' },
-				{ name: 'pengajuan GTK', href: '/gurutendik/ajuan-gtk' },
-				{ name: 'mutasi', href: '/gurutendik/mutasi' },
-				{ name: 'akun', href: '/gurutendik/akun' }
+				// { name: 'pengajuan GTK', href: '/gurutendik/ajuan-gtk' },
+				// { name: 'mutasi', href: '/gurutendik/mutasi' },
+				// { name: 'akun', href: '/gurutendik/akun' }
 			]
 		},
 		{
@@ -79,7 +79,7 @@ export const navigationConfig: Record<UserRole, NavItem[]> = {
 			children: [
 				{ name: 'nilai', icon: '', href: '/score' },
 				{ name: 'ujian', icon: '', href: '/score/exam' },
-				{ name: 'tugas', icon: '', href: '/score/task' },
+				// { name: 'tugas', icon: '', href: '/score/task' },
 				{ name: 'mata pelajaran', icon: '', href: '/score/subject' },
 				{ name: 'kenaikan kelas', icon: '', href: '/score/upgrade' }
 			]
@@ -91,9 +91,9 @@ export const navigationConfig: Record<UserRole, NavItem[]> = {
 			hasDropdown: true,
 			children: [
 				{ name: 'kelembagaan', icon: '', href: '/confirm/lembaga' },
-				{ name: 'sarana prasarana', icon: '', href: '/confirm/sarpras' },
-				{ name: 'siswa', icon: '', href: '/confirm/studentdata' },
-				{ name: 'guru tendik', icon: '', href: '/confirm/teacher' }
+				// { name: 'sarana prasarana', icon: '', href: '/confirm/sarpras' },
+				// { name: 'siswa', icon: '', href: '/confirm/studentdata' },
+				// { name: 'guru tendik', icon: '', href: '/confirm/teacher' }
 			]
 		},
 		{
@@ -104,7 +104,7 @@ export const navigationConfig: Record<UserRole, NavItem[]> = {
 			children: [
 				{ name: 'daftar kurikulum', icon: '', href: '/info/curriculum' },
 				{ name: 'tahun ajaran', icon: '', href: '/info/academicyear' },
-				{ name: 'hari sekolah', icon: '', href: '/info/daysch' }
+				// { name: 'hari sekolah', icon: '', href: '/info/daysch' }
 			]
 		},
 		{
