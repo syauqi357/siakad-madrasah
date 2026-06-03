@@ -8,7 +8,7 @@ export const getAll = (req, res) => {
 		const curricula = curriculumService.getAllCurricula();
 		res.json({ success: true, data: curricula });
 	} catch (error) {
-		console.error('Error getting curricula:', error);
+		// console.error('Error getting curricula:', error);
 		res.status(500).json({ success: false, message: error.message });
 	}
 };
@@ -21,7 +21,7 @@ export const getLite = (req, res) => {
 		const curricula = curriculumService.getCurriculaLite();
 		res.json({ success: true, data: curricula });
 	} catch (error) {
-		console.error('Error getting curricula lite:', error);
+		// console.error('Error getting curricula lite:', error);
 		res.status(500).json({ success: false, message: error.message });
 	}
 };
@@ -37,7 +37,7 @@ export const getActive = (req, res) => {
 		}
 		res.json({ success: true, data: curr });
 	} catch (error) {
-		console.error('Error getting active curriculum:', error);
+		// console.error('Error getting active curriculum:', error);
 		res.status(500).json({ success: false, message: error.message });
 	}
 };
@@ -56,7 +56,7 @@ export const getById = (req, res) => {
 
 		res.json({ success: true, data: curr });
 	} catch (error) {
-		console.error('Error getting curriculum:', error);
+		// console.error('Error getting curriculum:', error);
 		res.status(500).json({ success: false, message: error.message });
 	}
 };
@@ -82,7 +82,7 @@ export const create = (req, res) => {
 
 		res.status(201).json({ success: true, message: 'Kurikulum berhasil dibuat', data: created });
 	} catch (error) {
-		console.error('Error creating curriculum:', error);
+		// console.error('Error creating curriculum:', error);
 		res.status(500).json({ success: false, message: error.message });
 	}
 };
@@ -101,7 +101,7 @@ export const update = (req, res) => {
 
 		res.json({ success: true, message: 'Kurikulum berhasil diupdate', data: updated });
 	} catch (error) {
-		console.error('Error updating curriculum:', error);
+		// console.error('Error updating curriculum:', error);
 		res.status(500).json({ success: false, message: error.message });
 	}
 };
@@ -120,7 +120,7 @@ export const remove = (req, res) => {
 
 		res.json({ success: true, message: 'Kurikulum berhasil dihapus' });
 	} catch (error) {
-		console.error('Error deleting curriculum:', error);
+		// console.error('Error deleting curriculum:', error);
 		res.status(500).json({ success: false, message: error.message });
 	}
 };

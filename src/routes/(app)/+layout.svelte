@@ -3,7 +3,7 @@
 	import { goto } from '$app/navigation';
 	import Navbar from '$lib/components/layout/Navbar.svelte';
 	import Sidebar from '$lib/components/layout/Sidebar.svelte';
-	import { navigationConfig } from '$lib/config/navigation';
+	import { navigationConfig } from '$lib/config/navigation_short.ts';
 	import type { User, NavItem } from '$lib/types/navigation';
 
 	let sidebarOpen = false;

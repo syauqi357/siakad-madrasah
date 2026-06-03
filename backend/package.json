@@ -1,6 +1,6 @@
 {
 	"name": "siakad-madrasah",
-	"version": "1.0.2",
+	"version": "1.2.2",
 	"description": "Sistem Informasi Akademik Madrasah",
 	"main": "electron/main.js",
 	"type": "module",

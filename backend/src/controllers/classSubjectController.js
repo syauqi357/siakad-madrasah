@@ -14,7 +14,7 @@ export const getAllClassSubjects = async (req, res) => {
 			data
 		});
 	} catch (error) {
-		console.error('Error fetching class-subjects:', error);
+		// console.error('Error fetching class-subjects:', error);
 		res.status(500).json({
 			success: false,
 			message: 'Gagal mengambil data penugasan mapel',
@@ -44,7 +44,7 @@ export const getClassSubjectById = async (req, res) => {
 			data
 		});
 	} catch (error) {
-		console.error('Error fetching class-subject:', error);
+		// console.error('Error fetching class-subject:', error);
 		res.status(500).json({
 			success: false,
 			message: 'Gagal mengambil data',
@@ -87,7 +87,7 @@ export const createClassSubject = async (req, res) => {
 			data
 		});
 	} catch (error) {
-		console.error('Error creating class-subject:', error);
+		// console.error('Error creating class-subject:', error);
 		res.status(500).json({
 			success: false,
 			message: 'Gagal menambahkan penugasan mapel',
@@ -124,7 +124,7 @@ export const updateClassSubject = async (req, res) => {
 			data
 		});
 	} catch (error) {
-		console.error('Error updating class-subject:', error);
+		// console.error('Error updating class-subject:', error);
 		res.status(500).json({
 			success: false,
 			message: 'Gagal memperbarui penugasan mapel',
@@ -155,7 +155,7 @@ export const deleteClassSubject = async (req, res) => {
 			data
 		});
 	} catch (error) {
-		console.error('Error deleting class-subject:', error);
+		// console.error('Error deleting class-subject:', error);
 		res.status(500).json({
 			success: false,
 			message: 'Gagal menghapus penugasan mapel',
@@ -176,7 +176,7 @@ export const getClassesDropdown = async (req, res) => {
 			data
 		});
 	} catch (error) {
-		console.error('Error fetching classes:', error);
+		// console.error('Error fetching classes:', error);
 		res.status(500).json({
 			success: false,
 			message: 'Gagal mengambil data kelas',
@@ -197,7 +197,7 @@ export const getSubjectsDropdown = async (req, res) => {
 			data
 		});
 	} catch (error) {
-		console.error('Error fetching subjects:', error);
+		// console.error('Error fetching subjects:', error);
 		res.status(500).json({
 			success: false,
 			message: 'Gagal mengambil data mapel',
@@ -218,7 +218,7 @@ export const getTeachersDropdown = async (req, res) => {
 			data
 		});
 	} catch (error) {
-		console.error('Error fetching teachers:', error);
+		// console.error('Error fetching teachers:', error);
 		res.status(500).json({
 			success: false,
 			message: 'Gagal mengambil data guru',
@@ -241,7 +241,7 @@ export const getUnassignedSubjects = async (req, res) => {
 			data
 		});
 	} catch (error) {
-		console.error('Error fetching unassigned subjects:', error);
+		// console.error('Error fetching unassigned subjects:', error);
 		res.status(500).json({
 			success: false,
 			message: 'Gagal mengambil data mapel',

@@ -420,7 +420,7 @@ export const countStudents = async () => {
 };
 
 export const findStudentById = async (id) => {
-	console.log(`[findStudentById] Searching for student ID: ${id}`);
+	// console.log(`[findStudentById] Searching for student ID: ${id}`);
 
 	const student = await db.select().from(studentTable).where(eq(studentTable.id, id)).get();
 

@@ -40,7 +40,7 @@
 			classCount = 32;
 
 			// 5. Fetch Attendance (Placeholder for now)
-			attendanceRate = 92.5;
+			attendanceRate = 1;
 		} catch (err) {
 			console.error('Dashboard fetch error:', err);
 		} finally {
@@ -96,7 +96,7 @@
 			{loading}
 			icon={classIcon}
 			iconBg="bg-green-100"
-			subtext="24 Active"
+			// subtext="24 Active"
 		/>
 
 		<!-- Card 4: Attendance -->
@@ -106,7 +106,7 @@
 			{loading}
 			icon={attendanceIcon}
 			iconBg="bg-orange-100"
-			change="92%"
+			change="0%"
 			changeColor="text-green-600"
 		/>
 	</div>

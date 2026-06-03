@@ -14,7 +14,7 @@ const viewedThisSession = new Set();
 setInterval(
 	() => {
 		viewedThisSession.clear();
-		console.log('🔄 Audit view cache cleared');
+		// console.log('🔄 Audit view cache cleared');
 	},
 	30 * 60 * 1000
 );
@@ -29,9 +29,12 @@ export const auditLog = async (req, res, next) => {
 
 	res.json = function (data) {
 		if (res.statusCode >= 200 && res.statusCode < 300) {
-			saveAuditLog(req, res, data).catch((err) => {
-				console.error('❌ Audit log failed:', err);
-			});
+			saveAuditLog(req, res, data)
+				.catch
+				// 	(err) => {
+				// 	console.error('❌ Audit log failed:', err);
+				// }
+				();
 		}
 		return originalJson(data);
 	};
@@ -72,8 +75,9 @@ async function saveAuditLog(req, res, responseData) {
 						userId = decoded.username;
 					}
 				}
-			} catch (e) {
-				console.log('⚠️ Audit Log: Failed to decode token:', e.message);
+			} catch {
+				// (error)
+				// console.log('⚠️ Audit Log: Failed to decode token:', error.message);
 			}
 		}
 
@@ -115,9 +119,10 @@ async function saveAuditLog(req, res, responseData) {
 		};
 
 		await db.insert(auditTable).values(auditEntry);
-		console.log(`📝 Audit: [${userId}] ${action} -> ${target || 'General'}`);
-	} catch (error) {
-		console.error('❌ Failed to save audit log:', error);
+		// console.log(`📝 Audit: [${userId}] ${action} -> ${target || 'General'}`);
+	} catch {
+		// (error)
+		// console.error('❌ Failed to save audit log:', error);
 	}
 }
 

@@ -29,7 +29,7 @@ export const login = async (req, res) => {
 			user: result.user
 		});
 	} catch (error) {
-		console.error('Login controller error:', error);
+		// console.error('Login controller error:', error);
 		return res.status(500).json({
 			success: false,
 			message: 'Internal server error'
@@ -46,7 +46,7 @@ export const logout = async (req, res) => {
 			message: 'Logout successful'
 		});
 	} catch (error) {
-		console.error('Logout controller error:', error);
+		// console.error('Logout controller error:', error);
 		return res.status(500).json({
 			success: false,
 			message: 'Internal server error'
@@ -97,7 +97,7 @@ export const changePassword = async (req, res) => {
 
 		return res.status(200).json({ success: true, message: 'Password changed successfully' });
 	} catch (error) {
-		console.error('Change password controller error:', error);
+		// console.error('Change password controller error:', error);
 		return res.status(500).json({
 			success: false,
 			message: 'Internal server error'
@@ -121,7 +121,7 @@ export const getSelfrec = async (req, res) => {
 			user: req.user
 		});
 	} catch (error) {
-		console.error('Get profile error:', error);
+		// console.error('Get profile error:', error);
 		return res.status(500).json({
 			success: false,
 			message: 'Internal server error'

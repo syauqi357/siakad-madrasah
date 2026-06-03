@@ -8,7 +8,7 @@ export const getAll = (req, res) => {
 		const years = academicYearService.getAllAcademicYears();
 		res.json({ success: true, data: years });
 	} catch (error) {
-		console.error('Error getting academic years:', error);
+		// console.error('Error getting academic years:', error);
 		res.status(500).json({ success: false, message: error.message });
 	}
 };
@@ -21,7 +21,7 @@ export const getLite = (req, res) => {
 		const years = academicYearService.getAcademicYearsLite();
 		res.json({ success: true, data: years });
 	} catch (error) {
-		console.error('Error getting academic years lite:', error);
+		// console.error('Error getting academic years lite:', error);
 		res.status(500).json({ success: false, message: error.message });
 	}
 };
@@ -37,7 +37,7 @@ export const getActive = (req, res) => {
 		}
 		res.json({ success: true, data: year });
 	} catch (error) {
-		console.error('Error getting active academic year:', error);
+		// console.error('Error getting active academic year:', error);
 		res.status(500).json({ success: false, message: error.message });
 	}
 };
@@ -56,7 +56,7 @@ export const getById = (req, res) => {
 
 		res.json({ success: true, data: year });
 	} catch (error) {
-		console.error('Error getting academic year:', error);
+		// console.error('Error getting academic year:', error);
 		res.status(500).json({ success: false, message: error.message });
 	}
 };
@@ -83,7 +83,7 @@ export const create = (req, res) => {
 
 		res.status(201).json({ success: true, message: 'Tahun ajaran berhasil dibuat', data: created });
 	} catch (error) {
-		console.error('Error creating academic year:', error);
+		// console.error('Error creating academic year:', error);
 		res.status(500).json({ success: false, message: error.message });
 	}
 };
@@ -102,7 +102,7 @@ export const update = (req, res) => {
 
 		res.json({ success: true, message: 'Tahun ajaran berhasil diupdate', data: updated });
 	} catch (error) {
-		console.error('Error updating academic year:', error);
+		// console.error('Error updating academic year:', error);
 		res.status(500).json({ success: false, message: error.message });
 	}
 };
@@ -121,7 +121,7 @@ export const remove = (req, res) => {
 
 		res.json({ success: true, message: 'Tahun ajaran berhasil dihapus' });
 	} catch (error) {
-		console.error('Error deleting academic year:', error);
+		// console.error('Error deleting academic year:', error);
 		res.status(500).json({ success: false, message: error.message });
 	}
 };

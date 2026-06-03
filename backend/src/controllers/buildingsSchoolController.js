@@ -15,8 +15,8 @@ export const getAll = async (req, res) => {
 		const buildings = await getAllBuildings();
 		res.json(buildings);
 	} catch (error) {
-		console.error('Error fetching buildings:', error);
-		res.status(500).json({ error: 'Failed to fetch buildings data' });
+		// console.error('Error fetching buildings:', error);
+		res.status(500).json({ error: 'Failed to fetch buildings data' `${error}` });
 	}
 };
 
@@ -31,8 +31,8 @@ export const getByCategory = async (req, res) => {
 		const buildings = await getBuildingsByCategory(categoryId);
 		res.json(buildings);
 	} catch (error) {
-		console.error('Error fetching buildings by category:', error);
-		res.status(500).json({ error: 'Failed to fetch buildings by category' });
+		// console.error('Error fetching buildings by category:', error);
+		res.status(500).json({ error: 'Failed to fetch buildings by category' `${error}` });
 	}
 };
 
@@ -49,8 +49,8 @@ export const getBySubcategory = async (req, res) => {
 		const buildings = await getBuildingsBySubcategory(categoryId, subcategory);
 		res.json(buildings);
 	} catch (error) {
-		console.error('Error fetching buildings by subcategory:', error);
-		res.status(500).json({ error: 'Failed to fetch buildings by subcategory' });
+		// console.error('Error fetching buildings by subcategory:', error);
+		res.status(500).json({ error: 'Failed to fetch buildings by subcategory' `${error}` });
 	}
 };
 
@@ -69,8 +69,8 @@ export const getById = async (req, res) => {
 
 		res.json(building);
 	} catch (error) {
-		console.error('Error fetching building:', error);
-		res.status(500).json({ error: 'Failed to fetch building' });
+		// console.error('Error fetching building:', error);
+		res.status(500).json({ error: 'Failed to fetch building' `${error}` });
 	}
 };
 
@@ -85,8 +85,8 @@ export const getFacilities = async (req, res) => {
 		const facilities = await getFacilitiesByBuildingId(id);
 		res.json(facilities);
 	} catch (error) {
-		console.error('Error fetching building facilities:', error);
-		res.status(500).json({ error: 'Failed to fetch building facilities' });
+		// console.error('Error fetching building facilities:', error);
+		res.status(500).json({ error: 'Failed to fetch building facilities' `${error}` });
 	}
 };
 
@@ -116,8 +116,8 @@ export const create = async (req, res) => {
 			data: newBuilding
 		});
 	} catch (error) {
-		console.error('Error creating building:', error);
-		res.status(500).json({ error: 'Failed to create building asset' });
+		// console.error('Error creating building:', error);
+		res.status(500).json({ error: 'Failed to create building asset' `${error}` });
 	}
 };
 
@@ -140,8 +140,8 @@ export const update = async (req, res) => {
 			data: updatedBuilding
 		});
 	} catch (error) {
-		console.error('Error updating building:', error);
-		res.status(500).json({ error: 'Failed to update building asset' });
+		// console.error('Error updating building:', error);
+		res.status(500).json({ error: 'Failed to update building asset' `${error}` });
 	}
 };
 
@@ -164,7 +164,7 @@ export const remove = async (req, res) => {
 			data: deletedBuilding
 		});
 	} catch (error) {
-		console.error('Error deleting building:', error);
-		res.status(500).json({ error: 'Failed to delete building asset' });
+		// console.error('Error deleting building:', error);
+		res.status(500).json({ error: 'Failed to delete building asset' `${error}` });
 	}
 };

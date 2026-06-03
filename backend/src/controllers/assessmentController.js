@@ -23,7 +23,7 @@ export const getAllAssessmentTypes = async (req, res) => {
 			}
 		});
 	} catch (error) {
-		console.error('Error fetching assessment types:', error);
+		// console.error('Error fetching assessment types:', error);
 		res.status(500).json({ message: 'Error fetching assessment types', error: error.message });
 	}
 };
@@ -37,7 +37,7 @@ export const getAssessmentTypesLite = async (req, res) => {
 		const types = await assessmentService.getAssessmentTypesLite();
 		res.status(200).json(types);
 	} catch (error) {
-		console.error('Error fetching assessment types:', error);
+		// console.error('Error fetching assessment types:', error);
 		res.status(500).json({ message: 'Error fetching assessment types', error: error.message });
 	}
 };
@@ -51,7 +51,7 @@ export const getAssessmentTypeStats = async (req, res) => {
 		const stats = await assessmentService.getAssessmentTypeStats();
 		res.status(200).json(stats);
 	} catch (error) {
-		console.error('Error fetching assessment stats:', error);
+		// console.error('Error fetching assessment stats:', error);
 		res.status(500).json({ message: 'Error fetching stats', error: error.message });
 	}
 };
@@ -71,7 +71,7 @@ export const getAssessmentTypeById = async (req, res) => {
 
 		res.status(200).json(type);
 	} catch (error) {
-		console.error('Error fetching assessment type:', error);
+		// console.error('Error fetching assessment type:', error);
 		res.status(500).json({ message: 'Error fetching assessment type', error: error.message });
 	}
 };
@@ -101,7 +101,7 @@ export const createAssessmentType = async (req, res) => {
 			data: newType
 		});
 	} catch (error) {
-		console.error('Error creating assessment type:', error);
+		// console.error('Error creating assessment type:', error);
 		res.status(500).json({ message: error.message });
 	}
 };
@@ -140,7 +140,7 @@ export const updateAssessmentType = async (req, res) => {
 			data: updated
 		});
 	} catch (error) {
-		console.error('Error updating assessment type:', error);
+		// console.error('Error updating assessment type:', error);
 		res.status(500).json({ message: error.message });
 	}
 };
@@ -163,7 +163,7 @@ export const toggleAssessmentTypeStatus = async (req, res) => {
 			data: updated
 		});
 	} catch (error) {
-		console.error('Error toggling assessment type:', error);
+		// console.error('Error toggling assessment type:', error);
 		res.status(500).json({ message: error.message });
 	}
 };
@@ -191,7 +191,7 @@ export const deleteAssessmentType = async (req, res) => {
 			message: 'Jenis penilaian berhasil dihapus'
 		});
 	} catch (error) {
-		console.error('Error deleting assessment type:', error);
+		// console.error('Error deleting assessment type:', error);
 		res.status(500).json({ message: error.message });
 	}
 };
