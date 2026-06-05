@@ -81,7 +81,7 @@
 				</div>
 				<div>
 					<p class="text-sm font-medium text-slate-800">Versi Sistem</p>
-					<p class="mt-0.5 text-xs text-slate-400">SIAKAD Madrasah v1.0</p>
+					<p class="mt-0.5 text-xs text-slate-400">SIAKAD Madrasah v1.2.2</p>
 					<p
 						class="mt-1 inline-block rounded-md bg-emerald-50 px-2 py-0.5 text-[10px] font-medium text-emerald-600"
 					>
