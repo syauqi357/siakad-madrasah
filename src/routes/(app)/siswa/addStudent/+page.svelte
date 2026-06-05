@@ -1,6 +1,6 @@
 <script lang="ts">
 	import PhoneInput from '$lib/components/input/PhoneInput.svelte';
-	import ParentBiodata from '$lib/components/layout/parentBiodata.svelte';
+	import ParentBiodata from '$lib/components/features/student/ParentBiodata.svelte';
 	import Arrow_Left from '$lib/components/icons/arrow_left.svelte';
 	import ModalAlert from '$lib/components/modal/modalalert.svelte';
 	import { goto } from '$app/navigation';
@@ -149,7 +149,36 @@
 		showAlert = false;
 	}
 
+	const validateForm = () => {
+		// Student Tab Validation
+		if (!formData.studentName.trim())
+			return { valid: false, message: 'Nama Lengkap Siswa wajib diisi', tab: 'student' };
+		if (!formData.nisn.trim()) return { valid: false, message: 'NISN wajib diisi', tab: 'student' };
+		if (!formData.gender) return { valid: false, message: 'Jenis Kelamin wajib dipilih', tab: 'student' };
+		if (!formData.birthPlace.trim())
+			return { valid: false, message: 'Tempat Lahir wajib diisi', tab: 'student' };
+		if (!formData.birthDate) return { valid: false, message: 'Tanggal Lahir wajib diisi', tab: 'student' };
+		if (!formData.religion) return { valid: false, message: 'Agama wajib dipilih', tab: 'student' };
+
+		// Parents Tab Validation
+		if (!formData.father.name.trim())
+			return { valid: false, message: 'Nama Ayah wajib diisi', tab: 'parents' };
+		if (!formData.mother.name.trim())
+			return { valid: false, message: 'Nama Ibu wajib diisi', tab: 'parents' };
+
+		return { valid: true };
+	};
+
 	const handleSubmit = async () => {
+		const validation = validateForm();
+		if (!validation.valid) {
+			activeTab = validation.tab || 'student';
+			alertType = 'warning';
+			alertMessage = validation.message || 'Harap lengkapi data yang wajib diisi';
+			showAlert = true;
+			return;
+		}
+
 		isLoading = true;
 		errorMessage = '';
 
@@ -161,7 +190,7 @@
 			}
 
 			// Construct Payload
-			const payload = {
+			const studentPayload = {
 				...formData,
 				gender: genderPayload,
 				father: {
@@ -178,7 +207,7 @@
 			// API Call
 			const response = await API_FETCH('/routes/api/students', {
 				method: 'POST',
-				body: JSON.stringify(payload)
+				body: JSON.stringify(studentPayload)
 			});
 
 			if (response.ok) {
@@ -376,7 +405,7 @@
 								<label
 									for="studentName"
 									class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-100 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
-									>Nama Lengkap Siswa</label
+									>Nama Lengkap Siswa <span class="text-red-500">*</span></label
 								>
 							</div>
 
@@ -393,7 +422,7 @@
 								<label
 									for="nisn"
 									class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-100 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
-									>NISN</label
+									>NISN <span class="text-red-500">*</span></label
 								>
 							</div>
 
@@ -460,7 +489,7 @@
 								<label
 									for="birthPlace"
 									class="absolute top-2.5 left-2.5 z-10 cursor-text bg-white px-1 text-sm text-slate-400 transition-all duration-100 peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400"
-									>Tempat Lahir</label
+									>Tempat Lahir <span class="text-red-500">*</span></label
 								>
 							</div>
 
@@ -475,13 +504,13 @@
 								<label
 									for="birthDate"
 									class="absolute -top-2 left-2.5 z-10 cursor-text bg-white px-1 text-xs text-slate-400 transition-all duration-100 peer-focus:text-blue-500"
-									>Tanggal Lahir</label
+									>Tanggal Lahir <span class="text-red-500">*</span></label
 								>
 							</div>
 
 							<!-- Jenis Kelamin (Radio) -->
 							<div class="md:col-span-2">
-								<span class="mb-2 block text-sm text-slate-500">Jenis Kelamin</span>
+								<span class="mb-2 block text-sm text-slate-500">Jenis Kelamin <span class="text-red-500">*</span></span>
 								<div class="flex gap-4">
 									<label
 										class="flex cursor-pointer items-center gap-2 rounded-lg border border-slate-200 px-4 py-3 transition-colors hover:bg-slate-50 has-checked:border-blue-500 has-checked:bg-blue-50 has-checked:text-blue-700"
@@ -544,7 +573,7 @@
 								<label
 									for="religion"
 									class="absolute -top-2 left-2.5 z-10 cursor-text bg-white px-1 text-xs text-slate-400 transition-all duration-100 peer-focus:text-blue-500"
-									>Agama</label
+									>Agama <span class="text-red-500">*</span></label
 								>
 							</div>
 

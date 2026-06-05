@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import ChangePassword from '$lib/components/layout/credentialsLayout/changePassword.svelte';
-	import ChangeUsername from '$lib/components/layout/credentialsLayout/changeUsername.svelte';
+	import ChangePassword from '$lib/components/features/profile/ChangePassword.svelte';
+	import ChangeUsername from '$lib/components/features/profile/ChangeUsername.svelte';
 	import { API_FETCH } from '$lib/api';
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -12,8 +12,8 @@
 			// Fetch user profile to trigger audit log "Viewed Auth Me"
 			const response = await API_FETCH('/api/auth/me');
 			if (response.ok) {
-				const data = await response.json();
-				userProfile = data.user;
+				const userProfileData = await response.json();
+				userProfile = userProfileData.user;
 			}
 		} catch (error) {
 			console.error('Failed to fetch profile:', error);

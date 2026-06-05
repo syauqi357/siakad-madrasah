@@ -1,5 +1,5 @@
 <script lang="ts">
-	import PendingScreen from '$lib/components/layout/pendingscreen.svelte';
+	import PendingScreen from '$lib/components/ui/PendingScreen.svelte';
 </script>
 
 <PendingScreen

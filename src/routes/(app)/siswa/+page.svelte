@@ -7,7 +7,7 @@
 	import UploadIcon from '$lib/components/icons/uploadIcon.svelte';
 	import DownloadIcon from '$lib/components/icons/downloadIcon.svelte';
 	import Arrow_up from '$lib/components/icons/arrow_up.svelte';
-	import UploadExcel from '$lib/components/layout/upload/uploadExcel.svelte';
+	import UploadExcel from '$lib/components/features/upload/UploadExcel.svelte';
 	import ModalAlert from '$lib/components/modal/modalalert.svelte';
 
 	// Updated Student Type

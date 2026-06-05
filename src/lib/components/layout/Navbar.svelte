@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { API_FETCH } from '$lib/api';
-	import NavigationScreen from './navigationScreen.svelte';
+	import NavigationScreen from '$lib/components/features/navigation/NavigationScreen.svelte';
 	import logo from '$lib/assets/siakadLogo.svg';
 	import { goto } from '$app/navigation';
 
@@ -47,8 +47,8 @@
 			};
 
 			loading = false;
-		} catch (err) {
-			console.error('Failed to fetch school data:', err);
+		} catch (error) {
+			console.error('Failed to fetch school data:', error);
 			error = true;
 			loading = false;
 		}

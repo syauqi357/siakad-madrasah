@@ -61,9 +61,9 @@
 	}
 
 	function scrollToHeading(id: string) {
-		const el = document.getElementById(id);
-		if (el) {
-			el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+		const element = document.getElementById(id);
+		if (element) {
+			element.scrollIntoView({ behavior: 'smooth', block: 'start' });
 			activeHeading = id;
 		}
 	}

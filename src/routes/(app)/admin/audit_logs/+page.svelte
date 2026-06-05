@@ -1,5 +1,5 @@
 <script lang="ts">
-	import AuditLogsRouter from '$lib/components/layout/auditLogs.svelte';
+	import AuditLogsRouter from '$lib/components/features/audit/AuditLogs.svelte';
 </script>
 
 <!-- Header Section -->

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import EyeIcon from '$lib/components/icons/EyeIcon.svelte';
 	import { API_FETCH } from '$lib/api.ts';
-	import PassIndicatorStrength from '$lib/components/layout/credentialsLayout/passIndicatorStrength.svelte';
+	import PassIndicatorStrength from './PassIndicatorStrength.svelte';
 
 	let currentPassword = '';
 	let newPassword = '';
@@ -55,15 +55,15 @@
 				})
 			});
 
-			const data = await response.json();
+			const changePasswordResponse = await response.json();
 
-			if (data.success) {
-				successMessage = data.message;
+			if (changePasswordResponse.success) {
+				successMessage = changePasswordResponse.message;
 				currentPassword = '';
 				newPassword = '';
 				confirmPassword = '';
 			} else {
-				errorMessage = data.message;
+				errorMessage = changePasswordResponse.message;
 			}
 		} catch (error) {
 			console.error('Change password error:', error);

@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import PhoneInput from '$lib/components/input/PhoneInput.svelte';
-	import ParentBiodata from '$lib/components/layout/parentBiodata.svelte';
+	import ParentBiodata from '$lib/components/features/student/ParentBiodata.svelte';
 	import Arrow_Left from '$lib/components/icons/arrow_left.svelte';
 	import ModalAlert from '$lib/components/modal/modalalert.svelte';
 	import { goto } from '$app/navigation';

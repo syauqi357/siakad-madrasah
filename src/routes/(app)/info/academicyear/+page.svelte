@@ -85,11 +85,11 @@
 		error = '';
 		try {
 			const response = await API_FETCH('/routes/api/academic-years');
-			const data = await response.json();
-			if (data.success) {
-				academicYears = data.data;
+			const academicYearsData = await response.json();
+			if (academicYearsData.success) {
+				academicYears = academicYearsData.data;
 			} else {
-				showAlertModal('error', data.message || 'Gagal memuat data');
+				showAlertModal('error', academicYearsData.message || 'Gagal memuat data');
 			}
 		} catch (err) {
 			showAlertModal('error', 'Gagal terhubung ke server');

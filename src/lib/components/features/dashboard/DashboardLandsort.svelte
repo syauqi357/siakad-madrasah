@@ -19,15 +19,15 @@
 			// 1. Fetch School Data
 			const schoolRes = await API_FETCH('/routes/api/schoolData');
 			if (schoolRes.ok) {
-				const data = await schoolRes.json();
-				schoolName = data.name;
+				const schoolData = await schoolRes.json();
+				schoolName = schoolData.name;
 			}
 
 			// 2. Fetch Student Count
 			const studentRes = await API_FETCH('/routes/api/studentDataSet/count');
 			if (studentRes.ok) {
-				const data = await studentRes.json();
-				studentCount = data.count;
+				const studentData = await studentRes.json();
+				studentCount = studentData.count;
 			}
 
 			const teacherResCount = await API_FETCH('/routes/api/teachers/count');
@@ -41,8 +41,8 @@
 
 			// 5. Fetch Attendance (Placeholder for now)
 			attendanceRate = 1;
-		} catch (err) {
-			console.error('Dashboard fetch error:', err);
+		} catch (error) {
+			console.error('Dashboard fetch error:', error);
 		} finally {
 			loading = false;
 		}

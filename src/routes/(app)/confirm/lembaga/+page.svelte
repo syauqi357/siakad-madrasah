@@ -27,7 +27,7 @@
 	// State
 	let schoolData: SchoolData | null = null;
 	let loading = true;
-	let error = false;
+	let hasError = false;
 
 	onMount(async () => {
 		try {
@@ -51,9 +51,9 @@
 			};
 
 			loading = false;
-		} catch (err) {
-			console.error('Failed to fetch school data:', err);
-			error = true;
+		} catch (error) {
+			console.error('Failed to fetch school data:', error);
+			hasError = true;
 			loading = false;
 		}
 	});
@@ -104,7 +104,7 @@
 				</div>
 				<p class="mt-4 text-sm font-medium text-slate-500">Memuat data...</p>
 			</div>
-		{:else if error}
+		{:else if hasError}
 			<div class="flex flex-col items-center justify-center py-24 text-center print:hidden">
 				<div class="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-red-100">
 					<svg class="h-8 w-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">

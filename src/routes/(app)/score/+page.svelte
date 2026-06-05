@@ -59,31 +59,31 @@
 
 	async function fetchRombels() {
 		try {
-			const res = await API_FETCH('/routes/api/rombel');
-			const data = await res.json();
-			rombels = data.data || [];
-		} catch (err) {
-			console.error('Failed to fetch rombels:', err);
+			const response = await API_FETCH('/routes/api/rombel');
+			const rombelData = await response.json();
+			rombels = rombelData.data || [];
+		} catch (error) {
+			console.error('Failed to fetch rombels:', error);
 		}
 	}
 
 	async function fetchAssessmentTypes() {
 		try {
-			const res = await API_FETCH('/routes/api/assessment-types/lite');
-			const data = await res.json();
-			assessmentTypes = data || [];
-		} catch (err) {
-			console.error('Failed to fetch assessment types:', err);
+			const response = await API_FETCH('/routes/api/assessment-types/lite');
+			const assessmentTypeData = await response.json();
+			assessmentTypes = assessmentTypeData || [];
+		} catch (error) {
+			console.error('Failed to fetch assessment types:', error);
 		}
 	}
 
 	async function fetchClassSubjects() {
 		try {
-			const res = await API_FETCH('/routes/api/score/class-subjects');
-			const data = await res.json();
-			classSubjects = data.data || [];
-		} catch (err) {
-			console.error('Failed to fetch class subjects:', err);
+			const response = await API_FETCH('/routes/api/score/class-subjects');
+			const classSubjectData = await response.json();
+			classSubjects = classSubjectData.data || [];
+		} catch (error) {
+			console.error('Failed to fetch class subjects:', error);
 		}
 	}
 
@@ -93,11 +93,11 @@
 		selectedSubjectId = null;
 
 		try {
-			const res = await API_FETCH(`/routes/api/score/subjects/${rombelId}`);
-			const data = await res.json();
-			subjects = data.data || [];
-		} catch (err) {
-			console.error('Failed to fetch subjects:', err);
+			const response = await API_FETCH(`/routes/api/score/subjects/${rombelId}`);
+			const subjectData = await response.json();
+			subjects = subjectData.data || [];
+		} catch (error) {
+			console.error('Failed to fetch subjects:', error);
 		} finally {
 			isLoading = false;
 		}
@@ -131,21 +131,21 @@
 		}
 
 		try {
-			const res = await fetch(url, {
+			const response = await fetch(url, {
 				headers: {
 					Authorization: `Bearer ${localStorage.getItem('token')}`
 				}
 			});
 
-			const contentType = res.headers.get('content-type');
+			const contentType = response.headers.get('content-type');
 
 			if (contentType?.includes('application/json')) {
-				const data = await res.json();
+				const data = await response.json();
 				modalType = 'error';
 				modalMessage = data.message || 'Gagal mengunduh template';
 				showModal = true;
 			} else {
-				const blob = await res.blob();
+				const blob = await response.blob();
 				const downloadUrl = window.URL.createObjectURL(blob);
 				const a = document.createElement('a');
 				a.href = downloadUrl;
@@ -159,8 +159,8 @@
 				modalMessage = 'Template berhasil diunduh';
 				showModal = true;
 			}
-		} catch (err) {
-			console.error('Download error:', err);
+		} catch (error) {
+			console.error('Download error:', error);
 			modalType = 'error';
 			modalMessage = 'Terjadi kesalahan saat mengunduh template';
 			showModal = true;
@@ -195,7 +195,7 @@
 			formData.append('classSubjectId', selectedClassSubjectId.toString());
 			formData.append('assessmentTypeId', selectedAssessmentTypeId.toString());
 
-			const res = await fetch(`${BACKEND_URL}/routes/api/score/upload`, {
+			const response = await fetch(`${BACKEND_URL}/routes/api/score/upload`, {
 				method: 'POST',
 				body: formData,
 				headers: {
@@ -203,7 +203,7 @@
 				}
 			});
 
-			const data = await res.json();
+			const data = await response.json();
 
 			if (data.success) {
 				showMessage(data.message, 'success');
@@ -214,16 +214,16 @@
 			} else {
 				showMessage(data.message || 'Upload gagal', 'error');
 			}
-		} catch (err) {
-			console.error('Upload error:', err);
+		} catch (error) {
+			console.error('Upload error:', error);
 			showMessage('Terjadi kesalahan saat upload', 'error');
 		} finally {
 			isUploading = false;
 		}
 	}
 
-	function showMessage(msg: string, type: 'success' | 'error') {
-		message = msg;
+	function showMessage(messageText: string, type: 'success' | 'error') {
+		message = messageText;
 		messageType = type;
 		setTimeout(() => {
 			message = '';
@@ -557,11 +557,11 @@
 							</tr>
 						</thead>
 						<tbody class="divide-y divide-slate-100">
-							{#each uploadErrors as err}
+							{#each uploadErrors as error}
 								<tr class="hover:bg-slate-50">
-									<td class="px-4 py-2.5 font-mono text-slate-600">{err.row}</td>
-									<td class="px-4 py-2.5 font-mono text-slate-600">{err.nisn}</td>
-									<td class="px-4 py-2.5 text-red-600">{err.error}</td>
+									<td class="px-4 py-2.5 font-mono text-slate-600">{error.row}</td>
+									<td class="px-4 py-2.5 font-mono text-slate-600">{error.nisn}</td>
+									<td class="px-4 py-2.5 text-red-600">{error.error}</td>
 								</tr>
 							{/each}
 						</tbody>

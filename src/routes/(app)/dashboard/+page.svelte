@@ -1,8 +1,8 @@
 <script lang="ts">
-	import SchoolProperties from '$lib/components/layout/dashboard/schoolProperties.svelte';
-	import DashboardLandsort from '$lib/components/layout/dashboard/DashboardLandsort.svelte';
-	import CalendarLayout from '$lib/components/layout/calendar/calendarLayout.svelte';
-	import NavigationCards from '$lib/components/layout/dashboard/NavigationCards.svelte';
+	import SchoolProperties from '$lib/components/features/dashboard/SchoolProperties.svelte';
+	import DashboardLandsort from '$lib/components/features/dashboard/DashboardLandsort.svelte';
+	import CalendarLayout from '$lib/components/features/dashboard/Calendar.svelte';
+	import NavigationCards from '$lib/components/features/dashboard/NavigationCards.svelte';
 	import { onMount } from 'svelte';
 	import type { User } from '$lib/types/navigation';
 

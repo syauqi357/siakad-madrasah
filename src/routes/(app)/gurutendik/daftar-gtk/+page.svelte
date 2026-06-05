@@ -55,9 +55,9 @@
 	async function fetchTeachers() {
 		loadingTeachers = true;
 		try {
-			const res = await API_FETCH('/routes/api/teachers');
-			if (res.ok) {
-				const data = await res.json();
+			const response = await API_FETCH('/routes/api/teachers');
+			if (response.ok) {
+				const data = await response.json();
 				teachers = data.data || data;
 			}
 		} catch (e) {
@@ -78,22 +78,22 @@
 		isLoading = true;
 
 		try {
-			let res;
+			let response;
 			if (isEditing && editingId) {
 				// Update existing teacher
-				res = await API_FETCH(`/routes/api/teachers/${editingId}`, {
+				response = await API_FETCH(`/routes/api/teachers/${editingId}`, {
 					method: 'PUT',
 					body: JSON.stringify(formData)
 				});
 			} else {
 				// Create new teacher
-				res = await API_FETCH('/routes/api/teachers', {
+				response = await API_FETCH('/routes/api/teachers', {
 					method: 'POST',
 					body: JSON.stringify(formData)
 				});
 			}
 
-			if (res.ok) {
+			if (response.ok) {
 				alertType = 'success';
 				alertMessage = isEditing
 					? 'Data guru berhasil diperbarui!'
@@ -103,7 +103,7 @@
 				activeTab = 'list';
 				fetchTeachers();
 			} else {
-				const result = await res.json();
+				const result = await response.json();
 				alertType = 'error';
 				alertMessage = result.message || 'Gagal menyimpan data';
 				showAlert = true;
@@ -159,11 +159,11 @@
 		if (!deleteTargetId) return;
 
 		try {
-			const res = await API_FETCH(`/routes/api/teachers/${deleteTargetId}`, {
+			const response = await API_FETCH(`/routes/api/teachers/${deleteTargetId}`, {
 				method: 'DELETE'
 			});
 
-			if (res.ok) {
+			if (response.ok) {
 				alertType = 'success';
 				alertMessage = 'Data guru berhasil dihapus';
 				showAlert = true;

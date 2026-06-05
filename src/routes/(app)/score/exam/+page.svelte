@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { API_FETCH } from '$lib/api';
-	import StudentScoreTable from '$lib/components/layout/studentScoreTable.svelte';
+	import StudentScoreTable from '$lib/components/features/scores/StudentScoreTable.svelte';
 	import { goto } from '$app/navigation';
 	import ModalAlert from '$lib/components/modal/modalalert.svelte';
 

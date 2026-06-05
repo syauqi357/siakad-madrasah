@@ -164,11 +164,11 @@
 	}
 
 	function showModalAlert(
-		msg: string,
+		message: string,
 		type: 'success' | 'error' | 'warning' | 'info' = 'warning',
 		options?: { showCancel?: boolean; confirmText?: string; onConfirm?: () => void }
 	) {
-		alertMessage = msg;
+		alertMessage = message;
 		alertType = type;
 		alertShowCancel = options?.showCancel ?? false;
 		alertConfirmText = options?.confirmText ?? 'OK';

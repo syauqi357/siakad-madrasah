@@ -43,8 +43,8 @@
 					graduationYear = activeYear.name;
 				}
 			}
-		} catch (err) {
-			console.error('Error fetching academic years:', err);
+		} catch (error) {
+			console.error('Error fetching academic years:', error);
 			// Fallback to generated years if API fails
 			yearOptions = generateFallbackYears();
 		} finally {
