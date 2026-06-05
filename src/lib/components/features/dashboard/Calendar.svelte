@@ -43,8 +43,8 @@
 
 		// Previous month's days
 		const prevMonthLastDay = new Date(year, month, 0).getDate();
-		for (let i = firstDayOfWeek - 1; i >= 0; i--) {
-			const day = prevMonthLastDay - i;
+		for (let indexNumber = firstDayOfWeek - 1; indexNumber >= 0; indexNumber--) {
+			const day = prevMonthLastDay - indexNumber;
 			const date = new Date(year, month - 1, day);
 			calendarDays.push({
 				day,

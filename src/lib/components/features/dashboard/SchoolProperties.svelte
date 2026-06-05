@@ -46,13 +46,13 @@
 
 	async function fetchFacilities(): Promise<FacilitiesData> {
 		try {
-			const response = await API_FETCH('/routes/api/schoolData');
+			const SchoolFacilitiesResponseFetchData = await API_FETCH('/routes/api/schoolData');
 
-			if (!response.ok) {
-				throw new Error(`HTTP error! status: ${response.status}`);
+			if (!SchoolFacilitiesResponseFetchData.ok) {
+				throw new Error(`HTTP error! status: ${SchoolFacilitiesResponseFetchData.status}`);
 			}
 
-			const fetchedData = await response.json();
+			const fetchedData = await SchoolFacilitiesResponseFetchData.json();
 
 			return {
 				aset: fetchedData.aset || [],

@@ -31,13 +31,13 @@
 
 	onMount(async () => {
 		try {
-			const response = await fetch(`${apiUrl}/routes/api/schoolData`);
+			const GetConfirmationsResponse = await fetch(`${apiUrl}/routes/api/schoolData`);
 
-			if (!response.ok) {
-				throw new Error(`HTTP error! status: ${response.status}`);
+			if (!GetConfirmationsResponse.ok) {
+				throw new Error(`HTTP error! status: ${GetConfirmationsResponse.status}`);
 			}
 
-			const fetchedData = await response.json();
+			const fetchedData = await GetConfirmationsResponse.json();
 
 			schoolData = {
 				name: fetchedData.name || '',

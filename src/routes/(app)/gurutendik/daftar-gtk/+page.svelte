@@ -173,7 +173,7 @@
 				alertMessage = 'Gagal menghapus data';
 				showAlert = true;
 			}
-		} catch (e) {
+		} catch (error) {
 			alertType = 'error';
 			alertMessage = 'Terjadi kesalahan';
 			showAlert = true;

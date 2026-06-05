@@ -206,11 +206,9 @@
 					</button>
 					<button
 						type="submit"
-						class="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 focus:outline-none"
+						class="inline-flex items-center gap-2 rounded-lg ease-in-out transition-all bg-blue-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 focus:outline-none"
 					>
-						<div class="text-white">
-							<UploadIcon />
-						</div>
+						<UploadIcon />
 						Upload
 					</button>
 				</div>

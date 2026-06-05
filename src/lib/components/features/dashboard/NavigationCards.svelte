@@ -18,9 +18,9 @@
 <div class="space-y-6">
 	<h2 class="text-lg font-bold text-slate-900">Akses Cepat</h2>
 
-	{#each navigationCategories as category, ci}
+	{#each navigationCategories as category, colorInterface}
 		{@const colors = colorClasses[category.color] || colorClasses.blue}
-		<div in:fade={{ duration: 200, delay: 100 * ci }}>
+		<div in:fade={{ duration: 200, delay: 100 * colorInterface }}>
 			<div class="mb-3 flex items-center gap-2">
 				<span class="h-2 w-2 rounded-full {colors.dot}"></span>
 				<p class="text-xs font-semibold tracking-wider text-slate-500 uppercase">
@@ -30,7 +30,7 @@
 
 			<div class="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-4">
 				{#each category.items as item, i}
-					<div in:fly={{ y: 12, duration: 250, delay: 100 * ci + 50 * i, easing: quintOut }}>
+					<div in:fly={{ y: 12, duration: 250, delay: 100 * colorInterface + 50 * i, easing: quintOut }}>
 						<button
 							on:click={() => navigateTo(item.href)}
 							class="flex w-full items-center gap-3 rounded-lg border border-slate-200 bg-white p-3.5 text-left transition-colors {colors.hover}"

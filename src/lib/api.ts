@@ -1,5 +1,3 @@
-// import { goto } from '$app/navigation';
-
 const API_URL = import.meta.env.VITE_API_URL;
 
 type FetchOptions = Omit<RequestInit, 'headers'> & {
@@ -36,8 +34,6 @@ export async function API_FETCH(endpoint: string, options: FetchOptions = {}) {
 			localStorage.removeItem('token');
 			localStorage.removeItem('user');
 			// Instead of goto, we can redirect via window.location to ensure a full reload and clear state
-			// or let the component handle the redirect if needed.
-			// But for security, clearing storage is key.
 			if (typeof window !== 'undefined') {
 				window.location.href = '/login';
 			}

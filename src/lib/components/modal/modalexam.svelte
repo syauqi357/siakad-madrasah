@@ -1,48 +1,20 @@
-<!--┌─────────────────────────────────────────────┐-->
-<!--* │  Tambah Jenis Penilaian              [✕]   │-->
-<!--* ├─────────────────────────────────────────────┤-->
-<!--* │                                             │-->
-<!--* │  Kode Penilaian *                           │-->
-<!--* │  ┌─────────────────────────────────────┐   │-->
-<!--* │  │ PRAKTIK                             │   │-->
-<!--* │  └─────────────────────────────────────┘   │-->
-<!--* │  Contoh: TUGAS, UH, UTS, UAS               │-->
-<!--* │                                             │-->
-<!--* │  Nama Penilaian *                           │-->
-<!--* │  ┌─────────────────────────────────────┐   │-->
-<!--* │  │ Penilaian Praktik                   │   │-->
-<!--* │  └─────────────────────────────────────┘   │-->
-<!--* │                                             │-->
-<!--* │  Bobot Default (%)                          │-->
-<!--* │  ┌─────────────────────────────────────┐   │-->
-<!--* │  │ 15                                  │   │-->
-<!--* │  └─────────────────────────────────────┘   │-->
-<!--* │  Opsional. Bisa diatur per kelas/mapel.    │-->
-<!--* │                                             │-->
-<!--* ├─────────────────────────────────────────────┤-->
-<!--* │                    [Batal]  [Simpan]        │-->
-<!--* └─────────────────────────────────────────────┘-->
-
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import { fade, scale } from 'svelte/transition';
 
-	/**
-	 * Modal Exam Component
-	 * @prop {boolean} show - Controls visibility of the modal
-	 * @prop {boolean} isEditing - Whether editing or creating new
-	 * @prop {object} data - Form data { code, name, defaultWeight }
-	 * @prop {string} error - Error message to display
-	 * @prop {boolean} loading - Loading state for submit button
-	 * @event submit - Fired when form is submitted
-	 * @event close - Fired when modal is closed
-	 */
+	interface ModalExamProps {
+		show: boolean;
+		isEditing: boolean;
+		data: { code: string; name: string; defaultWeight: string };
+		error: string;
+		loading: boolean;
+	}
 
-	export let show = false;
-	export let isEditing = false;
-	export let data = { code: '', name: '', defaultWeight: '' };
-	export let error = '';
-	export let loading = false;
+	export let show: ModalExamProps['show'] = false;
+	export let isEditing: ModalExamProps['isEditing'] = false;
+	export let data: ModalExamProps['data'] = { code: '', name: '', defaultWeight: '' };
+	export let error: ModalExamProps['error'] = '';
+	export let loading: ModalExamProps['loading'] = false;
 
 	const dispatch = createEventDispatcher();
 
@@ -55,24 +27,22 @@
 		show = false;
 	}
 
-	function handleBackdropClick(e: MouseEvent) {
-		if (e.target === e.currentTarget) {
+	function handleBackdropClick(mouseEvent: MouseEvent) {
+		if (mouseEvent.target === mouseEvent.currentTarget) {
 			handleClose();
 		}
 	}
 </script>
 
 {#if show}
-	<!-- Backdrop -->
 	<div
 		class="fixed inset-0 z-2 flex items-center justify-center bg-black/20 p-4 backdrop-blur-xs"
 		transition:fade={{ duration: 150 }}
 		on:click={handleBackdropClick}
-		on:keydown={(e) => e.key === 'Escape' && handleClose()}
+		on:keydown={(keyboardEvent) => keyboardEvent.key === 'Escape' && handleClose()}
 		tabindex="-1"
 		role="presentation"
 	>
-		<!-- Modal -->
 		<div
 			class="w-full max-w-md rounded-lg bg-white shadow-xl"
 			transition:scale={{ duration: 150, start: 0.95 }}
@@ -83,7 +53,6 @@
 			aria-modal="true"
 			aria-labelledby="modal-title"
 		>
-			<!-- Modal Header -->
 			<div class="flex items-center justify-between border-b border-slate-200 px-6 py-4">
 				<h3 id="modal-title" class="text-lg font-semibold text-slate-900">
 					{isEditing ? 'Edit Jenis Penilaian' : 'Tambah Jenis Penilaian'}
@@ -108,7 +77,6 @@
 				</button>
 			</div>
 
-			<!-- Modal Body -->
 			<form on:submit|preventDefault={handleSubmit} class="p-6">
 				{#if error}
 					<div class="mb-4 rounded-md bg-red-50 p-3 text-sm text-red-700">
@@ -117,7 +85,6 @@
 				{/if}
 
 				<div class="space-y-4">
-					<!-- Kode Penilaian -->
 					<div>
 						<label for="code" class="mb-1 block text-sm font-medium text-slate-700">
 							Kode Penilaian <span class="text-red-500">*</span>
@@ -133,7 +100,6 @@
 						<p class="mt-1 text-xs text-slate-500">Contoh: TUGAS, UH, UTS, UAS</p>
 					</div>
 
-					<!-- Nama Penilaian -->
 					<div>
 						<label for="name" class="mb-1 block text-sm font-medium text-slate-700">
 							Nama Penilaian <span class="text-red-500">*</span>
@@ -148,7 +114,6 @@
 						/>
 					</div>
 
-					<!-- Bobot Default -->
 					<div>
 						<label for="weight" class="mb-1 block text-sm font-medium text-slate-700">
 							Bobot Default (%)
@@ -166,7 +131,6 @@
 					</div>
 				</div>
 
-				<!-- Modal Footer -->
 				<div class="mt-6 flex justify-end gap-3">
 					<button
 						type="button"

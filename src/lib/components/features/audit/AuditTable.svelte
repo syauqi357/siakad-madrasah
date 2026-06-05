@@ -22,15 +22,19 @@
 
 	// Helper function for status colors
 	function getStatusColor(status: string): string {
-		const s = status.toLowerCase();
-		if (s.includes('created')) return 'bg-blue-50 text-blue-700 border-blue-200';
-		if (s.includes('success') || s.includes('completed'))
+		const statusControl = status.toLowerCase();
+		if (statusControl.includes('created')) return 'bg-blue-50 text-blue-700 border-blue-200';
+		if (statusControl.includes('success') || statusControl.includes('completed'))
 			return 'bg-green-50 text-green-700 border-green-200';
-		if (s.includes('changed') || s.includes('updated'))
+		if (statusControl.includes('changed') || statusControl.includes('updated'))
 			return 'bg-amber-50 text-amber-700 border-amber-200';
-		if (s.includes('deleted') || s.includes('failed') || s.includes('error'))
+		if (
+			statusControl.includes('deleted') ||
+			statusControl.includes('failed') ||
+			statusControl.includes('error')
+		)
 			return 'bg-red-50 text-red-700 border-red-200';
-		if (s.includes('viewed')) return 'bg-slate-50 text-slate-600 border-slate-200';
+		if (statusControl.includes('viewed')) return 'bg-slate-50 text-slate-600 border-slate-200';
 		return 'bg-slate-50 text-slate-600 border-slate-200';
 	}
 

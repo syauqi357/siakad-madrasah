@@ -2,49 +2,62 @@
 	import Success from '../icons/success.svelte';
 	import WarningIcon from '../icons/warningIcon.svelte';
 	import ErrorIcon from '../icons/errorIcon.svelte';
-
-	/**
-	 * Modal Alert Component
-	 * @prop {boolean} show - Controls visibility of the modal
-	 * @prop {'success' | 'error' | 'warning' | 'info'} type - Alert type for styling
-	 * @prop {string} message - The message to display
-	 * @prop {boolean} showCancel - Show cancel button (default: false)
-	 * @prop {string} confirmText - Text for confirm button (default: 'OK')
-	 * @prop {string} cancelText - Text for cancel button (default: 'Batal')
-	 * @event onConfirm - Fired when confirm/agree button is clicked
-	 * @event onCancel - Fired when cancel button is clicked
-	 * @event onClose - Fired when close (X) button is clicked
-	 */
-
-	export let show = false;
-	export let type = 'success'; // 'success' | 'error' | 'warning' | 'info'
-	export let message = '';
-	export let showCancel = false;
-	export let confirmText = 'OK';
-	export let cancelText = 'Batal';
-
-	import { createEventDispatcher } from 'svelte';
 	import { fade, scale } from 'svelte/transition';
 
-	const dispatch = createEventDispatcher();
+	// 1. Interface Props & Events digabung (Svelte 5 way!)
+	interface ModalAlertProps {
+		show?: boolean;
+		type?: 'success' | 'error' | 'warning' | 'info';
+		message: string;
+		showCancel?: boolean;
+		confirmText?: string;
+		cancelText?: string;
+		// Event dispatcher diganti menjadi callback function
+		onConfirm?: () => void;
+		onCancel?: () => void;
+		onClose?: () => void;
+	}
+
+	// 2. Gunakan Rune $props()
+	// Kita pakai $bindable() pada 'show' karena komponen ini mengubah nilai 'show' menjadi false saat ditutup
+	let {
+		show = $bindable(false),
+		type = 'success',
+		message,
+		showCancel = false,
+		confirmText = 'OK',
+		cancelText = 'Batal',
+		onConfirm,
+		onCancel,
+		onClose
+	}: ModalAlertProps = $props();
 
 	function handleConfirm() {
-		dispatch('confirm');
+		if (onConfirm) onConfirm();
 		show = false;
 	}
 
 	function handleCancel() {
-		dispatch('cancel');
+		if (onCancel) onCancel();
 		show = false;
 	}
 
 	function handleClose() {
-		dispatch('close');
+		if (onClose) onClose();
 		show = false;
 	}
 
-	// Icon and color configs based on type
-	const typeConfig = {
+	// 3. Setup Konfigurasi Styling
+	type AlertType = NonNullable<ModalAlertProps['type']>;
+
+	interface ConfigValues {
+		bgIcon: string;
+		textIcon: string;
+		bgButton: string;
+		textButton: string;
+	}
+
+	const typeConfig: Record<AlertType, ConfigValues> = {
 		success: {
 			bgIcon: 'bg-emerald-700',
 			textIcon: 'text-emerald-300',
@@ -71,39 +84,28 @@
 		}
 	};
 
-	// Get config with fallback
-	function getConfig(alertType: string) {
-		if (alertType === 'success') return typeConfig.success;
-		if (alertType === 'error') return typeConfig.error;
-		if (alertType === 'warning') return typeConfig.warning;
-		if (alertType === 'info') return typeConfig.info;
-		return typeConfig.success;
-	}
-
-	$: config = getConfig(type);
+	// 4. Reactive statement diganti dengan Rune $derived
+	let config = $derived(typeConfig[type] || typeConfig.success);
 </script>
 
 {#if show}
-	<!-- Backdrop -->
 	<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 	<div
 		class="fixed inset-0 z-20 flex items-center justify-center p-4 backdrop-blur-sm"
 		transition:fade={{ duration: 150 }}
-		on:click={handleClose}
-		on:keydown={(e) => e.key === 'Escape' && handleClose()}
+		onclick={handleClose}
+		onkeydown={(e) => e.key === 'Escape' && handleClose()}
 		tabindex="0"
 		role="presentation"
 	>
-		<!-- Modal -->
 		<div
 			class="w-full max-w-sm rounded-2xl border border-slate-500 bg-slate-800 p-4 text-white shadow-lg shadow-slate-500"
 			transition:scale={{ duration: 150, start: 0.95 }}
-			on:click|stopPropagation
-			on:keydown|stopPropagation
+			onclick={(e) => e.stopPropagation()}
+			onkeydown={(e) => e.stopPropagation()}
 			role="alertdialog"
 			tabindex="-1"
 		>
-			<!--main information-->
 			<main class="flex w-full items-center justify-center gap-3">
 				<div
 					id="iconAlert"
@@ -131,17 +133,15 @@
 					{/if}
 				</div>
 				<div id="contentAlert" class="flex-1 text-sm">{message}</div>
-				<!--close button-->
 				<button
 					id="closeAlert"
-					class="flex aspect-square w-10 flex-shrink-0 items-center justify-center rounded-full transition-all ease-in-out hover:bg-gray-700"
-					on:click={handleClose}
+					class="flex aspect-square w-10 shrink-0 items-center justify-center rounded-full transition-all ease-in-out hover:bg-gray-700"
+					onclick={handleClose}
 				>
 					&#10006;
 				</button>
 			</main>
 
-			<!-- action -->
 			<div
 				id="buttonActionalertParent"
 				class="mt-4 flex w-full flex-row-reverse items-center justify-center gap-2"
@@ -150,7 +150,7 @@
 					<button
 						id="cancelButton"
 						class="w-full rounded-md py-2 capitalize transition-all ease-in-out hover:bg-gray-700 hover:text-red-400"
-						on:click={handleCancel}
+						onclick={handleCancel}
 					>
 						{cancelText}
 					</button>
@@ -158,7 +158,7 @@
 				<button
 					id="agreeButton"
 					class="w-full rounded-md {config.bgButton} py-2 {config.textButton} capitalize transition-all ease-in-out hover:shadow-lg"
-					on:click={handleConfirm}
+					onclick={handleConfirm}
 				>
 					{confirmText}
 				</button>

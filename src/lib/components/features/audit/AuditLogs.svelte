@@ -30,8 +30,8 @@
 				timeRange: selectedTimeRange,
 				search: searchQuery
 			});
-		} catch (e: any) {
-			error = e.message || 'Tidak dapat memuat log audit.';
+		} catch (error_type: any) {
+			error = error_type.message || 'Tidak dapat memuat log audit.';
 		} finally {
 			isLoading = false;
 		}
@@ -47,20 +47,20 @@
 		}
 	}
 
-	$: sortedLogs = [...auditLogs].sort((a, b) => {
-		let aVal: string | number = a[sortField] || '';
-		let bVal: string | number = b[sortField] || '';
+	$: sortedLogs = [...auditLogs].sort((currentLog, compareLog) => {
+		let currentValue: string | number = currentLog[sortField] || '';
+		let compareValue: string | number = compareLog[sortField] || '';
 
 		if (sortField === 'timestamp') {
-			aVal = new Date(aVal).getTime();
-			bVal = new Date(bVal).getTime();
+			currentValue = new Date(currentValue).getTime();
+			compareValue = new Date(compareValue).getTime();
 		} else {
-			aVal = String(aVal).toLowerCase();
-			bVal = String(bVal).toLowerCase();
+			currentValue = String(currentValue).toLowerCase();
+			compareValue = String(compareValue).toLowerCase();
 		}
 
-		if (aVal < bVal) return sortDirection === 'asc' ? -1 : 1;
-		if (aVal > bVal) return sortDirection === 'asc' ? 1 : -1;
+		if (currentValue < compareValue) return sortDirection === 'asc' ? -1 : 1;
+		if (currentValue > compareValue) return sortDirection === 'asc' ? 1 : -1;
 		return 0;
 	});
 </script>

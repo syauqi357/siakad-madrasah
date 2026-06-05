@@ -17,16 +17,16 @@
 		$activeMenu = 'dashboard';
 		try {
 			// 1. Fetch School Data
-			const schoolRes = await API_FETCH('/routes/api/schoolData');
-			if (schoolRes.ok) {
-				const schoolData = await schoolRes.json();
+			const schoolResponseFetchData = await API_FETCH('/routes/api/schoolData');
+			if (schoolResponseFetchData.ok) {
+				const schoolData = await schoolResponseFetchData.json();
 				schoolName = schoolData.name;
 			}
 
 			// 2. Fetch Student Count
-			const studentRes = await API_FETCH('/routes/api/studentDataSet/count');
-			if (studentRes.ok) {
-				const studentData = await studentRes.json();
+			const studentResponseFetchData = await API_FETCH('/routes/api/studentDataSet/count');
+			if (studentResponseFetchData.ok) {
+				const studentData = await studentResponseFetchData.json();
 				studentCount = studentData.count;
 			}
 
@@ -96,7 +96,6 @@
 			{loading}
 			icon={classIcon}
 			iconBg="bg-green-100"
-			// subtext="24 Active"
 		/>
 
 		<!-- Card 4: Attendance -->

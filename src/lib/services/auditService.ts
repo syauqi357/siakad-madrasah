@@ -24,11 +24,11 @@ export async function fetchAuditLogs(filters: AuditFilterParams): Promise<AuditL
 	if (filters.timeRange && filters.timeRange !== 'all') params.append('timeRange', filters.timeRange);
 	if (filters.search?.trim()) params.append('search', filters.search.trim());
 
-	const response = await API_FETCH(`/routes/api/audit-logs?${params.toString()}`);
+	const AuditResponseFetchData = await API_FETCH(`/routes/api/audit-logs?${params.toString()}`);
 
-	if (!response.ok) {
-		throw new Error(`Gagal memuat data: ${response.statusText}`);
+	if (!AuditResponseFetchData.ok) {
+		throw new Error(`Gagal memuat data: ${AuditResponseFetchData.statusText}`);
 	}
 
-	return await response.json();
+	return await AuditResponseFetchData.json();
 }
