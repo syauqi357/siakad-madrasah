@@ -12,7 +12,7 @@
 		"db:seed:kurikulum": "node src/utils/seedFile/seedMapelKurikulum.js",
 		"db:seed:guru": "node src/utils/seedFile/seedTeacher.js",
 		"db:seed:auth": "node src/utils/seedFile/seedAuth.js",
-		"db:seed:class":"node src/utils/seedFile/seedClasses.js",
+		"db:seed:class": "node src/utils/seedFile/seedClasses.js",
 		"db:seed:global": "npm run db:seed:auth && npm run db:seed:guru && npm run db:seed:kurikulum",
 		"db:push": "drizzle-kit push",
 		"db:studio": "drizzle-kit studio",
@@ -43,14 +43,18 @@
 		"jsonwebtoken": "^9.0.3",
 		"multer": "^2.0.2"
 	},
+	"overrides": {
+		"uuid": "^11.1.1",
+		"esbuild": "^0.25.0"
+	},
 	"devDependencies": {
-		"@electron/rebuild": "^3.7.1",
+		"@electron/rebuild": "^4.0.4",
 		"@types/cors": "^2.8.19",
 		"@types/express": "^5.0.5",
 		"@types/node": "^24.10.1",
-		"drizzle-kit": "^0.31.8",
+		"drizzle-kit": "^0.31.10",
 		"electron": "^40.1.0",
-		"electron-builder": "^25.1.8",
+		"electron-builder": "^26.8.1",
 		"jest": "^30.2.0",
 		"nodemon": "^3.1.11",
 		"rcedit": "^5.0.2",
