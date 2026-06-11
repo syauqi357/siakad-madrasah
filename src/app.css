@@ -36,7 +36,7 @@
 	font-style: normal;
 }
 
-/* --- Inter (Documentation Font) --- */
+/* Inter (Documentation Font) */
 @font-face {
 	font-family: 'Inter';
 	src: url('/src/lib/fonts/inter-font/InterVariable.woff2') format('woff2');
@@ -52,7 +52,7 @@
 	font-display: swap;
 }
 
-/* --- JetBrains Mono (Code Font) --- */
+/*  JetBrains Mono (Code Font)  */
 @font-face {
 	font-family: 'JetBrains Mono';
 	src: url('/src/lib/fonts/monospace_fonts/JetBrainsMono-Regular.woff2') format('woff2');

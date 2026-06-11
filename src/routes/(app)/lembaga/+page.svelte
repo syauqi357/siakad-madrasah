@@ -22,7 +22,7 @@
 		name: '',
 		npsn: '',
 		nsm: '',
-		akreditasi: 'B',
+		akreditasi: '',
 		alamat: '',
 		kota: '',
 		negara: 'Indonesia',

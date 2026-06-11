@@ -73,5 +73,5 @@
 	</div>
 
 	<!-- Decorative Element -->
-	<div class="mt-16 text-center text-sm text-gray-400">SIAKAD Madrasah</div>
+	<div class="mt-16 text-center text-sm text-gray-400">Platform akademik Madrasah</div>
 </div>

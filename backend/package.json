@@ -10,6 +10,8 @@
 		"build": "tsc",
 		"test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
 		"db:seed:kurikulum": "node src/utils/seedFile/seedMapelKurikulum.js",
+		"db:seed:academic": "node src/utils/seedFile/seedAcademicCore.js",
+		"db:seed:sync": "node src/utils/seedFile/seedSyncAcademic.js",
 		"db:seed:guru": "node src/utils/seedFile/seedTeacher.js",
 		"db:seed:auth": "node src/utils/seedFile/seedAuth.js",
 		"db:seed:class": "node src/utils/seedFile/seedClasses.js",

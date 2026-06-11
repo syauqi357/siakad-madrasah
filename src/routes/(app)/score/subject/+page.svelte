@@ -4,7 +4,7 @@
 	import AddIcon from '$lib/components/icons/addIcon.svelte';
 	import { API_FETCH } from '$lib/api';
 
-	// ==================== TYPES ====================
+	// types
 	interface Subject {
 		id: number;
 		name: string;
@@ -30,7 +30,6 @@
 		code?: string;
 	}
 
-	// ==================== STATE ====================
 	// Tab state
 	let activeTab: 'subjects' | 'assignments' = 'subjects';
 
@@ -74,7 +73,7 @@
 		teacherId: null as number | null
 	};
 
-	// ==================== SUBJECTS TAB FUNCTIONS ====================
+	// SUBJECTS TAB FUNCTIONS
 	async function fetchSubjects() {
 		isLoading = true;
 		error = '';
@@ -200,7 +199,7 @@
 		}
 	}
 
-	// ==================== ASSIGNMENTS TAB FUNCTIONS ====================
+	// ASSIGNMENTS TAB FUNCTIONS
 	async function fetchClassSubjects() {
 		isLoading = true;
 		error = '';
@@ -371,7 +370,7 @@
 		}
 	}
 
-	// ==================== LIFECYCLE ====================
+	// LIFECYCLE
 	onMount(async () => {
 		await fetchSubjects();
 		await fetchDropdowns();
