@@ -126,6 +126,26 @@ async function seedMapelKurikulum() {
 				kkm: 70
 			},
 
+			// Kelompok B: Teknologi & Seni (New)
+			{
+				name: 'Informatika',
+				subjectCode: 'INF',
+				description: 'Kelompok B - Ilmu Komputer dan Teknologi',
+				kkm: 75
+			},
+			{
+				name: 'Desain Komunikasi Visual',
+				subjectCode: 'DKV',
+				description: 'Kelompok B - Desain Grafis dan Kreatif',
+				kkm: 75
+			},
+			{
+				name: 'Multimedia',
+				subjectCode: 'MLT',
+				description: 'Kelompok B - Pengolahan Media Digital',
+				kkm: 75
+			},
+
 			// Kelompok C: Peminatan IPA
 			{
 				name: 'Fisika',
@@ -176,7 +196,7 @@ async function seedMapelKurikulum() {
 				subjectCode: 'EKO',
 				description: 'Kelompok C - Peminatan IPS',
 				kkm: 75
-			}
+			},
 		];
 
 		await db.insert(Subjects).values(mapelData).onConflictDoNothing();

@@ -5,15 +5,10 @@
 	import { API_FETCH } from '$lib/api';
 	import ArrowLeft from '$lib/components/icons/arrow_left.svelte';
 	import ModalAlert from '$lib/components/modal/modalalert.svelte';
-	import { fade, fly } from 'svelte/transition';
+	import RombelEditModal from '$lib/components/modal/RombelEditModal.svelte';
+	import RombelAddStudentPanel from '$lib/components/modal/RombelAddStudentPanel.svelte';
 
 	// --- Interfaces ---
-	interface UnassignedStudent {
-		id: number;
-		name: string;
-		nisn: string;
-	}
-
 	interface Student {
 		id: number;
 		name: string;
@@ -38,50 +33,48 @@
 		students: Student[];
 	}
 
+	interface DropdownItem {
+		id: number;
+		name: string;
+	}
+
 	// --- State ---
 	let rombelData: RombelDetail | null = null;
 	let isLoading = true;
 	let error: string | null = null;
 
-	// Filter state - Default to ACTIVE (exclude MUTASI from main view)
+	// Filter state
 	let statusFilter: 'ALL' | 'ACTIVE' | 'MUTASI' | 'GRADUATE' = 'ACTIVE';
 	let searchQuery = '';
 
-	// Get rombel ID from URL params
+	// Modal states
+	let showAddPanel = false;
+	let showEditModal = false;
+	let showAlert = false;
+	let isSaving = false;
+
+	// Alert config
+	let alertType: 'success' | 'error' | 'warning' | 'info' = 'success';
+	let alertMessage = '';
+
+	// Edit form data
+	let editData = {
+		nama_rombel: '',
+		tingkat_kelas: 0,
+		wali_kelas: null as number | null,
+		nama_ruangan: '',
+		student_capacity: 32,
+		kurikulum: ''
+	};
+
+	// Dropdown data
+	let classesDropdown: DropdownItem[] = [];
+	let teachersDropdown: DropdownItem[] = [];
+	let curriculumDropdown: { id: number; name: string }[] = [];
+
+	// --- Reactive Properties ---
 	$: rombelId = $page.params.id;
 
-	// --- Functions ---
-	async function fetchRombelDetail() {
-		isLoading = true;
-		error = null;
-
-		try {
-			const response = await API_FETCH(`/routes/api/rombel/${rombelId}`);
-
-			if (!response.ok) {
-				const errData = await response.json();
-				throw new Error(errData.message || 'Failed to fetch rombel detail');
-			}
-
-			const result = await response.json();
-			if (result.success) {
-				rombelData = result.data;
-			} else {
-				throw new Error(result.message || 'Invalid data');
-			}
-		} catch (err) {
-			console.error('Error fetching rombel detail:', err);
-			error = err instanceof Error ? err.message : 'Terjadi kesalahan';
-		} finally {
-			isLoading = false;
-		}
-	}
-
-	function backToMain() {
-		goto('/rombel');
-	}
-
-	// --- Reactive: Filtered Students ---
 	$: filteredStudents =
 		rombelData?.students.filter((student) => {
 			const matchesStatus = statusFilter === 'ALL' || student.status === statusFilter;
@@ -92,113 +85,116 @@
 			return matchesStatus && matchesSearch;
 		}) ?? [];
 
-	// --- Counts by status ---
 	$: activeCount = rombelData?.students.filter((s) => s.status === 'ACTIVE').length ?? 0;
 	$: mutasiCount = rombelData?.students.filter((s) => s.status === 'MUTASI').length ?? 0;
 	$: graduateCount = rombelData?.students.filter((s) => s.status === 'GRADUATE').length ?? 0;
 
-	// --- Add Student Slide-over ---
-	let showAddPanel = false;
-	let unassignedStudents: UnassignedStudent[] = [];
-	let selectedNewStudents: number[] = [];
-	let addSearchQuery = '';
-	let loadingUnassigned = false;
-	let isSaving = false;
-
-	// Modal alert state
-	let showAlert = false;
-	let alertType: 'success' | 'error' | 'warning' | 'info' = 'success';
-	let alertMessage = '';
-
 	$: availableSlots = (rombelData?.kapasitas ?? 0) - activeCount;
-	$: isSlotsFull = selectedNewStudents.length >= availableSlots;
 
-	$: filteredUnassigned = unassignedStudents.filter((s) => {
-		if (!addSearchQuery) return true;
-		const q = addSearchQuery.toLowerCase();
-		return s.name.toLowerCase().includes(q) || s.nisn.includes(addSearchQuery);
-	});
-
-	$: allUnassignedSelected =
-		filteredUnassigned.length > 0 &&
-		filteredUnassigned.every((s) => selectedNewStudents.includes(s.id));
-
-	async function openAddPanel() {
-		showAddPanel = true;
-		loadingUnassigned = true;
-		selectedNewStudents = [];
-		addSearchQuery = '';
+	// --- Functions ---
+	async function fetchRombelDetail() {
+		isLoading = true;
+		error = null;
 
 		try {
-			const response = await API_FETCH('/routes/api/studentDataSet/lite');
-			if (response.ok) {
-				const data = await response.json();
-				unassignedStudents = data.data || data;
+			const response = await API_FETCH(`/routes/api/rombel/${rombelId}`);
+			if (!response.ok) {
+				const errData = await response.json();
+				throw new Error(errData.message || 'Gagal mengambil detail rombel');
+			}
+
+			const result = await response.json();
+			if (result.success) {
+				rombelData = result.data;
+			} else {
+				throw new Error(result.message || 'Data tidak valid');
 			}
 		} catch (err) {
-			console.error('Error fetching unassigned students:', err);
+			console.error('Error fetching rombel detail:', err);
+			error = err instanceof Error ? err.message : 'Terjadi kesalahan';
 		} finally {
-			loadingUnassigned = false;
+			isLoading = false;
 		}
 	}
 
-	function closeAddPanel() {
-		showAddPanel = false;
-		selectedNewStudents = [];
-		addSearchQuery = '';
-	}
+	async function openEditModal() {
+		if (!rombelData) return;
 
-	function toggleNewStudent(id: number) {
-		if (selectedNewStudents.includes(id)) {
-			selectedNewStudents = selectedNewStudents.filter((s) => s !== id);
-		} else if (selectedNewStudents.length < availableSlots) {
-			selectedNewStudents = [...selectedNewStudents, id];
+		// Map existing data to edit form
+		editData = {
+			nama_rombel: rombelData.namaRombel,
+			tingkat_kelas: rombelData.tingkatId,
+			wali_kelas: rombelData.waliKelasId,
+			nama_ruangan: rombelData.ruangan || '',
+			student_capacity: rombelData.kapasitas,
+			kurikulum: rombelData.kurikulum
+		};
+
+		// Fetch dropdown data
+		try {
+			const [classesRes, teachersRes, currRes] = await Promise.all([
+				API_FETCH('/routes/api/class-subjects/dropdown/classes'),
+				API_FETCH('/routes/api/class-subjects/dropdown/teachers'),
+				API_FETCH('/routes/api/curriculum/lite')
+			]);
+
+			const [cData, tData, cuData] = await Promise.all([
+				classesRes.json(),
+				teachersRes.json(),
+				currRes.json()
+			]);
+
+			if (cData.success) classesDropdown = cData.data;
+			if (tData.success) teachersDropdown = tData.data;
+			if (cuData.success) curriculumDropdown = cuData.data;
+
+			showEditModal = true;
+		} catch (err) {
+			console.error('Error fetching dropdowns:', err);
+			alertType = 'error';
+			alertMessage = 'Gagal memuat data pilihan';
+			showAlert = true;
 		}
 	}
 
-	function toggleAllUnassigned() {
-		if (allUnassignedSelected) {
-			selectedNewStudents = selectedNewStudents.filter(
-				(id) => !filteredUnassigned.some((s) => s.id === id)
-			);
-		} else {
-			const toAdd = filteredUnassigned
-				.filter((s) => !selectedNewStudents.includes(s.id))
-				.slice(0, availableSlots - selectedNewStudents.length)
-				.map((s) => s.id);
-			selectedNewStudents = [...selectedNewStudents, ...toAdd];
-		}
-	}
-
-	async function saveNewStudents() {
-		if (selectedNewStudents.length === 0) return;
-
+	async function handleEditSubmit(event: CustomEvent<typeof editData>) {
+		const submittedData = event.detail;
 		isSaving = true;
 		try {
-			const response = await API_FETCH(`/routes/api/rombel/${rombelId}/students`, {
-				method: 'POST',
+			const response = await API_FETCH(`/routes/api/rombel/${rombelId}`, {
+				method: 'PUT',
 				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ studentIds: selectedNewStudents })
+				body: JSON.stringify(submittedData)
 			});
 
 			const result = await response.json();
-
-			if (!response.ok) {
-				throw new Error(result.message || 'Gagal menambahkan siswa');
+			if (response.ok) {
+				showEditModal = false;
+				await fetchRombelDetail();
+				alertType = 'success';
+				alertMessage = 'Rombel berhasil diperbarui';
+				showAlert = true;
+			} else {
+				throw new Error(result.message || 'Gagal memperbarui rombel');
 			}
-
-			closeAddPanel();
-			await fetchRombelDetail();
-			alertType = 'success';
-			alertMessage = result.message;
-			showAlert = true;
 		} catch (err) {
 			alertType = 'error';
-			alertMessage = err instanceof Error ? err.message : 'Terjadi kesalahan';
+			alertMessage = err instanceof Error ? err.message : 'Gagal memperbarui rombel';
 			showAlert = true;
 		} finally {
 			isSaving = false;
 		}
+	}
+
+	function handleAddSuccess(event: CustomEvent<string>) {
+		alertType = 'success';
+		alertMessage = event.detail;
+		showAlert = true;
+		fetchRombelDetail();
+	}
+
+	function backToMain() {
+		goto('/rombel');
 	}
 
 	onMount(() => {
@@ -208,30 +204,47 @@
 
 <div class="mx-auto w-full max-w-full space-y-6 p-6">
 	<!-- Top Nav -->
-	<button
-		on:click={backToMain}
-		class="group flex items-center gap-2 rounded-full border border-blue-200 px-5 py-1.5 text-sm font-medium text-blue-600 transition-all hover:border-blue-300 hover:bg-blue-50"
-	>
-		<span class="transition-transform group-hover:-translate-x-1.5"><ArrowLeft /></span>
-		Kembali
-	</button>
 	<div class="flex items-center justify-between">
-		{#if rombelData}
-			<button
-				on:click={openAddPanel}
-				class="flex items-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition-all hover:bg-blue-700 hover:shadow-md"
-			>
-				<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-					<path
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke-width="2"
-						d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-					/>
-				</svg>
-				Tambah Siswa
-			</button>
-		{/if}
+		<button
+			on:click={backToMain}
+			class="group flex items-center gap-2 rounded-full border border-blue-200 px-5 py-1.5 text-sm font-medium text-blue-600 transition-all hover:border-blue-300 hover:bg-blue-50"
+		>
+			<span class="transition-transform group-hover:-translate-x-1.5"><ArrowLeft /></span>
+			Kembali
+		</button>
+
+		<div class="flex items-center gap-3">
+			{#if rombelData}
+				<button
+					on:click={openEditModal}
+					class="flex items-center gap-2 rounded-md border border-slate-200 bg-amber-400 px-4 py-2 text-sm font-medium text-amber-700 shadow-sm transition-all hover:bg-amber-500"
+				>
+					<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+						/>
+					</svg>
+					Edit Rombel
+				</button>
+				<button
+					on:click={() => (showAddPanel = true)}
+					class="flex items-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition-all hover:bg-blue-700 hover:shadow-md"
+				>
+					<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+						/>
+					</svg>
+					Tambah Siswa
+				</button>
+			{/if}
+		</div>
 	</div>
 
 	{#if isLoading}
@@ -279,7 +292,7 @@
 						Kelas {rombelData.tingkat || '-'}
 						{#if rombelData.waliKelas}
 							<span class="mx-1.5 text-slate-300">|</span>
-							Wali Kelas: <span class="text-slate-600">{rombelData.waliKelas}</span>
+							Wali Kelas: <span class="font-medium text-slate-600">{rombelData.waliKelas}</span>
 						{/if}
 					</p>
 				</div>
@@ -306,7 +319,6 @@
 						>/{rombelData.kapasitas}</span
 					>
 				</p>
-				<!-- Progress bar -->
 				<div class="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-slate-100">
 					<div
 						class="h-full rounded-full transition-all duration-500
@@ -413,7 +425,7 @@
 		<!-- Info Pills -->
 		<div class="flex flex-wrap items-center gap-2">
 			<div
-				class="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5"
+				class="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 shadow-sm"
 			>
 				<svg
 					class="h-3.5 w-3.5 text-slate-400"
@@ -431,7 +443,7 @@
 				<span class="text-xs text-slate-600">{rombelData.ruangan || 'Belum diatur'}</span>
 			</div>
 			<div
-				class="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5"
+				class="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 shadow-sm"
 			>
 				<svg
 					class="h-3.5 w-3.5 text-slate-400"
@@ -446,12 +458,14 @@
 						d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
 					/>
 				</svg>
-				<span class="text-xs text-slate-600">{rombelData.kurikulum || 'Belum diatur'}</span>
+				<span class="text-xs font-medium text-slate-600"
+					>{rombelData.kurikulum || 'Belum diatur'}</span
+				>
 			</div>
 		</div>
 
 		<!-- Student Table Card -->
-		<div class="overflow-hidden rounded-xl border border-slate-200 bg-white">
+		<div class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
 			<!-- Table Header with Search -->
 			<div
 				class="flex flex-col gap-3 border-b border-slate-100 px-5 py-4 md:flex-row md:items-center md:justify-between"
@@ -538,7 +552,7 @@
 								>Status</th
 							>
 							<th
-								class="px-5 py-3 text-[11px] font-semibold tracking-wider text-slate-400 uppercase"
+								class="px-5 py-3 text-right text-[11px] font-semibold tracking-wider text-slate-400 uppercase"
 								>Aksi</th
 							>
 						</tr>
@@ -581,7 +595,7 @@
 						{:else}
 							{#each filteredStudents as student, i (student.id)}
 								<tr class="group transition-colors hover:bg-slate-50/80">
-									<td class="px-5 py-3.5 text-xs text-slate-400">{i + 1}</td>
+									<td class="px-5 py-3.5 font-mono text-xs text-slate-400">{i + 1}</td>
 									<td class="px-5 py-3.5">
 										<div class="flex items-center gap-3">
 											<div
@@ -632,7 +646,7 @@
 											</span>
 										{/if}
 									</td>
-									<td class="px-5 py-3.5">
+									<td class="px-5 py-3.5 text-right">
 										{#if student.status === 'ACTIVE'}
 											<button
 												class="rounded-md border border-slate-200 px-3 py-1.5 text-[11px] font-semibold text-slate-600 opacity-0 transition-all group-hover:opacity-100 hover:bg-slate-50"
@@ -651,197 +665,37 @@
 			</div>
 
 			<!-- Table Footer -->
-			<div class="flex items-center justify-between border-t border-slate-100 px-5 py-3">
+			<div
+				class="flex items-center justify-between border-t border-slate-100 bg-slate-50/30 px-5 py-3"
+			>
 				<span class="text-xs text-slate-400">
-					{filteredStudents.length} dari {rombelData.students.length} siswa
+					Menampilkan {filteredStudents.length} dari {rombelData.students.length} siswa
 				</span>
 			</div>
 		</div>
 	{/if}
 </div>
 
-<!-- Add Student Slide-over -->
-{#if showAddPanel}
-	<!-- svelte-ignore a11y_no_static_element_interactions -->
-	<div class="fixed inset-0 z-20 flex justify-end" transition:fade={{ duration: 150 }}>
-		<!-- Backdrop -->
-		<!-- svelte-ignore a11y_click_events_have_key_events -->
-		<div class="absolute inset-0 bg-black/10 backdrop-blur-sm" on:click={closeAddPanel}></div>
+<!-- Edit Rombel Modal Component -->
+<RombelEditModal
+	show={showEditModal}
+	{isSaving}
+	{activeCount}
+	bind:editData
+	{classesDropdown}
+	{teachersDropdown}
+	{curriculumDropdown}
+	on:close={() => (showEditModal = false)}
+	on:submit={handleEditSubmit}
+/>
 
-		<!-- Panel -->
-		<div
-			class="relative flex h-full w-full max-w-lg flex-col bg-white shadow-2xl"
-			transition:fly={{ x: 500, duration: 250 }}
-		>
-			<!-- Panel Header -->
-			<div class="flex items-center justify-between border-b border-slate-200 px-6 py-4">
-				<div>
-					<h2 class="text-lg font-bold text-slate-800">Tambah Siswa</h2>
-					<p class="text-xs text-slate-400">
-						Siswa yang belum memiliki rombel
-						{#if availableSlots > 0}
-							— <span class="font-medium text-blue-600">{availableSlots} slot tersisa</span>
-						{/if}
-					</p>
-				</div>
-				<button
-					aria-label="close"
-					on:click={closeAddPanel}
-					class="flex h-8 w-8 items-center justify-center rounded-full text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600"
-				>
-					<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M6 18L18 6M6 6l12 12"
-						/>
-					</svg>
-				</button>
-			</div>
-
-			<!-- Search -->
-			<div class="border-b border-slate-100 px-6 py-3">
-				<div class="relative">
-					<svg
-						class="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-slate-400"
-						fill="none"
-						stroke="currentColor"
-						viewBox="0 0 24 24"
-					>
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-						/>
-					</svg>
-					<input
-						type="text"
-						placeholder="Cari nama atau NISN..."
-						bind:value={addSearchQuery}
-						class="w-full rounded-lg border border-slate-200 bg-slate-50 py-2 pr-4 pl-9 text-sm text-slate-700 placeholder-slate-400 focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-500/10 focus:outline-none"
-					/>
-				</div>
-			</div>
-
-			<!-- Select All Bar -->
-			{#if filteredUnassigned.length > 0}
-				<div class="flex items-center justify-between border-b border-slate-100 px-6 py-2">
-					<label class="flex cursor-pointer items-center gap-2 text-xs font-medium text-slate-500">
-						<input
-							type="checkbox"
-							checked={allUnassignedSelected}
-							on:change={toggleAllUnassigned}
-							class="h-3.5 w-3.5 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
-						/>
-						Pilih Semua
-					</label>
-					<span class="text-xs font-medium text-slate-400">
-						{selectedNewStudents.length} dipilih
-					</span>
-				</div>
-			{/if}
-
-			<!-- Capacity Warning -->
-			{#if isSlotsFull && availableSlots > 0}
-				<div
-					class="border-b border-amber-200 bg-amber-50 px-6 py-2 text-xs font-medium text-amber-700"
-				>
-					Slot penuh — {selectedNewStudents.length}/{availableSlots} terpilih
-				</div>
-			{/if}
-
-			{#if availableSlots <= 0}
-				<div class="border-b border-red-200 bg-red-50 px-6 py-2 text-xs font-medium text-red-600">
-					Kapasitas rombel sudah penuh
-				</div>
-			{/if}
-
-			<!-- Student List -->
-			<div class="flex-1 overflow-y-auto">
-				{#if loadingUnassigned}
-					<div class="flex flex-col items-center justify-center py-16">
-						<div
-							class="h-7 w-7 animate-spin rounded-full border-2 border-slate-200 border-t-blue-600"
-						></div>
-						<span class="mt-3 text-sm text-slate-400">Memuat data siswa...</span>
-					</div>
-				{:else if filteredUnassigned.length === 0}
-					<div class="flex flex-col items-center justify-center py-16">
-						<svg
-							class="mb-2 h-10 w-10 text-slate-300"
-							fill="none"
-							stroke="currentColor"
-							viewBox="0 0 24 24"
-						>
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="1.5"
-								d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"
-							/>
-						</svg>
-						<p class="text-sm font-medium text-slate-500">
-							{addSearchQuery ? 'Tidak ditemukan' : 'Semua siswa sudah memiliki rombel'}
-						</p>
-					</div>
-				{:else}
-					<div class="divide-y divide-slate-50">
-						{#each filteredUnassigned as student (student.id)}
-							{@const isChecked = selectedNewStudents.includes(student.id)}
-							{@const isDisabled = !isChecked && isSlotsFull}
-							<label
-								class="flex cursor-pointer items-center gap-3.5 px-6 py-3 transition-colors
-									{isChecked ? 'bg-blue-50/60' : isDisabled ? 'cursor-not-allowed opacity-40' : 'hover:bg-slate-50'}"
-							>
-								<input
-									type="checkbox"
-									checked={isChecked}
-									disabled={isDisabled}
-									on:change={() => toggleNewStudent(student.id)}
-									class="h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500 disabled:cursor-not-allowed"
-								/>
-								<span class="flex-1">
-									<span class="text-sm font-medium text-slate-800 capitalize">{student.name}</span>
-									<span class="text-xs text-slate-400">{student.nisn}</span>
-								</span>
-							</label>
-						{/each}
-					</div>
-				{/if}
-			</div>
-
-			<!-- Panel Footer -->
-			<div class="border-t border-slate-200 px-6 py-4">
-				<div class="flex items-center gap-3">
-					<button
-						on:click={closeAddPanel}
-						class="flex-1 rounded-lg border border-slate-200 px-4 py-2.5 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-50"
-					>
-						Batal
-					</button>
-					<button
-						on:click={saveNewStudents}
-						disabled={selectedNewStudents.length === 0 || isSaving}
-						class="flex flex-1 items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold transition-all
-							{selectedNewStudents.length > 0 && !isSaving
-							? 'bg-blue-600 text-white shadow-sm hover:bg-blue-700 hover:shadow-md'
-							: 'cursor-not-allowed bg-slate-100 text-slate-400'}"
-					>
-						{#if isSaving}
-							<div
-								class="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white"
-							></div>
-							Menyimpan...
-						{:else}
-							Tambahkan {selectedNewStudents.length} Siswa
-						{/if}
-					</button>
-				</div>
-			</div>
-		</div>
-	</div>
-{/if}
+<!-- Add Student Panel Component -->
+<RombelAddStudentPanel
+	show={showAddPanel}
+	{rombelId}
+	{availableSlots}
+	on:close={() => (showAddPanel = false)}
+	on:success={handleAddSuccess}
+/>
 
 <ModalAlert bind:show={showAlert} type={alertType} message={alertMessage} on:confirm={() => {}} />

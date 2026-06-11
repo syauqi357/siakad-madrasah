@@ -71,7 +71,7 @@
 		pendingAction = null;
 	}
 
-	// ==================== COMPUTED ====================
+	// COMPUTED
 	$: {
 		// Auto-generate name when startYear or endYear changes
 		if (!isEditing || !currentAcademicYear.name) {
@@ -79,7 +79,7 @@
 		}
 	}
 
-	// ==================== FUNCTIONS ====================
+	//FUNCTIONS
 	async function fetchAcademicYears() {
 		isLoading = true;
 		error = '';

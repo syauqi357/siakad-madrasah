@@ -3,7 +3,8 @@ import {
 	getAllRombels,
 	getRombelById,
 	deleteRombelById,
-	addStudentsToRombel
+	addStudentsToRombel,
+	updateRombel
 } from '../services/rombel.services.js';
 
 /**
@@ -188,6 +189,44 @@ export const addStudentsToExistingRombel = (req, res) => {
 		});
 	} catch (error) {
 		console.error('Error in addStudentsToExistingRombel controller:', error);
+		res.status(500).json({
+			success: false,
+			message: 'Internal Server Error'
+		});
+	}
+};
+
+/**
+ * Controller to handle updating an existing Rombel.
+ */
+export const editRombel = (req, res) => {
+	try {
+		const rombelId = parseInt(req.params.id);
+		const data = req.body;
+
+		if (isNaN(rombelId)) {
+			return res.status(400).json({
+				success: false,
+				message: 'Invalid rombel ID'
+			});
+		}
+
+		const result = updateRombel(rombelId, data);
+
+		if (result.error === 'ROMBEL_NOT_FOUND') {
+			return res.status(404).json({
+				success: false,
+				message: 'Rombel not found'
+			});
+		}
+
+		res.status(200).json({
+			success: true,
+			message: 'Rombel updated successfully',
+			data: result.data
+		});
+	} catch (error) {
+		console.error('Error in editRombel controller:', error);
 		res.status(500).json({
 			success: false,
 			message: 'Internal Server Error'

@@ -281,7 +281,7 @@
 			<div class="flex flex-wrap items-center gap-2">
 				<a
 					href="/siswa/graduate-bulk"
-					class="flex items-center gap-1.5 rounded-md bg-blue-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-blue-700"
+					class="flex items-center gap-1.5 rounded-md bg-emerald-500 px-3 py-1.5 text-sm font-medium text-white transition-all ease-in-out hover:bg-emerald-700"
 				>
 					Kelulusan
 				</a>
@@ -293,7 +293,7 @@
 				</a>
 				<a
 					href="/siswa/mutasi"
-					class="flex items-center gap-1.5 rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-600 hover:bg-slate-50"
+					class="flex items-center gap-1.5 rounded-md border border-slate-300 bg-amber-400 px-3 py-1.5 text-sm font-medium text-amber-700 hover:bg-amber-500 transition-all ease-in-out"
 				>
 					Mutasi
 				</a>

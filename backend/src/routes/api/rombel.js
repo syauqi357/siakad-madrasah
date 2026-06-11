@@ -4,7 +4,8 @@ import {
 	getRombelList,
 	getRombelDetail,
 	deleteRombel,
-	addStudentsToExistingRombel
+	addStudentsToExistingRombel,
+	editRombel
 } from '../../controllers/rombelController.js';
 
 const router = express.Router();
@@ -20,7 +21,7 @@ router.get('/rombel', getRombelList);
 router.get('/rombel/:id', getRombelDetail);
 
 // PUT /api/rombel/:id - Update Rombel details
-// router.put('/rombel/:id', updateRombel); // Placeholder for future implementation
+router.put('/rombel/:id', editRombel);
 
 // POST /api/rombel/:id/students - Add students to an existing Rombel
 router.post('/rombel/:id/students', addStudentsToExistingRombel);

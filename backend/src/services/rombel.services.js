@@ -252,9 +252,36 @@ export const addStudentsToRombel = (rombelId, studentIds) => {
 
 	return { success: true, added: studentIds.length };
 };
+/**
+ * Updates an existing rombel's details.
+ * @param {number} rombelId - The ID of the rombel to update
+ * @param {object} data - The data to update (name, class_id, class_advisor_id, classroom, capacity, kurikulum)
+ */
+export const updateRombel = (rombelId, data) => {
+	const existing = db.select({ id: rombel.id }).from(rombel).where(eq(rombel.id, rombelId)).get();
+	if (!existing) return { error: 'ROMBEL_NOT_FOUND' };
+
+	const updateData = {};
+	if (data.nama_rombel !== undefined) updateData.name = data.nama_rombel;
+	if (data.tingkat_kelas !== undefined) updateData.classId = parseInt(data.tingkat_kelas);
+	if (data.wali_kelas !== undefined) updateData.classAdvisorId = parseInt(data.wali_kelas);
+	if (data.nama_ruangan !== undefined) updateData.classroom = data.nama_ruangan;
+	if (data.student_capacity !== undefined) updateData.studentCapacity = parseInt(data.student_capacity);
+	if (data.kurikulum !== undefined) updateData.kurikulum = data.kurikulum;
+
+	const [updated] = db
+		.update(rombel)
+		.set(updateData)
+		.where(eq(rombel.id, rombelId))
+		.returning()
+		.all();
+
+	return { success: true, data: updated };
+};
 
 /**
  * Deletes a rombel and cleans up related student assignments.
+ *
  * @param {number} rombelId - The ID of the rombel to delete
  */
 export const deleteRombelById = (rombelId) => {
