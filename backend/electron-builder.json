@@ -13,12 +13,14 @@
 		"electron/**/*",
 		"build/**/*",
 		"src/**/*",
-		"!src/utils/**/*",
+		"!src/utils/unit_test/**/*",
 		"public/**/*",
 		"node_modules/**/*",
 		"!node_modules/.cache",
 		"!node_modules/.package-lock.json",
-		"siakad.db"
+		"siakad.db",
+		"drizzle/**/*",
+		"!drizzle.config.js"
 	],
 	"win": {
 		"target": [

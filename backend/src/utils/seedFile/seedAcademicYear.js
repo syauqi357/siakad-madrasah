@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import { db } from '../../db/index.js';
 import { academicYear } from '../../db/schema/academicYear.js';
 import { eq } from 'drizzle-orm';
@@ -7,7 +6,7 @@ import { eq } from 'drizzle-orm';
  * SEED ACADEMIC YEAR
  * Populates the database with past, current, and future academic years.
  */
-async function seedAcademicYear() {
+export async function seedAcademicYear() {
 	console.log('📅 Seeding Academic Years...');
 
 	try {
@@ -72,9 +71,6 @@ async function seedAcademicYear() {
 		console.log('\n🎉 Academic Year seeding finished!');
 	} catch (error) {
 		console.error('\n❌ Seeding failed:', error);
-	} finally {
-		process.exit(0);
+		throw error;
 	}
 }
-
-seedAcademicYear();

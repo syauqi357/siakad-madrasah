@@ -293,9 +293,9 @@
 		message={alertMessage}
 		showCancel={alertShowCancel}
 		confirmText={alertConfirmText}
-		on:confirm={handleAlertConfirm}
-		on:cancel={handleAlertCancel}
-		on:close={handleAlertCancel}
+		onConfirm={handleAlertConfirm}
+		onCancel={handleAlertCancel}
+		onClose={handleAlertCancel}
 	/>
 
 	<div class="grid gap-6 lg:grid-cols-3">

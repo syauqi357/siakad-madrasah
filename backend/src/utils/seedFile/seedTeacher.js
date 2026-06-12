@@ -1,15 +1,12 @@
-import 'dotenv/config';
-import { db } from '../../db/index.js'; // Adjust this path if needed
-import { teachers } from '../../db/schema/teacherUser.js'; // Adjust the schema file path to match yours
+import { db } from '../../db/index.js';
+import { teachers } from '../../db/schema/teacherUser.js';
 
-async function seedTeachers() {
+export async function seedTeachers() {
 	console.log('🌱 Seeding Teachers...\n');
 
 	try {
 		console.log('Seeding Data Guru...');
 
-		// Note: userId is left undefined/null here to avoid foreign key constraint
-		// errors if the 'users' table hasn't been seeded yet.
 		const teacherData = [
 			{
 				nip: '198001012005011001',
@@ -129,9 +126,6 @@ async function seedTeachers() {
 		console.log('\n🎉 Seeding selesai!');
 	} catch (error) {
 		console.error('❌ Seeding gagal:', error);
+		throw error;
 	}
-
-	process.exit(0);
 }
-
-seedTeachers();

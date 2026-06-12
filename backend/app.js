@@ -20,7 +20,7 @@ import curriculumRouter from './src/routes/api/curriculum.js'; // Import curricu
 import buildingsSchoolRouter from './src/routes/api/buildingsSchool.js'; // Import buildingsSchoolRouter
 import { auditLog } from './src/middlewares/middlewareAudit.js';
 import { GLOBAL_RATE_LIMIT } from './src/middlewares/globalRatelimit/rateLimiter.js';
-// import { speedLimit } from './middlewares/throttleFeat/throttleLimit.js'; // MIDDLEWARE RATE LIMIT, THROTTLE and AUDIT LOGS
+import { autoInitializeDatabase } from './src/db/seedManager.js';
 
 // loads the environment variables from a .env file into process.env
 dotenv.config();
@@ -122,11 +122,12 @@ app.get('/', (req, res) => {
 	res.send(`Backend Express API is running on port : ${PORT}`);
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
 	console.log(`✅ Server running at ${ADDRESS}:${PORT}`);
 	console.log('✅ database running at:', process.env.DATABASE_URL);
-	// 	jwt secret check
-	// 	console.log('✅ jwt secret:', process.env.JWT_SECRET);
+	
+	// Auto-initialize database in production/first run
+	await autoInitializeDatabase();
 });
 
 /**

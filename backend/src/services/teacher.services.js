@@ -1,5 +1,7 @@
 import { db } from '../db/index.js';
 import { teachers } from '../db/schema/teacherUser.js';
+import { rombel } from '../db/schema/classGroup.js';
+import { classSubject } from '../db/schema/classesSubjectTable.js';
 import { eq, count } from 'drizzle-orm';
 
 /**
@@ -84,17 +86,33 @@ export const updateTeacher = (id, data) => {
 
 /**
  * Deletes a teacher by ID.
+ * Handles foreign key constraints by nullifying references in related tables.
  * @param {number} id - The teacher ID.
  * @returns {Object} The deleted teacher.
- * @throws {Error} If teacher not found.
  */
 export const deleteTeacher = (id) => {
 	const existing = getTeacherById(id);
 	if (!existing) return null;
 
-	const result = db.delete(teachers).where(eq(teachers.id, id)).returning().all();
+	// Transaction to ensure atomic deletion and cleanup
+	return db.transaction((tx) => {
+		// 1. Nullify class advisor references in rombel table
+		tx.update(rombel)
+			.set({ classAdvisorId: null })
+			.where(eq(rombel.classAdvisorId, id))
+			.run();
 
-	return result[0];
+		// 2. Nullify teacher references in classSubject table
+		tx.update(classSubject)
+			.set({ teacherId: null })
+			.where(eq(classSubject.teacherId, id))
+			.run();
+
+		// 3. Delete the teacher record
+		const result = tx.delete(teachers).where(eq(teachers.id, id)).returning().all();
+
+		return result[0];
+	});
 };
 
 export const countTeacher = () => {

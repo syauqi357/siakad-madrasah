@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import { db } from '../../db/index.js';
 import { studentTable } from '../../db/schema/studentsdataTable.js';
 import { rombel } from '../../db/schema/classGroup.js';
@@ -13,7 +12,7 @@ import { eq, and, sql } from 'drizzle-orm';
  * 1. Aligns with existing codes (TGS, UH1, PTS, PAS)
  * 2. Uses a single Transaction to eliminate SQLite bottlenecks
  */
-async function seedStudentPerformance() {
+export async function seedStudentPerformance() {
 	console.log('🚀 Starting Optimized Student Performance Seeding...');
 
 	try {
@@ -57,7 +56,7 @@ async function seedStudentPerformance() {
 		const rombels = await db.select().from(rombel).all();
 		if (rombels.length === 0) {
 			console.error('❌ No Rombels found! Run npm run db:seed:sync first.');
-			process.exit(1);
+			throw new Error('No Rombels found');
 		}
 
 		// 3. Optimized Generation Loop inside ONE Transaction
@@ -108,9 +107,6 @@ async function seedStudentPerformance() {
 		console.log('✅ Bottleneck removed. Thousands of scores inserted in seconds.');
 	} catch (error) {
 		console.error('\n❌ Seeding Failed:', error);
-	} finally {
-		process.exit(0);
+		throw error;
 	}
 }
-
-seedStudentPerformance();

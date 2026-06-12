@@ -342,12 +342,12 @@
 </script>
 
 <ModalAlert
-	show={alertModal.show}
+	bind:show={alertModal.show}
 	type={alertModal.type}
 	message={alertModal.message}
 	showCancel={alertModal.isConfirm}
-	on:close={() => (alertModal.show = false)}
-	on:confirm={() => {
+	onClose={() => (alertModal.show = false)}
+	onConfirm={() => {
 		if (alertModal.isConfirm) handleDelete();
 		else alertModal.show = false;
 	}}

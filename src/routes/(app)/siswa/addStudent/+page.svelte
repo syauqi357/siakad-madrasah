@@ -259,7 +259,7 @@
 	type={alertType}
 	message={alertMessage}
 	confirmText={alertType === 'success' ? 'Lanjut' : 'OK'}
-	on:confirm={handleAlertConfirm}
+	onConfirm={handleAlertConfirm}
 />
 
 <div class="min-h-screen bg-slate-50 p-4 md:p-8">

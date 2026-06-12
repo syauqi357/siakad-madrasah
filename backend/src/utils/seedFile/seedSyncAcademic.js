@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import { db } from '../../db/index.js';
 import { classes } from '../../db/schema/classesDataTable.js';
 import { Subjects } from '../../db/schema/subjectTable.js';
@@ -14,7 +13,7 @@ import { eq, sql, and } from 'drizzle-orm';
  * Strictly assigns teachers to subjects based on their degrees.
  * DOES NOT touch or generate students.
  */
-async function intelligentSync() {
+export async function intelligentSync() {
 	console.log('🚀 Starting Intelligent Academic Synchronization (Teacher-Subject Only)...');
 
 	try {
@@ -38,7 +37,7 @@ async function intelligentSync() {
 			console.error(
 				'❌ Missing base data! Run seedClasses, seedMapelKurikulum, and seedTeacher first.'
 			);
-			process.exit(1);
+			throw new Error('Missing base data');
 		}
 
 		// 2. Define Category logic
@@ -99,7 +98,7 @@ async function intelligentSync() {
 		let activeYear = await db.select().from(academicYear).where(eq(academicYear.isActive, 1)).get();
 		if (!activeYear) {
 			console.error('❌ No active Academic Year found! Please create one in the UI or via seed.');
-			process.exit(1);
+			throw new Error('No active Academic Year');
 		}
 
 		// 4. Assign Subjects (ClassSubject)
@@ -155,9 +154,6 @@ async function intelligentSync() {
 		console.log('\n🎉 Sync Complete! Database structure is linked without affecting students.');
 	} catch (error) {
 		console.error('\n❌ Sync Failed:', error);
-	} finally {
-		process.exit(0);
+		throw error;
 	}
 }
-
-intelligentSync();

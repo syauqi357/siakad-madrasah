@@ -448,6 +448,6 @@
 	bind:show={alertModal.show}
 	type={alertModal.type}
 	message={alertModal.message}
-	on:confirm={handleAlertConfirm}
-	on:close={() => (alertModal.show = false)}
+	onConfirm={handleAlertConfirm}
+	onClose={() => (alertModal.show = false)}
 />

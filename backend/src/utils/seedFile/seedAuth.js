@@ -1,10 +1,9 @@
-import 'dotenv/config';
 import bcrypt from 'bcryptjs';
 import { db } from '../../db/index.js';
 import { users } from '../../db/schema/user.js';
 import { eq } from 'drizzle-orm';
 
-async function seedAuth() {
+export async function runSeedAuth() {
 	console.log('🌱 Seeding Authentication Users...\n');
 
 	try {
@@ -51,9 +50,6 @@ async function seedAuth() {
 		console.log('\n🎉 Auth seeding selesai!');
 	} catch (error) {
 		console.error('❌ Auth seeding gagal:', error);
+		throw error;
 	}
-
-	process.exit(0);
 }
-
-seedAuth();

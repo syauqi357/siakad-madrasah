@@ -698,4 +698,4 @@
 	on:success={handleAddSuccess}
 />
 
-<ModalAlert bind:show={showAlert} type={alertType} message={alertMessage} on:confirm={() => {}} />
+<ModalAlert bind:show={showAlert} type={alertType} message={alertMessage} onConfirm={() => {}} />

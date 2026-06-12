@@ -749,7 +749,7 @@
 	showCancel={alertShowCancel}
 	confirmText={alertConfirmText}
 	cancelText={alertCancelText}
-	on:confirm={() => {
+	onConfirm={() => {
 		if (alertOnConfirm) alertOnConfirm();
 	}}
 />

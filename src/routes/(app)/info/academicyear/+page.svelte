@@ -633,6 +633,6 @@
 	message={alertMessage}
 	showCancel={alertShowCancel}
 	confirmText={alertConfirmText}
-	on:confirm={handleAlertConfirm}
-	on:cancel={handleAlertCancel}
+	onConfirm={handleAlertConfirm}
+	onCancel={handleAlertCancel}
 />

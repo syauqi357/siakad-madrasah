@@ -3,6 +3,7 @@
 	import { fade, fly } from 'svelte/transition';
 	import AddIcon from '$lib/components/icons/addIcon.svelte';
 	import { API_FETCH } from '$lib/api';
+	import ModalAlert from '$lib/components/modal/modalalert.svelte';
 
 	// types
 	interface Subject {
@@ -32,6 +33,44 @@
 
 	// Tab state
 	let activeTab: 'subjects' | 'assignments' = 'subjects';
+
+	// Alert state
+	let showAlert = false;
+	let alertType: 'success' | 'error' | 'warning' | 'info' = 'success';
+	let alertMessage = '';
+	let alertShowCancel = false;
+	let alertConfirmText = 'OK';
+	let pendingDeleteSubject: Subject | null = null;
+	let pendingDeleteAssign: ClassSubject | null = null;
+
+	function showAlertModal(
+		type: typeof alertType,
+		message: string,
+		showCancel = false,
+		confirmText = 'OK'
+	) {
+		alertType = type;
+		alertMessage = message;
+		alertShowCancel = showCancel;
+		alertConfirmText = confirmText;
+		showAlert = true;
+	}
+
+	function handleAlertConfirm() {
+		if (pendingDeleteSubject) {
+			confirmDeleteSubject();
+		} else if (pendingDeleteAssign) {
+			confirmDeleteAssign();
+		} else {
+			showAlert = false;
+		}
+	}
+
+	function handleAlertCancel() {
+		pendingDeleteSubject = null;
+		pendingDeleteAssign = null;
+		showAlert = false;
+	}
 
 	// Subjects tab state
 	let subjects: Subject[] = [];
@@ -161,6 +200,7 @@
 			if (data.success) {
 				await fetchSubjects();
 				handleCloseModal();
+				showAlertModal('success', `Mata pelajaran "${currentSubject.name}" berhasil disimpan`);
 			} else {
 				error = data.message || 'Gagal menyimpan data';
 			}
@@ -172,30 +212,40 @@
 		}
 	}
 
-	async function handleDelete(subject: Subject) {
-		if (!confirm(`Apakah Anda yakin ingin menghapus "${subject.name}"?`)) {
-			return;
-		}
+	function handleDelete(subject: Subject) {
+		pendingDeleteSubject = subject;
+		showAlertModal(
+			'warning',
+			`Apakah Anda yakin ingin menghapus mata pelajaran "${subject.name}"?`,
+			true,
+			'Hapus'
+		);
+	}
+
+	async function confirmDeleteSubject() {
+		if (!pendingDeleteSubject) return;
 
 		isLoading = true;
 		error = '';
 
 		try {
-			const response = await API_FETCH(`/routes/api/subjects/${subject.id}`, {
+			const response = await API_FETCH(`/routes/api/subjects/${pendingDeleteSubject.id}`, {
 				method: 'DELETE'
 			});
 
 			const data = await response.json();
 			if (data.success) {
 				await fetchSubjects();
+				showAlertModal('success', `Mata pelajaran "${pendingDeleteSubject.name}" berhasil dihapus`);
 			} else {
-				error = data.message || 'Gagal menghapus data';
+				showAlertModal('error', data.message || 'Gagal menghapus data');
 			}
 		} catch (err) {
-			error = 'Gagal terhubung ke server';
+			showAlertModal('error', 'Gagal terhubung ke server');
 			console.error('Error deleting subject:', err);
 		} finally {
 			isLoading = false;
+			pendingDeleteSubject = null;
 		}
 	}
 
@@ -332,6 +382,7 @@
 			if (data.success) {
 				await fetchClassSubjects();
 				handleCloseAssignModal();
+				showAlertModal('success', `Penugasan mata pelajaran berhasil disimpan`);
 			} else {
 				error = data.message || 'Gagal menyimpan data';
 			}
@@ -343,30 +394,40 @@
 		}
 	}
 
-	async function handleDeleteAssign(cs: ClassSubject) {
-		if (!confirm(`Hapus penugasan "${cs.subjectName}" dari kelas ${cs.className}?`)) {
-			return;
-		}
+	function handleDeleteAssign(cs: ClassSubject) {
+		pendingDeleteAssign = cs;
+		showAlertModal(
+			'warning',
+			`Hapus penugasan "${cs.subjectName}" dari kelas ${cs.className}?`,
+			true,
+			'Hapus'
+		);
+	}
+
+	async function confirmDeleteAssign() {
+		if (!pendingDeleteAssign) return;
 
 		isLoading = true;
 		error = '';
 
 		try {
-			const response = await API_FETCH(`/routes/api/class-subjects/${cs.id}`, {
+			const response = await API_FETCH(`/routes/api/class-subjects/${pendingDeleteAssign.id}`, {
 				method: 'DELETE'
 			});
 
 			const data = await response.json();
 			if (data.success) {
 				await fetchClassSubjects();
+				showAlertModal('success', `Penugasan berhasil dihapus`);
 			} else {
-				error = data.message || 'Gagal menghapus data';
+				showAlertModal('error', data.message || 'Gagal menghapus data');
 			}
 		} catch (err) {
-			error = 'Gagal terhubung ke server';
+			showAlertModal('error', 'Gagal terhubung ke server');
 			console.error('Error deleting assignment:', err);
 		} finally {
 			isLoading = false;
+			pendingDeleteAssign = null;
 		}
 	}
 
@@ -778,7 +839,7 @@
 	</div>
 </main>
 
-<!-- ==================== SUBJECT MODAL ==================== -->
+<!--  SUBJECT MODAL  -->
 {#if showModal}
 	<div
 		class="fixed inset-0 z-2 flex items-center justify-center bg-black/20 p-4 backdrop-blur-sm"
@@ -894,7 +955,7 @@
 	</div>
 {/if}
 
-<!-- ==================== ASSIGNMENT MODAL ==================== -->
+<!--  ASSIGNMENT MODAL -->
 {#if showAssignModal}
 	<div
 		class="fixed inset-0 z-20 flex items-center justify-center bg-black/20 p-4 backdrop-blur-sm"
@@ -1026,3 +1087,13 @@
 		</div>
 	</div>
 {/if}
+
+<ModalAlert
+	bind:show={showAlert}
+	type={alertType}
+	message={alertMessage}
+	showCancel={alertShowCancel}
+	confirmText={alertConfirmText}
+	onConfirm={handleAlertConfirm}
+	onCancel={handleAlertCancel}
+/>

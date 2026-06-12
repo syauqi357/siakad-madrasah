@@ -390,9 +390,9 @@
 	showCancel={true}
 	confirmText="Hapus"
 	cancelText="Batal"
-	on:confirm={handleDelete}
-	on:cancel={cancelDelete}
-	on:close={cancelDelete}
+	onConfirm={handleDelete}
+	onCancel={cancelDelete}
+	onClose={cancelDelete}
 />
 
 <!-- Success/Error Alert -->

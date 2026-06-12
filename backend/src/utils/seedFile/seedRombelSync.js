@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import { db } from '../../db/index.js';
 import { classes } from '../../db/schema/classesDataTable.js';
 import { teachers } from '../../db/schema/teacherUser.js';
@@ -12,7 +11,7 @@ import { eq, and } from 'drizzle-orm';
  * Detects existing Classes and Teachers to form Rombels automatically.
  * Does not generate students.
  */
-async function seedRombelSync() {
+export async function seedRombelSync() {
 	console.log('🔗 Starting Rombel Synchronization from existing data...');
 
 	try {
@@ -24,12 +23,12 @@ async function seedRombelSync() {
 
 		if (existingClasses.length === 0 || existingTeachers.length === 0) {
 			console.error('❌ Missing Classes or Teachers! Run seedClasses and seedTeacher first.');
-			process.exit(1);
+			throw new Error('Missing base data');
 		}
 
 		if (!activeYear) {
 			console.error('❌ No active Academic Year found!');
-			process.exit(1);
+			throw new Error('No active Academic Year');
 		}
 
 		console.log(`✅ Detected ${existingClasses.length} Class levels and ${existingTeachers.length} Teachers.`);
@@ -77,9 +76,6 @@ async function seedRombelSync() {
 		console.log(`\n🎉 Synchronization Finished! Created ${rombelCount} Rombels.`);
 	} catch (error) {
 		console.error('\n❌ Synchronization Failed:', error);
-	} finally {
-		process.exit(0);
+		throw error;
 	}
 }
-
-seedRombelSync();

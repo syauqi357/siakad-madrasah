@@ -1,8 +1,7 @@
-import 'dotenv/config';
 import { db } from '../../db/index.js';
 import { classes } from '../../db/schema/classesDataTable.js';
 
-async function seedClassesAuto() {
+export async function seedClassesAuto() {
    const selectedLevels = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
    const classData = selectedLevels.map(level => ({ className: level }));
 
@@ -12,8 +11,6 @@ async function seedClassesAuto() {
       console.log('   ✅ Success!');
    } catch (error) {
       console.error('❌ Seeding failed:', error);
+      throw error;
    }
-   process.exit(0);
 }
-
-seedClassesAuto();

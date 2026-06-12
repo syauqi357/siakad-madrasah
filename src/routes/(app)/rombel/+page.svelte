@@ -481,9 +481,9 @@
 	showCancel={true}
 	confirmText="Hapus"
 	cancelText="Batal"
-	on:confirm={handleDelete}
-	on:cancel={() => (confirmDeleteRombel = null)}
-	on:close={() => (confirmDeleteRombel = null)}
+	onConfirm={handleDelete}
+	onCancel={() => (confirmDeleteRombel = null)}
+	onClose={() => (confirmDeleteRombel = null)}
 />
 
 <!-- Error Alert Modal -->

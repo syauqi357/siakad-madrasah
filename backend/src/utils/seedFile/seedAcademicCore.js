@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import { db } from '../../db/index.js';
 import { studentTable } from '../../db/schema/studentsdataTable.js';
 import { classes } from '../../db/schema/classesDataTable.js';
@@ -14,7 +13,7 @@ import { eq, sql } from 'drizzle-orm';
  * SEED ACADEMIC CORE
  * Generates Rombels, Students, Teachers, and Subject Assignments.
  */
-async function seedAcademicCore() {
+export async function seedAcademicCore() {
 	console.log('🌱 Starting Academic Core Seeding...');
 
 	try {
@@ -220,9 +219,6 @@ async function seedAcademicCore() {
 		console.log('\n🎉 Academic Core Seeding Finished Successfully!');
 	} catch (error) {
 		console.error('\n❌ Seeding Failed:', error);
-	} finally {
-		process.exit(0);
+		throw error;
 	}
 }
-
-seedAcademicCore();

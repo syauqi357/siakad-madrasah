@@ -846,9 +846,9 @@
 </div>
 
 <ModalAlert
-	show={alertModal.show}
+	bind:show={alertModal.show}
 	type={alertModal.type}
 	message={alertModal.message}
-	on:close={() => (alertModal.show = false)}
-	on:confirm={() => (alertModal.show = false)}
+	onClose={() => (alertModal.show = false)}
+	onConfirm={() => (alertModal.show = false)}
 />

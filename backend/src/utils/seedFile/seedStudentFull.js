@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import { db } from '../../db/index.js';
 import { studentTable } from '../../db/schema/studentsdataTable.js';
 import { studentAddress } from '../../db/schema/studentAddress.js';
@@ -15,7 +14,7 @@ import { eq, and } from 'drizzle-orm';
  * FULL STUDENT SEED
  * Creates students with complete profiles (Address, Parents) and populates scores.
  */
-async function seedFullStudents() {
+export async function seedFullStudents() {
 	console.log('🚀 Starting Full Student & Performance Seeding...');
 
 	try {
@@ -25,7 +24,7 @@ async function seedFullStudents() {
 
 		if (existingRombels.length === 0) {
 			console.error('❌ No Rombels found! Run npm run db:seed:sync first.');
-			process.exit(1);
+			throw new Error('No Rombels found');
 		}
 
 		// 2. Name pools for realistic Indonesian names
@@ -162,9 +161,6 @@ async function seedFullStudents() {
 		console.log('\n🎉 Holistic Seeding Finished! All students now have full profiles and scores.');
 	} catch (error) {
 		console.error('\n❌ Seeding Failed:', error);
-	} finally {
-		process.exit(0);
+		throw error;
 	}
 }
-
-seedFullStudents();

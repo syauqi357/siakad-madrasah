@@ -1,10 +1,9 @@
-import 'dotenv/config';
 import { db } from '../../db/index.js';
 import { Subjects } from '../../db/schema/subjectTable.js';
 import { curriculum } from '../../db/schema/curriculum.js';
 import { assessmentType } from '../../db/schema/assesmentType.js';
 
-async function seedMapelKurikulum() {
+export async function seedMapelKurikulum() {
 	console.log('🌱 Seeding Kurikulum & Mapel...\n');
 
 	try {
@@ -289,9 +288,6 @@ async function seedMapelKurikulum() {
 		console.log('\n🎉 Seeding selesai!');
 	} catch (error) {
 		console.error('❌ Seeding gagal:', error);
+		throw error;
 	}
-
-	process.exit(0);
 }
-
-seedMapelKurikulum();
