@@ -250,9 +250,10 @@
 	<!-- Header -->
 	<button
 		on:click={() => goto('/score')}
-		class="flex items-center justify-center gap-2 rounded-full border border-emerald-200 px-4 py-1.5 text-emerald-500 transition-all duration-200 hover:border-emerald-300 hover:bg-emerald-50 hover:text-emerald-700"
+		class="group mb-6 flex w-fit items-center gap-2 rounded-full border border-slate-200 bg-white px-5 py-2 text-sm font-medium text-slate-700 transition-all hover:border-blue-300 hover:bg-blue-50"
 	>
-		<ArrowLeft /> kembali
+		<span class="transition-transform group-hover:-translate-x-1"><ArrowLeft /></span>
+		Kembali
 	</button>
 	<div
 		class="flex flex-col items-start justify-between gap-4 border-b border-slate-100 pb-6 sm:flex-row sm:items-center"

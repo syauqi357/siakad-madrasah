@@ -309,12 +309,13 @@
 
 <div class="min-h-screen bg-slate-50 p-4 md:p-8">
 	<div class="mx-auto max-w-5xl">
-		<a
-			href="/siswa/{studentId}"
-			class="my-4 flex w-fit cursor-pointer items-center justify-center gap-3 rounded-md bg-blue-600 px-4 py-1 text-xs text-blue-100 capitalize hover:bg-blue-700 md:text-sm"
+		<button
+			on:click={() => history.back()}
+			class="group mb-6 flex w-fit items-center gap-2 rounded-full border border-slate-200 bg-white px-5 py-2 text-sm font-medium text-slate-700 transition-all hover:border-emerald-300 hover:bg-emerald-50"
 		>
-			<Arrow_Left /> kembali
-		</a>
+			<span class="transition-transform group-hover:-translate-x-1"><Arrow_Left /></span>
+			Kembali
+		</button>
 
 		<div class="mb-8">
 			<h1 class="text-3xl font-bold text-slate-800">Edit Data Siswa</h1>

@@ -206,9 +206,10 @@
 <div class="px-0 md:px-20">
 	<button
 		on:click={() => goto('/score/exam')}
-		class="my-4 flex w-fit items-center justify-center gap-2 rounded-full bg-blue-500 px-5 py-2 text-sm text-blue-50 capitalize transition-all ease-in-out hover:gap-4 hover:bg-blue-600"
+		class="group mb-6 flex w-fit items-center gap-2 rounded-full border border-slate-200 bg-white px-5 py-2 text-sm font-medium text-slate-700 transition-all hover:border-blue-300 hover:bg-blue-50"
 	>
-		<ArrowLeft /> kembali ke halaman ujian
+		<span class="transition-transform group-hover:-translate-x-1"><ArrowLeft /></span>
+		Kembali ke Halaman Ujian
 	</button>
 	<!-- Header -->
 	<div class="mb-6 flex flex-col justify-between gap-4 md:flex-row md:items-end">

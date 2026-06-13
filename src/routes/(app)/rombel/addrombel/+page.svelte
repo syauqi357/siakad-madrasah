@@ -3,6 +3,7 @@
 	import { onMount } from 'svelte';
 	import { API_FETCH } from '$lib/api';
 	import ModalAlert from '$lib/components/modal/modalalert.svelte';
+	import ArrowLeft from '$lib/components/icons/arrow_left.svelte';
 
 	let alertModal = {
 		show: false,
@@ -183,17 +184,10 @@
 		<div class="mb-6 flex items-center justify-between">
 			<div>
 				<button
-					on:click={()=> history.back()}
-					class="mb-4 inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3.5 py-2 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-50 hover:text-slate-800"
+					on:click={() => history.back()}
+					class="group mb-6 flex w-fit items-center gap-2 rounded-full border border-slate-200 bg-white px-5 py-2 text-sm font-medium text-slate-700 transition-all hover:border-blue-300 hover:bg-blue-50"
 				>
-					<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M15 19l-7-7 7-7"
-						/>
-					</svg>
+					<span class="transition-transform group-hover:-translate-x-1"><ArrowLeft /></span>
 					Kembali
 				</button>
 				<h1 class="text-2xl font-bold text-slate-900">Tambah Rombel</h1>

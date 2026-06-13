@@ -397,13 +397,13 @@
 			<!-- Top Bar -->
 			<header>
 				<div class="flex items-center justify-between px-6 py-3">
-					<a
-						href="/siswa"
-						class="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900"
+					<button
+						on:click={() => history.back()}
+						class="group flex w-fit items-center gap-2 rounded-full border border-slate-200 bg-white px-5 py-2 text-sm font-medium text-slate-700 transition-all hover:border-emerald-300 hover:bg-emerald-50"
 					>
-						<ArrowLeft />
-						<span class="font-medium">Kembali</span>
-					</a>
+						<span class="transition-transform group-hover:-translate-x-1"><ArrowLeft /></span>
+						Kembali
+					</button>
 
 					<div class="flex items-center gap-2">
 						{#if student.status === 'ACTIVE'}

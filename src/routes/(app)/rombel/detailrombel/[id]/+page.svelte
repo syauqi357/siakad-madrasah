@@ -207,9 +207,9 @@
 	<div class="flex items-center justify-between">
 		<button
 			on:click={backToMain}
-			class="group flex items-center gap-2 rounded-full border border-blue-200 px-5 py-1.5 text-sm font-medium text-blue-600 transition-all hover:border-blue-300 hover:bg-blue-50"
+			class="group flex w-fit items-center gap-2 rounded-full border border-slate-200 bg-white px-5 py-2 text-sm font-medium text-slate-700 transition-all hover:border-blue-300 hover:bg-blue-50"
 		>
-			<span class="transition-transform group-hover:-translate-x-1.5"><ArrowLeft /></span>
+			<span class="transition-transform group-hover:-translate-x-1"><ArrowLeft /></span>
 			Kembali
 		</button>
 

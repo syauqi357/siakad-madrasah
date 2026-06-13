@@ -2,6 +2,7 @@
 	import { page } from '$app/state';
 	import { API_FETCH } from '$lib/api';
 	import ModalAlert from '$lib/components/modal/modalalert.svelte';
+	import ArrowLeft from '$lib/components/icons/arrow_left.svelte';
 
 	const SUBCATEGORIES: Record<number, { name: string; items: string[] }> = {
 		1: {
@@ -275,11 +276,9 @@
 	<div>
 		<button
 			onclick={() => history.back()}
-			class="mb-2 inline-flex items-center gap-1 text-sm text-slate-500 hover:text-slate-700"
+			class="group mb-6 flex w-fit items-center gap-2 rounded-full border border-slate-200 bg-white px-5 py-2 text-sm font-medium text-slate-700 transition-all hover:border-blue-300 hover:bg-blue-50"
 		>
-			<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-			</svg>
+			<span class="transition-transform group-hover:-translate-x-1"><ArrowLeft /></span>
 			Kembali
 		</button>
 		<h1 class="text-4xl font-bold text-blue-700">{subcategoryName}</h1>
