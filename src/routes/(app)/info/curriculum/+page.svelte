@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { API_FETCH } from '$lib/api';
 	import { onMount } from 'svelte';
+	import ModalAlert from '$lib/components/modal/modalalert.svelte';
 
 	interface Curriculum {
 		id: number;
@@ -18,22 +19,26 @@
 		isActive: boolean;
 	}
 
-	let curricula: Curriculum[] = [];
-	let academicYears: AcademicYear[] = [];
-	let loading = true;
-	let submitting = false;
-	let error = '';
-	let success = '';
+	let curricula = $state<Curriculum[]>([]);
+	let academicYears = $state<AcademicYear[]>([]);
+	let loading = $state(true);
+	let submitting = $state(false);
+	let error = $state('');
+	let success = $state('');
 
 	// Form state
-	let isEditing = false;
-	let editId: number | null = null;
-	let form = {
+	let isEditing = $state(false);
+	let editId = $state<number | null>(null);
+	let form = $state({
 		name: '',
 		code: '',
 		year: '',
 		description: ''
-	};
+	});
+
+	// Modal alert state
+	let deleteModalShow = $state(false);
+	let idToDelete = $state<number | null>(null);
 
 	async function fetchAcademicYears() {
 		try {
@@ -72,7 +77,7 @@
 			if (!response.ok) throw new Error('Failed to load');
 			const result = await response.json();
 			curricula = result.data || [];
-		} catch (e) {
+		} catch {
 			error = 'Gagal memuat data kurikulum';
 		} finally {
 			loading = false;
@@ -104,25 +109,32 @@
 			success = isEditing ? 'Kurikulum berhasil diperbarui' : 'Kurikulum berhasil ditambahkan';
 			resetForm();
 			await fetchCurricula();
-		} catch (e) {
+		} catch {
 			error = 'Gagal menyimpan kurikulum';
 		} finally {
 			submitting = false;
 		}
 	}
 
-	async function deleteCurriculum(id: number) {
-		if (!confirm('Yakin ingin menghapus kurikulum ini?')) return;
+	function deleteCurriculum(id: number) {
+		idToDelete = id;
+		deleteModalShow = true;
+	}
+
+	async function confirmDelete() {
+		if (idToDelete === null) return;
 
 		try {
-			const response = await API_FETCH(`/routes/api/curriculum/${id}`, {
+			const response = await API_FETCH(`/routes/api/curriculum/${idToDelete}`, {
 				method: 'DELETE'
 			});
 			if (!response.ok) throw new Error('Failed to delete');
 			success = 'Kurikulum berhasil dihapus';
 			await fetchCurricula();
-		} catch (e) {
+		} catch  {
 			error = 'Gagal menghapus kurikulum';
+		} finally {
+			idToDelete = null;
 		}
 	}
 
@@ -135,7 +147,7 @@
 			});
 			if (!response.ok) throw new Error('Failed to update');
 			await fetchCurricula();
-		} catch (e) {
+		} catch {
 			error = 'Gagal mengubah status kurikulum';
 		}
 	}
@@ -158,7 +170,7 @@
 		<div class="flex items-center justify-between rounded-lg bg-red-50 px-4 py-3">
 			<p class="text-sm text-red-600">{error}</p>
 			<button
-				on:click={() => (error = '')}
+				onclick={() => (error = '')}
 				class="text-red-400 hover:text-red-600"
 				aria-label="Close"
 			>
@@ -178,7 +190,7 @@
 		<div class="flex items-center justify-between rounded-lg bg-green-50 px-4 py-3">
 			<p class="text-sm text-green-600">{success}</p>
 			<button
-				on:click={() => (success = '')}
+				onclick={() => (success = '')}
 				class="text-green-400 hover:text-green-600"
 				aria-label="close"
 			>
@@ -202,7 +214,13 @@
 					{isEditing ? 'Edit Kurikulum' : 'Tambah Kurikulum'}
 				</h2>
 
-				<form on:submit|preventDefault={handleSubmit} class="space-y-4">
+				<form
+					onsubmit={(e) => {
+						e.preventDefault();
+						handleSubmit();
+					}}
+					class="space-y-4"
+				>
 					<div>
 						<label for="name" class="mb-1 block text-sm font-medium text-slate-700">
 							Nama Kurikulum <span class="text-red-500">*</span>
@@ -272,7 +290,7 @@
 						{#if isEditing}
 							<button
 								type="button"
-								on:click={resetForm}
+								onclick={resetForm}
 								class="rounded-md border border-slate-200 px-4 py-2 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-50"
 							>
 								Batal
@@ -353,7 +371,7 @@
 								</div>
 								<div class="ml-4 flex items-center gap-1">
 									<button
-										on:click={() => toggleActive(curriculum)}
+										onclick={() => toggleActive(curriculum)}
 										class="rounded p-2 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600"
 										title={curriculum.isActive ? 'Nonaktifkan' : 'Aktifkan'}
 									>
@@ -378,7 +396,7 @@
 										{/if}
 									</button>
 									<button
-										on:click={() => editCurriculum(curriculum)}
+										onclick={() => editCurriculum(curriculum)}
 										class="rounded p-2 text-slate-400 transition-colors hover:bg-slate-100 hover:text-blue-600"
 										title="Edit"
 									>
@@ -392,7 +410,7 @@
 										</svg>
 									</button>
 									<button
-										on:click={() => deleteCurriculum(curriculum.id)}
+										onclick={() => deleteCurriculum(curriculum.id)}
 										class="rounded p-2 text-slate-400 transition-colors hover:bg-red-50 hover:text-red-600"
 										title="Hapus"
 									>
@@ -413,4 +431,14 @@
 			</div>
 		</div>
 	</div>
+
+	<!-- Alert Modal -->
+	<ModalAlert
+		bind:show={deleteModalShow}
+		type="warning"
+		message="Apakah Anda yakin ingin menghapus kurikulum ini? Tindakan ini tidak dapat dibatalkan."
+		showCancel={true}
+		confirmText="Hapus"
+		onConfirm={confirmDelete}
+	/>
 </div>
