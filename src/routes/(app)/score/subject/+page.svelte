@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { fade, fly } from 'svelte/transition';
+	import { fly } from 'svelte/transition';
 	import AddIcon from '$lib/components/icons/addIcon.svelte';
 	import { API_FETCH } from '$lib/api';
+	import Modal from '$lib/components/modal/Modal.svelte';
 	import ModalAlert from '$lib/components/modal/modalalert.svelte';
 
 	// types
@@ -148,19 +149,6 @@
 		showModal = false;
 		currentSubject = { ...emptySubject };
 		isEditing = false;
-	}
-
-	function handleBackdropClick(event: MouseEvent) {
-		if (event.target === event.currentTarget) {
-			handleCloseModal();
-		}
-	}
-
-	function handleKeydown(event: KeyboardEvent) {
-		if (event.key === 'Escape') {
-			if (showModal) handleCloseModal();
-			if (showAssignModal) handleCloseAssignModal();
-		}
 	}
 
 	async function handleSubmit() {
@@ -343,12 +331,6 @@
 		error = '';
 	}
 
-	function handleAssignBackdropClick(event: MouseEvent) {
-		if (event.target === event.currentTarget) {
-			handleCloseAssignModal();
-		}
-	}
-
 	async function handleAssignSubmit() {
 		if (!currentAssignment.classId || !currentAssignment.subjectId) {
 			error = 'Kelas dan Mata Pelajaran wajib dipilih';
@@ -446,8 +428,6 @@
 		fetchClassSubjects();
 	}
 </script>
-
-<svelte:window on:keydown={handleKeydown} />
 
 <main class="min-h-screen bg-gray-50 p-4 sm:p-6 lg:p-8">
 	<div class="mx-auto max-w-7xl">
@@ -766,13 +746,11 @@
 											<td class="px-6 py-4 font-medium text-gray-900">{cs.subjectName}</td>
 											<td class="px-6 py-4">
 												{#if cs.teacherName}
-													<span
-														class="inline-flex items-center rounded-full bg-green-50 px-2.5 py-0.5 text-xs font-semibold text-green-700"
-													>
-														{cs.teacherName}
-													</span>
+													<span class="text-sm font-medium text-gray-800">{cs.teacherName}</span>
 												{:else}
-													<span class="text-gray-400 italic">Belum ditugaskan</span>
+													<span class="inline-flex items-center rounded-md bg-amber-50 px-2.5 py-1 text-xs font-medium text-amber-600 ring-1 ring-amber-200 ring-inset">
+														Belum ditugaskan
+													</span>
 												{/if}
 											</td>
 											<td class="px-6 py-4 text-right">
@@ -840,253 +818,181 @@
 </main>
 
 <!--  SUBJECT MODAL  -->
-{#if showModal}
-	<div
-		class="fixed inset-0 z-2 flex items-center justify-center bg-black/20 p-4 backdrop-blur-sm"
-		transition:fade={{ duration: 150 }}
-		on:click={handleBackdropClick}
-		on:keydown={handleKeydown}
-		role="dialog"
-		tabindex="-1"
-		aria-modal="true"
-	>
-		<div
-			class="w-full max-w-md rounded-lg border border-slate-400 bg-white shadow-sm"
-			transition:fly={{ y: 20, duration: 200 }}
-		>
-			<div class="flex items-center justify-between border-b border-slate-400 px-6 py-4">
-				<h2 class="text-lg font-semibold text-gray-900">
-					{isEditing ? 'Edit Mata Pelajaran' : 'Tambah Mata Pelajaran'}
-				</h2>
-				<button
-					aria-label="close"
-					on:click={handleCloseModal}
-					class="text-gray-400 hover:text-gray-600"
-				>
-					<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M6 18L18 6M6 6l12 12"
-						/>
-					</svg>
-				</button>
-			</div>
+<Modal
+	show={showModal}
+	title={isEditing ? 'Edit Mata Pelajaran' : 'Tambah Mata Pelajaran'}
+	size="md"
+	on:close={handleCloseModal}
+>
+	<form id="subjectPageForm" on:submit|preventDefault={handleSubmit} class="space-y-4">
+		{#if error && showModal}
+			<div class="rounded bg-red-50 p-3 text-sm text-red-600">{error}</div>
+		{/if}
 
-			<form on:submit|preventDefault={handleSubmit} class="p-6">
-				{#if error}
-					<div class="mb-4 rounded bg-red-50 p-3 text-sm text-red-600">{error}</div>
-				{/if}
-
-				<div class="space-y-4">
-					<div>
-						<label for="subjectName" class="mb-1 block text-sm font-medium text-gray-700">
-							Nama Mata Pelajaran <span class="text-red-500">*</span>
-						</label>
-						<input
-							type="text"
-							id="subjectName"
-							bind:value={currentSubject.name}
-							class="w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
-							placeholder="masukkan mata pelajaran"
-							required
-						/>
-					</div>
-
-					<div>
-						<label for="subjectCode" class="mb-1 block text-sm font-medium text-gray-700">
-							Kode Mata Pelajaran
-						</label>
-						<input
-							type="text"
-							id="subjectCode"
-							bind:value={currentSubject.subjectCode}
-							class="w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
-							placeholder="masukkan kode mapel"
-						/>
-					</div>
-
-					<div>
-						<label for="kkm" class="mb-1 block text-sm font-medium text-gray-700">KKM</label>
-						<input
-							type="number"
-							id="kkm"
-							bind:value={currentSubject.kkm}
-							min="0"
-							max="100"
-							class="w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
-							placeholder="masukkan KKM"
-						/>
-					</div>
-
-					<div>
-						<label for="description" class="mb-1 block text-sm font-medium text-gray-700">
-							Deskripsi
-						</label>
-						<textarea
-							id="description"
-							bind:value={currentSubject.description}
-							rows="3"
-							class="w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
-							placeholder="Deskripsi mata pelajaran..."
-						></textarea>
-					</div>
-				</div>
-
-				<div class="mt-6 flex justify-end gap-3">
-					<button
-						type="button"
-						on:click={handleCloseModal}
-						class="rounded px-4 py-2 text-sm text-gray-600 hover:bg-gray-100"
-					>
-						Batal
-					</button>
-					<button
-						type="submit"
-						disabled={isSubmitting}
-						class="rounded bg-blue-600 px-4 py-2 text-sm text-white hover:bg-blue-700 disabled:opacity-50"
-					>
-						{isSubmitting ? 'Menyimpan...' : isEditing ? 'Perbarui' : 'Simpan'}
-					</button>
-				</div>
-			</form>
+		<div>
+			<label for="subjectName" class="mb-1 block text-sm font-medium text-gray-700">
+				Nama Mata Pelajaran <span class="text-red-500">*</span>
+			</label>
+			<input
+				type="text"
+				id="subjectName"
+				bind:value={currentSubject.name}
+				class="w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
+				placeholder="masukkan mata pelajaran"
+				required
+			/>
 		</div>
-	</div>
-{/if}
+
+		<div>
+			<label for="subjectCode" class="mb-1 block text-sm font-medium text-gray-700">
+				Kode Mata Pelajaran
+			</label>
+			<input
+				type="text"
+				id="subjectCode"
+				bind:value={currentSubject.subjectCode}
+				class="w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
+				placeholder="masukkan kode mapel"
+			/>
+		</div>
+
+		<div>
+			<label for="kkm" class="mb-1 block text-sm font-medium text-gray-700">KKM</label>
+			<input
+				type="number"
+				id="kkm"
+				bind:value={currentSubject.kkm}
+				min="0"
+				max="100"
+				class="w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
+				placeholder="masukkan KKM"
+			/>
+		</div>
+
+		<div>
+			<label for="description" class="mb-1 block text-sm font-medium text-gray-700">
+				Deskripsi
+			</label>
+			<textarea
+				id="description"
+				bind:value={currentSubject.description}
+				rows="3"
+				class="w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
+				placeholder="Deskripsi mata pelajaran..."
+			></textarea>
+		</div>
+	</form>
+
+	<svelte:fragment slot="footer">
+		<button
+			type="button"
+			on:click={handleCloseModal}
+			class="rounded-md px-4 py-2 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-100"
+		>
+			Batal
+		</button>
+		<button
+			type="submit"
+			form="subjectPageForm"
+			disabled={isSubmitting}
+			class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700 disabled:opacity-50"
+		>
+			{isSubmitting ? 'Menyimpan...' : isEditing ? 'Perbarui' : 'Simpan'}
+		</button>
+	</svelte:fragment>
+</Modal>
 
 <!--  ASSIGNMENT MODAL -->
-{#if showAssignModal}
-	<div
-		class="fixed inset-0 z-20 flex items-center justify-center bg-black/20 p-4 backdrop-blur-sm"
-		transition:fade={{ duration: 150 }}
-		on:click={handleAssignBackdropClick}
-		on:keydown={handleKeydown}
-		role="dialog"
-		tabindex="-1"
-		aria-modal="true"
-	>
-		<div
-			class="w-full max-w-md rounded-lg bg-white shadow-lg"
-			transition:fly={{ y: 20, duration: 200 }}
-		>
-			<div class="flex items-center justify-between border-b px-6 py-4">
-				<h2 class="text-lg font-semibold text-gray-900">
-					{isEditingAssign ? 'Ubah Guru Pengampu' : 'Tambah Mapel ke Kelas'}
-				</h2>
-				<button
-					aria-label="close"
-					on:click={handleCloseAssignModal}
-					class="text-gray-400 hover:text-gray-600"
-				>
-					<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M6 18L18 6M6 6l12 12"
-						/>
-					</svg>
-				</button>
-			</div>
+<Modal
+	show={showAssignModal}
+	title={isEditingAssign ? 'Ubah Guru Pengampu' : 'Tambah Mapel ke Kelas'}
+	size="md"
+	on:close={handleCloseAssignModal}
+>
+	<form id="assignPageForm" on:submit|preventDefault={handleAssignSubmit} class="space-y-4">
+		{#if error && showAssignModal}
+			<div class="rounded bg-red-50 p-3 text-sm text-red-600">{error}</div>
+		{/if}
 
-			<form on:submit|preventDefault={handleAssignSubmit} class="p-6">
-				{#if error}
-					<div class="mb-4 rounded bg-red-50 p-3 text-sm text-red-600">{error}</div>
-				{/if}
-
-				<div class="space-y-4">
-					<!-- Class (read-only when adding) -->
-					<div>
-						<label for="assignClass" class="mb-1 block text-sm font-medium text-gray-700">
-							Kelas
-						</label>
-						<input
-							type="text"
-							id="assignClass"
-							value={classesDropdown.find((c) => c.id === currentAssignment.classId)?.name || ''}
-							class="w-full rounded border border-gray-300 bg-gray-100 px-3 py-2 text-sm"
-							readonly
-						/>
-					</div>
-
-					<!-- Subject (only when adding) -->
-					{#if !isEditingAssign}
-						<div>
-							<label for="assignSubject" class="mb-1 block text-sm font-medium text-gray-700">
-								Mata Pelajaran <span class="text-red-500">*</span>
-							</label>
-							<select
-								id="assignSubject"
-								bind:value={currentAssignment.subjectId}
-								class="w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
-								required
-							>
-								<option value={0}>-- Pilih Mata Pelajaran --</option>
-								{#each unassignedSubjects as subj (subj.id)}
-									<option value={subj.id}>{subj.name} {subj.code ? `(${subj.code})` : ''}</option>
-								{/each}
-							</select>
-							{#if unassignedSubjects.length === 0}
-								<p class="mt-1 text-xs text-gray-500">
-									Semua mata pelajaran sudah ditugaskan ke kelas ini
-								</p>
-							{/if}
-						</div>
-					{:else}
-						<div>
-							<label for="assignSubjectRO" class="mb-1 block text-sm font-medium text-gray-700">
-								Mata Pelajaran
-							</label>
-							<input
-								type="text"
-								id="assignSubjectRO"
-								value={subjectsDropdown.find((s) => s.id === currentAssignment.subjectId)?.name ||
-									''}
-								class="w-full rounded border border-gray-300 bg-gray-100 px-3 py-2 text-sm"
-								readonly
-							/>
-						</div>
-					{/if}
-
-					<!-- Teacher -->
-					<div>
-						<label for="assignTeacher" class="mb-1 block text-sm font-medium text-gray-700">
-							Guru Pengampu
-						</label>
-						<select
-							id="assignTeacher"
-							bind:value={currentAssignment.teacherId}
-							class="w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
-						>
-							<option value={null}>-- Belum Ditugaskan --</option>
-							{#each teachersDropdown as teacher (teacher.id)}
-								<option value={teacher.id}>{teacher.name}</option>
-							{/each}
-						</select>
-					</div>
-				</div>
-
-				<div class="mt-6 flex justify-end gap-3">
-					<button
-						type="button"
-						on:click={handleCloseAssignModal}
-						class="rounded px-4 py-2 text-sm text-gray-600 hover:bg-gray-100"
-					>
-						Batal
-					</button>
-					<button
-						type="submit"
-						disabled={isSubmitting || (!isEditingAssign && currentAssignment.subjectId === 0)}
-						class="rounded bg-blue-600 px-4 py-2 text-sm text-white hover:bg-blue-700 disabled:opacity-50"
-					>
-						{isSubmitting ? 'Menyimpan...' : isEditingAssign ? 'Perbarui' : 'Simpan'}
-					</button>
-				</div>
-			</form>
+		<div class="rounded-md ring-1 ring-blue-500  bg-blue-50 px-4 py-3">
+			<p class="text-xs font-medium tracking-wide text-blue-500 uppercase">Kelas</p>
+			<p class="mt-0.5 text-xl font-bold text-blue-700">
+				{classesDropdown.find((c) => c.id === currentAssignment.classId)?.name || '-'}
+			</p>
 		</div>
-	</div>
-{/if}
+
+		{#if !isEditingAssign}
+			<div>
+				<label for="assignSubject" class="mb-1 block text-sm font-medium text-gray-700">
+					Mata Pelajaran <span class="text-red-500">*</span>
+				</label>
+				<select
+					id="assignSubject"
+					bind:value={currentAssignment.subjectId}
+					class="w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
+					required
+				>
+					<option value={0}>-- Pilih Mata Pelajaran --</option>
+					{#each unassignedSubjects as subj (subj.id)}
+						<option value={subj.id}>{subj.name} {subj.code ? `(${subj.code})` : ''}</option>
+					{/each}
+				</select>
+				{#if unassignedSubjects.length === 0}
+					<p class="mt-1 text-xs text-gray-500">
+						Semua mata pelajaran sudah ditugaskan ke kelas ini
+					</p>
+				{/if}
+			</div>
+		{:else}
+			<div>
+				<label for="assignSubjectRO" class="mb-1 block text-sm font-medium text-gray-700"
+					>Mata Pelajaran</label
+				>
+				<input
+					type="text"
+					id="assignSubjectRO"
+					value={subjectsDropdown.find((s) => s.id === currentAssignment.subjectId)?.name || ''}
+					class="w-full rounded border border-gray-300 bg-gray-100 px-3 py-2 text-sm"
+					readonly
+				/>
+			</div>
+		{/if}
+
+		<div>
+			<label for="assignTeacher" class="mb-1 block text-sm font-medium text-gray-700"
+				>Guru Pengampu</label
+			>
+			<select
+				id="assignTeacher"
+				bind:value={currentAssignment.teacherId}
+				class="w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
+			>
+				<option value={null}>-- Belum Ditugaskan --</option>
+				{#each teachersDropdown as teacher (teacher.id)}
+					<option value={teacher.id}>{teacher.name}</option>
+				{/each}
+			</select>
+		</div>
+	</form>
+
+	<svelte:fragment slot="footer">
+		<button
+			type="button"
+			on:click={handleCloseAssignModal}
+			class="rounded-md px-4 py-2 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-100"
+		>
+			Batal
+		</button>
+		<button
+			type="submit"
+			form="assignPageForm"
+			disabled={isSubmitting || (!isEditingAssign && currentAssignment.subjectId === 0)}
+			class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700 disabled:opacity-50"
+		>
+			{isSubmitting ? 'Menyimpan...' : isEditingAssign ? 'Perbarui' : 'Simpan'}
+		</button>
+	</svelte:fragment>
+</Modal>
 
 <ModalAlert
 	bind:show={showAlert}

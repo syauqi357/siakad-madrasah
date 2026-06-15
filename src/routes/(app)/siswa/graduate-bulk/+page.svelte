@@ -9,11 +9,30 @@
 	let alertModal = {
 		show: false,
 		type: 'success' as 'success' | 'error' | 'warning' | 'info',
-		message: ''
+		message: '',
+		showCancel: false,
+		confirmText: 'OK',
+		onConfirm: null as (() => void) | null
 	};
 
 	function showAlert(type: 'success' | 'error' | 'warning' | 'info', message: string) {
-		alertModal = { show: true, type, message };
+		alertModal = {
+			show: true,
+			type,
+			message,
+			showCancel: false,
+			confirmText: 'OK',
+			onConfirm: null
+		};
+	}
+
+	function showConfirm(
+		type: 'success' | 'error' | 'warning' | 'info',
+		message: string,
+		confirmText: string,
+		onConfirm: () => void
+	) {
+		alertModal = { show: true, type, message, showCancel: true, confirmText, onConfirm };
 	}
 
 	// Types
@@ -157,8 +176,8 @@
 		activeTab = 'confirm';
 	}
 
-	// Execute bulk graduation
-	async function executeBulkGraduation() {
+	// Validate, then ask for confirmation via ModalAlert
+	function executeBulkGraduation() {
 		if (!graduationYear) {
 			showAlert('warning', 'Pilih tahun kelulusan');
 			return;
@@ -168,9 +187,16 @@
 			return;
 		}
 
-		const confirmMsg = `Luluskan ${selectedStudentIds.length} siswa?\n\nTahun: ${graduationYear}\nTanggal: ${completionDate}`;
-		if (!confirm(confirmMsg)) return;
+		showConfirm(
+			'warning',
+			`Luluskan ${selectedStudentIds.length} siswa untuk tahun ${graduationYear} (${completionDate})?`,
+			'Luluskan',
+			performGraduation
+		);
+	}
 
+	// Execute bulk graduation (after confirmation)
+	async function performGraduation() {
 		isGraduating = true;
 		graduationResult = null;
 
@@ -227,6 +253,10 @@
 		fetchRombels();
 		fetchAcademicYears();
 	});
+
+	function BackButton() {
+		history.back();
+	}
 </script>
 
 <div class="min-h-screen bg-linear-to-br from-slate-50 to-emerald-50/30">
@@ -234,7 +264,7 @@
 		<!-- Back button -->
 		<button
 			aria-labelledby="kembali"
-			on:click={() => history.back()}
+			on:click={BackButton}
 			class="group mb-6 flex w-fit items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition-all hover:border-emerald-300 hover:bg-emerald-50"
 		>
 			<span class="transition-transform group-hover:-translate-x-1"><ArrowLeft /></span>
@@ -245,7 +275,7 @@
 		<div class="mb-8">
 			<div class="mb-2 flex items-center gap-3">
 				<div
-					class="flex h-12 w-12 items-center justify-center rounded-xl bg-linear-to-br from-emerald-500 to-teal-600"
+					class="flex h-12 w-12 items-center justify-center rounded-md bg-linear-to-br from-emerald-500 to-teal-600"
 				>
 					<svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path
@@ -264,16 +294,16 @@
 		</div>
 
 		<!-- Tabs -->
-		<div class="mb-6 flex gap-2 rounded-xl border border-slate-200 bg-white p-1.5">
+		<div class="mb-6 flex gap-2 rounded-md border border-slate-200 bg-white p-1.5">
 			<button
 				on:click={() => (activeTab = 'select')}
-				class="flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-medium transition-all {activeTab ===
+				class="flex items-center gap-2 rounded-sm px-5 py-2.5 text-sm font-medium transition-all {activeTab ===
 				'select'
 					? 'bg-emerald-500 text-white'
 					: 'text-slate-600 hover:bg-slate-100'}"
 			>
 				<span
-					class="flex h-5 w-5 items-center justify-center rounded-md text-xs {activeTab === 'select'
+					class="flex h-5 w-5 items-center justify-center rounded-xs text-xs {activeTab === 'select'
 						? 'bg-white/20'
 						: 'bg-slate-200'}">1</span
 				>
@@ -282,20 +312,20 @@
 			<button
 				on:click={() => selectedStudentIds.length > 0 && (activeTab = 'confirm')}
 				disabled={selectedStudentIds.length === 0}
-				class="flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-medium transition-all disabled:opacity-40 {activeTab ===
+				class="flex items-center gap-2 rounded-sm px-5 py-2.5 text-sm font-medium transition-all disabled:opacity-40 {activeTab ===
 				'confirm'
 					? 'bg-emerald-500 text-white'
 					: 'text-slate-600 hover:bg-slate-100'}"
 			>
 				<span
-					class="flex h-5 w-5 items-center justify-center rounded-md text-xs {activeTab ===
+					class="flex h-5 w-5 items-center justify-center rounded-xs text-xs {activeTab ===
 					'confirm'
 						? 'bg-white/20'
 						: 'bg-slate-200'}">2</span
 				>
 				Konfirmasi
 				{#if selectedStudentIds.length > 0}
-					<span class="rounded-md bg-emerald-100 px-2 py-0.5 text-xs font-semibold text-emerald-700"
+					<span class="rounded-xs bg-emerald-100 px-2 py-0.5 text-xs font-semibold text-emerald-700"
 						>{selectedStudentIds.length}</span
 					>
 				{/if}
@@ -307,7 +337,7 @@
 			<div class="flex flex-col items-center justify-center py-24">
 				<div class="relative h-12 w-12">
 					<div
-						class="absolute inset-0 animate-spin rounded-md border-4 border-slate-200 border-t-emerald-500"
+						class="absolute inset-0 animate-spin rounded-full border-4 border-slate-200 border-t-emerald-500"
 					></div>
 				</div>
 				<span class="mt-4 text-sm font-medium text-slate-500">Memuat data...</span>
@@ -328,7 +358,7 @@
 				<p class="mb-6 text-sm text-slate-500">{error}</p>
 				<button
 					on:click={fetchRombels}
-					class="rounded-lg bg-emerald-500 px-5 py-2.5 text-sm font-medium text-white transition-all hover:bg-emerald-600"
+					class="rounded-md bg-emerald-500 px-5 py-2.5 text-sm font-medium text-white transition-all hover:bg-emerald-600"
 				>
 					Coba Lagi
 				</button>
@@ -348,7 +378,7 @@
 						{#if classGroups.length === 0}
 							<div class="flex flex-col items-center py-12 text-center">
 								<div
-									class="mb-3 flex h-12 w-12 items-center justify-center rounded-md bg-slate-100"
+									class="mb-3 flex h-12 w-12 items-center justify-center rounded-sm bg-slate-100"
 								>
 									<svg
 										class="h-6 w-6 text-slate-400"
@@ -381,7 +411,7 @@
 										{#each group.rombels as rom (rom.id)}
 											<button
 												on:click={() => selectRombel(rom)}
-												class="group flex w-full items-center justify-between rounded-xl border-2 p-3.5 text-left transition-all {selectedRombel?.id ===
+												class="group flex w-full items-center justify-between rounded-sm border-2 p-3.5 text-left transition-all {selectedRombel?.id ===
 												rom.id
 													? 'border-emerald-500 bg-emerald-50'
 													: 'border-transparent bg-slate-50 hover:border-slate-200 hover:bg-slate-100'}"
@@ -391,7 +421,7 @@
 													<span class="text-xs text-slate-500">{rom.code}</span>
 												</span>
 												<span
-													class="flex h-8 w-8 items-center justify-center rounded-lg {selectedRombel?.id ===
+													class="flex h-8 w-8 items-center justify-center rounded-xs {selectedRombel?.id ===
 													rom.id
 														? 'bg-emerald-500 text-white'
 														: 'bg-slate-200 text-slate-600'} text-sm font-bold"
@@ -424,7 +454,7 @@
 						{#if students.length > 0}
 							<button
 								on:click={selectAllStudents}
-								class="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-sm font-medium text-emerald-700 transition-all hover:bg-emerald-100"
+								class="rounded-sm border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-sm font-medium text-emerald-700 transition-all hover:bg-emerald-100"
 							>
 								{selectedStudentIds.length === students.length ? 'Batal Semua' : 'Pilih Semua'}
 							</button>
@@ -435,7 +465,7 @@
 						{#if !selectedRombel}
 							<div class="flex flex-col items-center py-20 text-center">
 								<div
-									class="mb-3 flex h-12 w-12 items-center justify-center rounded-md bg-slate-100"
+									class="mb-3 flex h-12 w-12 items-center justify-center rounded-sm bg-slate-100"
 								>
 									<svg
 										class="h-6 w-6 text-slate-400"
@@ -458,13 +488,13 @@
 						{:else if loadingStudents}
 							<div class="flex items-center justify-center py-16">
 								<div
-									class="h-8 w-8 animate-spin rounded-md border-4 border-slate-200 border-t-emerald-500"
+									class="h-8 w-8 animate-spin rounded-full border-4 border-slate-200 border-t-emerald-500"
 								></div>
 							</div>
 						{:else if students.length === 0}
 							<div class="flex flex-col items-center py-16 text-center">
 								<div
-									class="mb-3 flex h-12 w-12 items-center justify-center rounded-md bg-amber-100"
+									class="mb-3 flex h-12 w-12 items-center justify-center rounded-sm bg-amber-100"
 								>
 									<svg
 										class="h-6 w-6 text-amber-500"
@@ -494,7 +524,7 @@
 												type="checkbox"
 												checked={selectedStudentIds.includes(student.id)}
 												on:change={() => toggleStudent(student.id)}
-												class="peer h-5 w-5 cursor-pointer appearance-none rounded-md border-2 border-slate-300 transition-all checked:border-emerald-500 checked:bg-emerald-500"
+												class="peer h-5 w-5 cursor-pointer appearance-none rounded-sm border-2 border-slate-300 transition-all checked:border-emerald-500 checked:bg-emerald-500"
 											/>
 											<svg
 												class="pointer-events-none absolute top-1 left-1 h-3 w-3 text-white opacity-0 peer-checked:opacity-100"
@@ -515,7 +545,7 @@
 											<span class="font-mono text-xs text-slate-500">{student.nisn}</span>
 										</span>
 										<span
-											class="rounded-md px-2.5 py-1 text-xs font-semibold {student.gender
+											class="rounded-xs px-2.5 py-1 text-xs font-semibold {student.gender
 												?.toLowerCase()
 												.startsWith('l')
 												? 'bg-sky-100 text-sky-700'
@@ -533,10 +563,10 @@
 						<div class="border-t border-slate-100 bg-slate-50 p-4">
 							<button
 								on:click={proceedToConfirm}
-								class="flex w-full items-center justify-center gap-2 rounded-xl bg-linear-to-r from-emerald-500 to-teal-500 px-4 py-3.5 font-semibold text-white transition-all hover:from-emerald-600 hover:to-teal-600"
+								class="flex w-full items-center justify-center gap-2 rounded-lg bg-linear-to-r from-emerald-500 to-teal-500 px-4 py-2.5 font-semibold text-white transition-all hover:from-emerald-600 hover:to-teal-600"
 							>
 								Lanjut ke Konfirmasi
-								<span class="rounded-md bg-white/20 px-2.5 py-0.5 text-sm"
+								<span class="rounded-xs bg-white/20 px-2.5 py-0.5 text-sm"
 									>{selectedStudentIds.length} siswa</span
 								>
 								<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -559,7 +589,7 @@
 				<div class="overflow-hidden rounded-md border border-slate-200 bg-white">
 					<div class="border-b border-slate-100 bg-slate-50 px-5 py-4">
 						<div class="flex items-center gap-3">
-							<div class="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-100">
+							<div class="flex h-10 w-10 items-center justify-center rounded-sm bg-emerald-100">
 								<svg
 									class="h-5 w-5 text-emerald-600"
 									fill="none"
@@ -589,7 +619,7 @@
 							>
 								<div class="flex items-center gap-3">
 									<span
-										class="flex h-7 w-7 items-center justify-center rounded-md bg-slate-100 text-xs font-semibold text-slate-500"
+										class="flex h-7 w-7 items-center justify-center rounded-xs bg-slate-100 text-xs font-semibold text-slate-500"
 										>{i + 1}</span
 									>
 									<div>
@@ -600,7 +630,7 @@
 								<button
 									aria-label="siswa lulus"
 									on:click={() => toggleStudent(student.id)}
-									class="flex h-8 w-8 items-center justify-center rounded-lg text-slate-400 transition-colors hover:bg-red-50 hover:text-red-500"
+									class="flex h-8 w-8 items-center justify-center rounded-sm text-slate-400 transition-colors hover:bg-red-50 hover:text-red-500"
 								>
 									<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 										<path
@@ -617,7 +647,7 @@
 				</div>
 
 				<!-- Right: Graduation Form -->
-				<div class="space-y-5">
+				<div class="space-y-4">
 					<div class="overflow-hidden rounded-md border border-slate-200 bg-white">
 						<div
 							class="border-b border-slate-100 bg-linear-to-r from-emerald-500 to-teal-500 px-5 py-4"
@@ -626,15 +656,14 @@
 							<p class="text-sm text-emerald-100">Lengkapi informasi kelulusan</p>
 						</div>
 						<div class="p-5">
-							<!-- Tahun Kelulusan -->
-							<div class="mb-5">
+							<div class="mb-4">
 								<label for="graduationYear" class="mb-2 block text-sm font-semibold text-slate-700">
 									Tahun Kelulusan <span class="text-red-500">*</span>
 								</label>
 								<select
 									id="graduationYear"
 									bind:value={graduationYear}
-									class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700 transition-colors focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 focus:outline-none"
+									class="w-full rounded-sm border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700 transition-colors focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 focus:outline-none"
 								>
 									<option value="">Pilih tahun ajaran</option>
 									{#each academicYears as year (year.id)}
@@ -646,8 +675,7 @@
 								</select>
 							</div>
 
-							<!-- Tanggal Kelulusan -->
-							<div class="mb-5">
+							<div class="mb-4">
 								<label for="completionDate" class="mb-2 block text-sm font-semibold text-slate-700">
 									Tanggal Kelulusan <span class="text-red-500">*</span>
 								</label>
@@ -655,12 +683,12 @@
 									type="date"
 									id="completionDate"
 									bind:value={completionDate}
-									class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700 transition-colors focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 focus:outline-none"
+									class="w-full rounded-sm border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700 transition-colors focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 focus:outline-none"
 								/>
 							</div>
 
 							<div
-								class="flex items-start gap-3 rounded-xl border border-amber-200 bg-amber-50 p-4"
+								class="flex items-start gap-3 rounded-sm border border-amber-200 bg-amber-50 p-4"
 							>
 								<svg
 									class="h-5 w-5 shrink-0 text-amber-500"
@@ -687,7 +715,7 @@
 
 					<!-- Summary -->
 					<div class="rounded-md border border-slate-200 bg-white p-5">
-						<h4 class="mb-4 flex items-center gap-2 font-semibold text-slate-800">
+						<h4 class="mb-3 flex items-center gap-2 font-semibold text-slate-800">
 							<svg
 								class="h-5 w-5 text-slate-400"
 								fill="none"
@@ -703,24 +731,24 @@
 							</svg>
 							Ringkasan
 						</h4>
-						<div class="grid grid-cols-2 gap-4">
-							<div class="rounded-xl bg-slate-50 p-3">
+						<div class="grid grid-cols-2 gap-3">
+							<div class="rounded-sm bg-slate-50 p-3">
 								<p class="text-xs font-medium tracking-wide text-slate-400 uppercase">Kelas</p>
 								<p class="mt-1 font-semibold text-slate-800">{selectedRombel?.name || '-'}</p>
 							</div>
-							<div class="rounded-xl bg-slate-50 p-3">
+							<div class="rounded-sm bg-slate-50 p-3">
 								<p class="text-xs font-medium tracking-wide text-slate-400 uppercase">
 									Jumlah Siswa
 								</p>
 								<p class="mt-1 font-semibold text-slate-800">{selectedStudentIds.length}</p>
 							</div>
-							<div class="rounded-xl bg-slate-50 p-3">
+							<div class="rounded-sm bg-slate-50 p-3">
 								<p class="text-xs font-medium tracking-wide text-slate-400 uppercase">
 									Tahun Kelulusan
 								</p>
 								<p class="mt-1 font-semibold text-slate-800">{graduationYear || '-'}</p>
 							</div>
-							<div class="rounded-xl bg-slate-50 p-3">
+							<div class="rounded-sm bg-slate-50 p-3">
 								<p class="text-xs font-medium tracking-wide text-slate-400 uppercase">Tanggal</p>
 								<p class="mt-1 font-semibold text-slate-800">{completionDate || '-'}</p>
 							</div>
@@ -731,7 +759,7 @@
 					<div class="flex gap-3">
 						<button
 							on:click={() => (activeTab = 'select')}
-							class="flex flex-1 items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-3.5 font-semibold text-slate-700 transition-all hover:bg-slate-50"
+							class="flex flex-1 items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2.5 font-semibold text-slate-700 transition-all hover:bg-slate-50"
 						>
 							<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 								<path
@@ -746,11 +774,11 @@
 						<button
 							on:click={executeBulkGraduation}
 							disabled={isGraduating || !graduationYear || !completionDate}
-							class="flex flex-1 items-center justify-center gap-2 rounded-xl bg-linear-to-r from-emerald-500 to-teal-500 px-4 py-3.5 font-semibold text-white transition-all hover:from-emerald-600 hover:to-teal-600 disabled:cursor-not-allowed disabled:opacity-50"
+							class="flex flex-1 items-center justify-center gap-2 rounded-lg bg-linear-to-r from-emerald-500 to-teal-500 px-4 py-2.5 font-semibold text-white transition-all hover:from-emerald-600 hover:to-teal-600 disabled:cursor-not-allowed disabled:opacity-50"
 						>
 							{#if isGraduating}
 								<div
-									class="h-5 w-5 animate-spin rounded-md border-2 border-white border-t-transparent"
+									class="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent"
 								></div>
 								Memproses...
 							{:else}
@@ -775,9 +803,9 @@
 							</div>
 							<div class="p-5">
 								{#if graduationResult.success.length > 0}
-									<div class="mb-4 flex items-center gap-3 rounded-xl bg-emerald-50 p-4">
+									<div class="mb-3 flex items-center gap-3 rounded-sm bg-emerald-50 p-4">
 										<div
-											class="flex h-10 w-10 items-center justify-center rounded-md bg-emerald-100"
+											class="flex h-10 w-10 items-center justify-center rounded-xs bg-emerald-100"
 										>
 											<svg
 												class="h-5 w-5 text-emerald-600"
@@ -802,9 +830,9 @@
 									</div>
 								{/if}
 								{#if graduationResult.failed.length > 0}
-									<div class="rounded-xl bg-red-50 p-4">
+									<div class="rounded-sm bg-red-50 p-4">
 										<div class="mb-3 flex items-center gap-3">
-											<div class="flex h-10 w-10 items-center justify-center rounded-md bg-red-100">
+											<div class="flex h-10 w-10 items-center justify-center rounded-xs bg-red-100">
 												<svg
 													class="h-5 w-5 text-red-600"
 													fill="none"
@@ -829,7 +857,7 @@
 										<ul class="space-y-1 pl-4 text-sm text-red-700">
 											{#each graduationResult.failed as f, i (i)}
 												<li class="flex items-start gap-2">
-													<span class="mt-1.5 h-1 w-1 shrink-0 rounded-md bg-red-400"></span>
+													<span class="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-red-400"></span>
 													{f.name || f.studentId}: {f.error}
 												</li>
 											{/each}
@@ -849,6 +877,9 @@
 	bind:show={alertModal.show}
 	type={alertModal.type}
 	message={alertModal.message}
+	showCancel={alertModal.showCancel}
+	confirmText={alertModal.confirmText}
+	onConfirm={() => alertModal.onConfirm?.()}
+	onCancel={() => (alertModal.show = false)}
 	onClose={() => (alertModal.show = false)}
-	onConfirm={() => (alertModal.show = false)}
 />

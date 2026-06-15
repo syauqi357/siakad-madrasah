@@ -158,11 +158,13 @@
 		<!-- Header -->
 		<div class="mb-8 flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
 			<div class="flex items-center gap-4">
-				<!-- icon placeholder -->
 				<div
 					class="flex h-14 w-14 items-center justify-center rounded-md bg-linear-to-br from-emerald-500 to-teal-600"
 				>
-					<!-- svg icon here -->
+					<svg class="h-7 w-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z" />
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+					</svg>
 				</div>
 				<div>
 					<h1 class="text-2xl font-bold text-slate-800 md:text-3xl">Alumni / Lulusan</h1>
@@ -192,9 +194,10 @@
 						placeholder="Cari nama, NISN, atau ijazah..."
 						class="w-full rounded-md border border-slate-200 bg-white py-2.5 pr-4 pl-10 text-sm text-slate-700 placeholder-slate-400 transition-colors focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 focus:outline-none sm:w-72"
 					/>
-					<!-- search icon placeholder -->
 					<div class="absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2 text-slate-400">
-						<!-- svg icon here -->
+						<svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+						</svg>
 					</div>
 				</div>
 			</div>
@@ -236,9 +239,10 @@
 			</div>
 		{:else if error}
 			<div class="flex flex-col items-center justify-center py-24 text-center">
-				<!-- error icon placeholder -->
 				<div class="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-red-100">
-					<!-- svg icon here -->
+					<svg class="h-8 w-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+					</svg>
 				</div>
 				<p class="mb-2 text-lg font-semibold text-slate-800">Terjadi Kesalahan</p>
 				<p class="mb-6 text-sm text-slate-500">{error}</p>
@@ -253,9 +257,10 @@
 			<div
 				class="flex flex-col items-center justify-center rounded-md border-2 border-dashed border-slate-200 bg-white py-20"
 			>
-				<!-- empty icon placeholder -->
 				<div class="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-slate-100">
-					<!-- svg icon here -->
+					<svg class="h-8 w-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+					</svg>
 				</div>
 				{#if searchQuery}
 					<p class="text-sm font-medium text-slate-600">Tidak ada alumni yang sesuai pencarian</p>
@@ -376,7 +381,9 @@
 							disabled={currentPage === 1}
 							class="flex items-center gap-1 rounded-md border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition-all hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40"
 						>
-							<!-- arrow left placeholder -->
+							<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+							</svg>
 							Prev
 						</button>
 						<div class="flex items-center gap-1">
@@ -411,7 +418,9 @@
 							class="flex items-center gap-1 rounded-md border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition-all hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40"
 						>
 							Next
-							<!-- arrow right placeholder -->
+							<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+							</svg>
 						</button>
 					</div>
 				</div>

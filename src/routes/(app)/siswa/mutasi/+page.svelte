@@ -180,7 +180,9 @@
 		{:else if error}
 			<div class="flex flex-col items-center justify-center py-24 text-center">
 				<div class="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-red-100">
-					<!-- svg icon here -->
+					<svg class="h-8 w-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+					</svg>
 				</div>
 				<p class="mb-2 text-lg font-semibold text-slate-800">Terjadi Kesalahan</p>
 				<p class="mb-6 text-sm text-slate-500">{error}</p>
@@ -196,7 +198,9 @@
 				class="flex flex-col items-center justify-center rounded-md border-2 border-dashed border-slate-200 bg-white py-20"
 			>
 				<div class="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-slate-100">
-					<!-- svg icon here -->
+					<svg class="h-8 w-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+					</svg>
 				</div>
 				{#if searchQuery}
 					<p class="text-sm font-medium text-slate-600">

@@ -101,6 +101,92 @@ router.get('/', async (req, res) => {
 });
 
 /**
+ * GET /api/audit-logs/export
+ * Export audit logs as a downloadable .txt file
+ * Accepts the same query params as the main GET route
+ */
+router.get('/export', async (req, res) => {
+	try {
+		const { type, user, status, search, timeRange } = req.query;
+
+		let conditions = [];
+
+		if (type && type !== 'all') {
+			conditions.push(eq(auditTable.audit_type, type));
+		}
+		if (user) {
+			conditions.push(like(auditTable.user_id, `%${user}%`));
+		}
+		if (status && status !== 'all') {
+			conditions.push(eq(auditTable.status, status));
+		}
+		if (search) {
+			conditions.push(
+				or(
+					like(auditTable.action, `%${search}%`),
+					like(auditTable.target, `%${search}%`),
+					like(auditTable.user_id, `%${search}%`)
+				)
+			);
+		}
+		if (timeRange && timeRange !== 'all') {
+			const now = Math.floor(Date.now() / 1000);
+			let startTime;
+			switch (timeRange) {
+				case 'today':    startTime = now - 24 * 60 * 60; break;
+				case 'week':     startTime = now - 7 * 24 * 60 * 60; break;
+				case 'month':    startTime = now - 30 * 24 * 60 * 60; break;
+				case 'semester': startTime = now - 180 * 24 * 60 * 60; break;
+			}
+			if (startTime) conditions.push(gte(auditTable.timestamp, startTime));
+		}
+
+		let query = db.select().from(auditTable);
+		if (conditions.length > 0) query = query.where(and(...conditions));
+		const logs = await query.orderBy(desc(auditTable.timestamp));
+
+		const now = new Date();
+		const pad = (n) => String(n).padStart(2, '0');
+		const dateStr = `${pad(now.getDate())}-${pad(now.getMonth() + 1)}-${now.getFullYear()}`;
+		const timeStr = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+		const separator = '='.repeat(80);
+
+		const lines = [
+			separator,
+			'  Platform Akademik — AUDIT LOG EXPORT',
+			`  Diekspor : ${dateStr}  ${timeStr}`,
+			`  Total    : ${logs.length} entri`,
+			separator,
+			'',
+		];
+
+		for (const log of logs) {
+			const ts = new Date(log.timestamp * 1000);
+			const dt = `${pad(ts.getDate())}-${pad(ts.getMonth() + 1)}-${ts.getFullYear()} ${pad(ts.getHours())}:${pad(ts.getMinutes())}:${pad(ts.getSeconds())}`;
+			lines.push(
+				`[${dt}] [${(log.audit_type ?? 'system').toUpperCase().padEnd(10)}] ` +
+				`${(log.user_id ?? 'anonymous').padEnd(20)} | ` +
+				`${(log.action ?? '').padEnd(30)} | ` +
+				`${log.target ?? 'General'} | STATUS: ${log.status ?? '-'} | IP: ${log.ip_address ?? '-'}`
+			);
+		}
+
+		lines.push('');
+		lines.push(separator);
+		lines.push(`  End of log — ${logs.length} record(s)`);
+		lines.push(separator);
+
+		const filename = `audit-log-${dateStr}.txt`;
+		res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+		res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+		res.send(lines.join('\n'));
+	} catch (error) {
+		console.error('Error exporting audit logs:', error);
+		res.status(500).json({ success: false, message: 'Failed to export audit logs', error: error.message });
+	}
+});
+
+/**
  * GET /api/audit-logs/:id
  * Get single audit log by ID
  */

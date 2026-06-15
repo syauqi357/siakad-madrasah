@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { fade, fly } from 'svelte/transition';
+	import { fly } from 'svelte/transition';
 	import AddIcon from '$lib/components/icons/addIcon.svelte';
 	import { API_FETCH } from '$lib/api';
+	import Modal from '$lib/components/modal/Modal.svelte';
 	import ModalAlert from '$lib/components/modal/modalalert.svelte';
 
 	interface ClassData {
@@ -74,18 +75,6 @@
 		currentClass = { ...emptyClass };
 		isEditing = false;
 		error = '';
-	}
-
-	function handleBackdropClick(event: MouseEvent) {
-		if (event.target === event.currentTarget) {
-			handleCloseModal();
-		}
-	}
-
-	function handleKeydown(event: KeyboardEvent) {
-		if (event.key === 'Escape' && showModal) {
-			handleCloseModal();
-		}
 	}
 
 	async function handleSubmit() {
@@ -192,8 +181,6 @@
 	}
 </script>
 
-<svelte:window on:keydown={handleKeydown} />
-
 <div class=" bg-gray-50 p-4 sm:p-6 lg:p-8">
 	<div class="mx-10">
 		<!-- Header Section -->
@@ -207,14 +194,14 @@
 			</p>
 			<button
 				on:click={handleAddClick}
-				class="hover:-lg flex w-fit items-center justify-center gap-2 rounded-md bg-blue-600 px-5 py-3 text-blue-50 capitalize transition-all duration-75 hover:bg-blue-700"
+				class="mt-2 flex w-fit items-center justify-center gap-2 rounded-md bg-blue-600 px-5 py-3 text-blue-50 capitalize transition-all duration-75 hover:bg-blue-700"
 			>
 				<AddIcon /> tambah kelas
 			</button>
 		</div>
 
 		<!-- Table Section -->
-		<div class="mt-2">
+		<div class="mt-6">
 			<div class="w-full overflow-hidden rounded-xl border border-gray-300 bg-white">
 				<header class="border-b border-gray-200 bg-gray-50 px-6 py-4">
 					<h2 class="text-lg font-semibold text-gray-900">Daftar Kelas</h2>
@@ -352,108 +339,79 @@
 </div>
 
 <!-- Modal Popup -->
-{#if showModal}
-	<div
-		class="fixed inset-0 z-2 flex items-center justify-center bg-black/20 p-4 shadow-md backdrop-blur-xs"
-		transition:fade={{ duration: 75 }}
-		on:click={handleBackdropClick}
-		on:keydown={handleKeydown}
-		role="dialog"
-		tabindex="-1"
-		aria-modal="true"
-	>
-		<div class="w-full max-w-md rounded-lg bg-white" transition:fly={{ y: 20, duration: 200 }}>
-			<!-- Header -->
-			<div class="flex items-center justify-between border-b px-6 py-4">
-				<h2 class="text-lg font-semibold text-gray-900">
-					{isEditing ? 'Edit Kelas' : 'Tambah Kelas'}
-				</h2>
-				<button
-					aria-label="close"
-					on:click={handleCloseModal}
-					class="text-gray-400 hover:text-gray-600"
+<Modal
+	show={showModal}
+	title={isEditing ? 'Edit Kelas' : 'Tambah Kelas'}
+	size="sm"
+	on:close={handleCloseModal}
+>
+	<form id="classForm" on:submit|preventDefault={handleSubmit}>
+		{#if error}
+			<div class="mb-4 rounded bg-red-50 p-3 text-sm text-red-600">{error}</div>
+		{/if}
+
+		<div class="space-y-2">
+			<!-- Material Design Input -->
+			<div class="relative w-full">
+				<input
+					type="text"
+					id="className"
+					placeholder=" "
+					bind:value={currentClass.className}
+					class="peer text-md w-full rounded border border-gray-400 bg-transparent px-3 py-3 text-gray-800 transition-all duration-75 outline-none hover:border-gray-600 focus:border focus:border-blue-600"
+					required
+				/>
+				<label
+					for="className"
+					class="text-md pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 bg-white px-1 text-gray-500 transition-all duration-75 peer-focus:top-0 peer-focus:text-xs peer-focus:text-blue-600 peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-gray-500"
 				>
-					<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+					Nama Kelas
+				</label>
+			</div>
+			<p class="text-xs text-gray-500">Contoh: X, XI, XII</p>
+		</div>
+	</form>
+
+	<svelte:fragment slot="footer">
+		<button
+			type="button"
+			on:click={handleCloseModal}
+			class="rounded-md px-4 py-2 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-100"
+		>
+			Batal
+		</button>
+		<button
+			type="submit"
+			form="classForm"
+			disabled={isSubmitting}
+			class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700 disabled:opacity-50"
+		>
+			{#if isSubmitting}
+				<span class="flex items-center gap-2">
+					<svg class="h-4 w-4 animate-spin" viewBox="0 0 24 24">
+						<circle
+							class="opacity-25"
+							cx="12"
+							cy="12"
+							r="10"
+							stroke="currentColor"
+							stroke-width="4"
+							fill="none"
+						/>
 						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M6 18L18 6M6 6l12 12"
+							class="opacity-75"
+							fill="currentColor"
+							d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
 						/>
 					</svg>
-				</button>
-			</div>
-
-			<!-- Body -->
-			<form on:submit|preventDefault={handleSubmit} class="p-6">
-				{#if error}
-					<div class="mb-4 rounded bg-red-50 p-3 text-sm text-red-600">{error}</div>
-				{/if}
-
-				<div class="space-y-6">
-					<!-- Material Design Input -->
-					<div class="relative w-full">
-						<input
-							type="text"
-							id="className"
-							placeholder=" "
-							bind:value={currentClass.className}
-							class="peer text-md w-full rounded border border-gray-400 bg-transparent px-2 py-2 text-gray-800 transition-all duration-75 outline-none placeholder-shown:py-3 hover:border-gray-600 focus:border focus:border-blue-600 focus:px-3 focus:py-3"
-							required
-						/>
-						<label
-							for="className"
-							class="text-md pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 bg-white px-1 text-gray-500 transition-all duration-75 peer-focus:top-0 peer-focus:text-xs peer-focus:text-blue-600 peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-gray-500"
-						>
-							Nama Kelas
-						</label>
-					</div>
-					<p class="text-xs text-gray-500">Contoh: X, XI, XII</p>
-				</div>
-
-				<!-- Footer -->
-				<div class="mt-6 flex justify-end gap-3">
-					<button
-						type="button"
-						on:click={handleCloseModal}
-						class="rounded px-4 py-2 text-sm font-medium text-gray-600 transition-all hover:bg-gray-100"
-					>
-						Batal
-					</button>
-					<button
-						type="submit"
-						disabled={isSubmitting}
-						class="rounded bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-all hover:bg-blue-700 disabled:opacity-50"
-					>
-						{#if isSubmitting}
-							<span class="flex items-center gap-2">
-								<svg class="h-4 w-4 animate-spin" viewBox="0 0 24 24">
-									<circle
-										class="opacity-25"
-										cx="12"
-										cy="12"
-										r="10"
-										stroke="currentColor"
-										stroke-width="4"
-										fill="none"
-									/>
-									<path
-										class="opacity-75"
-										fill="currentColor"
-										d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-									/>
-								</svg>
-								Menyimpan...
-							</span>
-						{:else}
-							{isEditing ? 'Perbarui' : 'Simpan'}
-						{/if}
-					</button>
-				</div>
-			</form>
-		</div>
-	</div>
-{/if}
+					Menyimpan...
+				</span>
+			{:else}
+				{isEditing ? 'Perbarui' : 'Simpan'}
+			{/if}
+		</button>
+	</svelte:fragment>
+</Modal>
 
 <!-- Alert Modal -->
 <ModalAlert

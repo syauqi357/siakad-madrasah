@@ -482,7 +482,7 @@
 						</div>
 					{:else}
 						<div class="divide-y divide-slate-50">
-							{#each sourceStudents as student, i}
+							{#each sourceStudents as student, i (student.id ?? i)}
 								<label
 									class="flex cursor-pointer items-center gap-3.5 px-5 py-3 transition-colors
 										{selectedStudentIds.includes(student.id) ? 'bg-emerald-50/60' : 'hover:bg-slate-50'}"
@@ -547,7 +547,7 @@
 							</div>
 						{:else}
 							<div class="space-y-2">
-								{#each targetRombels as target}
+								{#each targetRombels as target (target.id)}
 									<label
 										class="flex cursor-pointer items-center justify-between rounded-lg border p-3.5 transition-all duration-200
 											{selectedTargetRombelId === target.id
@@ -689,7 +689,7 @@
 										>
 									</div>
 									<div class="space-y-1 pl-3.5">
-										{#each promotionResult.success.slice(0, 5) as s}
+										{#each promotionResult.success.slice(0, 5) as s, i (s.studentId ?? i)}
 											<p class="text-xs text-slate-600 capitalize">{s.name}</p>
 										{/each}
 										{#if promotionResult.success.length > 5}
@@ -709,7 +709,7 @@
 										>
 									</div>
 									<div class="space-y-1 pl-3.5">
-										{#each promotionResult.failed as f}
+										{#each promotionResult.failed as f, i (f.studentId ?? i)}
 											<p class="text-xs text-slate-600">
 												{f.name || f.studentId}: <span class="text-red-500">{f.reason}</span>
 											</p>

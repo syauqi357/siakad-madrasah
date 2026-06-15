@@ -3,7 +3,7 @@
 ## 1. Overview
 
 - **Frontend:** SvelteKit, TailwindCSS
-- **Backend:** Express.js, Drizzle ORM, ExcelJS, Jest (Unit Testing)
+- **Backend:** Express.js, Drizzle ORM, ExcelJS, Jest (Unit Testing), Electron.js
 
 ## 2. Architecture
 

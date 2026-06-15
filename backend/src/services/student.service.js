@@ -338,7 +338,10 @@ export const findAllStudents = async (page = 1, limit = 5) => {
 			className: rombel.name
 		})
 		.from(studentTable)
-		.leftJoin(rombelStudents, eq(studentTable.id, rombelStudents.studentId))
+		.leftJoin(
+			rombelStudents,
+			and(eq(studentTable.id, rombelStudents.studentId), eq(rombelStudents.isActive, true))
+		)
 		.leftJoin(rombel, eq(rombelStudents.rombelId, rombel.id))
 		.limit(limit)
 		.offset(offset);
@@ -407,7 +410,10 @@ export const searchStudents = async (searchTerm, page = 1, limit = 10, status = 
 			className: rombel.name
 		})
 		.from(studentTable)
-		.leftJoin(rombelStudents, eq(studentTable.id, rombelStudents.studentId))
+		.leftJoin(
+			rombelStudents,
+			and(eq(studentTable.id, rombelStudents.studentId), eq(rombelStudents.isActive, true))
+		)
 		.leftJoin(rombel, eq(rombelStudents.rombelId, rombel.id))
 		.where(whereCondition)
 		.limit(limit)
@@ -874,8 +880,16 @@ export const updateStudentData = async (id, data) => {
 };
 
 export const deleteStudentData = async (id) => {
-	const deleted = await db.delete(studentTable).where(eq(studentTable.id, id)).returning();
-	return deleted[0];
+	return db.transaction((tx) => {
+		// These two child tables reference the student WITHOUT onDelete cascade,
+		// so they must be removed manually before deleting the student.
+		// (address / father / mother / wali / scores / attendance cascade via FK.)
+		tx.delete(studentHistory).where(eq(studentHistory.studentId, id)).run();
+		tx.delete(rombelStudents).where(eq(rombelStudents.studentId, id)).run();
+
+		const deleted = tx.delete(studentTable).where(eq(studentTable.id, id)).returning().get();
+		return deleted || null;
+	});
 };
 
 // ==================== STATUS MANAGEMENT METHODS ====================

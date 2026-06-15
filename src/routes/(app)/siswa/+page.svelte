@@ -447,14 +447,14 @@
 			{/if}
 		</div>
 	{:else}
-		<div class="flex flex-col gap-2">
+		<div class="flex flex-col gap-3">
 			{#each students as student (student.id)}
 				<div
-					class="flex flex-col gap-3 rounded-md border border-slate-200 bg-white p-4 hover:border-slate-300 md:flex-row md:items-center md:justify-between"
+					class="flex flex-col gap-4 rounded-md border border-slate-200 bg-white px-5 py-4 hover:border-slate-300 md:flex-row md:items-center md:justify-between"
 				>
 					<!-- Left: Main Info -->
-					<div class="flex flex-1 flex-col gap-1">
-						<div class="flex items-center gap-2">
+					<div class="flex flex-1 flex-col gap-2">
+						<div class="flex items-center gap-2.5">
 							<h3 class="text-lg font-bold text-slate-800">{student.nama}</h3>
 							<span
 								class="rounded px-1.5 py-0.5 text-xs font-medium {getStatusStyle(student.status)}"
@@ -462,7 +462,7 @@
 								{getStatusLabel(student.status)}
 							</span>
 						</div>
-						<div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-slate-500">
+						<div class="flex flex-wrap items-center gap-x-5 gap-y-1.5 text-sm text-slate-500">
 							<span>NISN: {student.nisn}</span>
 							<span>
 								Kelas:
@@ -473,7 +473,7 @@
 								{/if}
 							</span>
 							<span
-								class="rounded-md px-2 py-1.5 text-xs font-medium {student.gender === 'L'
+								class="rounded-md px-2 py-0.5 text-xs font-medium {student.gender === 'L'
 									? 'bg-blue-100 text-blue-600'
 									: 'bg-pink-100 text-pink-600'}"
 								>{student.gender === 'L' ? 'Laki-laki' : 'Perempuan'}</span

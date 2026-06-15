@@ -99,7 +99,7 @@
 		role="presentation"
 	>
 		<div
-			class="w-full max-w-sm rounded-2xl border border-slate-500 bg-slate-800 p-4 text-white shadow-lg shadow-slate-500"
+			class="w-full max-w-sm rounded-xl border border-slate-500 bg-slate-800 p-4 text-white shadow-lg shadow-slate-500"
 			transition:scale={{ duration: 150, start: 0.95 }}
 			onclick={(e) => e.stopPropagation()}
 			onkeydown={(e) => e.stopPropagation()}
@@ -149,7 +149,7 @@
 				{#if showCancel}
 					<button
 						id="cancelButton"
-						class="w-full rounded-md py-2 capitalize transition-all ease-in-out hover:bg-gray-700 hover:text-red-400"
+						class="w-full rounded-sm py-2 capitalize transition-all ease-in-out hover:bg-gray-700 hover:text-red-400"
 						onclick={handleCancel}
 					>
 						{cancelText}
@@ -157,7 +157,7 @@
 				{/if}
 				<button
 					id="agreeButton"
-					class="w-full rounded-md {config.bgButton} py-2 {config.textButton} capitalize transition-all ease-in-out hover:shadow-lg"
+					class="w-full rounded-sm {config.bgButton} py-2 {config.textButton} capitalize transition-all ease-in-out hover:shadow-lg"
 					onclick={handleConfirm}
 				>
 					{confirmText}

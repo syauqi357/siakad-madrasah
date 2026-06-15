@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { fade, fly } from 'svelte/transition';
+	import { fly } from 'svelte/transition';
 	import AddIcon from '$lib/components/icons/addIcon.svelte';
 	import { API_FETCH } from '$lib/api';
+	import Modal from '$lib/components/modal/Modal.svelte';
 	import ModalAlert from '$lib/components/modal/modalalert.svelte';
 
 	// ==================== TYPES ====================
@@ -120,18 +121,6 @@
 		currentAcademicYear = { ...emptyAcademicYear };
 		isEditing = false;
 		error = '';
-	}
-
-	function handleBackdropClick(event: MouseEvent) {
-		if (event.target === event.currentTarget) {
-			handleCloseModal();
-		}
-	}
-
-	function handleKeydown(event: KeyboardEvent) {
-		if (event.key === 'Escape' && showModal) {
-			handleCloseModal();
-		}
 	}
 
 	async function handleSubmit() {
@@ -269,8 +258,6 @@
 		await fetchAcademicYears();
 	});
 </script>
-
-<svelte:window on:keydown={handleKeydown} />
 
 <div class="min-h-screen bg-gray-50 p-4 sm:p-6 lg:p-8">
 	<div class="mx-auto max-w-7xl">
@@ -469,162 +456,127 @@
 	</div>
 </div>
 
-{#if showModal}
-	<div
-		class="fixed inset-0 z-20 flex items-center justify-center p-4 backdrop-blur-sm"
-		transition:fade={{ duration: 150 }}
-		on:click={handleBackdropClick}
-		on:keydown={handleKeydown}
-		role="dialog"
-		tabindex="-1"
-		aria-modal="true"
-	>
-		<div
-			class="shadow-msd w-full max-w-lg rounded-lg border border-slate-400 bg-white"
-			transition:fly={{ y: 20, duration: 200 }}
-		>
-			<div class="flex items-center justify-between border-b border-b-slate-400 px-6 py-4">
-				<h2 class="text-lg font-semibold text-gray-900">
-					{isEditing ? 'Edit Tahun Ajaran' : 'Tambah Tahun Ajaran'}
-				</h2>
-				<button
-					aria-label="close"
-					on:click={handleCloseModal}
-					class="text-gray-400 hover:text-gray-600"
-				>
-					<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M6 18L18 6M6 6l12 12"
-						/>
-					</svg>
-				</button>
+<Modal
+	show={showModal}
+	title={isEditing ? 'Edit Tahun Ajaran' : 'Tambah Tahun Ajaran'}
+	size="lg"
+	on:close={handleCloseModal}
+>
+	<form id="ayForm" on:submit|preventDefault={handleSubmit} class="space-y-4">
+		{#if error}
+			<div class="rounded bg-red-50 p-3 text-sm text-red-600">{error}</div>
+		{/if}
+
+		<div class="grid grid-cols-2 gap-4">
+			<div>
+				<label for="startYear" class="mb-1 block text-sm font-medium text-gray-700">
+					Tahun Mulai <span class="text-red-500">*</span>
+				</label>
+				<input
+					type="number"
+					id="startYear"
+					bind:value={currentAcademicYear.startYear}
+					class="w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
+					placeholder="2024"
+					min="2000"
+					max="2100"
+					required
+				/>
 			</div>
-
-			<form on:submit|preventDefault={handleSubmit} class="p-6">
-				{#if error}
-					<div class="mb-4 rounded bg-red-50 p-3 text-sm text-red-600">{error}</div>
-				{/if}
-
-				<div class="space-y-4">
-					<!-- Year Range -->
-					<div class="grid grid-cols-2 gap-4">
-						<div>
-							<label for="startYear" class="mb-1 block text-sm font-medium text-gray-700">
-								Tahun Mulai <span class="text-red-500">*</span>
-							</label>
-							<input
-								type="number"
-								id="startYear"
-								bind:value={currentAcademicYear.startYear}
-								class="w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
-								placeholder="2024"
-								min="2000"
-								max="2100"
-								required
-							/>
-						</div>
-						<div>
-							<label for="endYear" class="mb-1 block text-sm font-medium text-gray-700">
-								Tahun Akhir <span class="text-red-500">*</span>
-							</label>
-							<input
-								type="number"
-								id="endYear"
-								bind:value={currentAcademicYear.endYear}
-								class="w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
-								placeholder="2025"
-								min="2000"
-								max="2100"
-								required
-							/>
-						</div>
-					</div>
-
-					<!-- Name -->
-					<div>
-						<label for="name" class="mb-1 block text-sm font-medium text-gray-700">
-							Nama Tahun Ajaran <span class="text-red-500">*</span>
-						</label>
-						<input
-							type="text"
-							id="name"
-							bind:value={currentAcademicYear.name}
-							class="w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
-							placeholder="2024/2025"
-							required
-						/>
-						<p class="mt-1 text-xs text-gray-500">Nama akan otomatis terisi berdasarkan tahun</p>
-					</div>
-
-					<!-- Date Range -->
-					<div class="grid grid-cols-2 gap-4">
-						<div>
-							<label for="startDate" class="mb-1 block text-sm font-medium text-gray-700">
-								Tanggal Mulai
-							</label>
-							<input
-								type="date"
-								id="startDate"
-								bind:value={currentAcademicYear.startDate}
-								class="w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
-							/>
-						</div>
-						<div>
-							<label for="endDate" class="mb-1 block text-sm font-medium text-gray-700">
-								Tanggal Selesai
-							</label>
-							<input
-								type="date"
-								id="endDate"
-								bind:value={currentAcademicYear.endDate}
-								class="w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
-							/>
-						</div>
-					</div>
-
-					<!-- Is Active -->
-					<div class="flex items-center gap-3">
-						<input
-							type="checkbox"
-							id="isActive"
-							checked={currentAcademicYear.isActive === 1}
-							on:change={(e) => (currentAcademicYear.isActive = e.currentTarget.checked ? 1 : 0)}
-							class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-						/>
-						<label for="isActive" class="text-sm font-medium text-gray-700">
-							Jadikan sebagai tahun ajaran aktif
-						</label>
-					</div>
-					{#if currentAcademicYear.isActive}
-						<p class="text-xs text-amber-600">
-							Mengaktifkan tahun ajaran ini akan menonaktifkan tahun ajaran yang sedang aktif.
-						</p>
-					{/if}
-				</div>
-
-				<div class="mt-6 flex justify-end gap-3">
-					<button
-						type="button"
-						on:click={handleCloseModal}
-						class="rounded px-4 py-2 text-sm text-gray-600 hover:bg-gray-100"
-					>
-						Batal
-					</button>
-					<button
-						type="submit"
-						disabled={isSubmitting}
-						class="rounded bg-blue-600 px-4 py-2 text-sm text-white hover:bg-blue-700 disabled:opacity-50"
-					>
-						{isSubmitting ? 'Menyimpan...' : isEditing ? 'Perbarui' : 'Simpan'}
-					</button>
-				</div>
-			</form>
+			<div>
+				<label for="endYear" class="mb-1 block text-sm font-medium text-gray-700">
+					Tahun Akhir <span class="text-red-500">*</span>
+				</label>
+				<input
+					type="number"
+					id="endYear"
+					bind:value={currentAcademicYear.endYear}
+					class="w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
+					placeholder="2025"
+					min="2000"
+					max="2100"
+					required
+				/>
+			</div>
 		</div>
-	</div>
-{/if}
+
+		<div>
+			<label for="name" class="mb-1 block text-sm font-medium text-gray-700">
+				Nama Tahun Ajaran <span class="text-red-500">*</span>
+			</label>
+			<input
+				type="text"
+				id="name"
+				bind:value={currentAcademicYear.name}
+				class="w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
+				placeholder="2024/2025"
+				required
+			/>
+			<p class="mt-1 text-xs text-gray-500">Nama akan otomatis terisi berdasarkan tahun</p>
+		</div>
+
+		<div class="grid grid-cols-2 gap-4">
+			<div>
+				<label for="startDate" class="mb-1 block text-sm font-medium text-gray-700">
+					Tanggal Mulai
+				</label>
+				<input
+					type="date"
+					id="startDate"
+					bind:value={currentAcademicYear.startDate}
+					class="w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
+				/>
+			</div>
+			<div>
+				<label for="endDate" class="mb-1 block text-sm font-medium text-gray-700">
+					Tanggal Selesai
+				</label>
+				<input
+					type="date"
+					id="endDate"
+					bind:value={currentAcademicYear.endDate}
+					class="w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
+				/>
+			</div>
+		</div>
+
+		<div class="flex items-center gap-3">
+			<input
+				type="checkbox"
+				id="isActive"
+				checked={currentAcademicYear.isActive === 1}
+				on:change={(e) => (currentAcademicYear.isActive = e.currentTarget.checked ? 1 : 0)}
+				class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+			/>
+			<label for="isActive" class="text-sm font-medium text-gray-700">
+				Jadikan sebagai tahun ajaran aktif
+			</label>
+		</div>
+		{#if currentAcademicYear.isActive}
+			<p class="text-xs text-amber-600">
+				Mengaktifkan tahun ajaran ini akan menonaktifkan tahun ajaran yang sedang aktif.
+			</p>
+		{/if}
+	</form>
+
+	<svelte:fragment slot="footer">
+		<button
+			type="button"
+			on:click={handleCloseModal}
+			class="rounded-md px-4 py-2 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-100"
+		>
+			Batal
+		</button>
+		<button
+			type="submit"
+			form="ayForm"
+			disabled={isSubmitting}
+			class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700 disabled:opacity-50"
+		>
+			{isSubmitting ? 'Menyimpan...' : isEditing ? 'Perbarui' : 'Simpan'}
+		</button>
+	</svelte:fragment>
+</Modal>
 
 <!-- Alert Modal -->
 <ModalAlert
