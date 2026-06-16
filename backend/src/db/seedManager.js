@@ -15,6 +15,7 @@ import { seedRombelSync } from '../utils/seedFile/seedRombelSync.js';
 import { intelligentSync } from '../utils/seedFile/seedSyncAcademic.js';
 import { seedFullStudents } from '../utils/seedFile/seedStudentFull.js';
 import { seedStudentPerformance } from '../utils/seedFile/seedStudentPerformance.js';
+import { generateSampleExcel } from '../utils/seedFile/generateSampleExcel.js';
 
 /**
  * Orchestrates the database initialization.
@@ -77,15 +78,18 @@ export async function autoInitializeDatabase() {
 			intelligentSync()
 		]);
 
-		// WAVE 3: Content & Performance
+		// WAVE 3: Content & Performance (sequential — both write to student_scores)
 		console.log('📊 Wave 3: Generating Sample Students & Scores...');
-		await Promise.all([
-			seedFullStudents(),
-			seedStudentPerformance()
-		]);
+		await seedFullStudents();
+		await seedStudentPerformance();
 
 		const duration = (Date.now() - startTime) / 1000;
 		console.log(`✅ Parallel Seeding Complete in ${duration}s!`);
+
+		// Drop a sample Excel in the user's Downloads folder for bulk import testing
+		generateSampleExcel().catch((error) => {
+			console.warn('⚠️ Could not generate sample Excel:', error.message);
+		});
 	} catch (error) {
 		console.error('❌ Critical failure during auto-init:', error);
 	}

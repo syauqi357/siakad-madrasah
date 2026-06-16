@@ -1,4 +1,6 @@
 import { app, BrowserWindow, ipcMain, dialog } from 'electron';
+import electronUpdaterPkg from 'electron-updater';
+const { autoUpdater } = electronUpdaterPkg;
 import path from 'path';
 import { fileURLToPath, pathToFileURL } from 'url';
 import dotenv from 'dotenv';
@@ -97,11 +99,24 @@ function initializeUserData() {
 	return paths;
 }
 
+// Poll localhost until the Express server is accepting connections
+async function waitForServer(port, maxAttempts = 40, intervalMs = 250) {
+	for (let attempt = 0; attempt < maxAttempts; attempt++) {
+		try {
+			const response = await fetch(`http://localhost:${port}/`);
+			if (response.ok) return;
+		} catch {
+			// server not ready yet — keep waiting
+		}
+		await new Promise((resolve) => setTimeout(resolve, intervalMs));
+	}
+	throw new Error(`Server did not respond after ${(maxAttempts * intervalMs) / 1000}s`);
+}
+
 // Start Express server in the same process
 async function startServer() {
 	const paths = initializeUserData();
 
-	// Set environment variables before importing the app
 	process.env.DATABASE_URL = paths.database;
 	process.env.UPLOAD_PATH = paths.uploads;
 	process.env.BUILD_PATH = paths.build;
@@ -110,7 +125,6 @@ async function startServer() {
 	process.env.ELECTRON_RUN = 'true';
 	process.env.ADDRESS_SERVER = 'http://localhost';
 
-	// JWT secret - use existing or generate
 	if (!process.env.JWT_SECRET) {
 		process.env.JWT_SECRET = 'siakad-electron-secret-key';
 	}
@@ -120,26 +134,27 @@ async function startServer() {
 	console.log('Build path:', paths.build);
 
 	try {
-		// Dynamically import the Express app
 		const appPath = isDev
 			? path.join(__dirname, '..', 'app.js')
 			: path.join(process.resourcesPath, 'app', 'app.js');
 
-		// Change working directory to backend folder
-		const workingDir = isDev ? path.join(__dirname, '..') : path.join(process.resourcesPath, 'app');
+		const workingDir = isDev
+			? path.join(__dirname, '..')
+			: path.join(process.resourcesPath, 'app');
 		process.chdir(workingDir);
 
 		console.log('App path:', appPath);
 		console.log('Working directory:', workingDir);
 		console.log('File exists:', fs.existsSync(appPath));
 
-		// Use pathToFileURL for proper Windows path conversion
 		const appUrl = pathToFileURL(appPath).href;
-		console.log('App URL:', appUrl);
-
 		await import(appUrl);
+
+		// Wait until the server is actually accepting connections
+		await waitForServer(process.env.PORT);
+
 		serverStarted = true;
-		console.log('Express server started successfully');
+		console.log('Express server ready on port', process.env.PORT);
 	} catch (error) {
 		console.error('Failed to start Express server:', error);
 		console.error('Error stack:', error.stack);
@@ -162,7 +177,7 @@ function createWindow() {
 		icon: isDev
 			? path.join(__dirname, '..', 'build-resources', 'icon.ico')
 			: path.join(process.resourcesPath, 'app', 'build-resources', 'icon.ico'),
-		title: 'SIAKAD Madrasah',
+		title: 'Platform Akademik Madrasah',
 		show: false,
 		autoHideMenuBar: true
 	});
@@ -172,9 +187,11 @@ function createWindow() {
 	// Load the app from Express server
 	mainWindow.loadURL(`http://localhost:${port}`);
 
-	// Show window when ready
+	// Show window, signal renderer, then check for updates
 	mainWindow.once('ready-to-show', () => {
 		mainWindow.show();
+		mainWindow.webContents.send('server-ready', parseInt(process.env.PORT));
+		setupAutoUpdater();
 	});
 
 	// Handle load failures
@@ -205,10 +222,6 @@ app.whenReady().then(async () => {
 		console.log('=================================');
 
 		await startServer();
-
-		// Give the server a moment to fully initialize
-		await new Promise((resolve) => setTimeout(resolve, 1000));
-
 		createWindow();
 	} catch (error) {
 		console.error('Failed to start application:', error);
@@ -232,15 +245,57 @@ app.on('activate', () => {
 	}
 });
 
+// Auto-updater — only runs in packaged builds, skipped in dev
+function setupAutoUpdater() {
+	if (isDev) return;
+
+	autoUpdater.autoDownload = false;
+	autoUpdater.autoInstallOnAppQuit = true;
+
+	autoUpdater.on('update-available', (info) => {
+		dialog
+			.showMessageBox(mainWindow, {
+				type: 'info',
+				title: 'Pembaruan Tersedia',
+				message: `Versi ${info.version} tersedia.`,
+				detail: 'Unduh sekarang dan pasang saat aplikasi ditutup?',
+				buttons: ['Unduh', 'Nanti'],
+				defaultId: 0,
+				cancelId: 1
+			})
+			.then(({ response }) => {
+				if (response === 0) autoUpdater.downloadUpdate();
+			});
+	});
+
+	autoUpdater.on('update-downloaded', () => {
+		dialog
+			.showMessageBox(mainWindow, {
+				type: 'info',
+				title: 'Siap Diperbarui',
+				message: 'Pembaruan telah diunduh.',
+				detail: 'Restart aplikasi sekarang untuk menerapkan pembaruan?',
+				buttons: ['Restart Sekarang', 'Nanti'],
+				defaultId: 0,
+				cancelId: 1
+			})
+			.then(({ response }) => {
+				if (response === 0) autoUpdater.quitAndInstall();
+			});
+	});
+
+	autoUpdater.on('error', (error) => {
+		console.error('Auto-updater error:', error.message);
+	});
+
+	// Check silently — no dialog if already up to date
+	autoUpdater.checkForUpdates().catch((error) => {
+		console.error('Update check failed:', error.message);
+	});
+}
+
 // IPC handlers
-ipcMain.handle('get-app-path', () => {
-	return app.getPath('userData');
-});
-
-ipcMain.handle('get-version', () => {
-	return app.getVersion();
-});
-
-ipcMain.handle('get-is-dev', () => {
-	return isDev;
-});
+ipcMain.handle('get-server-port', () => parseInt(process.env.PORT || '3000'));
+ipcMain.handle('get-app-path', () => app.getPath('userData'));
+ipcMain.handle('get-version', () => app.getVersion());
+ipcMain.handle('get-is-dev', () => isDev);

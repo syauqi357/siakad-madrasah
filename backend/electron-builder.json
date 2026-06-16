@@ -50,5 +50,11 @@
 		"category": "Education"
 	},
 	"asar": false,
-	"npmRebuild": true
+	"npmRebuild": true,
+	"publish": {
+		"provider": "github",
+		"owner": "syauqi357",
+		"repo": "siakad-madrasah",
+		"releaseType": "release"
+	}
 }

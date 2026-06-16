@@ -1,6 +1,6 @@
 {
 	"name": "siakad-madrasah",
-	"version": "1.2.2",
+	"version": "1.2.4",
 	"description": "Sistem Informasi Akademik Madrasah",
 	"main": "electron/main.js",
 	"type": "module",
@@ -24,7 +24,8 @@
 		"db:studio": "drizzle-kit studio",
 		"db:generate": "drizzle-kit generate",
 		"db:reset": "rm -f siakad.db && npm run db:migrate && npm run db:seed",
-		"db:fresh": "node src/utils/seedFile/seedFresh.js && npm run db:seed:auth",
+		"db:fresh": "node src/utils/seedFile/seedFresh.js",
+		"db:sample": "node src/utils/seedFile/generateSampleExcel.js",
 		"electron:dev": "electron .",
 		"electron:rebuild": "electron-builder install-app-deps",
 		"electron:build": "electron-builder --config electron-builder.json",
@@ -42,6 +43,7 @@
 		"cors": "^2.8.5",
 		"dotenv": "^17.2.3",
 		"drizzle-orm": "^0.45.1",
+		"electron-updater": "^6.8.9",
 		"exceljs": "^4.4.0",
 		"express": "^5.2.1",
 		"express-rate-limit": "^8.2.1",
@@ -51,14 +53,14 @@
 	},
 	"overrides": {
 		"uuid": "^11.1.1",
-		"esbuild": "^0.25.0"
+		"esbuild": ">=0.25.3"
 	},
 	"devDependencies": {
 		"@electron/rebuild": "^4.0.4",
 		"@types/cors": "^2.8.19",
 		"@types/express": "^5.0.5",
 		"@types/node": "^24.10.1",
-		"drizzle-kit": "^0.31.10",
+		"drizzle-kit": "^0.19.1",
 		"electron": "^40.1.0",
 		"electron-builder": "^26.8.1",
 		"jest": "^30.2.0",

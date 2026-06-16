@@ -60,25 +60,25 @@
 	const typeConfig: Record<AlertType, ConfigValues> = {
 		success: {
 			bgIcon: 'bg-emerald-700',
-			textIcon: 'text-emerald-300',
+			textIcon: 'text-emerald-500',
 			bgButton: 'bg-emerald-900 hover:shadow-emerald-600',
 			textButton: 'text-emerald-400'
 		},
 		error: {
 			bgIcon: 'bg-red-700',
-			textIcon: 'text-red-300',
+			textIcon: 'text-red-500',
 			bgButton: 'bg-red-900 hover:shadow-red-600',
 			textButton: 'text-red-400'
 		},
 		warning: {
 			bgIcon: 'bg-amber-600',
-			textIcon: 'text-amber-200',
+			textIcon: 'text-amber-500',
 			bgButton: 'bg-amber-800 hover:shadow-amber-600',
 			textButton: 'text-amber-300'
 		},
 		info: {
 			bgIcon: 'bg-blue-700',
-			textIcon: 'text-blue-300',
+			textIcon: 'text-blue-500',
 			bgButton: 'bg-blue-900 hover:shadow-blue-600',
 			textButton: 'text-blue-400'
 		}
@@ -109,7 +109,7 @@
 			<main class="flex w-full items-center justify-center gap-3">
 				<div
 					id="iconAlert"
-					class="flex aspect-square w-16 shrink-0 items-center justify-center rounded-full {config.bgIcon} {config.textIcon}"
+					class="flex aspect-square w-16 items-center justify-center rounded-md [&>svg]:h-9 [&>svg]:w-9 {config.textIcon}"
 				>
 					{#if type === 'success'}
 						<Success />
@@ -120,9 +120,7 @@
 					{:else}
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
-							height="28px"
 							viewBox="0 0 24 24"
-							width="28px"
 							fill="currentColor"
 						>
 							<path d="M0 0h24v24H0V0z" fill="none" />
@@ -135,7 +133,7 @@
 				<div id="contentAlert" class="flex-1 text-sm">{message}</div>
 				<button
 					id="closeAlert"
-					class="flex aspect-square w-10 shrink-0 items-center justify-center rounded-full transition-all ease-in-out hover:bg-gray-700"
+					class="flex aspect-square w-10 shrink-0 items-center justify-center rounded-md transition-all ease-in-out hover:bg-gray-700"
 					onclick={handleClose}
 				>
 					&#10006;

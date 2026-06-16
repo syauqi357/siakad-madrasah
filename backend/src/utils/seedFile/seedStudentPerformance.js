@@ -62,19 +62,17 @@ export async function seedStudentPerformance() {
 		// 3. Optimized Generation Loop inside ONE Transaction
 		console.log('\n--- Phase 2: Generating Performance Data (High Speed) ---');
 		
-		await db.transaction(async (tx) => {
+		db.transaction((tx) => {
 			for (const r of rombels) {
 				console.log(`   Processing ${r.name}...`);
-				
-				// Get subjects for this class
-				const subjects = await tx
+
+				const subjects = tx
 					.select()
 					.from(classSubject)
 					.where(eq(classSubject.classId, r.classId))
 					.all();
 
-				// Get all students currently in this rombel (includes your existing 55 students)
-				const studentsInRombel = await tx
+				const studentsInRombel = tx
 					.select()
 					.from(studentTable)
 					.where(eq(studentTable.rombelId, r.id))
@@ -85,11 +83,8 @@ export async function seedStudentPerformance() {
 				for (const student of studentsInRombel) {
 					for (const cs of subjects) {
 						for (const aid of assessmentIds) {
-							// Realistic score range: 75 to 98
 							const randomScore = Math.floor(Math.random() * (98 - 75 + 1)) + 75;
-							
-							// Using onConflictDoNothing for extra speed and safety
-							await tx.insert(studentScores).values({
+							tx.insert(studentScores).values({
 								studentId: student.id,
 								classSubjectId: cs.id,
 								assessmentTypeId: aid,

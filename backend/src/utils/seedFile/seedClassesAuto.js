@@ -2,7 +2,7 @@ import { db } from '../../db/index.js';
 import { classes } from '../../db/schema/classesDataTable.js';
 
 export async function seedClassesAuto() {
-   const selectedLevels = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
+   const selectedLevels = ['VII', 'VIII', 'IX'];
    const classData = selectedLevels.map(level => ({ className: level }));
 
    try {

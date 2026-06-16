@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { fade } from 'svelte/transition';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 	import { API_FETCH } from '$lib/api';
@@ -81,6 +82,7 @@
 	let isMutasiLoading = false;
 	let showGraduateModal = false;
 	let isGraduateLoading = false;
+	let showActionsDropdown = false;
 
 	const d = (val: unknown): string => {
 		if (val == null || val === '') return '-';
@@ -398,7 +400,7 @@
 			<header>
 				<div class="flex items-center justify-between px-6 py-3">
 					<button
-						on:click={() => history.back()}
+						onclick={() => history.back()}
 						class="group flex w-fit items-center gap-2 rounded-full border border-slate-200 bg-white px-5 py-2 text-sm font-medium text-slate-700 transition-all hover:border-emerald-300 hover:bg-emerald-50"
 					>
 						<span class="transition-transform group-hover:-translate-x-1"><ArrowLeft /></span>
@@ -406,22 +408,6 @@
 					</button>
 
 					<div class="flex items-center gap-2">
-						{#if student.status === 'ACTIVE'}
-							<button
-								on:click={() => (showGraduateModal = true)}
-								class="flex items-center gap-1.5 rounded-md border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-sm font-medium text-emerald-700 transition-colors hover:bg-emerald-100"
-							>
-								<GraduateIcon />
-								Luluskan
-							</button>
-							<button
-								on:click={() => (showMutasiModal = true)}
-								class="flex items-center gap-1.5 rounded-md border border-amber-200 bg-amber-50 px-3 py-1.5 text-sm font-medium text-amber-700 transition-colors hover:bg-amber-100"
-							>
-								<MutationIcon />
-								Mutasi
-							</button>
-						{/if}
 						<a
 							href="/siswa/{student.id}/edit"
 							class="flex items-center gap-1.5 rounded-md bg-blue-600 px-3 py-1.5 text-sm font-medium text-white transition-colors hover:bg-blue-700"
@@ -429,19 +415,80 @@
 							<EditIcon />
 							Edit
 						</a>
-						<button
-							on:click={confirmDelete}
-							class="flex items-center gap-1.5 rounded-md border border-red-200 px-3 py-1.5 text-sm font-medium text-red-600 transition-colors hover:bg-red-50"
-						>
-							<DeleteIcon />
-							Hapus
-						</button>
+
+						<div class="relative">
+							<button
+								onclick={() => (showActionsDropdown = !showActionsDropdown)}
+								class="flex items-center gap-1.5 rounded-md border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50"
+							>
+								Lainnya
+								<svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" /></svg>
+							</button>
+
+							{#if showActionsDropdown}
+								<div
+									class="fixed inset-0 z-10"
+									role="presentation"
+									onclick={() => (showActionsDropdown = false)}
+								></div>
+								<div
+									transition:fade={{ duration: 100 }}
+									class="absolute right-0 transition-all ease-in-out z-20 mt-1 w-44 rounded-md border border-slate-200 bg-white px-1 py-1 shadow-md"
+								>
+									{#if student.status === 'ACTIVE'}
+										<button
+											onclick={() => {
+												showGraduateModal = true;
+												showActionsDropdown = false;
+											}}
+											class="flex w-full items-center gap-2.5 transition-all ease-in-out rounded-sm px-3 py-2 text-left text-sm text-emerald-700 hover:bg-emerald-100"
+										>
+											<span
+												class="flex h-4 w-4 shrink-0 items-center justify-center [&>svg]:h-4 [&>svg]:w-4"
+											>
+												<GraduateIcon />
+											</span>
+											Luluskan
+										</button>
+										<button
+											onclick={() => {
+												showMutasiModal = true;
+												showActionsDropdown = false;
+											}}
+											class="flex w-full items-center gap-2.5 rounded-sm px-3 py-2 text-left transition-all ease-in-out text-sm text-amber-700 hover:bg-amber-50"
+										>
+											<span
+												class="flex h-4 w-4 shrink-0 items-center justify-center [&>svg]:h-4 [&>svg]:w-4"
+											>
+												<MutationIcon />
+											</span>
+											Mutasi
+										</button>
+										<div class="my-1 border-t border-slate-100"></div>
+									{/if}
+									<button
+										onclick={() => {
+											confirmDelete();
+											showActionsDropdown = false;
+										}}
+										class="flex w-full items-center gap-2.5 rounded-sm px-3 py-2 text-left text-sm text-red-600 transition-all ease-in-out hover:bg-red-200 bg-red-100"
+									>
+										<span
+											class="flex h-4 w-4 shrink-0 items-center justify-center [&>svg]:h-4 [&>svg]:w-4"
+										>
+											<DeleteIcon />
+										</span>
+										Hapus
+									</button>
+								</div>
+							{/if}
+						</div>
 					</div>
 				</div>
 			</header>
 
 			<div class="space-y-4 p-6">
-				<div class="rounded-md border border-slate-200 bg-white p-6">
+				<div class="rounded-xl border border-slate-200 bg-white p-6">
 					<div class="flex gap-6">
 						<div
 							class="h-36 w-36 shrink-0 overflow-hidden rounded-md border border-slate-200 bg-slate-100"
@@ -693,7 +740,7 @@
 							<h2 class="text-xs font-bold tracking-wider text-slate-400 uppercase">Data Ayah</h2>
 							{#if student.father}
 								<span
-									class="rounded-sm border px-2 py-0.5 text-sm font-medium {student.father.isAlive
+									class="rounded-sm border px-2 py-0.5 text-xs font-medium {student.father.isAlive
 										? 'border-emerald-200 bg-emerald-50 text-emerald-700'
 										: 'border-red-200 bg-red-50 text-red-500'}"
 								>
@@ -766,10 +813,10 @@
 					<!-- Ibu -->
 					<div class="rounded-md border border-slate-200 bg-white p-5">
 						<div class="mb-4 flex items-center justify-between">
-							<h2 class="text-md font-bold tracking-wider text-slate-400 uppercase">Data Ibu</h2>
+							<h2 class="text-xs font-bold tracking-wider text-slate-400 uppercase">Data Ibu</h2>
 							{#if student.mother}
 								<span
-									class="rounded-sm border px-2 py-0.5 text-sm font-medium {student.mother.isAlive
+									class="rounded-sm border px-2 py-0.5 text-xs font-medium {student.mother.isAlive
 										? 'border-emerald-200 bg-emerald-50 text-emerald-700'
 										: 'border-red-200 bg-red-50 text-red-500'}"
 								>
@@ -915,3 +962,4 @@
 		{/if}
 	</div>
 </div>
+

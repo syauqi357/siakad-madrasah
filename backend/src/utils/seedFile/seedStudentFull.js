@@ -36,9 +36,9 @@ export async function seedFullStudents() {
 		const regencies = ['Bangil', 'Pasuruan', 'Sidoarjo', 'Surabaya', 'Malang', 'Gresik'];
 
 		// 3. Generation Loop
-		console.log(`\n--- Phase 1: Generating 30 New Students with Full Profiles ---`);
-		
-		for (let i = 0; i < 30; i++) {
+		console.log(`\n--- Phase 1: Generating ${existingRombels.length} Sample Students ---`);
+
+		for (let i = 0; i < existingRombels.length; i++) {
 			const isMale = Math.random() > 0.5;
 			const firstName = isMale ? maleFirstNames[Math.floor(Math.random() * maleFirstNames.length)] : femaleFirstNames[Math.floor(Math.random() * femaleFirstNames.length)];
 			const lastName = lastNames[Math.floor(Math.random() * lastNames.length)];
@@ -114,7 +114,7 @@ export async function seedFullStudents() {
 							assessmentTypeId: ass.id,
 							score: randomScore,
 							assessmentDate: new Date().toISOString().split('T')[0]
-						}).run();
+						}).onConflictDoNothing().run();
 					}
 				}
 			}

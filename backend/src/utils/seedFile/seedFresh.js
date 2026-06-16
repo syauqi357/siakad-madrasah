@@ -11,10 +11,12 @@ function dbFresh() {
 		// if we delete a parent table before a child table
 		sqlite.pragma('foreign_keys = OFF');
 
-		// 2. Get all tables in the database (excluding SQLite's internal tables)
+		// 2. Get all data tables, excluding SQLite internals and drizzle migration tracking
 		const query = sqlite.prepare(`
-         SELECT name FROM sqlite_master 
-         WHERE type='table' AND name NOT LIKE 'sqlite_%'
+         SELECT name FROM sqlite_master
+         WHERE type='table'
+           AND name NOT LIKE 'sqlite_%'
+           AND name NOT LIKE '__drizzle_%'
       `);
 		const tables = query.all();
 

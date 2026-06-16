@@ -7,7 +7,7 @@ export async function seedSchool() {
 	try {
 		const existing = await db.select().from(schoolDataTable).limit(1);
 		if (existing.length > 0) {
-			console.log('   ℹ️ School data already exists. Skipping.');
+			console.log('   i School data already exists. Skipping.');
 			return;
 		}
 
