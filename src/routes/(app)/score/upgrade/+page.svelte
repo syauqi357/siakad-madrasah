@@ -193,7 +193,7 @@
 			const result = await response.json();
 
 			if (!response.ok) {
-				throw new Error(result.message || 'Gagal mempromosikan siswa');
+				throw new Error(result.message || 'Gagal menaikkan siswa');
 			}
 
 			promotionResult = {
@@ -226,9 +226,9 @@
 			return;
 		}
 
-		showModalAlert(`Promosikan ${selectedStudentIds.length} siswa ke rombel baru?`, 'info', {
+		showModalAlert(`naikkan ${selectedStudentIds.length} siswa ke rombel baru?`, 'info', {
 			showCancel: true,
-			confirmText: 'Promosikan',
+			confirmText: 'Naikkan',
 			onConfirm: executePromotion
 		});
 	}

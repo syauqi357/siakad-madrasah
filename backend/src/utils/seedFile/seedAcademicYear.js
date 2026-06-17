@@ -18,6 +18,14 @@ export async function seedAcademicYear() {
 				startDate: '2025-07-14',
 				endDate: '2025-12-19',
 				isActive: 0
+			},
+			{
+				name: '2025/2026 Genap',
+				startYear: 2025,
+				endYear: 2026,
+				startDate: '2026-01-05',
+				endDate: '2026-06-20',
+				isActive: 1
 			}
 		];
 

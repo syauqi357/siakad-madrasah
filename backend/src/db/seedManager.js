@@ -11,10 +11,7 @@ import { seedClassesAuto } from '../utils/seedFile/seedClassesAuto.js';
 import { seedTeachers } from '../utils/seedFile/seedTeacher.js';
 import { seedMapelKurikulum } from '../utils/seedFile/seedMapelKurikulum.js';
 import { seedSchool } from '../utils/seedFile/seedSchool.js';
-import { seedRombelSync } from '../utils/seedFile/seedRombelSync.js';
 import { intelligentSync } from '../utils/seedFile/seedSyncAcademic.js';
-import { seedFullStudents } from '../utils/seedFile/seedStudentFull.js';
-import { seedStudentPerformance } from '../utils/seedFile/seedStudentPerformance.js';
 import { generateSampleExcel } from '../utils/seedFile/generateSampleExcel.js';
 
 /**
@@ -71,17 +68,9 @@ export async function autoInitializeDatabase() {
 			seedSchool()
 		]);
 
-		// WAVE 2: Relational Links
+		// WAVE 2: Relational Links (teacher-subject assignment only — rombel/students are managed manually)
 		console.log('🔗 Wave 2: Establishing Relationships...');
-		await Promise.all([
-			seedRombelSync(),
-			intelligentSync()
-		]);
-
-		// WAVE 3: Content & Performance (sequential — both write to student_scores)
-		console.log('📊 Wave 3: Generating Sample Students & Scores...');
-		await seedFullStudents();
-		await seedStudentPerformance();
+		await intelligentSync();
 
 		const duration = (Date.now() - startTime) / 1000;
 		console.log(`✅ Parallel Seeding Complete in ${duration}s!`);

@@ -100,18 +100,18 @@ function initializeUserData() {
 }
 
 // Poll localhost until the Express server is accepting connections
-async function waitForServer(port, maxAttempts = 40, intervalMs = 250) {
-	for (let attempt = 0; attempt < maxAttempts; attempt++) {
-		try {
-			const response = await fetch(`http://localhost:${port}/`);
-			if (response.ok) return;
-		} catch {
-			// server not ready yet — keep waiting
-		}
-		await new Promise((resolve) => setTimeout(resolve, intervalMs));
-	}
-	throw new Error(`Server did not respond after ${(maxAttempts * intervalMs) / 1000}s`);
-}
+// async function waitForServer(port, maxAttempts = 40, intervalMs = 250) {
+// 	for (let attempt = 0; attempt < maxAttempts; attempt++) {
+// 		try {
+// 			const response = await fetch(`http://localhost:${port}/`);
+// 			if (response.ok) return;
+// 		} catch {
+// 			// server not ready yet — keep waiting
+// 		}
+// 		await new Promise((resolve) => setTimeout(resolve, intervalMs));
+// 	}
+// 	throw new Error(`Server did not respond after ${(maxAttempts * intervalMs) / 1000}s`);
+// }
 
 // Start Express server in the same process
 async function startServer() {
@@ -138,9 +138,7 @@ async function startServer() {
 			? path.join(__dirname, '..', 'app.js')
 			: path.join(process.resourcesPath, 'app', 'app.js');
 
-		const workingDir = isDev
-			? path.join(__dirname, '..')
-			: path.join(process.resourcesPath, 'app');
+		const workingDir = isDev ? path.join(__dirname, '..') : path.join(process.resourcesPath, 'app');
 		process.chdir(workingDir);
 
 		console.log('App path:', appPath);
@@ -150,8 +148,8 @@ async function startServer() {
 		const appUrl = pathToFileURL(appPath).href;
 		await import(appUrl);
 
-		// Wait until the server is actually accepting connections
-		await waitForServer(process.env.PORT);
+		// Wait for Express to signal port is bound (same process — no polling needed)
+		await new Promise((resolve) => process.once('express-ready', resolve));
 
 		serverStarted = true;
 		console.log('Express server ready on port', process.env.PORT);

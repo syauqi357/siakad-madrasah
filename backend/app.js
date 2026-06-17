@@ -123,10 +123,9 @@ app.get('/', (req, res) => {
 });
 
 app.listen(PORT, async () => {
+	process.emit('express-ready', parseInt(PORT));
 	console.log(`✅ Server running at ${ADDRESS}:${PORT}`);
 	console.log('✅ database running at:', process.env.DATABASE_URL);
-	
-	// Auto-initialize database in production/first run
 	await autoInitializeDatabase();
 });
 
