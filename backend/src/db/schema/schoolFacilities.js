@@ -1,5 +1,6 @@
 // School Facilities Schema
 import { sqliteTable, int, text } from 'drizzle-orm/sqlite-core';
+import { sql } from 'drizzle-orm';
 
 /**
  * Table untuk menyimpan data gambar fasilitas sekolah
@@ -20,7 +21,7 @@ export const schoolFacilitiesTable = sqliteTable('school_facilities', {
 	caption: text(), // optional: deskripsi gambar
 	displayOrder: int().default(0), // untuk sorting tampilan
 	buildingId: int(), // optional: references buildings_school.id
-	createdAt: int().default(Date.now()) // timestamp
+	createdAt: int().default(sql`(unixepoch())`) // timestamp
 });
 
 /*

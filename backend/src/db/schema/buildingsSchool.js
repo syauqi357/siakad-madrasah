@@ -1,5 +1,6 @@
 // Buildings & Fixed Assets Schema (Aset Tetap Sekolah)
 import { sqliteTable, int, text } from 'drizzle-orm/sqlite-core';
+import { sql } from 'drizzle-orm';
 
 /**
  * Table untuk menyimpan data aset tetap sekolah
@@ -32,8 +33,8 @@ export const buildingsSchoolTable = sqliteTable('buildings_school', {
 	specifications: text(), // spesifikasi teknis (RAM, CPU, dll)
 	description: text(),
 	status: text().default('aktif'),
-	createdAt: int().default(Date.now()),
-	updatedAt: int().default(Date.now())
+	createdAt: int().default(sql`(unixepoch())`),
+	updatedAt: int().default(sql`(unixepoch())`)
 });
 
 /*

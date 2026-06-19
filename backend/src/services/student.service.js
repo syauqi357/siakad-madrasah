@@ -68,6 +68,30 @@ const EXCEL_HEADER_MAP = {
 	'Ibu - Status': 'mother_isAlive'
 };
 
+// ExcelJS cell values are not always primitives. Cells that are hyperlinks,
+// rich text (copy-pasted/styled), or formulas come back as objects. Passing
+// those straight to the DB throws "can only bind numbers, strings, bigints,
+// buffers, and null". Flatten them to primitives so real-world files work.
+const normalizeCellValue = (value) => {
+	if (value == null) return null;
+	if (typeof value === 'object' && !(value instanceof Date)) {
+		// Hyperlink cell: { text, hyperlink }
+		if (typeof value.text === 'string') return value.text.trim();
+		// Rich text cell: { richText: [{ text }, ...] }
+		if (Array.isArray(value.richText)) {
+			return value.richText
+				.map((rt) => rt.text)
+				.join('')
+				.trim();
+		}
+		// Formula cell: { formula, result } — recurse on the computed result
+		if ('result' in value) return normalizeCellValue(value.result);
+		// Error cell: { error } — treat as empty
+		return null;
+	}
+	return value;
+};
+
 // Force a value to string (handles numbers, scientific notation, etc.)
 const toStr = (val) => {
 	if (val == null || val === '') return null;
@@ -578,11 +602,14 @@ export const createBulkStudentsFromExcel = async (fileBuffer) => {
 	}
 
 	const payloads = [];
-	const headerRow = worksheet.getRow(1).values; // Array of human headers
+	const rawHeaderRow = worksheet.getRow(1).values; // Array of human headers
+	// Normalize headers too — styled/pasted header cells can be objects, which
+	// would otherwise stringify to "[object Object]" and fail the template check.
+	const headerRow = Array.isArray(rawHeaderRow) ? rawHeaderRow.map(normalizeCellValue) : [];
 
 	// Validate that file uses the correct template by checking required headers
 	const requiredHeaders = ['Nama Siswa', 'NISN', 'Jenis Kelamin', 'Tempat Lahir'];
-	const fileHeaders = Array.isArray(headerRow) ? headerRow.filter(Boolean).map(String) : [];
+	const fileHeaders = headerRow.filter(Boolean).map(String);
 	const missingHeaders = requiredHeaders.filter((h) => !fileHeaders.includes(h));
 	if (missingHeaders.length > 0) {
 		throw new Error('BULK_WRONG_TEMPLATE');
@@ -603,10 +630,13 @@ export const createBulkStudentsFromExcel = async (fileBuffer) => {
 		const rowData = {};
 
 		// Map Human Headers back to Internal Keys
-		row.values.forEach((value, index) => {
+		row.values.forEach((rawValue, index) => {
 			const humanHeader = headerRow[index];
 			if (humanHeader && EXCEL_HEADER_MAP[humanHeader]) {
 				const internalKey = EXCEL_HEADER_MAP[humanHeader];
+
+				// Flatten ExcelJS object values (hyperlink/richText/formula) first
+				const value = normalizeCellValue(rawValue);
 
 				// Handle Date Objects from Excel
 				if (value instanceof Date) {
